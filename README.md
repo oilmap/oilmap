@@ -6,7 +6,7 @@ Visualizing oil data on country maps using OilMap
 ---
 [live demo](http://oilmap.xyz)
 
-![screenshot](screenshot.png)
+![screenshot](screenshot.gif)
 ---
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
@@ -19,13 +19,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [MediumPost](https://medium.com/@roqueleal/world-oil-map-e46b774ea82b)
 ---
 
-## Built With
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [JavaScript](https://www.javascript.com/) - Used to generate RSS Feeds
-
----
 ## Acknowledgments
-* **MapBox** - *Initial work* - [Roque](https://www.roqueleal.me/)
-* Inspiration
-* etc
+* **MapBox** - *Maps* - [MapBox](https://www.mapbox.com/)
+* **Inspiration** - *OilMaps* - [MapBox Labs](https://labs.mapbox.com/amnesty/)
