@@ -4,6 +4,8 @@ Visualizing oil data on country maps using OilMap
 
 ### OilMap is an independent initiative to monitor the Oil & Gas industry of world promoting transparency and accountability in decision making and investment.
 ---
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Froqueleal%2Foilmap.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Froqueleal%2Foilmap?ref=badge_shield)
+
 [live demo](http://oilmap.xyz)
 
 ![screenshot](screenshot.gif)
