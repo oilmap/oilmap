@@ -19,6 +19,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 - [Medium](https://medium.com/@roqueleal/world-oil-map-e46b774ea82b)
 ---
 
+<script src='https://certificates.theodi.org/en/datasets/220195/certificate/badge.js'></script>
+
 ## Acknowledgments
 * **MapBox** - *Maps* - [MapBox](https://www.mapbox.com/)
 * **Inspiration** - *Amnesty Oil Spills* - [MapBox Labs](https://labs.mapbox.com/amnesty/)
