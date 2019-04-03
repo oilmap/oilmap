@@ -12,6 +12,8 @@ Visualizing oil data on country maps using OilMap
 ---
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Froqueleal%2Foilmap.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Froqueleal%2Foilmap?ref=badge_large)
 ---
 ## Authors
 * **Roque Leal** - *Initial work* - [Roque](https://www.roqueleal.me/)
