@@ -1,7 +1,7 @@
 # OilMap-Web 🗺🛢 🌟
 Visualizing oil data on country maps using OilMap
 ---
-[![Chat on Telegram](https://roqueleal.me)
+[![Donate](https://img.shields.io/badge/PayPal-Donate%20to%20Author-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7BMM6JGE73322&lc=US)
 
 ### OilMap is an independent initiative to monitor the Oil & Gas industry of world promoting transparency and accountability in decision making and investment.
 ---
