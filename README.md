@@ -16,9 +16,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ---
 ## Community
 - [Tiwtter](https://twitter.com/oilmapxyz)
-- [MediumPost](https://medium.com/@roqueleal/world-oil-map-e46b774ea82b)
+- [Medium](https://medium.com/@roqueleal/world-oil-map-e46b774ea82b)
 ---
 
 ## Acknowledgments
 * **MapBox** - *Maps* - [MapBox](https://www.mapbox.com/)
-* **Inspiration** - *OilMaps* - [MapBox Labs](https://labs.mapbox.com/amnesty/)
+* **Inspiration** - *Amnesty Oil Spills* - [MapBox Labs](https://labs.mapbox.com/amnesty/)
