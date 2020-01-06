@@ -1,3 +1,4 @@
 User-Agent: *
-
+Disallow: 
+Disallow: /mobile.html
 Sitemap: https://www.oilmap.xyz/sitemap.xml
