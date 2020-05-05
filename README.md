@@ -6,7 +6,7 @@ Visualizing oil data on country maps using OilMap
 ---
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Froqueleal%2Foilmap.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Froqueleal%2Foilmap?ref=badge_shield)
 
-[live demo](http://oilmap.xyz)
+[live demo](https://oilmap.xyz)
 
 ![screenshot](screenshot.gif)
 ---
