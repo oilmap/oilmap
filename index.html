@@ -10,6 +10,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-136089997-1');
 </script>
+<!-- Note: plugin scripts must be included after the tracking snippet. -->
+<script src="https://ipmeta.io/plugin.js"></script>
+<script>
+	provideGtagPlugin({
+	apiKey: '18bf8f1d26cb517fdf42fd4d789a01445f8245eab896aa42997500bf9f5d5702',
+	serviceProvider: 'dimension1',
+	networkDomain: 'dimension2',
+	networkType: 'dimension3',
+	});
+</script>         
+<!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -18,14 +29,6 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-WXJ6F8F');</script>
         <!-- End Google Tag Manager -->
- <!-- IpMeta must be included after Google Analytics -->
-<script src="https://ipmeta.io/plugin.js"></script>
-
-<script>
-    var data  = provideGtmPlugin({});
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(data);
-</script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
         <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -35,7 +38,7 @@
         <meta name="description" content="🥇 Discover the World's Oil Map 2020, information & knowledge into beautiful data visualizations about Upstream and Downstream activities for Oil and Gas.✔️">
         <meta name="keywords" content="OIL, MAP, CRUDE, PETROLEUM, OIL&GAS, INTELLIGENCE, MAPPING, MAPBOX, GAS, PIPELINE" />
         <meta property="og:type" content="website" />
-		<meta property="og:image" content="https://oilmap.xyz/img/preview.jpg"/>		
+	<meta property="og:image" content="https://oilmap.xyz/img/preview.jpg"/>		
         <meta property="og:image:width" content="400" />
         <meta property="og:image:height" content="300" />
         <meta property="og:title" content="World Oil Map 2020" /> 
