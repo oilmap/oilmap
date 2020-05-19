@@ -10,6 +10,17 @@
   gtag('js', new Date());
   gtag('config', 'UA-136089997-1');
 </script>
+<!-- Note: plugin scripts must be included after the tracking snippet. -->
+<script src="https://ipmeta.io/plugin.js"></script>
+<script>
+	provideGtagPlugin({
+	apiKey: '18bf8f1d26cb517fdf42fd4d789a01445f8245eab896aa42997500bf9f5d5702',
+	serviceProvider: 'dimension1',
+	networkDomain: 'dimension2',
+	networkType: 'dimension3',
+	});
+</script>         
+<!-- Global site tag (gtag.js) - Google Analytics -->	
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
