@@ -95,166 +95,33 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
  </header>
-  
-<style>
-   body {
-            margin:0;
-            padding:0;
-        }
-        header {
-            position: relative;
-            display: block;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-transform: uppercase;
-            z-index:1;
-        }
-        #legend {
-            position: absolute;
-            left: 24px;
-            bottom: 120px;
-            z-index: 1;
-        }
-        #map { position:absolute; top:0; bottom:0; width:100%; z-index:-1;}
-        dl {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        dt {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .sidebar > div:first-child button {
-            border-radius:3px 3px 0 0;
-        }
-        .sidebar > div:last-child button {
-            border-radius:0 0 3px 3px;
-        }
-        /* Dark attribution */
-         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a { color:#fff; }
-        /* modal styling */
-        .modal {
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            text-align: center;
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 40px;
-            border: 1px solid #888;
-            width: 40%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .leaflet-popup-content {
-            margin: 7px;
-        }
-        
-        a {
-            text-decoration: none;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        @media (max-width: 600px) {
-            h3 {
-              
-                font-size: 16px!important;
-                padding: 12px!important;
-                text-align: center;
-                overflow: hidden;
-                 width: 1px;
-                height: 1px;
-                
-            }
-            .modal-content{
-                width:100%;
-            }
-            body { margin:0; padding:0; }
-        }
-            
-         #menu {
-        background: #fff;
-        position: absolute;
-        z-index: 1;
-        top: 10px;
-        left: 10px;
-        width: 120px;
-        font-family: 'Open Sans', sans-serif;
-        border: 1px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-        #menu a {
-            font-size: 13px;
-            color: #404040;
-            display: block;
-            margin: 0;
-            text-decoration: none;
-            border-bottom: 1px solid #404040;
-            text-align: center;
-        }
-        #menu a:last-child {
-            border: none;
-            background-color: #fad201 ;
-            color: #404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a:hover {
-            background-color: #fad201;
-            color:#404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active {
-            background-color: #3887be;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active:hover {
-            background: #3074a4;
-        }
-</style>
+ <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+  
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXJ6F8F"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 <nav id="menu"></nav>
 <div id='map'></div>
+<div id='distance' class='distance-container'></div>
+<div id="distanceGuide" class="distance-container">
+<button onclick="measureDistance()">Measuring tool</button></div>
+<script src="./js/oilmap.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>   
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
 var map = new mapboxgl.Map({
     container: 'map',
-        style: 'mapbox://styles/roqueleal/ckg3x45qe25v819p84ibyztvj',
-        center: [-37.177734,27.761330],
+        style: 'mapbox://styles/roqueleal/ckg4lk7w11b6e19mw4pfx6irj',
+        center: [18.369141,21.043491],
         zoom: 3
     });
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
 map.addControl(new MapboxLanguage());
 </script>
 </script>
- 
 <!-- modal-->
 <div id="aboutModal" class="modal" style="display: none;">
 
@@ -454,23 +321,7 @@ map.getCanvas().style.cursor = '';
             layers.appendChild(link);
         }
     // fin MENU
-    // to grab checkbox value
-    $('input.js-checkboxes').prop('checked', true);
-    var nav = new mapboxgl.NavigationControl();
-    var nav2 = new mapboxgl.FullscreenControl();
-    var nav3 = new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
-    var nav4 = new MapboxGeocoder ({ accessToken: mapboxgl.accessToken });
-    map.addControl(nav4, 'bottom-right');
-    map.addControl(nav, 'bottom-right');
-    map.addControl(nav2, 'bottom-right');
-    map.addControl(nav3, 'bottom-right');
-    function mapReset() {
-        if (window.innerWidth < 800) {
-            map.setZoom(4.17);
-        } else {
-            map.setZoom(4.17);
-        }
-    }
+
   // interacion inicio hover
   var popup = new mapboxgl.Popup({
     closeButton: false,
@@ -585,7 +436,229 @@ map.getCanvas().style.cursor = '';
         if (event.target == modal) {
             modal.style.display = "none";      }
     }
+
+
+//geocder
+var customData
+function forwardGeocoder(query) {
+var matchingFeatures = [];
+for (var i = 0; i < customData.features.length; i++) {
+var feature = customData.features[i];
+// handle queries with different capitalization than the source data by calling toLowerCase()
+if (
+feature.properties.title
+.toLowerCase()
+.search(query.toLowerCase()) !== -1
+) {
+// add a tree emoji as a prefix for custom data results
+// using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+feature['place_name'] = '🛢️ ' + feature.properties.title;
+feature['center'] = feature.geometry.coordinates;
+feature['place_type'] = ['park'];
+matchingFeatures.push(feature);
+}
+}
+return matchingFeatures;
+}
+ 
+map.addControl(
+new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+localGeocoder: forwardGeocoder,
+zoom: 9,
+placeholder: '🛢️ Enter Oil Block Name',
+mapboxgl: mapboxgl
+}) ,'bottom-right'
+);
+
+    // to grab checkbox value
+    $('input.js-checkboxes').prop('checked', true);
+    var nav = new mapboxgl.NavigationControl();
+    var nav2 = new mapboxgl.FullscreenControl();
+    var nav3 = new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
+    map.addControl(nav, 'bottom-right');
+    map.addControl(nav2, 'bottom-right');
+    map.addControl(nav3, 'bottom-right');
+    function mapReset() {
+        if (window.innerWidth < 800) {
+            map.setZoom(4.17);
+        } else {
+            map.setZoom(4.17);
+        }
+    }   
+    
+    var distanceContainer = document.getElementById("distance");
+var distanceGuide = document.getElementById("distanceGuide");
+
+// Array to store id's of measured lines  -- kinda irrelevant as we have a counter
+var measureLayers = [];
+var counter = 0;
+var enabled = false;
+
+// GeoJSON object to hold our measurement features
+var geojson = {
+    type: "FeatureCollection",
+    features: []
+};
+
+// Used to draw a line between points
+var linestring = {
+    type: "Feature",
+    geometry: {
+        type: "LineString",
+        coordinates: []
+    }
+};
+
+function measureDistance() {
+    // Step 1, Toggle
+    enabled = !enabled
+
+    // If disabled and source exists, remove it
+    if (enabled === false) {
+
+        // Check for map source
+        if (typeof map.getSource("geojson") === "object") {
+            // Delete map layers from geojson
+            map.removeLayer("measure-points");
+            map.removeLayer("measure-lines");
+            // Remove map source
+            map.removeSource("geojson");
+            // Remove the distance calculator
+            distanceContainer.innerHTML = "";
+            // Reset geojson
+            geojson = {
+                type: "FeatureCollection",
+                features: []
+            };
+            // Remove mouse handler
+            map.off("mousemove", measureMouseHandler);
+            // Remove onclick handler
+            map.off("click", measureDistanceHandler);
+            // Reset mouse cursor
+            map.getCanvas().style.cursor = "";
+        }
+    } else if (enabled === true) {
+        // Add data source
+        map.addSource("geojson", {
+            type: "geojson",
+            data: geojson
+        });
+
+        // Add styles to the map
+        map.addLayer({
+            id: "measure-points",
+            type: "circle",
+            source: "geojson",
+            paint: {
+                "circle-radius": 5,
+                "circle-color": "#ef5350"
+            },
+            filter: ["in", "$type", "Point"]
+        });
+
+        map.addLayer({
+                id: "measure-lines",
+                type: "line",
+                source: "geojson",
+                layout: {
+                    "line-cap": "round",
+                    "line-join": "round"
+                },
+                paint: {
+                    "line-color": "#546e7a",
+                    "line-width": 2.5
+                },
+                filter: ["in", "$type", "LineString"]
+            },
+            "measure-points"
+        );
+
+        // Add on click handler
+        map.on('click', measureDistanceHandler)
+
+        // UI indicator for clicking/hovering a point on the map
+        map.on("mousemove", measureMouseHandler)
+    }
+};
+
+function measureDistanceHandler(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['measure-points']
+    });
+
+    // Remove the linestring from the group
+    // So we can redraw it based on the points collection
+    if (geojson.features.length > 1) geojson.features.pop();
+
+    // Clear the Distance container to populate it with a new value
+    distanceContainer.innerHTML = '';
+
+    // If a feature was clicked, remove it from the map
+    if (features.length) {
+        var id = features[0].properties.id;
+        geojson.features = geojson.features.filter(function (point) {
+            return point.properties.id !== id;
+        });
+    } else {
+        var point = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    e.lngLat.lng,
+                    e.lngLat.lat
+                ]
+            },
+            "properties": {
+                "id": `measure-${counter}`
+            }
+        };
+
+        geojson.features.push(point);
+        counter++;
+        measureLayers.push(point.properties.id);
+    }
+
+    // If there's a line, calculate the distance
+    if (geojson.features.length > 1) {
+        linestring.geometry.coordinates = geojson.features.map(function (point) {
+            return point.geometry.coordinates;
+        });
+
+        geojson.features.push(linestring);
+
+        // Populate the distanceContainer with total distance
+        var value = document.createElement("pre");
+        // If total distance less than 1km display in metres
+        if (turf.lineDistance(linestring) < 1) {
+            let tDist = turf.lineDistance(linestring) * 1000;
+            value.textContent = "Total distance: " + tDist.toLocaleString() + "m";
+            distanceContainer.appendChild(value);
+            map.getSource("geojson").setData(geojson);
+        } else {
+            value.textContent =
+                "Total distance: " +
+                turf.lineDistance(linestring).toLocaleString() +
+                "km";
+            distanceContainer.appendChild(value);
+            map.getSource("geojson").setData(geojson);
+        }
+    }
+
+    // Sets new data, updates layers/source
+    map.getSource('geojson').setData(geojson);
+};
+
+function measureMouseHandler(e) {
+        var features = map.queryRenderedFeatures(e.point, {
+            layers: ["measure-points"]
+        });
+        map.getCanvas().style.cursor = features.length ? "pointer" : "crosshair";
+    
+};    
 </script>
 
+<script src="data/geocoder.js"></script>
 </body></html>
  <!--Licensing information: https://roqueleal.me Purchase the pro version  -->
