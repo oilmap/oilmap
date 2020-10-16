@@ -474,15 +474,17 @@ mapboxgl: mapboxgl
     $('input.js-checkboxes').prop('checked', true);
     var nav = new mapboxgl.NavigationControl();
     var nav2 = new mapboxgl.FullscreenControl();
+    var nav3 = new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
     map.addControl(nav, 'bottom-right');
     map.addControl(nav2, 'bottom-right');
+    map.addControl(nav3, 'bottom-right');
     function mapReset() {
         if (window.innerWidth < 800) {
             map.setZoom(4.17);
         } else {
             map.setZoom(4.17);
         }
-    }   
+    } 
     
     var distanceContainer = document.getElementById("distance");
 var distanceGuide = document.getElementById("distanceGuide");
