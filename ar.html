@@ -33,14 +33,14 @@
         <meta name="author" content="Roque Leal" />
         <meta name="copyright" content="https://oilmap.xyz" />
         <meta property="fb:admins" content="1573187928" />
-        <meta name="description" content="🌎🛢️ اكتشف خريطة عام 2020 الخاصة بالنفط والغاز ، مع معلومات ومعارف عن عالم الطاقة النفطية في تصورات جميلة للبيانات عن أنشطة المنبع والمصب الخاصة بالنفط والغاز.✔️">
+        <meta name="description" content="🌎🛢️ اكتشف خريطة عام 2021 الخاصة بالنفط والغاز ، مع معلومات ومعارف عن عالم الطاقة النفطية في تصورات جميلة للبيانات عن أنشطة المنبع والمصب الخاصة بالنفط والغاز.✔️">
         <meta name="keywords" content="النفط ، الخرائط ، الجيولوجيا ، الغاز ، الطاقة ، الودائع ، رسم الخرائط ، Mapbox" />
         <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" link rel="image_src" type="image/jpg" href="https://oilmap.xyz/img/preview.jpg" />
         <meta property="og:image:width" content="400" />
         <meta property="og:image:height" content="300" />
         <meta property="og:title" content="خريطة النفط" /> 
         <meta property="og:description" content="🛢️تنجح في أي بيئة بفضل الموقع العالمي وبيانات الاستخبارات في الوقت الحقيقي حول أنشطة المنبع والمصب في قطاع النفط والغاز. 🗺️" />        
-        <meta property="og:url" content="https://oilmap.xyz/fr.html" />     
+        <meta property="og:url" content="https://oilmap.xyz/ar.html" />     
         <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@roqueleal08">
         <meta name="twitter:title" content="خريطة النفط">
@@ -71,158 +71,24 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
  </header>
-  
-<style>
-   body {
-            margin:0;
-            padding:0;
-        }
-        header {
-            position: relative;
-            display: block;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-transform: uppercase;
-            z-index:1;
-        }
-        #legend {
-            position: absolute;
-            left: 24px;
-            bottom: 120px;
-            z-index: 1;
-        }
-        #map { position:absolute; top:0; bottom:0; width:100%; z-index:-1;}
-        dl {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        dt {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .sidebar > div:first-child button {
-            border-radius:3px 3px 0 0;
-        }
-        .sidebar > div:last-child button {
-            border-radius:0 0 3px 3px;
-        }
-        /* Dark attribution */
-         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a { color:#fff; }
-        /* modal styling */
-        .modal {
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            text-align: center;
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 40px;
-            border: 1px solid #888;
-            width: 40%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .leaflet-popup-content {
-            margin: 7px;
-        }
-        
-        a {
-            text-decoration: none;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        @media (max-width: 600px) {
-            h3 {
-              
-                font-size: 16px!important;
-                padding: 12px!important;
-                text-align: center;
-                overflow: hidden;
-                 width: 1px;
-                height: 1px;
-                
-            }
-            .modal-content{
-                width:100%;
-            }
-            body { margin:0; padding:0; }
-        }
-            
-         #menu {
-        background: #fff;
-        position: absolute;
-        z-index: 1;
-        top: 10px;
-        left: 10px;
-        width: 120px;
-        font-family: 'Open Sans', sans-serif;
-        border: 1px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-        #menu a {
-            font-size: 13px;
-            color: #404040;
-            display: block;
-            margin: 0;
-            text-decoration: none;
-            border-bottom: 1px solid #404040;
-            text-align: center;
-        }
-        #menu a:last-child {
-            border: none;
-            background-color: #fad201 ;
-            color: #404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a:hover {
-            background-color: #fad201;
-            color:#404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active {
-            background-color: #3887be;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active:hover {
-            background: #3074a4;
-        }
-</style>
+ <link rel="stylesheet" href="./css/style.css">  
 </head>
 <body>
+  
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXJ6F8F"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 <nav id="menu"></nav>
 <div id='map'></div>
+<div id='distance' class='distance-container'></div>
+<div id="distanceGuide" class="distance-container">
+<button onclick="measureDistance()">Measuring tool</button></div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
 var map = new mapboxgl.Map({
     container: 'map',
-        style: 'mapbox://styles/roqueleal/cjsp9p3ho27sb1fntchkypzpw',
+        style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
         center: [33.3984,29.1521],
         zoom: 4
     });

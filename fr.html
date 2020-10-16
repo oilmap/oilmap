@@ -49,13 +49,13 @@
         <meta name="twitter:description" content="🥇 Réussissez dans n'importe quel environnement grâce à la localisation mondiale et aux données temps réel de renseignement sur les activités en Upstream y Downstream dans le secteur du pétrole et du gaz. 🗺️">
         <meta name="twitter:creator" content="@roqueleal08">
         <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
-        <title>Carte du Pétrole et Gaz 2021</title>
+        <title>🥇 Carte du Pétrole et Gaz 2021</title>
         <link rel="canonical" href="https://oilmap.xyz/fr.html">
 		<link rel="alternate" href="https://oilmap.xyz" hreflang="en-us" />
 		<link rel="alternate" href="https://oilmap.xyz/fr.html" hreflang="fr-fr" />
         <link rel="alternate" href="https://oilmap.xyz/es.html" hreflang="es-es" />
         <link rel="alternate" href="https://oilmap.xyz/ar.html" hreflang="ar-sa" /> 
-	        <script type="application/ld+json">
+	    <script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@type": "WebSite",
@@ -80,7 +80,7 @@
             "description": "Réussissez dans n'importe quel environnement grâce à la localisation mondiale et aux données temps réel de renseignement sur les activités en Upstream y Downstream dans le secteur du pétrole et du gaz",
             "sameAs": ["https://twitter.com/roqueleal08", "https://www.linkedin.com/in/lealrlx"]
             }
-        </script>
+    </script>
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
     <link rel="canonical" href="https://www.oilmap.xyz"/>
     <link rel="alternative" hreflang="en" href="https://www.oilmap.xyz/">
@@ -105,145 +105,7 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
  </header>
-  
-<style>
-   body {
-            margin:0;
-            padding:0;
-        }
-        header {
-            position: relative;
-            display: block;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-transform: uppercase;
-            z-index:1;
-        }
-        #legend {
-            position: absolute;
-            left: 24px;
-            bottom: 120px;
-            z-index: 1;
-        }
-        #map { position:absolute; top:0; bottom:0; width:100%; z-index:-1;}
-        dl {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        dt {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .sidebar > div:first-child button {
-            border-radius:3px 3px 0 0;
-        }
-        .sidebar > div:last-child button {
-            border-radius:0 0 3px 3px;
-        }
-        /* Dark attribution */
-         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a { color:#fff; }
-        /* modal styling */
-        .modal {
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            text-align: center;
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 40px;
-            border: 1px solid #888;
-            width: 40%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .leaflet-popup-content {
-            margin: 7px;
-        }
-        
-        a {
-            text-decoration: none;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        @media (max-width: 600px) {
-            h3 {
-              
-                font-size: 16px!important;
-                padding: 12px!important;
-                text-align: center;
-                overflow: hidden;
-                 width: 1px;
-                height: 1px;
-                
-            }
-            .modal-content{
-                width:100%;
-            }
-            body { margin:0; padding:0; }
-        }
-            
-         #menu {
-        background: #fff;
-        position: absolute;
-        z-index: 1;
-        top: 10px;
-        left: 10px;
-        width: 120px;
-        font-family: 'Open Sans', sans-serif;
-        border: 1px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-        #menu a {
-            font-size: 13px;
-            color: #404040;
-            display: block;
-            margin: 0;
-            text-decoration: none;
-            border-bottom: 1px solid #404040;
-            text-align: center;
-        }
-        #menu a:last-child {
-            border: none;
-            background-color: #fad201 ;
-            color: #404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a:hover {
-            background-color: #fad201;
-            color:#404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active {
-            background-color: #3887be;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active:hover {
-            background: #3074a4;
-        }
-</style>
+ <link rel="stylesheet" href="./css/style.css">  
 </head>
 <body>
   
@@ -277,8 +139,8 @@ map.addControl(new MapboxLanguage());
         <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
         <h1><a href="https://www.roqueleal.me/indexfr.html" target="_blank">Carte Pétrolière du Monde 2021</a></h1>
         🌎🛢️ La carte pétrolière est une nouvelle plate-forme ouverte pour surveiller facilement les activités pétrolières et gazières dans le monde et suivre les nouvelles et les prix du pétrole. Il vous donne accès à la recherche à des séries de licences pétrolières et gazières, à des entreprises, à des champs et à des puits de pétrole et à des informations en direct sur l'industrie. </a><br>
-        <h2><a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Cours du Pétrole 2020</a></h2>
-        Vous pouvez également consulter les prix de la plupart des ségrégations de pétrole brut vendues dans le monde en temps réel et disponibles dans <a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Cours du Pétrole 2020</a>.<p></p>
+        <h2><a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Cours du Pétrole 2021</a></h2>
+        Vous pouvez également consulter les prix de la plupart des ségrégations de pétrole brut vendues dans le monde en temps réel et disponibles dans <a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Cours du Pétrole 2021</a>.<p></p>
         Je suis <a href="https://www.roqueleal.me/indexfr.html" target="_blank" >Roque Leal,
         </a> Je vous invite à collaborer et partager vos idées, pour plus d'informations vous pouvez m'écrire à<a href="mailto:roqueleal@gmail.com"> roqueleal@gmail.com
         </a>.
