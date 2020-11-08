@@ -97,8 +97,10 @@
     <header class="bg-darken75 color-black h-auto-mm h6 ">
     <div class="flex-parent flex-parent--space-between-main w-full">
     <div class="flex-child ml240 mt24 mb12 color-yellow"><h3>World Oil Map 2021</h3></div>
-    <div class="about-header flex-child mr24 mt30 mb50 txt-bold" style="color: #F0B823; text-shadow: 1px 1px 2px rgb(8, 8, 8), 0 0 1em rgb(253, 253, 255);">
-    <svg class="icon inline mr6"><use xlink:href="#icon-question"></use></svg>About</div>
+    <div class="container">
+        <button class="btn" data-path="two">Fixes &#038; Adding Maps</button>
+        <button class="btn" data-path="one">About</button>
+    </div>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script><link
     rel="stylesheet"
     href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
@@ -142,26 +144,119 @@ mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl
 map.addControl(new MapboxLanguage());
 </script>
 <!-- modal-->
-<div id="aboutModal" class="modal" style="display: none;">
-
-    <!-- modal content -->
-    <div class="modal-content">
-        <span class="close">×</span>
-        <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
-        <h1><a href="https://www.roqueleal.me" target="_blank">World Oil Map 2021</a></h1>
-        🌎🛢️ This Map its a web Location-Intelligence application supported and updated using Country official spatial database services and others sources related to the Oil and Gas sector. It is built to assist academic research and teaching as well as the general public. </a><br>
-        <h2><a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Crude Oil Price Map</a></h2>
-        You can also display and check in real time the prices of crude oil in <a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Oil Prices Map</a>.<p></p>
-        I'm <a href="https://www.roqueleal.me" target="_blank" >Roque Leal,
-        </a> allow me to invite you to collaborate to update and share this information. Involving your data we will have more updated information. You can comment and write to me<a href="mailto:roqueleal@gmail.com"> roqueleal@gmail.com
-        </a>.
-        Special thanks to <a href="https://blog.mapbox.com/bringing-data-to-life-with-powerbi-ccaf214eaf16" target="_blank">Mapbox</a> for sharing inspiration and technology in the deep and dynamic visualization of our data.<p>
-        </p>Its distributed through GPL Open Source License. Visit the repository of this project available in <a href="https://github.com/roqueleal/oilmap" target="_blank">Github</a>.<p></p>
-        <a href="https://github.com/roqueleal/oilmap" target="_blank"><img src="./img/git.png" style="width:300%;max-width:200px" alt="Link to this page" ></a>
-        <p>Open Data Certificate™ available in <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">ODI</a>.<p></p>
-        <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank"><img src="./img/odi.png" style="width:150%;max-width:150px" alt="Link to this page"></a> 
+<div class="modals">
+    <div class="modal-overlay">
+        <div class="modal modal--1" data-target="one"> 
+            <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
+            <h1><a href="https://www.roqueleal.me" target="_blank">World Oil Map 2021</a></h1>
+            🌎🛢️ This Map its a web Location-Intelligence application supported and updated using Country official spatial database services and others sources related to the Oil and Gas sector. It is built to assist academic research and teaching as well as the general public. </a><br>
+            <h2><a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Crude Oil Price Map</a></h2>
+            You can also display and check in real time the prices of crude oil in <a href="https://oilmap.xyz/prices/oilprices.html" target="_blank">Oil Prices Map</a>.<p></p>
+            I'm <a href="https://www.roqueleal.me" target="_blank" >Roque Leal,
+            </a> allow me to invite you to collaborate to update and share this information. Involving your data we will have more updated information. You can comment and write to me<a href="mailto:roqueleal@gmail.com"> roqueleal@gmail.com
+            </a>.
+            Special thanks to <a href="https://blog.mapbox.com/bringing-data-to-life-with-powerbi-ccaf214eaf16" target="_blank">Mapbox</a> for sharing inspiration and technology in the deep and dynamic visualization of our data.<p>
+            </p>Its distributed through GPL Open Source License. Visit the repository of this project available in <a href="https://github.com/roqueleal/oilmap" target="_blank">Github</a>.<p></p>
+            <a href="https://github.com/roqueleal/oilmap" target="_blank"><img src="./img/git.png" style="width:300%;max-width:200px" alt="Link to this page" ></a>
+            <p>Open Data Certificate™ available in <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">ODI</a>.<p></p>
+            <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank"><img src="./img/odi.png" style="width:150%;max-width:150px" alt="Link to this page"></a>  </div>
+        <div class="modal modal--2" data-target="two">
+            <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
+            <h3>Get Involved with your petroleum data</h3>
+            Oil Map works from YOUR contributions — however you can offer them. If we are wrong, please tell us, and try to provide some kind of source or information so that we can follow up.
+            <div>
+            Upload Your Zipped Files (*shp,*kml,*kmz,*etc) <br />
+            <input type="file" id="files" multiple /><br /><br />
+            <button class="bt" id="send">Upload</button>
+            <p id="uploading"></p>
+            <progress value="0" max="100" id="progress"></progress>
+            </div>
+            
+            <!-- The core Firebase JS SDK is always required and must be listed first -->
+            <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+            
+            <!-- TODO: Add SDKs for Firebase products that you want to use -->
+            <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
+            
+            <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyBImVWGVx9jS9QJMOQI3tdzlbhqfCsEzr0",
+                authDomain: "oilmap-c9380.firebaseapp.com",
+                databaseURL: "https://oilmap-c9380.firebaseio.com",
+                projectId: "oilmap-c9380",
+                storageBucket: "oilmap-c9380.appspot.com",
+                messagingSenderId: "880402631675",
+                appId: "1:880402631675:web:ea009d4d72ddc130fb595e"
+              };
+              // Initialize Firebase
+              firebase.initializeApp(firebaseConfig);
+            </script>
+            
+            <script>
+            var files = [];
+            document.getElementById("files").addEventListener("change", function(e) {
+              files = e.target.files;
+              for (let i = 0; i < files.length; i++) {
+                console.log(files[i]);
+              }
+            });
+            
+            document.getElementById("send").addEventListener("click", function() {
+              //checks if files are selected
+              if (files.length != 0) {
+                //Loops through all the selected files
+                for (let i = 0; i < files.length; i++) {
+                  //create a storage reference
+                  var storage = firebase.storage().ref(files[i].name);
+            
+                  //upload file
+                  var upload = storage.put(files[i]);
+            
+                  //update progress bar
+                  upload.on(
+                    "state_changed",
+                    function progress(snapshot) {
+                      var percentage =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                      document.getElementById("progress").value = percentage;
+                    },
+            
+                    function error() {
+                      alert("error uploading file");
+                    },
+            
+                    function complete() {
+                      document.getElementById(
+                        "uploading"
+                      ).innerHTML += `${files[i].name} upoaded <br />`;
+                    }
+                  );
+                }
+              } else {
+                alert("No file chosen");
+              }
+            });
+            
+            function getFileUrl(filename) {
+              //create a storage reference
+              var storage = firebase.storage().ref(filename);
+            
+              //get file url
+              storage
+                .getDownloadURL()
+                .then(function(url) {
+                  console.log(url);
+                })
+                .catch(function(error) {
+                  console.log("error encountered");
+                });
+            }
+            </script></div>
     </div>
 </div>
+
+ <!-- menu -->
 
  <!-- menu -->
 
@@ -439,23 +534,38 @@ map.getCanvas().style.cursor = '';
             .addTo(map);
     });
     // interacion fin bloquesar
-    // modal interaction
-    var modal = document.getElementById('aboutModal');
-    modal.style.display = "block";
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    var aboutHeader = document.getElementsByClassName("about-header")[0];
-    aboutHeader.onclick = function() {
-        document.body.style.cursor = "pointer";
-        modal.style.display = "block";
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";      }
-    }
+//MODAL
+const btns = document.querySelectorAll('.btn')
+const modalOverlay = document.querySelector('.modal-overlay')
+const modals = document.querySelectorAll('.modal')
 
+
+btns.forEach((el) => {
+	el.addEventListener('click', (e) => {
+		let path = e.currentTarget.getAttribute('data-path')
+
+		modals.forEach((el) => {
+			el.classList.remove('modal--visible')
+		})
+
+
+		document.querySelector(`[data-target="${path}"]`).classList.add('modal--visible')
+		modalOverlay.classList.add('modal-overlay--visible')
+	})
+})
+
+
+modalOverlay.addEventListener('click', (e) => {
+	console.log(e.target)
+
+
+	if (e.target == modalOverlay) {
+		modalOverlay.classList.remove('modal-overlay--visible')
+		modals.forEach((el) => {
+			el.classList.remove('modal--visible')
+		})
+	}
+})
 
 //geocder
 var customData
