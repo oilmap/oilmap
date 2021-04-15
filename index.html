@@ -20,7 +20,7 @@
 	networkType: 'dimension3',
 	});
 </script>         
-<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->	
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -71,8 +71,8 @@
                             "url": "https://oilmap.xyz/img/preview.jpg"
                         }
                     },
-                "datePublished": "2020-10-16T11:14:14+09:00",
-                "dateModified": "2020-10-16T11:14:14+09:00",
+                    "datePublished": "2021-04-15T11:14:14+09:00",
+                    "dateModified": "2021-04-15T11:14:14+09:00",
                     "url": "https://oilmap.xyz",
                     "image": {
                         "@type": "ImageObject",
@@ -87,7 +87,13 @@
                     "description": "🛢️ Discover World Oil Map 2021, information & knowledge about Upstream and Downstream activities for Oil and Gas.✔️",
                     "sameAs": ["https://twitter.com/roqueleal08", "https://www.linkedin.com/in/lealrlx"]
                     }
-        </script>               
+        </script>   
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <link rel="canonical" href="https://www.oilmap.xyz"/>
+    <link rel="alternative" hreflang="en" href="https://www.oilmap.xyz/">
+    <link rel="alternative" hreflang="es" href="https://www.oilmap.xyz/es.html">
+    <link rel="alternative" hreflang="ar" href="https://www.oilmap.xyz/ar.html">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <script src="./js/mapbox-gl.js"></script>
     <link href="./js/mapbox-gl.css" rel="stylesheet">
     <link href="./js/assembly.min.css" rel="stylesheet">
@@ -96,31 +102,17 @@
     <body class="prose">
     <header class="bg-darken75 color-black h-auto-mm h6 ">
     <div class="flex-parent flex-parent--space-between-main w-full">
-    <div class="flex-child ml240 mt24 mb12 color-yellow"><h3>World Oil Map 2021</h3></div>
-    <div class="container">
-        <button class="btn" data-path="two">Fixes &#038; Adding Maps</button>
-        <button class="btn" data-path="three">Oil production</button>
-        <button class="btn" data-path="one">About</button>
-    </div>
+    <div class="flex-child ml240 mt24 mb12 color-yellow"><h2>World Oil Map 2021</h2></div>
+    <div class="about-header flex-child mr24 mt30 mb50 txt-bold" style="color: #F0B823; text-shadow: 1px 1px 2px rgb(8, 8, 8), 0 0 1em rgb(253, 253, 255);">
+    <svg class="icon inline mr6"><use xlink:href="#icon-question"></use></svg>Info</div>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script><link
     rel="stylesheet"
     href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
     type="text/css"/>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
-<!-- Hotjar Tracking Code for https://www.oilmap.xyz/ -->
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:2046064,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>	    
  </header>
- <link rel="stylesheet" href="./css/style.css">
+ <link rel="stylesheet" href="./css/style.css">  
 </head>
 <body>
   
@@ -137,17 +129,20 @@
 mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
 var map = new mapboxgl.Map({
     container: 'map',
-        style: 'mapbox://styles/roqueleal/ckguf3eih0jjj1arwyg6o9pfd',
+        style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
         center: [18.369141,21.043491],
         zoom: 3
     });
 mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
 map.addControl(new MapboxLanguage());
 </script>
+ 
 <!-- modal-->
-<div class="modals">
-    <div class="modal-overlay">
-        <div class="modal modal--1" data-target="one"> 
+<div id="aboutModal" class="modal" style="display: none;">
+
+    <!-- modal content -->
+    <div class="modal-content">
+        <span class="close">×</span>
             <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
             <h1><a href="https://www.roqueleal.me" target="_blank">World Oil Map 2021</a></h1>
             🌎🛢️ This Map its a web Location-Intelligence application supported and updated using Country official spatial database services and others sources related to the Oil and Gas sector. It is built to assist academic research and teaching as well as the general public. </a><br>
@@ -161,158 +156,64 @@ map.addControl(new MapboxLanguage());
             <a href="https://github.com/roqueleal/oilmap" target="_blank"><img src="./img/git.png" style="width:300%;max-width:200px" alt="Link to this page" ></a>
             <p>Open Data Certificate™ available in <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">ODI</a>.<p></p>
             <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank"><img src="./img/odi.png" style="width:150%;max-width:150px" alt="Link to this page"></a>  </div>
-            <div class="modal modal--3" data-target="three">
-                <iframe src="https://ourworldindata.org/grapher/oil-production-by-country?time=earliest..1986" loading="lazy" style="width: 100%; height: 98%; border: 0px none;"></iframe>
-            </div>
-            <div class="modal modal--2" data-target="two">
-            <img class="logo" src="./img/oilmap.png" style="width:50%;max-width:70px"><p></p>
-            <h3>Get Involved with your petroleum data</h3>
-            Oil Map works from YOUR contributions — however you can offer them. If we are wrong, please tell us, and try to provide some kind of source or information so that we can follow up.
-            <div>
-            Upload Your Zipped Files (*shp,*kml,*kmz,*etc) <br />
-            <input type="file" id="files" multiple /><br /><br />
-            <button class="bt" id="send">Upload</button>
-            <p id="uploading"></p>
-            <progress value="0" max="100" id="progress"></progress>
-            </div>
-            
-            <!-- The core Firebase JS SDK is always required and must be listed first -->
-            <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
-            
-            <!-- TODO: Add SDKs for Firebase products that you want to use -->
-            <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
-            
-            <script>
-            // Your web app's Firebase configuration
-            var firebaseConfig = {
-                apiKey: "AIzaSyBImVWGVx9jS9QJMOQI3tdzlbhqfCsEzr0",
-                authDomain: "oilmap-c9380.firebaseapp.com",
-                databaseURL: "https://oilmap-c9380.firebaseio.com",
-                projectId: "oilmap-c9380",
-                storageBucket: "oilmap-c9380.appspot.com",
-                messagingSenderId: "880402631675",
-                appId: "1:880402631675:web:ea009d4d72ddc130fb595e"
-              };
-              // Initialize Firebase
-              firebase.initializeApp(firebaseConfig);
-            </script>
-            
-            <script>
-            var files = [];
-            document.getElementById("files").addEventListener("change", function(e) {
-              files = e.target.files;
-              for (let i = 0; i < files.length; i++) {
-                console.log(files[i]);
-              }
-            });
-            
-            document.getElementById("send").addEventListener("click", function() {
-              //checks if files are selected
-              if (files.length != 0) {
-                //Loops through all the selected files
-                for (let i = 0; i < files.length; i++) {
-                  //create a storage reference
-                  var storage = firebase.storage().ref(files[i].name);
-            
-                  //upload file
-                  var upload = storage.put(files[i]);
-            
-                  //update progress bar
-                  upload.on(
-                    "state_changed",
-                    function progress(snapshot) {
-                      var percentage =
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                      document.getElementById("progress").value = percentage;
-                    },
-            
-                    function error() {
-                      alert("error uploading file");
-                    },
-            
-                    function complete() {
-                      document.getElementById(
-                        "uploading"
-                      ).innerHTML += `${files[i].name} upoaded <br />`;
-                    }
-                  );
-                }
-              } else {
-                alert("No file chosen");
-              }
-            });
-            
-            function getFileUrl(filename) {
-              //create a storage reference
-              var storage = firebase.storage().ref(filename);
-            
-              //get file url
-              storage
-                .getDownloadURL()
-                .then(function(url) {
-                  console.log(url);
-                })
-                .catch(function(error) {
-                  console.log("error encountered");
-                });
-            }
-            </script></div>
+
     </div>
 </div>
 
- <!-- menu -->
 
  <!-- menu -->
 
-    <script>
-        // inicio NEWS
-        var url = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
-        map.on('load', function () {
-        window.setInterval(function() {
-        map.getSource('NEWS').setData(url);
-        }, 2000);
- 
-        map.addSource('NEWS', { type: 'geojson', data: url });
-        map.addLayer({
-            "id": "NEWS",
-            "type": "symbol",
-            "source": "NEWS",
-                "layout": {
-                "icon-image": "oil",
-                "icon-size":[
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                0,
-                0,
-                9.256,
-                0.1
-                    ]
-                    }
-                    });
-                    });
-        // FIN NEWS
-        // inicio CLUSTERNEWS
-        
-        map.on('load', function() {
+ <!-- menu -->
+
+ <script>
+    // inicio NEWS
+    var url = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+    map.on('load', function () {
+    window.setInterval(function() {
+    map.getSource('NEWS').setData(url);
+    }, 2000);
+
+    map.addSource('NEWS', { type: 'geojson', data: url });
+    map.addLayer({
+        "id": "NEWS",
+        "type": "symbol",
+        "source": "NEWS",
+            "layout": {
+            "icon-image": "oil",
+            "icon-size":[
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            0,
+            0,
+            9.256,
+            0.1
+                ]
+                }
+                });
+                });
+    // FIN NEWS
+    // inicio CLUSTERNEWS
+    
+    map.on('load', function() {
 // Add a new source from our GeoJSON data and set the
 // 'cluster' option to true. GL-JS will add the point_count property to your source data.
-        map.addSource("CLUSTER-NEWS", {
-        type: "geojson",
+    map.addSource("CLUSTER-NEWS", {
+    type: "geojson",
 // Point to GeoJSON data. This example visualizes all M1.0+ NEWS
 // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        data: "https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson",
-        cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-        });
- 
-        map.addLayer({
-        id: "CLUSTER-NEWS",
-        type: "circle",
-        source: "CLUSTER-NEWS",
-        filter: ["has", "point_count"],
-    paint: {
+    data: "https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson",
+    cluster: true,
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+    });
+
+    map.addLayer({
+    id: "CLUSTER-NEWS",
+    type: "circle",
+    source: "CLUSTER-NEWS",
+    filter: ["has", "point_count"],
+paint: {
 
 "circle-color": [
 "step",
@@ -334,7 +235,7 @@ map.addControl(new MapboxLanguage());
 ]
 }
 });
- 
+
 map.addLayer({
 id: "cluster-count",
 type: "symbol",
@@ -346,7 +247,7 @@ layout: {
 "text-size": 12
 }
 });
- 
+
 map.addLayer({
 id: "unclustered-point",
 type: "circle",
@@ -359,7 +260,7 @@ paint: {
 "circle-stroke-color": "#fff"
 }
 });
- 
+
 // inspect a cluster on click
 map.on('click', 'clusters', function (e) {
 var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
@@ -367,14 +268,14 @@ var clusterId = features[0].properties.cluster_id;
 map.getSource('CLUSTER-NEWS').getClusterExpansionZoom(clusterId, function (err, zoom) {
 if (err)
 return;
- 
+
 map.easeTo({
 center: features[0].geometry.coordinates,
 zoom: zoom
 });
 });
 });
- 
+
 map.on('mouseenter', 'clusters', function () {
 map.getCanvas().style.cursor = 'pointer';
 });
@@ -382,194 +283,179 @@ map.on('mouseleave', 'clusters', function () {
 map.getCanvas().style.cursor = '';
 });
 });
-        // fin CLUSTERNEWS
-        // INICIO MENU
-                 
-        var toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS','EXPLORATION','REFINERIES','OIL-PIPELINE','GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
-        for (var i = 0; i < toggleableLayerIds.length; i++) {
-            var id = toggleableLayerIds[i];
-            var link = document.createElement('a');
-            link.href = '#';
-            link.className = 'active';
-            link.textContent = id;
-            link.onclick = function (e) {
-                var clickedLayer = this.textContent;
-                e.preventDefault();
-                e.stopPropagation();
-                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-                if (visibility === 'visible') {
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                    this.className = '';
-                } else {
-                    this.className = 'active';
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                }
-            };
-            var layers = document.getElementById('menu');
-            layers.appendChild(link);
-        }
-    // fin MENU
-        // INICIO MENU
-                 
-        var toggleableLayerIds = ['DEPOSITS'];
-        for (var i = 0; i < toggleableLayerIds.length; i++) {
-            var id = toggleableLayerIds[i];
+    // fin CLUSTERNEWS
+    // INICIO MENU
+             
+    var toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS','EXPLORATION','REFINERIES','OIL-PIPELINE','GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+        var id = toggleableLayerIds[i];
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.textContent = id;
+        link.onclick = function (e) {
+            var clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+        };
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+// fin MENU
+    // INICIO MENU
+             
+    var toggleableLayerIds = ['DEPOSITS'];
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+        var id = toggleableLayerIds[i];
+       
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'focus';
+        link.textContent = id;
+       
+        link.onclick = function (e) {
+            var clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+          
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
            
-            var link = document.createElement('a');
-            link.href = '#';
-            link.className = 'focus';
-            link.textContent = id;
-           
-            link.onclick = function (e) {
-                var clickedLayer = this.textContent;
-                e.preventDefault();
-                e.stopPropagation();
-              
-                var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-               
-                if (visibility === 'visible') {
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                    this.className = '';
-                } else {
-                    this.className = 'active';
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                }
-            };
-            var layers = document.getElementById('menu');
-            layers.appendChild(link);
-        }
-    // fin MENU
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+        };
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+// fin MENU
 
-  // interacion inicio hover
-  var popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false
-    });
-    map.on('mouseenter', 'DEPOSITS', function(e) {
+// interacion inicio hover
+var popup = new mapboxgl.Popup({
+closeButton: false,
+closeOnClick: false
+});
+map.on('mouseenter', 'DEPOSITS', function(e) {
 // Change the cursor style as a UI indicator.
-    map.getCanvas().style.cursor = 'pointer';
- 
-    var coordinates = e.features[0].geometry.coordinates.slice();
-    var description = e.features[0].properties.description;
- 
+map.getCanvas().style.cursor = 'pointer';
+
+var coordinates = e.features[0].geometry.coordinates.slice();
+var description = e.features[0].properties.description;
+
 // Ensure that if the map is zoomed out such that multiple
 // copies of the feature are visible, the popup appears
 // over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
- 
+while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+}
+
 // Populate the popup and set its coordinates
 // based on the feature found.
-    popup.setLngLat(e.lngLat)
-                .setHTML('<dt>' + e.features[0].properties.NAME + '</dt>'+'<dt>'+ e.features[0].properties.OTHERINFO + '</dt>' + e.features[0].properties.RESINFO + '</dt>' )
-                .addTo(map);
- 
-    map.on('mouseleave', 'DEPOSITS', function() {
-    map.getCanvas().style.cursor = '';
-    popup.remove();
-    });
-    });
-  
-  // interacion fin hover
-    // interacion inicio popup
-    map.on('mousemove', function(event) {
-        if (map.loaded()) {
-            var features = map.queryRenderedFeatures(event.point, {
-                layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS','PRODUCTION', 'NEWS']
-            });
-            map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-        }
-    });
-    window.addEventListener('resize', () => {
-        mapReset();
-    })
-     // interacion  refinerias
-    map.on('click', function(e) {
-        var features = map.queryRenderedFeatures(e.point, {
-            layers: ['REFINERIES'] // replace this with the name of the layer
+popup.setLngLat(e.lngLat)
+            .setHTML('<dt>' + e.features[0].properties.NAME + '</dt>'+'<dt>'+ e.features[0].properties.OTHERINFO + '</dt>' + e.features[0].properties.RESINFO + '</dt>' )
+            .addTo(map);
+
+map.on('mouseleave', 'DEPOSITS', function() {
+map.getCanvas().style.cursor = '';
+popup.remove();
+});
+});
+
+// interacion fin hover
+// interacion inicio popup
+map.on('mousemove', function(event) {
+    if (map.loaded()) {
+        var features = map.queryRenderedFeatures(event.point, {
+            layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS','PRODUCTION', 'NEWS']
         });
-        if (!features.length) {
-            return;
-        }
-        var feature = features[0];
-        var popup = new mapboxgl.Popup ()
-            .setLngLat(feature.geometry.coordinates)
-            .setHTML('<dd>' + feature.properties.Name + feature.properties.Descriptio + '</dd>')
-            .setLngLat(feature.geometry.coordinates)
-            .addTo(map);
-    });
-    window.addEventListener('resize', () => {
-        mapReset();
-    })
-    // interacion fin refinerias
-    
-    // interacion inicio bloquesar
-    map.on('click', 'EXPLORATION-AREAS', function (e) {
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML('<dt>' + e.features[0].properties.Name + '</dt>'+'<dt>'+ e.features[0].properties.Company + '</dt>' +'<dt>'+ e.features[0].properties.Type + '</dt>'+'<dt>')
-            .addTo(map);
-    });
-    // interacion fin bloquesar
-      // interacion inicio bloquesar
-      map.on('click', 'PRODUCTION', function (e) {
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML('<dt>' + e.features[0].properties.Name + '</dt>'+'<dt>'+ e.features[0].properties.Company + '</dt>' +'<dt>'+ e.features[0].properties.Type + '</dt>'+'<dt>')
-            .addTo(map);
-    });
-    // interacion fin bloquesar
-     // interacion inicio NEWS2
-     map.on('click', 'NEWS', function (e) {
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML('<dd>' + e.features[0].properties.name + 
-             '<img src=" '+ e.features[0].properties.shareimage + '" />' 
-            + e.features[0].properties.html + '</dd>')
-            .addTo(map);
-    });
-    // interacion fin NEWS
-    // interacion inicio BID-ROUNDS
-      map.on('click', 'BID-ROUNDS', function (e) {
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML('<dt>' + e.features[0].properties.title + '</dt>'+'<dt>'+ e.features[0].properties.description + '</dt>' )
-            .addTo(map);
-    });
-    // interacion fin bloquesar
-//MODAL
-const btns = document.querySelectorAll('.btn')
-const modalOverlay = document.querySelector('.modal-overlay')
-const modals = document.querySelectorAll('.modal')
-
-
-btns.forEach((el) => {
-	el.addEventListener('click', (e) => {
-		let path = e.currentTarget.getAttribute('data-path')
-
-		modals.forEach((el) => {
-			el.classList.remove('modal--visible')
-		})
-
-
-		document.querySelector(`[data-target="${path}"]`).classList.add('modal--visible')
-		modalOverlay.classList.add('modal-overlay--visible')
-	})
+        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+    }
+});
+window.addEventListener('resize', () => {
+    mapReset();
 })
-
-
-modalOverlay.addEventListener('click', (e) => {
-	console.log(e.target)
-
-
-	if (e.target == modalOverlay) {
-		modalOverlay.classList.remove('modal-overlay--visible')
-		modals.forEach((el) => {
-			el.classList.remove('modal--visible')
-		})
-	}
+ // interacion  refinerias
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['REFINERIES'] // replace this with the name of the layer
+    });
+    if (!features.length) {
+        return;
+    }
+    var feature = features[0];
+    var popup = new mapboxgl.Popup ()
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML('<dd>' + feature.properties.Name + feature.properties.Descriptio + '</dd>')
+        .setLngLat(feature.geometry.coordinates)
+        .addTo(map);
+});
+window.addEventListener('resize', () => {
+    mapReset();
 })
+// interacion fin refinerias
+
+// interacion inicio bloquesar
+map.on('click', 'EXPLORATION-AREAS', function (e) {
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<dt>' + e.features[0].properties.Name + '</dt>'+'<dt>'+ e.features[0].properties.Company + '</dt>' +'<dt>'+ e.features[0].properties.Type + '</dt>'+'<dt>')
+        .addTo(map);
+});
+// interacion fin bloquesar
+  // interacion inicio bloquesar
+  map.on('click', 'PRODUCTION', function (e) {
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<dt>' + e.features[0].properties.Name + '</dt>'+'<dt>'+ e.features[0].properties.Company + '</dt>' +'<dt>'+ e.features[0].properties.Type + '</dt>'+'<dt>')
+        .addTo(map);
+});
+// interacion fin bloquesar
+ // interacion inicio NEWS2
+ map.on('click', 'NEWS', function (e) {
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<dd>' + e.features[0].properties.name + 
+         '<img src=" '+ e.features[0].properties.shareimage + '" />' 
+        + e.features[0].properties.html + '</dd>')
+        .addTo(map);
+});
+// interacion fin NEWS
+// interacion inicio BID-ROUNDS
+  map.on('click', 'BID-ROUNDS', function (e) {
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML('<dt>' + e.features[0].properties.title + '</dt>'+'<dt>'+ e.features[0].properties.description + '</dt>' )
+        .addTo(map);
+});
+// interacion fin bloquesar
+// modal interaction
+var modal = document.getElementById('aboutModal');
+modal.style.display = "block";
+var span = document.getElementsByClassName("close")[0];
+span.onclick = function() {
+    modal.style.display = "none";
+}
+var aboutHeader = document.getElementsByClassName("about-header")[0];
+aboutHeader.onclick = function() {
+    document.body.style.cursor = "pointer";
+    modal.style.display = "block";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";      }
+}
+
 
 //geocder
 var customData
@@ -593,7 +479,7 @@ matchingFeatures.push(feature);
 }
 return matchingFeatures;
 }
- 
+
 map.addControl(
 new MapboxGeocoder({
 accessToken: mapboxgl.accessToken,
@@ -604,23 +490,23 @@ mapboxgl: mapboxgl
 }) ,'bottom-right'
 );
 
-    // to grab checkbox value
-    $('input.js-checkboxes').prop('checked', true);
-    var nav = new mapboxgl.NavigationControl();
-    var nav2 = new mapboxgl.FullscreenControl();
-    var nav3 = new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
-    map.addControl(nav, 'bottom-right');
-    map.addControl(nav2, 'bottom-right');
-    map.addControl(nav3, 'bottom-right');
-    function mapReset() {
-        if (window.innerWidth < 800) {
-            map.setZoom(4.17);
-        } else {
-            map.setZoom(4.17);
-        }
-    }   
-    
-    var distanceContainer = document.getElementById("distance");
+// to grab checkbox value
+$('input.js-checkboxes').prop('checked', true);
+var nav = new mapboxgl.NavigationControl();
+var nav2 = new mapboxgl.FullscreenControl();
+var nav3 = new mapboxgl.GeolocateControl({ positionOptions: { enableHighAccuracy: true }, trackUserLocation: true });
+map.addControl(nav, 'bottom-right');
+map.addControl(nav2, 'bottom-right');
+map.addControl(nav3, 'bottom-right');
+function mapReset() {
+    if (window.innerWidth < 800) {
+        map.setZoom(4.17);
+    } else {
+        map.setZoom(4.17);
+    }
+}   
+
+var distanceContainer = document.getElementById("distance");
 var distanceGuide = document.getElementById("distanceGuide");
 //ruler
 // Array to store id's of measured lines  -- kinda irrelevant as we have a counter
@@ -630,169 +516,169 @@ var enabled = false;
 
 // GeoJSON object to hold our measurement features
 var geojson = {
-    type: "FeatureCollection",
-    features: []
+type: "FeatureCollection",
+features: []
 };
 
 // Used to draw a line between points
 var linestring = {
-    type: "Feature",
-    geometry: {
-        type: "LineString",
-        coordinates: []
-    }
+type: "Feature",
+geometry: {
+    type: "LineString",
+    coordinates: []
+}
 };
 
 function measureDistance() {
-    // Step 1, Toggle
-    enabled = !enabled
+// Step 1, Toggle
+enabled = !enabled
 
-    // If disabled and source exists, remove it
-    if (enabled === false) {
+// If disabled and source exists, remove it
+if (enabled === false) {
 
-        // Check for map source
-        if (typeof map.getSource("geojson") === "object") {
-            // Delete map layers from geojson
-            map.removeLayer("measure-points");
-            map.removeLayer("measure-lines");
-            // Remove map source
-            map.removeSource("geojson");
-            // Remove the distance calculator
-            distanceContainer.innerHTML = "";
-            // Reset geojson
-            geojson = {
-                type: "FeatureCollection",
-                features: []
-            };
-            // Remove mouse handler
-            map.off("mousemove", measureMouseHandler);
-            // Remove onclick handler
-            map.off("click", measureDistanceHandler);
-            // Reset mouse cursor
-            map.getCanvas().style.cursor = "";
-        }
-    } else if (enabled === true) {
-        // Add data source
-        map.addSource("geojson", {
-            type: "geojson",
-            data: geojson
-        });
-
-        // Add styles to the map
-        map.addLayer({
-            id: "measure-points",
-            type: "circle",
-            source: "geojson",
-            paint: {
-                "circle-radius": 5,
-                "circle-color": "#ef5350"
-            },
-            filter: ["in", "$type", "Point"]
-        });
-
-        map.addLayer({
-                id: "measure-lines",
-                type: "line",
-                source: "geojson",
-                layout: {
-                    "line-cap": "round",
-                    "line-join": "round"
-                },
-                paint: {
-                    "line-color": "#546e7a",
-                    "line-width": 2.5
-                },
-                filter: ["in", "$type", "LineString"]
-            },
-            "measure-points"
-        );
-
-        // Add on click handler
-        map.on('click', measureDistanceHandler)
-
-        // UI indicator for clicking/hovering a point on the map
-        map.on("mousemove", measureMouseHandler)
+    // Check for map source
+    if (typeof map.getSource("geojson") === "object") {
+        // Delete map layers from geojson
+        map.removeLayer("measure-points");
+        map.removeLayer("measure-lines");
+        // Remove map source
+        map.removeSource("geojson");
+        // Remove the distance calculator
+        distanceContainer.innerHTML = "";
+        // Reset geojson
+        geojson = {
+            type: "FeatureCollection",
+            features: []
+        };
+        // Remove mouse handler
+        map.off("mousemove", measureMouseHandler);
+        // Remove onclick handler
+        map.off("click", measureDistanceHandler);
+        // Reset mouse cursor
+        map.getCanvas().style.cursor = "";
     }
+} else if (enabled === true) {
+    // Add data source
+    map.addSource("geojson", {
+        type: "geojson",
+        data: geojson
+    });
+
+    // Add styles to the map
+    map.addLayer({
+        id: "measure-points",
+        type: "circle",
+        source: "geojson",
+        paint: {
+            "circle-radius": 5,
+            "circle-color": "#ef5350"
+        },
+        filter: ["in", "$type", "Point"]
+    });
+
+    map.addLayer({
+            id: "measure-lines",
+            type: "line",
+            source: "geojson",
+            layout: {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            paint: {
+                "line-color": "#546e7a",
+                "line-width": 2.5
+            },
+            filter: ["in", "$type", "LineString"]
+        },
+        "measure-points"
+    );
+
+    // Add on click handler
+    map.on('click', measureDistanceHandler)
+
+    // UI indicator for clicking/hovering a point on the map
+    map.on("mousemove", measureMouseHandler)
+}
 };
 
 function measureDistanceHandler(e) {
-    var features = map.queryRenderedFeatures(e.point, {
-        layers: ['measure-points']
+var features = map.queryRenderedFeatures(e.point, {
+    layers: ['measure-points']
+});
+
+// Remove the linestring from the group
+// So we can redraw it based on the points collection
+if (geojson.features.length > 1) geojson.features.pop();
+
+// Clear the Distance container to populate it with a new value
+distanceContainer.innerHTML = '';
+
+// If a feature was clicked, remove it from the map
+if (features.length) {
+    var id = features[0].properties.id;
+    geojson.features = geojson.features.filter(function (point) {
+        return point.properties.id !== id;
+    });
+} else {
+    var point = {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                e.lngLat.lng,
+                e.lngLat.lat
+            ]
+        },
+        "properties": {
+            "id": `measure-${counter}`
+        }
+    };
+
+    geojson.features.push(point);
+    counter++;
+    measureLayers.push(point.properties.id);
+}
+
+// If there's a line, calculate the distance
+if (geojson.features.length > 1) {
+    linestring.geometry.coordinates = geojson.features.map(function (point) {
+        return point.geometry.coordinates;
     });
 
-    // Remove the linestring from the group
-    // So we can redraw it based on the points collection
-    if (geojson.features.length > 1) geojson.features.pop();
+    geojson.features.push(linestring);
 
-    // Clear the Distance container to populate it with a new value
-    distanceContainer.innerHTML = '';
-
-    // If a feature was clicked, remove it from the map
-    if (features.length) {
-        var id = features[0].properties.id;
-        geojson.features = geojson.features.filter(function (point) {
-            return point.properties.id !== id;
-        });
+    // Populate the distanceContainer with total distance
+    var value = document.createElement("pre");
+    // If total distance less than 1km display in metres
+    if (turf.lineDistance(linestring) < 1) {
+        let tDist = turf.lineDistance(linestring) * 1000;
+        value.textContent = "Total distance: " + tDist.toLocaleString() + "m";
+        distanceContainer.appendChild(value);
+        map.getSource("geojson").setData(geojson);
     } else {
-        var point = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    e.lngLat.lng,
-                    e.lngLat.lat
-                ]
-            },
-            "properties": {
-                "id": `measure-${counter}`
-            }
-        };
-
-        geojson.features.push(point);
-        counter++;
-        measureLayers.push(point.properties.id);
+        value.textContent =
+            "Total distance: " +
+            turf.lineDistance(linestring).toLocaleString() +
+            "km";
+        distanceContainer.appendChild(value);
+        map.getSource("geojson").setData(geojson);
     }
+}
 
-    // If there's a line, calculate the distance
-    if (geojson.features.length > 1) {
-        linestring.geometry.coordinates = geojson.features.map(function (point) {
-            return point.geometry.coordinates;
-        });
-
-        geojson.features.push(linestring);
-
-        // Populate the distanceContainer with total distance
-        var value = document.createElement("pre");
-        // If total distance less than 1km display in metres
-        if (turf.lineDistance(linestring) < 1) {
-            let tDist = turf.lineDistance(linestring) * 1000;
-            value.textContent = "Total distance: " + tDist.toLocaleString() + "m";
-            distanceContainer.appendChild(value);
-            map.getSource("geojson").setData(geojson);
-        } else {
-            value.textContent =
-                "Total distance: " +
-                turf.lineDistance(linestring).toLocaleString() +
-                "km";
-            distanceContainer.appendChild(value);
-            map.getSource("geojson").setData(geojson);
-        }
-    }
-
-    // Sets new data, updates layers/source
-    map.getSource('geojson').setData(geojson);
+// Sets new data, updates layers/source
+map.getSource('geojson').setData(geojson);
 };
 
 function measureMouseHandler(e) {
-        var features = map.queryRenderedFeatures(e.point, {
-            layers: ["measure-points"]
-        });
-        map.getCanvas().style.cursor = features.length ? "pointer" : "crosshair";
-    
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ["measure-points"]
+    });
+    map.getCanvas().style.cursor = features.length ? "pointer" : "crosshair";
+
 };    
 </script>
- <!--Geocoder  -->
+<!--Geocoder  -->
 <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
 <script src="data/geocoder.js"></script>
 </body></html>
- <!--Licensing information: https://roqueleal.me Purchase the pro version  -->
+<!--Licensing information: https://roqueleal.me Purchase the pro version  -->
