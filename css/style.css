@@ -197,12 +197,12 @@ dt {
     background-color: rgba(0,0,0,0.4);
 }
 .modal-content {
-    text-align: center;
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 40px;
-    border: 1px solid #888;
-    width: 40%;
+ text-align: center;
+ background-color: #fefefe;
+ margin: 10% auto;
+ padding: 40px;
+ border: 1px solid #888;
+ width: 40%;
 }
 .close {
     color: #aaa;
