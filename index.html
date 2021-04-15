@@ -103,6 +103,7 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
  </header>
  <link rel="stylesheet" href="./css/style.css">  
+ <link rel="stylesheet" type="text/css" href="./js/cookieconsent.min.css">
 </head>
 <body>
   
@@ -667,6 +668,33 @@ function measureMouseHandler(e) {
 
 };    
 </script>
+						<!-- start section cookies -->
+                    </script><script src="./js/cookieconsent.min.js" data-cfasync="false"></script>
+                    <script>
+                    window.cookieconsent.initialise({
+                      "palette": {
+                        "popup": {
+                          "background": "#007afc"
+                        },
+                        "button": {
+                          "background": "#fff",
+                          "text": "#007afc"
+                        }
+                      },
+                      "theme": "edgeless",
+                      "position": "bottom-left",
+                      "content": {
+                          "message": "This website uses cookies to provide visitors with the best experience. Please see our <a target='_blank' style='color:white;' href='https://www.oilmap.xyz/legal/privacy-policy.html'>Privacy Policy</a> and <a target='_blank' style='color:white;' href='https://www.oilmap.xyz/legal/privacy-cookies.html'>Cookie Policy</a> for more information.",
+												"link": ""
+                      }
+                    });
+                    
+                    window.cookieconsent.hasTransition = false;
+                    window.expiryDays =  365;
+                    
+                    </script>
+                        <!--End Cookies-->
+
 <!--Geocoder  -->
 <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
 <script src="data/geocoder.js"></script>
