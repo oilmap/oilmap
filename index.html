@@ -176,6 +176,12 @@
         }
         /* --- AD ZONE --- */
         /* Ocultar elementos de Mapbox innecesarios para minimalismo */
+        /* Dark attribution */
+        
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
+            color: #fff;
+        }
+        /* modal styling */
         
         .mapboxgl-ctrl-logo,
         .mapboxgl-ctrl-attrib {
@@ -441,20 +447,6 @@
                 mapReset();
             })
             // interacion  refinerias
-        map.on('click', function(e) {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: ['REFjjINERIES'] // replace this with the name of the layer
-            });
-            if (!features.length) {
-                return;
-            }
-            var feature = features[0];
-            var popup = new mapboxgl.Popup()
-                .setLngLat(feature.geometry.coordinates)
-                .setHTML('<dd>' + feature.properties.Name + feature.properties.Descriptio + '</dd>')
-                .setLngLat(feature.geometry.coordinates)
-                .addTo(map);
-        });
         window.addEventListener('resize', () => {
                 mapReset();
             })
@@ -465,8 +457,8 @@
         map.on('click', 'NEWS', function(e) {
             new mapboxgl.Popup()
                 .setLngLat(e.lngLat)
-                .setHTML('<dd>' + e.features[0].properties.name +
-                    '<img src=" ' + e.features[0].properties.shareimage + '" />' +
+                .setHTML('<dd style="color: black;">' + e.features[0].properties.name +
+                    '<br><img src="' + e.features[0].properties.shareimage + '" style="width:75px; height:75px; object-fit:cover; display:block; margin:10px 0;" />' +
                     e.features[0].properties.html + '</dd>')
                 .addTo(map);
         });
@@ -475,7 +467,7 @@
         map.on('click', 'BID-ROUNDS', function(e) {
             new mapboxgl.Popup()
                 .setLngLat(e.lngLat)
-                .setHTML('<dt>' + e.features[0].properties.title + '</dt>' + '<dt>' + e.features[0].properties.description + '</dt>')
+                .setHTML('<div style="color: #000;"><dt>' + e.features[0].properties.title + '</dt>' + '<dt>' + e.features[0].properties.description + '</dt></div>')
                 .addTo(map);
         });
         // interacion fin bloquesar
@@ -515,140 +507,8 @@
 
         window.cookieconsent.hasTransition = false;
         window.expiryDays = 365;
-
-        // to grab checkbox value
-        $('input.js-checkboxes').prop('checked', true);
-        var nav = new mapboxgl.NavigationControl();
-        var nav2 = new mapboxgl.FullscreenControl();
-        var nav3 = new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        });
-        map.addControl(nav, 'bottom-right');
-        map.addControl(nav2, 'bottom-right');
-        map.addControl(nav3, 'bottom-right');
-
-        function mapReset() {
-            if (window.innerWidth < 800) {
-                map.setZoom(4.17);
-            } else {
-                map.setZoom(4.17);
-            }
-        }
-
-        var distanceContainer = document.getElementById("distance");
-        var distanceGuide = document.getElementById("distanceGuide");
-        //ruler
-        // Array to store id's of measured lines  -- kinda irrelevant as we have a counter
-        var measureLayers = [];
-        var counter = 0;
-        var enabled = false;
-
-        // GeoJSON object to hold our measurement features
-        var geojson = {
-            type: "FeatureCollection",
-            features: []
-        };
-
-        // Used to draw a line between points
-        var linestring = {
-            type: "Feature",
-            geometry: {
-                type: "LineString",
-                coordinates: []
-            }
-        };
-        //geocder
-        var customData
-
-        function forwardGeocoder(query) {
-            var matchingFeatures = [];
-            for (var i = 0; i < customData.features.length; i++) {
-                var feature = customData.features[i];
-                // handle queries with different capitalization than the source data by calling toLowerCase()
-                if (
-                    feature.properties.title
-                    .toLowerCase()
-                    .search(query.toLowerCase()) !== -1
-                ) {
-                    // add a tree emoji as a prefix for custom data results
-                    // using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
-                    feature['place_name'] = '🛢️ ' + feature.properties.title;
-                    feature['center'] = feature.geometry.coordinates;
-                    feature['place_type'] = ['park'];
-                    matchingFeatures.push(feature);
-                }
-            }
-            return matchingFeatures;
-        }
-
-        map.addControl(
-            new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                localGeocoder: forwardGeocoder,
-                zoom: 9,
-                placeholder: '🛢️ Enter Oil Block Name',
-                mapboxgl: mapboxgl
-            }), 'bottom-right'
-        );
-
-        // to grab checkbox value
-        $('input.js-checkboxes').prop('checked', true);
-        var nav = new mapboxgl.NavigationControl();
-        var nav2 = new mapboxgl.FullscreenControl();
-        var nav3 = new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        });
-        map.addControl(nav, 'bottom-right');
-        map.addControl(nav2, 'bottom-right');
-        map.addControl(nav3, 'bottom-right');
-
-        function mapReset() {
-            if (window.innerWidth < 800) {
-                map.setZoom(4.17);
-            } else {
-                map.setZoom(4.17);
-            }
-        }
-
-        var distanceContainer = document.getElementById("distance");
-        var distanceGuide = document.getElementById("distanceGuide");
     </script>
     <!--End Cookies-->
-
-    <!--Geocoder  -->
-    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
-    <script src="data/geocoder.js"></script>
-    <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@id": "https://www.oilmap.xyz",
-            "@type": "WebSite",
-            "url": "https://www.oilmap.xyz",
-            "name": "OilMap",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://cse.google.com/cse?cx=0d16527ec2825c2c0",
-                "query-input": "required name=search_term_string"
-            }
-        }
-    </script>
-
-
-    <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@id": "https://www.oilmap.xyz",
-            "@type": "WebPage",
-            "url": "https://www.oilmap.xyz/",
-            "name": "OilMap"
-        }
-    </script>
 
 </body>
 
