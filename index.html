@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
-    <link <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
@@ -29,7 +29,7 @@
     <style>
          :root {
             --primary-gold: #f0b823;
-            --glass-bg: rgba(18, 18, 18, 0.7);
+            --glass-bg: rgba(18, 18, 18, 0.8);
             --glass-border: rgba(255, 255, 255, 0.12);
             --text-main: #ffffff;
         }
@@ -49,36 +49,6 @@
             bottom: 0;
             width: 100%;
         }
-        /* --- AD ZONE RESPONSIVE --- */
-        
-        .ad-container {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
-            width: 95%;
-            /* Ocupa casi todo el ancho en móviles */
-            max-width: 728px;
-            /* No supera el estándar de banner en desktop */
-            min-height: 50px;
-            /* Altura mínima para evitar saltos de diseño */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.1);
-            /* Opcional: fondo sutil mientras carga */
-        }
-        /* Ajuste para pantallas muy pequeñas */
-        
-        @media (max-width: 480px) {
-            .ad-container {
-                bottom: 60px;
-                /* Sube un poco para no tapar los controles de Mapbox */
-                max-width: 320px;
-                /* Tamaño estándar de banner móvil */
-            }
-        }
         
         .glass-ui {
             background: var(--glass-bg);
@@ -95,7 +65,7 @@
             left: 15px;
             right: 15px;
             height: 55px;
-            z-index: 10;
+            z-index: 20;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -118,17 +88,24 @@
         .brand img {
             height: 28px;
         }
+        /* --- MENÚ DESPLEGABLE --- */
         
         #menu {
             position: absolute;
-            top: 85px;
-            left: 15px;
-            width: 180px;
-            z-index: 10;
+            top: 75px;
+            right: 15px;
+            width: 200px;
+            z-index: 15;
             padding: 10px;
-            display: flex;
+            display: none;
+            /* Oculto por defecto */
             flex-direction: column;
             gap: 4px;
+        }
+        
+        #menu.show {
+            display: flex;
+            /* Se muestra al activar */
         }
         
         #menu a {
@@ -146,7 +123,45 @@
             color: #000;
             font-weight: 600;
         }
-        /* Modal */
+        
+        .btn-layers {
+            font-size: 0.7rem;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+        }
+        
+        .btn-layers:hover {
+            background: var(--primary-gold);
+            color: #000;
+        }
+        /* --- OTROS ESTILOS --- */
+        
+        .ad-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            width: 95%;
+            max-width: 728px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 480px) {
+            .ad-container {
+                bottom: 60px;
+                max-width: 320px;
+            }
+        }
         
         .modal {
             position: fixed;
@@ -166,22 +181,18 @@
             max-width: 500px;
             text-align: center;
         }
-        /* --- POPUPS GLASSMORPHISM --- */
         
         .close {
-            color: #000000;
+            color: #ffffff;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
         }
-        /* --- AD ZONE --- */
-        /* Ocultar elementos de Mapbox innecesarios para minimalismo */
-        /* Dark attribution */
         
         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
             color: #fff;
         }
-        /* modal styling */
         
         .mapboxgl-ctrl-logo,
         .mapboxgl-ctrl-attrib {
@@ -203,13 +214,17 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
+
     <header class="glass-ui">
         <div class="brand">
             <img src="./img/oilmap.png" alt="Icon">
             <h1>WORLD OIL MAP <span style="font-weight: 300; opacity: 0.6;">2026</span></h1>
         </div>
-        <div class="about-header" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-            LIVE DATA
+        <div style="display: flex; gap: 8px;">
+            <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
+            <div class="about-header" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                LIVE DATA
+            </div>
         </div>
     </header>
 
@@ -217,14 +232,13 @@
 
     <div id='map'></div>
 
-
     <div id="aboutModal" class="modal">
         <div class="modal-content glass-ui">
-            <span class="close" style="float:right; cursor:pointer; color:white; font-size: 24px;">&times;</span>
+            <span class="close">&times;</span>
             <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
             <h1 style="color: var(--primary-gold);">World Oil Map 2026</h1>
             <p>Location-Intelligence application for Oil and Gas sector.</p>
-            <p>Visit <a href="https://github.com/roqueleal/oilmap" style="color:var(--primary-gold)">Github</a>.</p>
+            <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary-gold)">Roque LEAL</a>.</p>
         </div>
     </div>
 
@@ -238,16 +252,21 @@
             zoom: 3,
             antialias: true
         });
-        // inicio NEWS
-        var url = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+
+        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
+
+        // --- LÓGICA DE NOTICIAS (NEWS) ---
+        var urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+
         map.on('load', function() {
+            // Actualización periódica
             window.setInterval(function() {
-                map.getSource('NEWS').setData(url);
+                if (map.getSource('NEWS')) map.getSource('NEWS').setData(urlNews);
             }, 2000);
 
             map.addSource('NEWS', {
                 type: 'geojson',
-                data: url
+                data: urlNews
             });
             map.addLayer({
                 "id": "NEWS",
@@ -255,31 +274,19 @@
                 "source": "NEWS",
                 "layout": {
                     "icon-image": "oil",
-                    "icon-size": [
-                        "interpolate", ["linear"],
-                        ["zoom"],
-                        0,
-                        0,
-                        9.256,
-                        0.1
+                    "icon-size": ["interpolate", ["linear"],
+                        ["zoom"], 0, 0, 9.256, 0.1
                     ]
                 }
             });
-        });
-        // FIN NEWS
-        // inicio CLUSTERNEWS
 
-        map.on('load', function() {
-            // Add a new source from our GeoJSON data and set the
-            // 'cluster' option to true. GL-JS will add the point_count property to your source data.
+            // --- LÓGICA DE CLUSTER-NEWS ---
             map.addSource("CLUSTER-NEWS", {
                 type: "geojson",
-                // Point to GeoJSON data. This example visualizes all M1.0+ NEWS
-                // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-                data: "https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson",
+                data: urlNews,
                 cluster: true,
-                clusterMaxZoom: 14, // Max zoom to cluster points on
-                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                clusterMaxZoom: 14,
+                clusterRadius: 50
             });
 
             map.addLayer({
@@ -288,23 +295,8 @@
                 source: "CLUSTER-NEWS",
                 filter: ["has", "point_count"],
                 paint: {
-
-                    "circle-color": [
-                        "step", ["get", "point_count"],
-                        "#1dcaff",
-                        5,
-                        "#fff000",
-                        10,
-                        "#ff521d"
-                    ],
-                    "circle-radius": [
-                        "step", ["get", "point_count"],
-                        20,
-                        10,
-                        30,
-                        750,
-                        40
-                    ]
+                    "circle-color": ["step", ["get", "point_count"], "#1dcaff", 5, "#fff000", 10, "#ff521d"],
+                    "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 750, 40]
                 }
             });
 
@@ -320,55 +312,27 @@
                 }
             });
 
-            map.addLayer({
-                id: "unclustered-point",
-                type: "circle",
-                source: "CLUSTER-NEWS",
-                filter: ["!", ["has", "point_count"]],
-                paint: {
-                    "circle-color": "#11b4da",
-                    "circle-radius": 0.1,
-                    "circle-stroke-width": 1,
-                    "circle-stroke-color": "#fff"
-                }
-            });
-
-            // inspect a cluster on click
-            map.on('click', 'clusters', function(e) {
-                var features = map.queryRenderedFeatures(e.point, {
-                    layers: ['clusters']
-                });
-                var clusterId = features[0].properties.cluster_id;
-                map.getSource('CLUSTER-NEWS').getClusterExpansionZoom(clusterId, function(err, zoom) {
-                    if (err)
-                        return;
-
-                    map.easeTo({
-                        center: features[0].geometry.coordinates,
-                        zoom: zoom
-                    });
-                });
-            });
-
-            map.on('mouseenter', 'clusters', function() {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-            map.on('mouseleave', 'clusters', function() {
-                map.getCanvas().style.cursor = '';
-            });
-        });
-        // fin CLUSTERNEWS
-        // Configuración de capas
-        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
-
-        map.on('load', () => {
-            // Generar Menú Lateral
+            // --- GENERAR MENÚ DESPLEGABLE DINÁMICO ---
             const menuNav = document.getElementById('menu');
+            const btnToggle = document.getElementById('btn-toggle-menu');
+
+            // Abrir/Cerrar menú
+            btnToggle.onclick = (e) => {
+                e.stopPropagation();
+                menuNav.style.display = (menuNav.style.display === 'flex') ? 'none' : 'flex';
+            };
+
+            // Cerrar menú al hacer clic fuera
+            document.onclick = () => {
+                menuNav.style.display = 'none';
+            };
+            menuNav.onclick = (e) => e.stopPropagation();
+
             toggleableLayerIds.forEach(id => {
                 const link = document.createElement('a');
                 link.href = '#';
                 link.className = 'active';
-                link.textContent = id;
+                link.textContent = id.replace(/-/g, ' ');
                 link.onclick = function(e) {
                     e.preventDefault();
                     const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
@@ -382,110 +346,59 @@
                 };
                 menuNav.appendChild(link);
             });
+        });
 
-            // Popups
-            map.on('click', (e) => {
-                const features = map.queryRenderedFeatures(e.point, {
-                    layers: toggleableLayerIds
-                });
-                if (!features.length) return;
-
-                const f = features[0];
-                const title = f.properties.Name || f.properties.NAME || "Info";
-                const info = f.properties.Descriptio || f.properties.Company || "Oil & Gas Data";
-
-                new mapboxgl.Popup({
-                        offset: 10
-                    })
-                    .setLngLat(e.lngLat)
-                    .setHTML(`<div style="color:#000"><strong>${title}</strong><br>${info}</div>`)
-                    .addTo(map);
+        // --- INTERACCIONES Y POPUPS ---
+        map.on('click', (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: toggleableLayerIds
             });
-        });
-        // interacion inicio hover
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-        map.on('mouseenter', 'DEPOSITS', function(e) {
-            // Change the cursor style as a UI indicator.
-            map.getCanvas().style.cursor = 'pointer';
+            if (!features.length) return;
+            const f = features[0];
 
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            // Caso especial para NEWS
+            if (f.layer.id === 'NEWS') {
+                new mapboxgl.Popup().setLngLat(e.lngLat)
+                    .setHTML('<dd style="color: black;">' + f.properties.name +
+                        '<br><img src="' + f.properties.shareimage + '" style="width:75px; height:75px; object-fit:cover; display:block; margin:10px 0;" />' +
+                        f.properties.html + '</dd>').addTo(map);
+                return;
             }
 
-            // Populate the popup and set its coordinates
-            // based on the feature found.
-            popup.setLngLat(e.lngLat)
-                .setHTML('<dt>' + e.features[0].properties.NAME + '</dt>' + '<dt>' + e.features[0].properties.OTHERINFO + '</dt>' + e.features[0].properties.RESINFO + '</dt>')
-                .addTo(map);
-
-            map.on('mouseleave', 'DEPOSITS', function() {
-                map.getCanvas().style.cursor = '';
-                popup.remove();
-            });
-        });
-
-        // interacion fin hover
-        // interacion inicio popup
-        map.on('mousemove', function(event) {
-            if (map.loaded()) {
-                var features = map.queryRenderedFeatures(event.point, {
-                    layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS', 'PRODUCTION', 'NEWS']
-                });
-                map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+            // Caso BID-ROUNDS
+            if (f.layer.id === 'BID-ROUNDS') {
+                new mapboxgl.Popup().setLngLat(e.lngLat)
+                    .setHTML('<div style="color: #000;"><dt>' + f.properties.title + '</dt>' + '<dt>' + f.properties.description + '</dt></div>').addTo(map);
+                return;
             }
-        });
-        window.addEventListener('resize', () => {
-                mapReset();
-            })
-            // interacion  refinerias
-        window.addEventListener('resize', () => {
-                mapReset();
-            })
-            // interacion fin refinerias
 
-
-        // interacion inicio NEWS2
-        map.on('click', 'NEWS', function(e) {
-            new mapboxgl.Popup()
-                .setLngLat(e.lngLat)
-                .setHTML('<dd style="color: black;">' + e.features[0].properties.name +
-                    '<br><img src="' + e.features[0].properties.shareimage + '" style="width:75px; height:75px; object-fit:cover; display:block; margin:10px 0;" />' +
-                    e.features[0].properties.html + '</dd>')
-                .addTo(map);
+            // General
+            const title = f.properties.Name || f.properties.NAME || "Info";
+            const info = f.properties.Descriptio || f.properties.Company || "Oil & Gas Data";
+            new mapboxgl.Popup({
+                    offset: 10
+                }).setLngLat(e.lngLat)
+                .setHTML(`<div style="color:#000"><strong>${title}</strong><br>${info}</div>`).addTo(map);
         });
-        // interacion fin NEWS
-        // interacion inicio BID-ROUNDS
-        map.on('click', 'BID-ROUNDS', function(e) {
-            new mapboxgl.Popup()
-                .setLngLat(e.lngLat)
-                .setHTML('<div style="color: #000;"><dt>' + e.features[0].properties.title + '</dt>' + '<dt>' + e.features[0].properties.description + '</dt></div>')
-                .addTo(map);
-        });
-        // interacion fin bloquesar
 
-        // Lógica del Modal
+        // Hover Effect
+        map.on('mousemove', (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS', 'PRODUCTION', 'NEWS', 'CLUSTER-NEWS']
+            });
+            map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+        });
+
+        // --- MODAL LOGIC ---
         const modal = document.getElementById('aboutModal');
         document.querySelector('.about-header').onclick = () => modal.style.display = "block";
         document.querySelector('.close').onclick = () => modal.style.display = "none";
         window.onclick = (event) => {
             if (event.target == modal) modal.style.display = "none";
         };
+    </script>
 
-        <!-- start section cookies -->
-    </script>
-    <script src="./js/cookieconsent.min.js" data-cfasync="false"></script>
-    <!-- start section cookies -->
-    </script>
-    <script src="./js/cookieconsent.min.js" data-cfasync="false"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
     <script>
         window.cookieconsent.initialise({
             "palette": {
@@ -500,16 +413,10 @@
             "theme": "edgeless",
             "position": "bottom-left",
             "content": {
-                "message": "This website uses cookies to provide visitors with the best experience. Please see our <a target='_blank' style='color:white;' href='https://www.oilmap.xyz/legal/privacy-policy.html'>Privacy Policy</a> and <a target='_blank' style='color:white;' href='https://www.oilmap.xyz/legal/privacy-cookies.html'>Cookie Policy</a> for more information.",
-                "link": ""
+                "message": "This website uses cookies for the best experience. See our Privacy Policy."
             }
         });
-
-        window.cookieconsent.hasTransition = false;
-        window.expiryDays = 365;
     </script>
-    <!--End Cookies-->
-
 </body>
 
 </html>
