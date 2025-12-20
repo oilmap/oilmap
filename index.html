@@ -294,27 +294,75 @@
         </script>
     </div>
 
-    <header class="glass-ui header">
-        <div class="brand">
-            <img src="./img/oilmap.png" alt="Icon">
-            <h1>WORLD OIL MAP <span style="font-weight: 300; opacity: 0.6;">2026</span></h1>
+    <header class="glass-ui header" style="padding: 10px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background: rgba(18,18,18,0.9); border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.5);">
+
+        <!-- Logo -->
+        <div class="brand" style="display:flex; align-items:center; gap:12px;">
+            <img src="./img/oilmap.png" alt="Icon" style="height:36px;">
+            <h1 style="font-size:1rem; color:#f0b823; margin:0; letter-spacing:1px;">WORLD OIL MAP <span style="font-weight:300; opacity:0.6;">2026</span></h1>
         </div>
 
-        <div class="header-controls">
-            <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
+        <!-- Controles -->
+        <div class="header-controls" style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
 
+            <!-- Botón Layers -->
+            <div id="btn-toggle-menu" class="btn-layers" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; background: rgba(255,255,255,0.05); color:#fff; font-weight:600; cursor:pointer; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
+                onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='#fff';">
+                LAYERS ▾
+            </div>
 
-
+            <!-- Barra de búsqueda justo después de Layers -->
             <div class="search-container" style="position:relative; display:inline-block;">
-                <input type="text" id="countrySearch" placeholder="Search code..." style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary-gold); width:150px;">
-                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); color:#fff; z-index:30; max-height:200px; overflow-y:auto; display:none; border-radius:4px; font-size:0.8rem;">
+                <input type="text" id="countrySearch" placeholder="Search Oil Block..." style="padding:6px 10px; border-radius:8px; border:1px solid #f0b823; background: rgba(0,0,0,0.2); color:#fff; width:160px; font-size:0.8rem; transition:0.3s;" onfocus="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='#f0b823';"
+                    onblur="this.style.background='rgba(0,0,0,0.2)'; this.style.borderColor='#f0b823';">
+                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.95); color:#fff; z-index:30; max-height:200px; overflow-y:auto; display:none; border-radius:6px; font-size:0.8rem; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
                 </div>
             </div>
 
-            <div class="about-header" onclick="window.location.href='blog.html';">Blog</div>
-            <div class="about-header" onclick="window.location.href='contact.html';">Contact</div>
+            <!-- Blog y Contact -->
+            <a href="blog.html" class="about-header" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; color:#f0b823; text-decoration:none; font-size:0.75rem; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
+                onmouseout="this.style.background='transparent'; this.style.color='#f0b823';">
+            Blog
+        </a>
+
+            <a href="contact.html" class="about-header" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; color:#f0b823; text-decoration:none; font-size:0.75rem; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
+                onmouseout="this.style.background='transparent'; this.style.color='#f0b823';">
+            Contact
+        </a>
+
         </div>
     </header>
+
+    <!-- Estilos responsive para mobile -->
+    <style>
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 6px;
+            }
+            .search-container {
+                order: 1;
+                /* Aparece debajo de Layers pero antes de Blog/Contact */
+                width: 100%;
+                margin-top: 4px;
+            }
+            .search-container input {
+                width: 100%;
+                max-width: 200px;
+            }
+            .about-header {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+        }
+    </style>
+
+
 
     <nav id="menu" class="glass-ui"></nav>
 
