@@ -193,6 +193,81 @@
             font-weight: bold;
             cursor: pointer;
         }
+        /* estilos móviles */
+        
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            /* permite que se divida en varias filas */
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            gap: 8px;
+        }
+        
+        .header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            /* permite que los controles bajen de fila en móvil */
+            align-items: center;
+            gap: 8px;
+        }
+        /* estilos móviles */
+        
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            gap: 8px;
+        }
+        
+        .header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        /* Móvil: búsqueda en segunda fila */
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 6px;
+            }
+            .search-container {
+                order: 1;
+                /* forzar que vaya después de Blog y Contact */
+                width: 100%;
+                margin-top: 4px;
+            }
+            .search-container input {
+                width: 100%;
+                max-width: 200px;
+            }
+            .about-header {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+        }
         
         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
             color: #fff;
@@ -219,30 +294,26 @@
         </script>
     </div>
 
-    <header class="glass-ui">
+    <header class="glass-ui header">
         <div class="brand">
             <img src="./img/oilmap.png" alt="Icon">
             <h1>WORLD OIL MAP <span style="font-weight: 300; opacity: 0.6;">2026</span></h1>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
-            <div class="about-header" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                Source
-            </div>
-            <div class="about-header" onclick="window.location.href='blog.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                Blog
-            </div>
-            <div class="about-header" onclick="window.location.href='contact.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                Contact
-            </div>
-            <div style="position:relative; display:inline-block;">
-                <input type="text" id="countrySearch" placeholder="Search code..." style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary-gold); width:150px;">
 
-                <!-- Contenedor de sugerencias -->
-                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); color:#fff; z-index:30; 
-               max-height:200px; overflow-y:auto; display:none; border-radius:4px; font-size:0.8rem;">
+        <div class="header-controls">
+            <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
+
+
+
+            <div class="search-container" style="position:relative; display:inline-block;">
+                <input type="text" id="countrySearch" placeholder="Search code..." style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary-gold); width:150px;">
+                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); color:#fff; z-index:30; max-height:200px; overflow-y:auto; display:none; border-radius:4px; font-size:0.8rem;">
                 </div>
             </div>
+
+            <div class="about-header" onclick="window.location.href='blog.html';">Blog</div>
+            <div class="about-header" onclick="window.location.href='contact.html';">Contact</div>
+        </div>
     </header>
 
     <nav id="menu" class="glass-ui"></nav>
@@ -515,6 +586,5 @@
         });
     </script>
 </body>
-
 
 </html>
