@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <meta name="author" content="Roque Leal" />
+    <meta name="copyright" content="https://oilmap.xyz" />
+    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
+    <meta property="og:title" content="World Oil Map 2026" />
+    <meta property="og:url" content="https://oilmap.xyz" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@roqueleal08">
+    <title>🥇Blog</title>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES (OilMap Palette Style) --- */
+        
+         :root {
+            --bg-body: #0f172a;
+            /* Slate 900 - Fondo principal */
+            --bg-card: #1e293b;
+            /* Slate 800 - Fondo tarjetas */
+            --bg-header: #020617;
+            /* Slate 950 - Header */
+            --border-color: #334155;
+            /* Slate 700 - Bordes */
+            --text-main: #f1f5f9;
+            /* Slate 100 - Texto blanco */
+            --text-muted: #94a3b8;
+            /* Slate 400 - Texto secundario */
+            --accent: #10b981;
+            /* Emerald 500 - Color "Petróleo/Energía" */
+            --accent-hover: #34d399;
+            /* Emerald 400 */
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+        /* --- HEADER --- */
+        
+        header {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            /* Ajustado ligeramente el padding vertical */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(2, 6, 23, 0.9);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+        /* Nuevo estilo para la imagen del logo */
+        
+        .logo-img {
+            height: 36px;
+            /* Altura fija para el header */
+            width: auto;
+            display: block;
+        }
+        /* --- LAYOUT --- */
+        
+        .blog-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .controls strong {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        /* --- CUSTOM SELECT --- */
+        
+        select {
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+            min-width: 200px;
+        }
+        
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        /* --- TITLES --- */
+        
+        h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            margin-top: 0;
+            font-size: 1rem;
+        }
+        /* --- GRID --- */
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        /* --- NEWS CARD --- */
+        
+        .news-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        /* Header de la tarjeta (País y menciones) */
+        
+        .card-meta {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .badge-country {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+        
+        .badge-mentions {
+            font-size: 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            /* Verde transparente */
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        /* Contenido de GDELT */
+        
+        .card-content {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        /* Estilos específicos para sobreescribir el HTML que viene de GDELT */
+        
+        .gdelt-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+        /* Imagen que viene de GDELT */
+        
+        .gdelt-content img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            margin: 0 !important;
+            display: block;
+            border-radius: 0 !important;
+        }
+        /* Texto y enlaces que vienen de GDELT */
+        
+        .gdelt-text-wrapper {
+            padding: 16px;
+        }
+        
+        .gdelt-text-wrapper a {
+            color: var(--text-main) !important;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+        
+        .gdelt-text-wrapper a:hover {
+            color: var(--accent) !important;
+        }
+        /* Ocultar elementos basura que a veces trae GDELT */
+        
+        .gdelt-text-wrapper br {
+            display: none;
+        }
+        /* Animación de carga */
+        
+        .loader {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand h1 {
+            font-size: 1rem;
+            margin: 0;
+            color: var(--primary-gold);
+            letter-spacing: 1px;
+        }
+        
+        .brand img {
+            height: 28px;
+        }
+        
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <img src="./img/oilmap.png" alt="Icon">
+            <h1>
+                <a href="index.html">WORLD OIL MAP 2026</a>
+            </h1>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <div class="blog-container">
+
+        <div class="controls">
+            <strong>Region Filter</strong>
+            <select id="countryFilter">
+                <option value="all">Global</option>
+            </select>
+        </div>
+
+        <h1 id="countryTitle">Global Petroleum News</h1>
+        <p class="subtitle" id="subtitle">Real-time intelligence aggregation powered by GDELT Project.</p>
+
+        <section id="news" class="news-grid">
+            <div class="loader">Accessing satellite feeds & global news streams...</div>
+        </section>
+
+    </div>
+
+    <script>
+        const urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+
+        let allFeatures = [];
+
+        async function loadNews() {
+            try {
+                const res = await fetch(urlNews);
+                const data = await res.json();
+                allFeatures = data.features;
+
+                populateCountries();
+                renderNews('all');
+            } catch (error) {
+                document.getElementById('news').innerHTML = '<div class="loader" style="color:#ef4444">Error loading data stream.</div>';
+                console.error(error);
+            }
+        }
+
+        function populateCountries() {
+            const select = document.getElementById('countryFilter');
+            const countries = new Set();
+
+            allFeatures.forEach(f => {
+                if (f.properties.name) countries.add(f.properties.name);
+            });
+
+            [...countries].sort().forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                select.appendChild(opt);
+            });
+
+            select.addEventListener('change', e => renderNews(e.target.value));
+        }
+
+        function renderNews(country) {
+            const container = document.getElementById('news');
+            const title = document.getElementById('countryTitle');
+
+            container.innerHTML = '';
+
+            let filtered = country === 'all' ?
+                allFeatures :
+                allFeatures.filter(f => f.properties.name === country);
+
+            // Update titles
+            const titleText = country === 'all' ? 'Global Petroleum News' : `${country} · Intelligence Report`;
+            title.textContent = titleText;
+            document.title = 'OilMap · ' + titleText;
+
+            // Sorting by relevance/mentions
+            const countMap = {};
+            filtered.forEach(f => {
+                const name = f.properties.name || 'Unknown';
+                countMap[name] = (countMap[name] || 0) + 1;
+            });
+
+            filtered.sort((a, b) => {
+                return countMap[b.properties.name] - countMap[a.properties.name];
+            });
+
+            // Limit items for performance
+            const displayList = filtered.slice(0, 48);
+
+            if (displayList.length === 0) {
+                container.innerHTML = '<div class="loader">No reports found for this region.</div>';
+                return;
+            }
+
+            displayList.forEach(f => {
+                        const p = f.properties;
+                        const mentionCount = countMap[p.name];
+
+                        // Construct Card
+                        const card = document.createElement('div');
+                        card.className = 'news-card';
+
+                        // Parsing the HTML provided by GDELT slightly to clean it up visually
+                        // We create a wrapper to separate Image from Text since GDELT sends them mixed
+                        // NOTE: GDELT html usually contains an <a><img></a> structure.
+
+                        let rawHtml = p.html;
+                        // Add target blank to links
+                        rawHtml = rawHtml.replace('<a ', '<a target="_blank" rel="noopener" ');
+
+                        card.innerHTML = `
+                    <div class="card-meta">
+                        <span class="badge-country">${p.country || 'International'}</span>
+                        <span class="badge-mentions">Vol: ${mentionCount}</span>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="gdelt-content">
+                             ${!rawHtml.includes('<img') && p.shareimage ? `<img src="${p.shareimage}" loading="lazy" />` : ''}
+                             
+                             <div class="gdelt-text-wrapper">
+                                ${rawHtml}
+                             </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        loadNews();
+    </script>
+</body>
+
+</html>

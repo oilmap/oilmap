@@ -19,13 +19,17 @@
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
 
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
+
+
+    <script src="data/geocoder.js"></script>
     <style>
          :root {
             --primary-gold: #f0b823;
@@ -223,9 +227,22 @@
         <div style="display: flex; gap: 8px;">
             <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
             <div class="about-header" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                LIVE DATA
+                Source
             </div>
-        </div>
+            <div class="about-header" onclick="window.location.href='blog.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                Blog
+            </div>
+            <div class="about-header" onclick="window.location.href='Contact.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                Contact
+            </div>
+            <div style="position:relative; display:inline-block;">
+                <input type="text" id="countrySearch" placeholder="Search code..." style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary-gold); width:150px;">
+
+                <!-- Contenedor de sugerencias -->
+                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); color:#fff; z-index:30; 
+               max-height:200px; overflow-y:auto; display:none; border-radius:4px; font-size:0.8rem;">
+                </div>
+            </div>
     </header>
 
     <nav id="menu" class="glass-ui"></nav>
@@ -311,6 +328,86 @@
                     "text-size": 12
                 }
             });
+
+            ///geocoder
+            const searchInput = document.getElementById('countrySearch');
+            const suggestionsDiv = document.getElementById('suggestions');
+
+            // Función para mostrar sugerencias
+            function showSuggestions(items) {
+                suggestionsDiv.innerHTML = '';
+                if (items.length === 0) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+                items.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.padding = '4px 8px';
+                    div.style.cursor = 'pointer';
+                    div.textContent = item.name;
+                    div.onclick = () => {
+                        flyToResult(item);
+                        suggestionsDiv.style.display = 'none';
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = 'block';
+            }
+
+            // Función para volar al resultado
+            function flyToResult(item) {
+                const [lng, lat] = item.coordinates;
+                map.flyTo({
+                    center: [lng, lat],
+                    zoom: 8
+                });
+                new mapboxgl.Popup({
+                        offset: 10
+                    })
+                    .setLngLat([lng, lat])
+                    .setHTML(`<div style="color:black"><strong>${item.name}</strong></div>`)
+                    .addTo(map);
+            }
+
+            // Escuchar input
+            searchInput.addEventListener('input', async() => {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+
+                let results = [];
+
+                // 1️⃣ Buscar en customData
+                customData.features.forEach(f => {
+                    if (f.properties.title.toLowerCase().includes(query)) {
+                        results.push({
+                            name: f.properties.title,
+                            coordinates: f.geometry.coordinates
+                        });
+                    }
+                });
+
+                // 2️⃣ Buscar en Mapbox Geocoder
+                const geocoderResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
+                const geocoderData = await geocoderResponse.json();
+                if (geocoderData.features && geocoderData.features.length > 0) {
+                    geocoderData.features.forEach(f => {
+                        results.push({
+                            name: f.place_name,
+                            coordinates: f.center
+                        });
+                    });
+                }
+
+                showSuggestions(results.slice(0, 10)); // Mostrar máximo 10 sugerencias
+            });
+
+            //geocoder
+
+
+
 
             // --- GENERAR MENÚ DESPLEGABLE DINÁMICO ---
             const menuNav = document.getElementById('menu');

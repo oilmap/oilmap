@@ -8,13 +8,532 @@
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
     <meta name="author" content="Roque Leal" />
     <meta name="copyright" content="https://oilmap.xyz" />
-    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+    <meta name="description" content="🛢️ Discover Mapa Petroenérgetico 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
-    <meta property="og:title" content="World Oil Map 2026" />
+    <meta property="og:title" content="Mapa Petroenérgetico 2026" />
     <meta property="og:url" content="https://oilmap.xyz" />
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@roqueleal08">
+    <!DOCTYPE html>
+    <html lang="en-US">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+        <meta name="author" content="Roque Leal" />
+        <meta name="copyright" content="https://oilmap.xyz" />
+        <meta name="description" content="🛢️ Discover Mapa Petroenérgetico 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
+        <meta property="og:title" content="Mapa Petroenérgetico 2026" />
+        <meta property="og:url" content="https://oilmap.xyz" />
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@roqueleal08">
+        <title>🥇 Mapa Petroenérgetico 2026</title>
+
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
+        <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
+
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
+        <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
+
+
+        <script src="data/geocoder.js"></script>
+        <style>
+             :root {
+                --primary-gold: #f0b823;
+                --glass-bg: rgba(18, 18, 18, 0.8);
+                --glass-border: rgba(255, 255, 255, 0.12);
+                --text-main: #ffffff;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Inter', sans-serif;
+                background: #000;
+                color: var(--text-main);
+                overflow: hidden;
+            }
+            
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+            
+            .glass-ui {
+                background: var(--glass-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            }
+            
+            header {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                height: 55px;
+                z-index: 20;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 20px;
+            }
+            
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .brand h1 {
+                font-size: 1rem;
+                margin: 0;
+                color: var(--primary-gold);
+                letter-spacing: 1px;
+            }
+            
+            .brand img {
+                height: 28px;
+            }
+            /* --- MENÚ DESPLEGABLE --- */
+            
+            #menu {
+                position: absolute;
+                top: 75px;
+                right: 15px;
+                width: 200px;
+                z-index: 15;
+                padding: 10px;
+                display: none;
+                /* Oculto por defecto */
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            #menu.show {
+                display: flex;
+                /* Se muestra al activar */
+            }
+            
+            #menu a {
+                color: rgba(255, 255, 255, 0.6);
+                text-decoration: none;
+                font-size: 0.75rem;
+                padding: 8px 12px;
+                border-radius: 6px;
+                transition: 0.2s;
+                text-transform: uppercase;
+            }
+            
+            #menu a.active {
+                background: var(--primary-gold);
+                color: #000;
+                font-weight: 600;
+            }
+            
+            .btn-layers {
+                font-size: 0.7rem;
+                color: var(--text-main);
+                border: 1px solid var(--glass-border);
+                padding: 6px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                background: rgba(255, 255, 255, 0.05);
+                font-weight: 600;
+            }
+            
+            .btn-layers:hover {
+                background: var(--primary-gold);
+                color: #000;
+            }
+            /* --- OTROS ESTILOS --- */
+            
+            .ad-container {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 5;
+                width: 95%;
+                max-width: 728px;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0, 0, 0, 0.1);
+            }
+            
+            @media (max-width: 480px) {
+                .ad-container {
+                    bottom: 60px;
+                    max-width: 320px;
+                }
+            }
+            
+            .modal {
+                position: fixed;
+                z-index: 100;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: none;
+            }
+            
+            .modal-content {
+                margin: 15% auto;
+                padding: 30px;
+                width: 80%;
+                max-width: 500px;
+                text-align: center;
+            }
+            
+            .close {
+                color: #ffffff;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            
+            .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
+                color: #fff;
+            }
+            
+            .mapboxgl-ctrl-logo,
+            .mapboxgl-ctrl-attrib {
+                opacity: 0.3;
+                transition: 0.3s;
+            }
+            
+            .mapboxgl-ctrl-logo:hover,
+            .mapboxgl-ctrl-attrib:hover {
+                opacity: 1;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="ad-container">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <header class="glass-ui">
+            <div class="brand">
+                <img src="./img/oilmap.png" alt="Icon">
+                <h1>WORLD OIL MAP <span style="font-weight: 300; opacity: 0.6;">2026</span></h1>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <div id="btn-toggle-menu" class="btn-layers">LAYERS ▾</div>
+                <div class="about-header" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                    Source
+                </div>
+                <div class="about-header" onclick="window.location.href='blog.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                    Blog
+                </div>
+                <div class="about-header" onclick="window.location.href='Contact.html';" style="font-size: 0.7rem; color: var(--primary-gold); border: 1px solid var(--primary-gold); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                    Contact
+                </div>
+                <div style="position:relative; display:inline-block;">
+                    <input type="text" id="countrySearch" placeholder="Search code..." style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary-gold); width:150px;">
+
+                    <!-- Contenedor de sugerencias -->
+                    <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); color:#fff; z-index:30; 
+               max-height:200px; overflow-y:auto; display:none; border-radius:4px; font-size:0.8rem;">
+                    </div>
+                </div>
+        </header>
+
+        <nav id="menu" class="glass-ui"></nav>
+
+        <div id='map'></div>
+
+        <div id="aboutModal" class="modal">
+            <div class="modal-content glass-ui">
+                <span class="close">&times;</span>
+                <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
+                <h1 style="color: var(--primary-gold);">Mapa Petroenérgetico 2026</h1>
+                <p>Location-Intelligence application for Oil and Gas sector.</p>
+                <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary-gold)">Roque LEAL</a>.</p>
+            </div>
+        </div>
+
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
+                center: [18.36, 21.04],
+                zoom: 3,
+                antialias: true
+            });
+
+            const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
+
+            // --- LÓGICA DE NOTICIAS (NEWS) ---
+            var urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+
+            map.on('load', function() {
+                // Actualización periódica
+                window.setInterval(function() {
+                    if (map.getSource('NEWS')) map.getSource('NEWS').setData(urlNews);
+                }, 2000);
+
+                map.addSource('NEWS', {
+                    type: 'geojson',
+                    data: urlNews
+                });
+                map.addLayer({
+                    "id": "NEWS",
+                    "type": "symbol",
+                    "source": "NEWS",
+                    "layout": {
+                        "icon-image": "oil",
+                        "icon-size": ["interpolate", ["linear"],
+                            ["zoom"], 0, 0, 9.256, 0.1
+                        ]
+                    }
+                });
+
+                // --- LÓGICA DE CLUSTER-NEWS ---
+                map.addSource("CLUSTER-NEWS", {
+                    type: "geojson",
+                    data: urlNews,
+                    cluster: true,
+                    clusterMaxZoom: 14,
+                    clusterRadius: 50
+                });
+
+                map.addLayer({
+                    id: "CLUSTER-NEWS",
+                    type: "circle",
+                    source: "CLUSTER-NEWS",
+                    filter: ["has", "point_count"],
+                    paint: {
+                        "circle-color": ["step", ["get", "point_count"], "#1dcaff", 5, "#fff000", 10, "#ff521d"],
+                        "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 750, 40]
+                    }
+                });
+
+                map.addLayer({
+                    id: "cluster-count",
+                    type: "symbol",
+                    source: "CLUSTER-NEWS",
+                    filter: ["has", "point_count"],
+                    layout: {
+                        "text-field": "{point_count_abbreviated}",
+                        "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                        "text-size": 12
+                    }
+                });
+
+                ///geocoder
+                const searchInput = document.getElementById('countrySearch');
+                const suggestionsDiv = document.getElementById('suggestions');
+
+                // Función para mostrar sugerencias
+                function showSuggestions(items) {
+                    suggestionsDiv.innerHTML = '';
+                    if (items.length === 0) {
+                        suggestionsDiv.style.display = 'none';
+                        return;
+                    }
+                    items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.style.padding = '4px 8px';
+                        div.style.cursor = 'pointer';
+                        div.textContent = item.name;
+                        div.onclick = () => {
+                            flyToResult(item);
+                            suggestionsDiv.style.display = 'none';
+                        };
+                        suggestionsDiv.appendChild(div);
+                    });
+                    suggestionsDiv.style.display = 'block';
+                }
+
+                // Función para volar al resultado
+                function flyToResult(item) {
+                    const [lng, lat] = item.coordinates;
+                    map.flyTo({
+                        center: [lng, lat],
+                        zoom: 8
+                    });
+                    new mapboxgl.Popup({
+                            offset: 10
+                        })
+                        .setLngLat([lng, lat])
+                        .setHTML(`<div style="color:black"><strong>${item.name}</strong></div>`)
+                        .addTo(map);
+                }
+
+                // Escuchar input
+                searchInput.addEventListener('input', async() => {
+                    const query = searchInput.value.trim().toLowerCase();
+                    if (!query) {
+                        suggestionsDiv.style.display = 'none';
+                        return;
+                    }
+
+                    let results = [];
+
+                    // 1️⃣ Buscar en customData
+                    customData.features.forEach(f => {
+                        if (f.properties.title.toLowerCase().includes(query)) {
+                            results.push({
+                                name: f.properties.title,
+                                coordinates: f.geometry.coordinates
+                            });
+                        }
+                    });
+
+                    // 2️⃣ Buscar en Mapbox Geocoder
+                    const geocoderResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
+                    const geocoderData = await geocoderResponse.json();
+                    if (geocoderData.features && geocoderData.features.length > 0) {
+                        geocoderData.features.forEach(f => {
+                            results.push({
+                                name: f.place_name,
+                                coordinates: f.center
+                            });
+                        });
+                    }
+
+                    showSuggestions(results.slice(0, 10)); // Mostrar máximo 10 sugerencias
+                });
+
+                //geocoder
+
+
+
+
+                // --- GENERAR MENÚ DESPLEGABLE DINÁMICO ---
+                const menuNav = document.getElementById('menu');
+                const btnToggle = document.getElementById('btn-toggle-menu');
+
+                // Abrir/Cerrar menú
+                btnToggle.onclick = (e) => {
+                    e.stopPropagation();
+                    menuNav.style.display = (menuNav.style.display === 'flex') ? 'none' : 'flex';
+                };
+
+                // Cerrar menú al hacer clic fuera
+                document.onclick = () => {
+                    menuNav.style.display = 'none';
+                };
+                menuNav.onclick = (e) => e.stopPropagation();
+
+                toggleableLayerIds.forEach(id => {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'active';
+                    link.textContent = id.replace(/-/g, ' ');
+                    link.onclick = function(e) {
+                        e.preventDefault();
+                        const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
+                        if (visibility === 'visible') {
+                            map.setLayoutProperty(id, 'visibility', 'none');
+                            this.className = '';
+                        } else {
+                            map.setLayoutProperty(id, 'visibility', 'visible');
+                            this.className = 'active';
+                        }
+                    };
+                    menuNav.appendChild(link);
+                });
+            });
+
+            // --- INTERACCIONES Y POPUPS ---
+            map.on('click', (e) => {
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: toggleableLayerIds
+                });
+                if (!features.length) return;
+                const f = features[0];
+
+                // Caso especial para NEWS
+                if (f.layer.id === 'NEWS') {
+                    new mapboxgl.Popup().setLngLat(e.lngLat)
+                        .setHTML('<dd style="color: black;">' + f.properties.name +
+                            '<br><img src="' + f.properties.shareimage + '" style="width:75px; height:75px; object-fit:cover; display:block; margin:10px 0;" />' +
+                            f.properties.html + '</dd>').addTo(map);
+                    return;
+                }
+
+                // Caso BID-ROUNDS
+                if (f.layer.id === 'BID-ROUNDS') {
+                    new mapboxgl.Popup().setLngLat(e.lngLat)
+                        .setHTML('<div style="color: #000;"><dt>' + f.properties.title + '</dt>' + '<dt>' + f.properties.description + '</dt></div>').addTo(map);
+                    return;
+                }
+
+                // General
+                const title = f.properties.Name || f.properties.NAME || "Info";
+                const info = f.properties.Descriptio || f.properties.Company || "Oil & Gas Data";
+                new mapboxgl.Popup({
+                        offset: 10
+                    }).setLngLat(e.lngLat)
+                    .setHTML(`<div style="color:#000"><strong>${title}</strong><br>${info}</div>`).addTo(map);
+            });
+
+            // Hover Effect
+            map.on('mousemove', (e) => {
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS', 'PRODUCTION', 'NEWS', 'CLUSTER-NEWS']
+                });
+                map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+            });
+
+            // --- MODAL LOGIC ---
+            const modal = document.getElementById('aboutModal');
+            document.querySelector('.about-header').onclick = () => modal.style.display = "block";
+            document.querySelector('.close').onclick = () => modal.style.display = "none";
+            window.onclick = (event) => {
+                if (event.target == modal) modal.style.display = "none";
+            };
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+        <script>
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#007afc"
+                    },
+                    "button": {
+                        "background": "#fff",
+                        "text": "#007afc"
+                    }
+                },
+                "theme": "edgeless",
+                "position": "bottom-left",
+                "content": {
+                    "message": "This website uses cookies for the best experience. See our Privacy Policy."
+                }
+            });
+        </script>
+    </body>
+
+    </html>
     <title>🥇 Mapa Petrolero 2026</title>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
@@ -236,7 +755,7 @@
         <div class="modal-content glass-ui">
             <span class="close">&times;</span>
             <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
-            <h1 style="color: var(--primary-gold);">World Oil Map 2026</h1>
+            <h1 style="color: var(--primary-gold);">Mapa Petroenérgetico 2026</h1>
             <p>Location-Intelligence application for Oil and Gas sector.</p>
             <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary-gold)">Roque LEAL</a>.</p>
         </div>
@@ -420,4 +939,3 @@
 </body>
 
 </html>
-
