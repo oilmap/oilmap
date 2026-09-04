@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <!-- 1. SEO & META TAGS MEJORADOS -->
+    <title>World Oil Map 2026 | Global Oil & Gas Infrastructure</title>
+    <meta name="description" content="Interactive location-intelligence application for the Oil and Gas sector. Discover Upstream and Downstream activities, live news, and infrastructure globally.">
+    <meta name="author" content="Roque Leal" />
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <link rel="canonical" href="https://oilmap.xyz" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="World Oil Map 2026" />
+    <meta property="og:description" content="Discover global Oil & Gas infrastructure and live petroleum news on an interactive map." />
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
+    <meta property="og:url" content="https://oilmap.xyz" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@roqueleal08">
+
+    <!-- JSON-LD (Estructura de datos para SEO Avanzado) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "World Oil Map 2026",
+      "url": "https://oilmap.xyz",
+      "description": "Location-Intelligence application for Oil and Gas sector.",
+      "applicationCategory": "GeographicApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Person",
+        "name": "Roque Leal"
+      }
+    }
+    </script>
+
+    <!-- 2. PERFORMANCE: Pre-conexión a recursos externos -->
+    <link rel="preconnect" href="https://api.mapbox.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- 3. RECURSOS EXTERNOS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    
+    <script defer src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script defer src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
+    <script defer src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
+    
+    <!-- Carga diferida de anuncios para no afectar la velocidad del mapa -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
+
+    <!-- 4. UI/UX ESTILOS MINIMALISTAS -->
+    <style>
+        :root {
+            --primary: #f0b823;
+            --surface: rgba(20, 20, 22, 0.85);
+            --surface-hover: rgba(40, 40, 45, 0.95);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --text-muted: #a0a0a5;
+            --radius-lg: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #09090b;
+            color: var(--text);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #map {
+            position: absolute;
+            inset: 0; /* Sustituye top/bottom/left/right 0 */
+            z-index: 1;
+        }
+
+        /* Utilidad de cristal (Glassmorphism) */
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        /* --- UI FLOTANTE (PC y Móvil) --- */
+        .ui-layer {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none; /* Permite hacer clic a través de las áreas vacías */
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .ui-layer > * {
+            pointer-events: auto; /* Reactiva los clics solo en los componentes */
+        }
+
+        /* Cabecera Superior */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border-radius: 100px; /* Estilo píldora moderna */
+        }
+
+        .brand-pill img { height: 24px; }
+        .brand-pill h1 {
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        /* Buscador central */
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--surface) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>') no-repeat 16px center;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .search-input:focus {
+            background-color: var(--surface-hover);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(240, 184, 35, 0.2);
+        }
+
+        /* Botones de acción (Iconos) */
+        .action-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* --- DISEÑO MÓVIL (Navegación Inferior) --- */
+        @media (max-width: 768px) {
+            .ui-layer {
+                padding: 12px;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .brand-pill {
+                align-self: flex-start;
+                padding: 6px 12px;
+            }
+            .search-wrapper {
+                max-width: 100%;
+                order: 2; /* Baja el buscador */
+            }
+            /* Movemos los botones de acción abajo para móviles */
+            .action-group {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                flex-direction: column;
+                z-index: 20;
+            }
+            .ad-container {
+                bottom: 80px; /* Sube la publicidad sobre los botones */
+            }
+        }
+        
+        /* Oculta los controles de Mapbox por defecto para mantener minimalismo */
+        .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+            opacity: 0.6;
+            transform: scale(0.8);
+            transform-origin: bottom right;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SEO: Contenido invisible para bots -->
+    <header style="display:none;">
+        <h1>World Oil Map 2026</h1>
+        <p>Explore global oil and gas upstream and downstream infrastructure.</p>
+    </header>
+
+    <!-- Contenedor Principal de la App -->
+    <main>
+        <!-- 1. El Mapa -->
+        <div id="map"></div>
+
+        <!-- 2. UI Flotante -->
+        <div class="ui-layer">
+            
+            <!-- Barra Superior -->
+            <div class="top-bar">
+                <div class="brand-pill glass">
+                    <img src="./img/oilmap.png" alt="Oil Map Logo">
+                    <h1>WORLD OIL MAP</h1>
+                </div>
+
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" id="countrySearch" placeholder="Search oil block, facility..." aria-label="Search map">
+                </div>
+
+                <div class="action-group">
+                    <!-- Botón Capas -->
+                    <button class="icon-btn glass" id="btn-layers" aria-label="Toggle Layers" title="Map Layers">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
+                    </button>
+                    <!-- Botón Info -->
+                    <button class="icon-btn glass" id="btn-info" aria-label="About Project" title="About">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menú de capas (Oculto por defecto) -->
+            <!-- Aquí iría tu lógica actual de capas del <nav id="menu"> -->
+
+            <!-- Publicidad -->
+            <div class="ad-container">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_SLOT_AQUI" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script Principal (Diferido usando event listener) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Inicialización de Mapbox asegurando que la librería haya cargado
+            if (typeof mapboxgl === 'undefined') return;
+
+            mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
+                center: [-64.974, 18.198],
+                zoom: 3,
+                antialias: false, // Mejor rendimiento en móviles si no usas modelos 3D pesados
+                attributionControl: false // Lo ocultamos para mantener el minimalismo, lo agregamos compacto luego
+            });
+
+            // Agrega control de atribución compacto
+            map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left');
+
+            // Aquí puedes pegar exactamente tu lógica JavaScript anterior de carga de datos (urlNews, capas, geocoder, etc.)
+            // ...
+        });
+    </script>
+</body>
+</html>
