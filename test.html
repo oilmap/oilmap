@@ -3,37 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <!-- SEO & META TAGS -->
-    <title>World Oil Map 2026 | Global Oil & Gas Infrastructure</title>
-    <meta name="description" content="Interactive location-intelligence application for the Oil and Gas sector. Discover Upstream and Downstream activities, live news, and infrastructure globally.">
+    <title>World Oil Map 2026 | Global Infrastructure</title>
+    <meta name="description" content="Interactive location-intelligence application for the Oil and Gas sector.">
     <meta name="author" content="Roque Leal" />
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="World Oil Map 2026" />
-    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
-    <meta property="og:url" content="https://oilmap.xyz" />
 
-    <!-- PRE-CONEXIÓN Y RECURSOS -->
     <link rel="preconnect" href="https://api.mapbox.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- MAPBOX -->
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
-    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
     
-    <!-- ANUNCIOS -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
-
-    <!-- ESTILOS CSS -->
     <style>
         :root {
             --primary: #f0b823;
@@ -41,355 +23,162 @@
             --surface-hover: rgba(40, 40, 45, 0.95);
             --border: rgba(255, 255, 255, 0.1);
             --text: #ffffff;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.25s ease;
         }
 
-        * { box-sizing: border-box; }
-
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Inter', sans-serif;
-            background: #000;
-            color: var(--text);
+            background: #000; color: var(--text);
             overflow: hidden;
         }
 
         #map { position: absolute; inset: 0; z-index: 1; }
 
-        /* Utilidad Glassmorphism */
         .glass {
             background: var(--surface);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        /* --- UI FLOTANTE --- */
         .ui-layer {
-            position: absolute;
-            z-index: 10;
-            pointer-events: none;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
+            position: absolute; z-index: 10;
+            inset: 0; pointer-events: none;
+            display: flex; flex-direction: column; padding: 20px;
         }
 
         .ui-layer > * { pointer-events: auto; }
 
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
+            display: flex; justify-content: space-between;
+            align-items: flex-start; gap: 16px;
         }
 
         .brand-pill {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 16px;
-            border-radius: 100px;
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 16px; border-radius: 100px;
         }
-
         .brand-pill img { height: 24px; }
-        .brand-pill h1 {
-            font-size: 0.9rem;
-            margin: 0;
-            font-weight: 600;
-            color: var(--primary);
+        .brand-pill h1 { font-size: 0.9rem; margin: 0; color: var(--primary); }
+
+        /* Conteneur de recherche et boutons */
+        .search-wrapper {
+            position: relative; flex-grow: 1; max-width: 500px;
+            display: flex; flex-direction: column; gap: 8px;
         }
 
-        /* Buscador */
-        .search-wrapper {
-            position: relative;
-            flex-grow: 1;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
+        .search-bar-row {
+            display: flex; gap: 8px; width: 100%;
         }
 
         .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 100px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-family: inherit;
-            outline: none;
-            transition: var(--transition);
+            flex-grow: 1; padding: 12px 16px;
+            border-radius: 100px; border: 1px solid var(--border);
+            background: var(--surface); color: var(--text);
+            outline: none; transition: var(--transition);
         }
+        .search-input:focus { border-color: var(--primary); }
 
-        .search-input:focus {
-            border-color: var(--primary);
-            background: var(--surface-hover);
+        .btn-live-zones {
+            display: flex; align-items: center; gap: 6px;
+            padding: 0 16px; border-radius: 100px;
+            background: rgba(240, 184, 35, 0.1); border: 1px solid var(--primary);
+            color: var(--primary); font-weight: 600; cursor: pointer;
+            transition: var(--transition); white-space: nowrap;
         }
+        .btn-live-zones:hover { background: var(--primary); color: #000; }
 
-        /* Sugerencias del Buscador */
-        #suggestions {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            right: 0;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
-            z-index: 30;
+        /* Fenêtre flottante Live Zones */
+        #liveZonesMenu {
+            position: absolute; top: 55px; left: 0; right: 0;
+            border-radius: 12px; display: none; flex-direction: column;
+            max-height: 250px; overflow-y: auto; z-index: 30;
         }
-
-        .suggestion-item {
-            padding: 10px 16px;
-            cursor: pointer;
-            font-size: 0.85rem;
+        .zone-item {
+            padding: 12px 16px; cursor: pointer; font-size: 0.85rem;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; gap: 4px;
         }
+        .zone-item:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
+        .zone-item strong { font-size: 0.75rem; color: #a0a0a5; }
 
-        .suggestion-item:hover { color: var(--primary); }
-
-        /* Snippets GDELT */
-        .trending-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
-        .trending-container::-webkit-scrollbar { display: none; }
-
-        .trend-badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-transform: uppercase;
-        }
-
-        .snippet-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 100px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .snippet-chip:hover {
-            background: var(--primary);
-            color: #000;
-            transform: translateY(-2px);
-        }
-
-        .snippet-chip .score {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Botones de acción */
+        /* Boutons d'action */
         .action-group { display: flex; gap: 8px; position: relative; }
-
         .icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            color: var(--text);
-            cursor: pointer;
-            transition: var(--transition);
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 1px solid var(--border); color: var(--text);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
-
-        .icon-btn:hover {
-            background: var(--primary);
-            color: #000;
-        }
+        .icon-btn:hover { background: var(--primary); color: #000; }
         .icon-btn svg { width: 20px; height: 20px; }
 
-        /* Menú de capas */
+        /* Menu des couches */
         #menu {
-            position: absolute;
-            top: 55px;
-            right: 0;
-            width: 180px;
-            padding: 12px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            border-radius: 12px;
+            position: absolute; top: 55px; right: 0; width: 180px;
+            padding: 12px; display: none; flex-direction: column; gap: 6px; border-radius: 12px;
         }
-        #menu.show { display: flex; }
-        
         #menu a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 0.75rem;
-            padding: 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
+            color: rgba(255,255,255,0.7); text-decoration: none;
+            font-size: 0.75rem; padding: 8px; border-radius: 6px; text-transform: uppercase;
         }
-        #menu a.active {
-            background: var(--primary);
-            color: #000;
-            font-weight: 600;
-        }
+        #menu a.active { background: var(--primary); color: #000; font-weight: 600; }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-        .modal-content {
-            padding: 40px;
-            width: 85%;
-            max-width: 450px;
-            text-align: center;
-            position: relative;
-            border-radius: 16px;
-        }
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .close:hover { color: var(--primary); }
-
-        /* Publicidad */
-        .ad-container {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 728px;
-        }
-
-        /* Estilos Móviles */
         @media (max-width: 768px) {
-            .ui-layer { padding: 12px; }
-            .top-bar { flex-direction: column; align-items: stretch; }
-            .brand-pill { align-self: flex-start; }
-            .search-wrapper { max-width: 100%; order: 2; }
-            .action-group {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                flex-direction: column;
-            }
-            .ad-container { bottom: 120px; }
+            .top-bar { flex-direction: column; }
+            .action-group { position: fixed; bottom: 20px; right: 20px; flex-direction: column; }
             #menu { top: auto; bottom: 80px; right: 80px; }
+            .search-bar-row { flex-direction: column; }
+            #liveZonesMenu { top: 100px; }
         }
 
-        /* Personalización de Popups de Mapbox */
+        /* Personnalisation Popups Mapbox */
         .mapboxgl-popup-content {
             background: rgba(20, 20, 22, 0.95) !important;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--primary);
-            color: #fff !important;
-            border-radius: 12px !important;
-            padding: 15px !important;
+            border: 1px solid var(--primary); color: #fff !important;
+            border-radius: 12px !important; padding: 15px !important;
         }
-        .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-            border-top-color: var(--primary) !important;
-        }
-        .mapboxgl-popup-close-button {
-            color: #fff;
-            font-size: 16px;
-            padding: 4px 8px;
-        }
-        .mapboxgl-popup-close-button:hover {
-            color: var(--primary);
-            background: transparent;
-        }
+        .mapboxgl-popup-close-button { color: #fff; font-size: 16px; padding: 4px 8px; }
+        .mapboxgl-popup-close-button:hover { color: var(--primary); background: transparent; }
     </style>
 </head>
 
 <body>
-    <main>
-        <!-- 1. El Mapa -->
-        <div id="map"></div>
+    <div id="map"></div>
 
-        <!-- 2. UI Flotante -->
-        <div class="ui-layer">
-            
-            <div class="top-bar">
-                <div class="brand-pill glass">
-                    <img src="./img/oilmap.png" alt="Oil Map Logo">
-                    <h1>WORLD OIL MAP 2026</h1>
-                </div>
+    <div class="ui-layer">
+        <div class="top-bar">
+            <div class="brand-pill glass">
+                <img src="./img/oilmap.png" alt="Oil Map">
+                <h1>WORLD OIL MAP 2026</h1>
+            </div>
 
-                <div class="search-wrapper">
-                    <input type="text" class="search-input" id="countrySearch" placeholder="Search oil block, facility...">
-                    <div id="suggestions" class="glass"></div>
-                    
-                    <!-- Contenedor Snippets GDELT -->
-                    <div id="gdeltSnippets" class="trending-container">
-                        <span class="trend-badge">🔴 Live GDELT:</span>
-                    </div>
-                </div>
-
-                <div class="action-group">
-                    <!-- Menú de Capas -->
-                    <button class="icon-btn glass" id="btn-layers">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
-                    </button>
-                    <nav id="menu" class="glass"></nav>
-
-                    <!-- Info -->
-                    <button class="icon-btn glass" id="btn-info">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div class="search-wrapper">
+                <div class="search-bar-row">
+                    <input type="text" class="search-input glass" id="countrySearch" placeholder="Search oil block...">
+                    <!-- Nouveau Bouton Live Zones -->
+                    <button class="btn-live-zones glass" id="btn-live-zones">
+                        🔴 Live Zones ▾
                     </button>
                 </div>
-            </div>
-
-            <!-- Publicidad -->
-            <div class="ad-container">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_SLOT_AQUI" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-            </div>
-        </div>
-
-        <!-- Modal About -->
-        <div id="aboutModal" class="modal">
-            <div class="modal-content glass">
-                <span class="close" id="closeModal">&times;</span>
-                <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
-                <h2 style="color: var(--primary); margin:0 0 10px 0;">World Oil Map 2026</h2>
-                <p>Location-Intelligence application for Oil and Gas sector.</p>
-                <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary); text-decoration:none;">Roque LEAL</a></p>
-                <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
-                    <a href="blog.html" style="color:#fff; font-size:0.8rem;">Blog</a> | 
-                    <a href="contact.html" style="color:#fff; font-size:0.8rem;">Contact</a>
+                
+                <!-- Fenêtre flottante Live Zones -->
+                <div id="liveZonesMenu" class="glass">
+                    <div style="padding: 10px; text-align: center; font-size: 0.8rem; color: #a0a0a5;">Loading zones...</div>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <!-- SCRIPTS -->
+            <div class="action-group">
+                <button class="icon-btn glass" id="btn-layers">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
+                </button>
+                <nav id="menu" class="glass"></nav>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. Inicialización Mapbox ---
         mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -400,169 +189,191 @@
         });
         map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left');
 
-        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
         const urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
 
-        // --- 2. Funciones Lógicas ---
-
-        // Función para cargar los Snippets de GDELT
-        async function loadGdeltNewsSnippets(limit = 5) {
-            const container = document.getElementById('gdeltSnippets');
+        // Fonction pour charger le menu Live Zones
+        async function loadLiveZones() {
+            const menu = document.getElementById('liveZonesMenu');
             try {
                 const response = await fetch(urlNews);
                 if (!response.ok) throw new Error('Network error');
                 const data = await response.json();
-                if (!data.features || data.features.length === 0) return;
+                
+                menu.innerHTML = ''; // Nettoyer le menu
+                
+                if (data.features && data.features.length > 0) {
+                    const topZones = data.features.slice(0, 5);
+                    
+                    topZones.forEach((feature, index) => {
+                        const props = feature.properties;
+                        const coords = feature.geometry.coordinates;
+                        const title = props.name || 'Petroleum Zone';
+                        
+                        const item = document.createElement('div');
+                        item.className = 'zone-item';
+                        item.innerHTML = `<strong>Top #${index + 1}</strong> <span>${title}</span>`;
+                        
+                        // Action au clic : Vol avec zoom 9
+                        item.onclick = () => {
+                            menu.style.display = 'none'; // Ferme la fenêtre flottante
+                            map.flyTo({ center: coords, zoom: 9, speed: 1.2, essential: true });
 
-                const latestFeatures = data.features.slice(0, limit);
-                container.innerHTML = '<span class="trend-badge">🔴 Live GDELT:</span>';
-
-                latestFeatures.forEach((feature, index) => {
-                    const props = feature.properties;
-                    const coords = feature.geometry.coordinates;
-                    const rawTitle = props.name || 'Petroleum Alert';
-                    const displayTitle = rawTitle.length > 25 ? rawTitle.substring(0, 25) + '...' : rawTitle;
-
-                    const chip = document.createElement('button');
-                    chip.className = 'snippet-chip';
-                    chip.title = rawTitle;
-                    chip.innerHTML = `<span>${displayTitle}</span><span class="score">#${index + 1}</span>`;
-
-                    // Acción al hacer clic: Vuelo con Zoom 9
-                    chip.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        map.flyTo({ center: coords, zoom: 9, speed: 1.2, essential: true });
-
-                        const popupHTML = `
-                            <div style="font-family:'Inter',sans-serif;">
-                                <strong style="color:var(--primary); font-size:14px; display:block; margin-bottom:8px;">${rawTitle}</strong>
-                                ${props.shareimage ? `<img src="${props.shareimage}" style="width:100%; border-radius:6px; margin-bottom:8px;">` : ''}
-                                <div style="font-size:12px; color:#ddd; max-height:100px; overflow-y:auto;">${props.html || ''}</div>
-                            </div>
-                        `;
-                        new mapboxgl.Popup({ offset: 15 }).setLngLat(coords).setHTML(popupHTML).addTo(map);
+                            const popupHTML = `
+                                <div style="font-family:'Inter',sans-serif;">
+                                    <strong style="color:var(--primary); display:block; margin-bottom:8px;">${title}</strong>
+                                    ${props.shareimage ? `<img src="${props.shareimage}" style="width:100%; border-radius:6px; margin-bottom:8px;">` : ''}
+                                    <div style="font-size:12px; color:#ddd; max-height:100px; overflow-y:auto;">${props.html || ''}</div>
+                                </div>
+                            `;
+                            // Retarde légèrement l'ouverture de la popup pour laisser l'animation commencer
+                            setTimeout(() => {
+                                new mapboxgl.Popup({ offset: 15 }).setLngLat(coords).setHTML(popupHTML).addTo(map);
+                            }, 500);
+                        };
+                        menu.appendChild(item);
                     });
-                    container.appendChild(chip);
-                });
+                }
             } catch (error) {
-                console.warn('Snippets no cargados:', error);
+                menu.innerHTML = '<div style="padding: 10px; text-align: center; color: red;">Failed to load zones.</div>';
             }
         }
 
-        // --- 3. Eventos de Carga del Mapa ---
         map.on('load', () => {
-            // Actualización periódica de GDELT en el mapa
-            setInterval(() => {
-                if (map.getSource('NEWS')) map.getSource('NEWS').setData(urlNews);
-                loadGdeltNewsSnippets(5); // Actualiza los snippets también
-            }, 300000); // 5 minutos
-
-            // Capa GDELT News
-            map.addSource('NEWS', { type: 'geojson', data: urlNews });
-            map.addLayer({
-                "id": "NEWS",
-                "type": "symbol",
-                "source": "NEWS",
-                "layout": { "icon-image": "oil", "icon-size": ["interpolate", ["linear"], ["zoom"], 0, 0, 9.256, 0.1] }
+            // 1. Unification de la source GDELT
+            map.addSource('gdelt-source', {
+                type: 'geojson',
+                data: urlNews,
+                cluster: true,
+                clusterMaxZoom: 14,
+                clusterRadius: 50
             });
 
-            // Capa Clúster GDELT
-            map.addSource("CLUSTER-NEWS", { type: "geojson", data: urlNews, cluster: true, clusterMaxZoom: 14, clusterRadius: 50 });
+            // 2. Couche CLUSTER (Cercles au lieu d'images pour éviter les erreurs)
             map.addLayer({
-                id: "CLUSTER-NEWS", type: "circle", source: "CLUSTER-NEWS", filter: ["has", "point_count"],
-                paint: { "circle-color": ["step", ["get", "point_count"], "#1dcaff", 5, "#fff000", 10, "#ff521d"], "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 750, 40] }
-            });
-            map.addLayer({
-                id: "cluster-count", type: "symbol", source: "CLUSTER-NEWS", filter: ["has", "point_count"],
-                layout: { "text-field": "{point_count_abbreviated}", "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"], "text-size": 12 }
+                id: 'CLUSTER-NEWS',
+                type: 'circle',
+                source: 'gdelt-source',
+                filter: ['has', 'point_count'],
+                paint: {
+                    'circle-color': ['step', ['get', 'point_count'], '#f0b823', 5, '#f08023', 10, '#ff521d'],
+                    'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 750, 40],
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': 'rgba(255,255,255,0.5)'
+                }
             });
 
-            // Generar Menú de Capas
+            // 3. Couche Nombre de Clusters
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'gdelt-source',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
+
+            // 4. Couche NEWS individuelle (Points bleus clairs)
+            map.addLayer({
+                id: 'NEWS',
+                type: 'circle',
+                source: 'gdelt-source',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': '#1dcaff',
+                    'circle-radius': 8,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            });
+
+            // Création du menu des couches
+            const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
             const menuNav = document.getElementById('menu');
+            
             toggleableLayerIds.forEach(id => {
                 const link = document.createElement('a');
                 link.href = '#'; link.className = 'active'; link.textContent = id.replace(/-/g, ' ');
+                
                 link.onclick = function(e) {
                     e.preventDefault();
-                    const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
-                    if (visibility === 'visible') { map.setLayoutProperty(id, 'visibility', 'none'); this.className = ''; } 
-                    else { map.setLayoutProperty(id, 'visibility', 'visible'); this.className = 'active'; }
+                    // Sécurité : vérifier si la couche existe dans le style
+                    if (map.getLayer(id)) {
+                        const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
+                        if (visibility === 'visible') { 
+                            map.setLayoutProperty(id, 'visibility', 'none'); 
+                            this.className = ''; 
+                        } else { 
+                            map.setLayoutProperty(id, 'visibility', 'visible'); 
+                            this.className = 'active'; 
+                        }
+                    } else {
+                        console.warn(`Layer "${id}" not found in Mapbox style.`);
+                        // Optionnel : avertir l'utilisateur
+                        // alert(`La couche ${id} n'est pas disponible dans cette vue.`);
+                    }
                 };
                 menuNav.appendChild(link);
             });
 
-            // Cargar los Snippets Iniciales
-            loadGdeltNewsSnippets(5);
+            // Charger les zones au démarrage
+            loadLiveZones();
         });
 
-        // --- 4. Lógica de Interfaz y Buscador ---
-        
-        // Buscador Geocoder
-        const searchInput = document.getElementById('countrySearch');
-        const suggestionsDiv = document.getElementById('suggestions');
-
-        searchInput.addEventListener('input', async() => {
-            const query = searchInput.value.trim().toLowerCase();
-            if (!query) { suggestionsDiv.style.display = 'none'; return; }
-
-            let results = [];
-            if (typeof customData !== 'undefined') {
-                customData.features.forEach(f => {
-                    if (f.properties.title.toLowerCase().includes(query)) {
-                        results.push({ name: f.properties.title, coordinates: f.geometry.coordinates });
-                    }
-                });
-            }
-
-            try {
-                const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
-                const data = await res.json();
-                if (data.features) {
-                    data.features.forEach(f => results.push({ name: f.place_name, coordinates: f.center }));
-                }
-                
-                suggestionsDiv.innerHTML = '';
-                results.slice(0, 8).forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'suggestion-item';
-                    div.textContent = item.name;
-                    div.onclick = () => {
-                        map.flyTo({ center: item.coordinates, zoom: 8 });
-                        new mapboxgl.Popup({ offset: 10 }).setLngLat(item.coordinates)
-                            .setHTML(`<strong style="color:var(--primary);">${item.name}</strong>`).addTo(map);
-                        suggestionsDiv.style.display = 'none';
-                        searchInput.value = '';
-                    };
-                    suggestionsDiv.appendChild(div);
-                });
-                suggestionsDiv.style.display = results.length ? 'block' : 'none';
-            } catch (e) { console.error('Geocoding error'); }
-        });
-
-        // Toggles y Modal
+        // Gestion de l'interface utilisateur
+        const btnLiveZones = document.getElementById('btn-live-zones');
+        const liveZonesMenu = document.getElementById('liveZonesMenu');
         const btnLayers = document.getElementById('btn-layers');
         const menuLayers = document.getElementById('menu');
-        const btnInfo = document.getElementById('btn-info');
-        const modal = document.getElementById('aboutModal');
-        const closeModal = document.getElementById('closeModal');
 
-        btnLayers.onclick = (e) => { e.stopPropagation(); menuLayers.classList.toggle('show'); };
-        btnInfo.onclick = () => { modal.style.display = 'flex'; };
-        closeModal.onclick = () => { modal.style.display = 'none'; };
-
-        document.onclick = (e) => {
-            if (!menuLayers.contains(e.target) && e.target !== btnLayers) menuLayers.classList.remove('show');
-            if (!suggestionsDiv.contains(e.target) && e.target !== searchInput) suggestionsDiv.style.display = 'none';
-            if (e.target == modal) modal.style.display = 'none';
+        // Toggle Live Zones
+        btnLiveZones.onclick = (e) => {
+            e.stopPropagation();
+            const isShowing = liveZonesMenu.style.display === 'flex';
+            liveZonesMenu.style.display = isShowing ? 'none' : 'flex';
+            menuLayers.style.display = 'none'; // Ferme les autres menus
         };
 
-        // Popups al hacer clic en el mapa
+        // Toggle Layers
+        btnLayers.onclick = (e) => {
+            e.stopPropagation();
+            const isShowing = menuLayers.style.display === 'flex';
+            menuLayers.style.display = isShowing ? 'none' : 'flex';
+            liveZonesMenu.style.display = 'none'; // Ferme les autres menus
+        };
+
+        // Fermer les menus au clic extérieur
+        document.onclick = (e) => {
+            if (!liveZonesMenu.contains(e.target) && e.target !== btnLiveZones) {
+                liveZonesMenu.style.display = 'none';
+            }
+            if (!menuLayers.contains(e.target) && e.target !== btnLayers) {
+                menuLayers.style.display = 'none';
+            }
+        };
+
+        // Popups au clic sur le plan
         map.on('click', (e) => {
-            const features = map.queryRenderedFeatures(e.point, { layers: toggleableLayerIds });
+            const features = map.queryRenderedFeatures(e.point, { 
+                layers: ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'] 
+            });
             if (!features.length) return;
             const f = features[0];
 
             let htmlContent = '';
+            
+            // Si on clique sur un cluster, on zoome dessus
+            if (f.layer.id === 'CLUSTER-NEWS') {
+                const clusterId = f.properties.cluster_id;
+                map.getSource('gdelt-source').getClusterExpansionZoom(clusterId, (err, zoom) => {
+                    if (err) return;
+                    map.flyTo({ center: f.geometry.coordinates, zoom: zoom });
+                });
+                return; // Ne pas ouvrir de popup pour le cluster
+            }
+            
             if (f.layer.id === 'NEWS') {
                 htmlContent = `
                     <div style="font-family:'Inter',sans-serif;">
@@ -573,14 +384,17 @@
             } else if (f.layer.id === 'BID-ROUNDS') {
                 htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary);">${f.properties.title}</strong><br><span style="color:#ddd;">${f.properties.description}</span></div>`;
             } else {
-                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary);">${f.properties.Name || "Info"}</strong><br><span style="color:#ddd;">${f.properties.Descriptio || "Data"}</span></div>`;
+                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary);">${f.properties.Name || f.properties.NAME || "Info"}</strong><br><span style="color:#ddd;">${f.properties.Descriptio || f.properties.Company || "Data"}</span></div>`;
             }
 
             new mapboxgl.Popup({ offset: 10 }).setLngLat(e.lngLat).setHTML(htmlContent).addTo(map);
         });
 
+        // Curseur interactif
         map.on('mousemove', (e) => {
-            const features = map.queryRenderedFeatures(e.point, { layers: toggleableLayerIds });
+            const features = map.queryRenderedFeatures(e.point, { 
+                layers: ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'] 
+            });
             map.getCanvas().style.cursor = features.length ? 'pointer' : '';
         });
     </script>
