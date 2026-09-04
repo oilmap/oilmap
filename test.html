@@ -1,146 +1,185 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <title>World Oil Map 2026 | Global Infrastructure</title>
-    <meta name="description" content="Interactive location-intelligence application for the Oil and Gas sector.">
-    <meta name="author" content="Roque Leal" />
+    <!-- PALABRAS CLAVE Y SEO ORIGINALES INTACTAS -->
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <meta name="author" content="Roque Leal" />
+    <meta name="copyright" content="https://oilmap.xyz" />
+    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
+    <meta property="og:title" content="World Oil Map 2026" />
+    <meta property="og:url" content="https://oilmap.xyz" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@roqueleal08">
+    <title>🥇 World Oil Map 2026</title>
 
-    <link rel="preconnect" href="https://api.mapbox.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <!-- RECURSOS EXTERNOS -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
     
+    <!-- Asegúrate de tener este archivo si usas customData -->
+    <script src="data/geocoder.js"></script>
+
+    <!-- ESTILOS MINIMALISTAS Y MODERNOS -->
     <style>
         :root {
-            --primary: #f0b823;
-            --surface: rgba(20, 20, 22, 0.85);
-            --surface-hover: rgba(40, 40, 45, 0.95);
-            --border: rgba(255, 255, 255, 0.1);
-            --text: #ffffff;
-            --transition: all 0.25s ease;
+            --primary-gold: #f0b823;
+            --glass-bg: rgba(18, 18, 18, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+            --transition: all 0.3s ease;
         }
-
+        
         body {
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', sans-serif;
-            background: #000; color: var(--text);
+            background: #000;
+            color: var(--text-main);
             overflow: hidden;
         }
-
-        #map { position: absolute; inset: 0; z-index: 1; }
-
-        .glass {
-            background: var(--surface);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; z-index: 1; }
+        
+        .glass-ui {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
         }
-
+        
         .ui-layer {
-            position: absolute; z-index: 10;
-            inset: 0; pointer-events: none;
-            display: flex; flex-direction: column; padding: 20px;
+            position: absolute; z-index: 10; inset: 0;
+            pointer-events: none; display: flex; flex-direction: column; padding: 15px;
         }
-
+        
         .ui-layer > * { pointer-events: auto; }
-
-        .top-bar {
-            display: flex; justify-content: space-between;
-            align-items: flex-start; gap: 16px;
+        
+        .header {
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
         }
-
-        .brand-pill {
+        
+        .brand {
             display: flex; align-items: center; gap: 10px;
             padding: 8px 16px; border-radius: 100px;
         }
-        .brand-pill img { height: 24px; }
-        .brand-pill h1 { font-size: 0.9rem; margin: 0; color: var(--primary); }
-
-        /* Conteneur de recherche et boutons */
-        .search-wrapper {
-            position: relative; flex-grow: 1; max-width: 500px;
+        .brand img { height: 28px; }
+        .brand h1 { font-size: 1rem; margin: 0; color: var(--primary-gold); letter-spacing: 1px; }
+        .brand span { font-weight: 300; opacity: 0.6; }
+        
+        /* BUSCADOR Y ZONAS EN VIVO */
+        .search-container {
+            position: relative; flex-grow: 1; max-width: 450px;
             display: flex; flex-direction: column; gap: 8px;
         }
-
-        .search-bar-row {
-            display: flex; gap: 8px; width: 100%;
-        }
-
+        
+        .search-bar-row { display: flex; gap: 8px; width: 100%; }
+        
         .search-input {
-            flex-grow: 1; padding: 12px 16px;
-            border-radius: 100px; border: 1px solid var(--border);
-            background: var(--surface); color: var(--text);
+            flex-grow: 1; padding: 10px 16px; border-radius: 100px;
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            color: var(--text-main); font-family: inherit; font-size: 0.85rem;
             outline: none; transition: var(--transition);
         }
-        .search-input:focus { border-color: var(--primary); }
-
+        .search-input:focus { border-color: var(--primary-gold); }
+        
         .btn-live-zones {
-            display: flex; align-items: center; gap: 6px;
-            padding: 0 16px; border-radius: 100px;
-            background: rgba(240, 184, 35, 0.1); border: 1px solid var(--primary);
-            color: var(--primary); font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; padding: 0 16px;
+            border-radius: 100px; background: rgba(240, 184, 35, 0.1);
+            border: 1px solid var(--primary-gold); color: var(--primary-gold);
+            font-weight: 600; font-size: 0.85rem; cursor: pointer;
             transition: var(--transition); white-space: nowrap;
         }
-        .btn-live-zones:hover { background: var(--primary); color: #000; }
+        .btn-live-zones:hover { background: var(--primary-gold); color: #000; }
+        
+        #suggestions {
+            position: absolute; top: 45px; left: 0; right: 0;
+            border-radius: 12px; display: none; max-height: 200px; overflow-y: auto; z-index: 30;
+        }
+        .suggestion-item {
+            padding: 10px 16px; cursor: pointer; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .suggestion-item:hover { color: var(--primary-gold); background: rgba(255,255,255,0.05); }
 
-        /* Fenêtre flottante Live Zones */
         #liveZonesMenu {
-            position: absolute; top: 55px; left: 0; right: 0;
-            border-radius: 12px; display: none; flex-direction: column;
-            max-height: 250px; overflow-y: auto; z-index: 30;
+            position: absolute; top: 45px; left: 0; right: 0;
+            border-radius: 12px; display: none; flex-direction: column; max-height: 250px; overflow-y: auto; z-index: 30;
         }
         .zone-item {
-            padding: 12px 16px; cursor: pointer; font-size: 0.85rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; gap: 4px;
+            padding: 10px 16px; cursor: pointer; font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 4px;
         }
-        .zone-item:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
-        .zone-item strong { font-size: 0.75rem; color: #a0a0a5; }
+        .zone-item:hover { background: rgba(255,255,255,0.05); color: var(--primary-gold); }
+        .zone-item strong { font-size: 0.7rem; color: #a0a0a5; }
 
-        /* Boutons d'action */
-        .action-group { display: flex; gap: 8px; position: relative; }
-        .icon-btn {
-            width: 44px; height: 44px; border-radius: 50%;
-            border: 1px solid var(--border); color: var(--text);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        /* CONTROLES DERECHOS (About, Blog, Contact, Layers) */
+        .header-controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+        
+        .btn-header {
+            padding: 8px 14px; border-radius: 100px; border: 1px solid var(--glass-border);
+            color: var(--text-main); font-size: 0.75rem; font-weight: 600;
+            text-decoration: none; cursor: pointer; background: rgba(255,255,255,0.05);
+            transition: var(--transition);
         }
-        .icon-btn:hover { background: var(--primary); color: #000; }
-        .icon-btn svg { width: 20px; height: 20px; }
-
-        /* Menu des couches */
+        .btn-header:hover { background: var(--primary-gold); color: #000; border-color: var(--primary-gold); }
+        
         #menu {
-            position: absolute; top: 55px; right: 0; width: 180px;
-            padding: 12px; display: none; flex-direction: column; gap: 6px; border-radius: 12px;
+            position: absolute; top: 60px; right: 15px; width: 180px;
+            padding: 10px; display: none; flex-direction: column; gap: 4px; border-radius: 12px;
         }
+        #menu.show { display: flex; }
         #menu a {
-            color: rgba(255,255,255,0.7); text-decoration: none;
-            font-size: 0.75rem; padding: 8px; border-radius: 6px; text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 0.75rem;
+            padding: 8px 12px; border-radius: 6px; text-transform: uppercase; transition: var(--transition);
         }
-        #menu a.active { background: var(--primary); color: #000; font-weight: 600; }
+        #menu a:hover { background: rgba(255,255,255,0.1); }
+        #menu a.active { background: var(--primary-gold); color: #000; font-weight: 600; }
 
+        /* PUBLICIDAD */
+        .ad-container {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 5; width: 95%; max-width: 728px; display: flex; justify-content: center;
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.85);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-content { padding: 30px; width: 85%; max-width: 400px; text-align: center; border-radius: 16px; position: relative; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; transition: var(--transition); }
+        .close:hover { color: var(--primary-gold); }
+
+        /* MÓVILES */
         @media (max-width: 768px) {
-            .top-bar { flex-direction: column; }
-            .action-group { position: fixed; bottom: 20px; right: 20px; flex-direction: column; }
-            #menu { top: auto; bottom: 80px; right: 80px; }
+            .header { flex-direction: column; align-items: stretch; }
             .search-bar-row { flex-direction: column; }
-            #liveZonesMenu { top: 100px; }
+            .header-controls { justify-content: flex-start; }
+            #liveZonesMenu, #suggestions { top: 90px; }
+            #menu { top: 140px; left: 15px; right: 15px; width: auto; }
+            .ad-container { bottom: 30px; }
         }
 
-        /* Personnalisation Popups Mapbox */
+        /* POPUPS MAPBOX */
         .mapboxgl-popup-content {
-            background: rgba(20, 20, 22, 0.95) !important;
-            border: 1px solid var(--primary); color: #fff !important;
-            border-radius: 12px !important; padding: 15px !important;
+            background: rgba(18, 18, 18, 0.95) !important; border: 1px solid var(--primary-gold);
+            color: #fff !important; border-radius: 12px !important; padding: 15px !important;
         }
+        .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip { border-top-color: var(--primary-gold) !important; }
         .mapboxgl-popup-close-button { color: #fff; font-size: 16px; padding: 4px 8px; }
-        .mapboxgl-popup-close-button:hover { color: var(--primary); background: transparent; }
+        .mapboxgl-popup-close-button:hover { color: var(--primary-gold); background: transparent; }
     </style>
 </head>
 
@@ -148,37 +187,57 @@
     <div id="map"></div>
 
     <div class="ui-layer">
-        <div class="top-bar">
-            <div class="brand-pill glass">
-                <img src="./img/oilmap.png" alt="Oil Map">
-                <h1>WORLD OIL MAP 2026</h1>
+        <header class="header">
+            <!-- LOGO -->
+            <div class="brand glass-ui">
+                <img src="./img/oilmap.png" alt="Icon">
+                <h1>WORLD OIL MAP <span>2026</span></h1>
             </div>
 
-            <div class="search-wrapper">
+            <!-- BUSCADOR Y LIVE ZONES -->
+            <div class="search-container">
                 <div class="search-bar-row">
-                    <input type="text" class="search-input glass" id="countrySearch" placeholder="Search oil block...">
-                    <!-- Nouveau Bouton Live Zones -->
-                    <button class="btn-live-zones glass" id="btn-live-zones">
-                        🔴 Live Zones ▾
-                    </button>
+                    <input type="text" id="countrySearch" class="search-input glass-ui" placeholder="Search Oil Block, Facility...">
+                    <button id="btn-live-zones" class="btn-live-zones glass-ui">🔴 Live Zones ▾</button>
                 </div>
                 
-                <!-- Fenêtre flottante Live Zones -->
-                <div id="liveZonesMenu" class="glass">
-                    <div style="padding: 10px; text-align: center; font-size: 0.8rem; color: #a0a0a5;">Loading zones...</div>
+                <div id="suggestions" class="glass-ui"></div>
+                <div id="liveZonesMenu" class="glass-ui">
+                    <div style="padding: 10px; text-align: center; font-size: 0.8rem; color: #a0a0a5;">Cargando datos en vivo...</div>
                 </div>
             </div>
 
-            <div class="action-group">
-                <button class="icon-btn glass" id="btn-layers">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
-                </button>
-                <nav id="menu" class="glass"></nav>
+            <!-- CONTROLES DERECHOS -->
+            <div class="header-controls">
+                <button id="btn-toggle-menu" class="btn-header">LAYERS ▾</button>
+                <a href="blog.html" class="btn-header">Blog</a>
+                <a href="contact.html" class="btn-header">Contact</a>
+                <button id="btn-about" class="btn-header">About</button>
             </div>
+            
+            <nav id="menu" class="glass-ui"></nav>
+        </header>
+
+        <!-- PUBLICIDAD -->
+        <div class="ad-container">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+    </div>
+
+    <!-- MODAL ABOUT -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content glass-ui">
+            <span class="close" id="closeModal">&times;</span>
+            <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
+            <h2 style="color: var(--primary-gold); margin:0 0 10px 0;">World Oil Map 2026</h2>
+            <p>Location-Intelligence application for Oil and Gas sector.</p>
+            <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary-gold); text-decoration:none; font-weight:bold;">Roque LEAL</a>.</p>
         </div>
     </div>
 
     <script>
+        // --- 1. CONFIGURACIÓN MAPBOX ---
         mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -189,21 +248,22 @@
         });
         map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left');
 
-        const urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+        // --- 2. GDELT PROXY CORS ---
+        const gdeltBaseUrl = 'https://api.gdeltproject.org/api/v2/geo/geo?query=oil%20OR%20petroleum&mode=pointdata&format=geojson';
+        const urlNews = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(gdeltBaseUrl);
+        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
 
-        // Fonction pour charger le menu Live Zones
+        // --- 3. CARGA DE LIVE ZONES ---
         async function loadLiveZones() {
             const menu = document.getElementById('liveZonesMenu');
             try {
                 const response = await fetch(urlNews);
-                if (!response.ok) throw new Error('Network error');
+                if (!response.ok) throw new Error('Error Proxy');
                 const data = await response.json();
+                menu.innerHTML = '';
                 
-                menu.innerHTML = ''; // Nettoyer le menu
-                
-                if (data.features && data.features.length > 0) {
+                if (data && data.features && data.features.length > 0) {
                     const topZones = data.features.slice(0, 5);
-                    
                     topZones.forEach((feature, index) => {
                         const props = feature.properties;
                         const coords = feature.geometry.coordinates;
@@ -213,188 +273,170 @@
                         item.className = 'zone-item';
                         item.innerHTML = `<strong>Top #${index + 1}</strong> <span>${title}</span>`;
                         
-                        // Action au clic : Vol avec zoom 9
                         item.onclick = () => {
-                            menu.style.display = 'none'; // Ferme la fenêtre flottante
+                            menu.style.display = 'none';
                             map.flyTo({ center: coords, zoom: 9, speed: 1.2, essential: true });
-
                             const popupHTML = `
                                 <div style="font-family:'Inter',sans-serif;">
-                                    <strong style="color:var(--primary); display:block; margin-bottom:8px;">${title}</strong>
+                                    <strong style="color:var(--primary-gold); display:block; margin-bottom:8px;">${title}</strong>
                                     ${props.shareimage ? `<img src="${props.shareimage}" style="width:100%; border-radius:6px; margin-bottom:8px;">` : ''}
                                     <div style="font-size:12px; color:#ddd; max-height:100px; overflow-y:auto;">${props.html || ''}</div>
-                                </div>
-                            `;
-                            // Retarde légèrement l'ouverture de la popup pour laisser l'animation commencer
-                            setTimeout(() => {
-                                new mapboxgl.Popup({ offset: 15 }).setLngLat(coords).setHTML(popupHTML).addTo(map);
-                            }, 500);
+                                </div>`;
+                            setTimeout(() => { new mapboxgl.Popup({ offset: 15 }).setLngLat(coords).setHTML(popupHTML).addTo(map); }, 500);
                         };
                         menu.appendChild(item);
                     });
+                } else {
+                    menu.innerHTML = '<div style="padding: 10px; text-align: center; color: #a0a0a5;">Sin datos recientes.</div>';
                 }
             } catch (error) {
-                menu.innerHTML = '<div style="padding: 10px; text-align: center; color: red;">Failed to load zones.</div>';
+                menu.innerHTML = '<div style="padding: 10px; text-align: center; color: red;">Error al conectar API.</div>';
             }
         }
 
-        map.on('load', () => {
-            // 1. Unification de la source GDELT
-            map.addSource('gdelt-source', {
-                type: 'geojson',
-                data: urlNews,
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
-            });
+        // --- 4. MAPA CARGADO ---
+        map.on('load', async () => {
+            // Cargar datos GeoJSON a través del Proxy
+            try {
+                const response = await fetch(urlNews);
+                const geojsonData = await response.json();
 
-            // 2. Couche CLUSTER (Cercles au lieu d'images pour éviter les erreurs)
-            map.addLayer({
-                id: 'CLUSTER-NEWS',
-                type: 'circle',
-                source: 'gdelt-source',
-                filter: ['has', 'point_count'],
-                paint: {
-                    'circle-color': ['step', ['get', 'point_count'], '#f0b823', 5, '#f08023', 10, '#ff521d'],
-                    'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 750, 40],
-                    'circle-stroke-width': 2,
-                    'circle-stroke-color': 'rgba(255,255,255,0.5)'
-                }
-            });
+                map.addSource('gdelt-source', {
+                    type: 'geojson', data: geojsonData, cluster: true, clusterMaxZoom: 14, clusterRadius: 50
+                });
 
-            // 3. Couche Nombre de Clusters
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'gdelt-source',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                    'text-size': 12
-                }
-            });
+                map.addLayer({
+                    id: 'CLUSTER-NEWS', type: 'circle', source: 'gdelt-source', filter: ['has', 'point_count'],
+                    paint: {
+                        'circle-color': ['step', ['get', 'point_count'], '#f0b823', 5, '#f08023', 10, '#ff521d'],
+                        'circle-radius': ['step', ['get', 'point_count'], 20, 10, 30, 750, 40],
+                        'circle-stroke-width': 2, 'circle-stroke-color': 'rgba(255,255,255,0.5)'
+                    }
+                });
 
-            // 4. Couche NEWS individuelle (Points bleus clairs)
-            map.addLayer({
-                id: 'NEWS',
-                type: 'circle',
-                source: 'gdelt-source',
-                filter: ['!', ['has', 'point_count']],
-                paint: {
-                    'circle-color': '#1dcaff',
-                    'circle-radius': 8,
-                    'circle-stroke-width': 2,
-                    'circle-stroke-color': '#ffffff'
-                }
-            });
+                map.addLayer({
+                    id: 'cluster-count', type: 'symbol', source: 'gdelt-source', filter: ['has', 'point_count'],
+                    layout: { 'text-field': '{point_count_abbreviated}', 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'], 'text-size': 12 },
+                    paint: { 'text-color': '#000000' }
+                });
 
-            // Création du menu des couches
-            const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
+                map.addLayer({
+                    id: 'NEWS', type: 'circle', source: 'gdelt-source', filter: ['!', ['has', 'point_count']],
+                    paint: { 'circle-color': '#1dcaff', 'circle-radius': 8, 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' }
+                });
+            } catch (err) { console.error("Error cargando capas GDELT:", err); }
+
+            // Menú de Capas con Verificación de Existencia
             const menuNav = document.getElementById('menu');
-            
             toggleableLayerIds.forEach(id => {
                 const link = document.createElement('a');
                 link.href = '#'; link.className = 'active'; link.textContent = id.replace(/-/g, ' ');
-                
                 link.onclick = function(e) {
                     e.preventDefault();
-                    // Sécurité : vérifier si la couche existe dans le style
                     if (map.getLayer(id)) {
                         const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
-                        if (visibility === 'visible') { 
-                            map.setLayoutProperty(id, 'visibility', 'none'); 
-                            this.className = ''; 
-                        } else { 
-                            map.setLayoutProperty(id, 'visibility', 'visible'); 
-                            this.className = 'active'; 
-                        }
-                    } else {
-                        console.warn(`Layer "${id}" not found in Mapbox style.`);
-                        // Optionnel : avertir l'utilisateur
-                        // alert(`La couche ${id} n'est pas disponible dans cette vue.`);
+                        if (visibility === 'visible') { map.setLayoutProperty(id, 'visibility', 'none'); this.className = ''; } 
+                        else { map.setLayoutProperty(id, 'visibility', 'visible'); this.className = 'active'; }
                     }
                 };
                 menuNav.appendChild(link);
             });
 
-            // Charger les zones au démarrage
             loadLiveZones();
         });
 
-        // Gestion de l'interface utilisateur
+        // --- 5. LÓGICA DE BÚSQUEDA ---
+        const searchInput = document.getElementById('countrySearch');
+        const suggestionsDiv = document.getElementById('suggestions');
+
+        searchInput.addEventListener('input', async() => {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) { suggestionsDiv.style.display = 'none'; return; }
+
+            let results = [];
+            // Búsqueda en customData local si existe
+            if (typeof customData !== 'undefined' && customData.features) {
+                customData.features.forEach(f => {
+                    if (f.properties.title.toLowerCase().includes(query)) {
+                        results.push({ name: f.properties.title, coordinates: f.geometry.coordinates });
+                    }
+                });
+            }
+
+            // Búsqueda en Mapbox Geocoder API
+            try {
+                const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
+                const data = await res.json();
+                if (data.features) {
+                    data.features.forEach(f => results.push({ name: f.place_name, coordinates: f.center }));
+                }
+                
+                suggestionsDiv.innerHTML = '';
+                results.slice(0, 8).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = item.name;
+                    div.onclick = () => {
+                        map.flyTo({ center: item.coordinates, zoom: 8 });
+                        new mapboxgl.Popup({ offset: 10 }).setLngLat(item.coordinates)
+                            .setHTML(`<strong style="color:var(--primary-gold); font-family:Inter;">${item.name}</strong>`).addTo(map);
+                        suggestionsDiv.style.display = 'none';
+                        searchInput.value = '';
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = results.length > 0 ? 'block' : 'none';
+            } catch (e) { console.error('Error Geocoder', e); }
+        });
+
+        // --- 6. INTERFAZ UI (MODALES Y MENÚS) ---
         const btnLiveZones = document.getElementById('btn-live-zones');
         const liveZonesMenu = document.getElementById('liveZonesMenu');
-        const btnLayers = document.getElementById('btn-layers');
+        const btnLayers = document.getElementById('btn-toggle-menu');
         const menuLayers = document.getElementById('menu');
+        const btnAbout = document.getElementById('btn-about');
+        const modal = document.getElementById('aboutModal');
 
-        // Toggle Live Zones
-        btnLiveZones.onclick = (e) => {
-            e.stopPropagation();
-            const isShowing = liveZonesMenu.style.display === 'flex';
-            liveZonesMenu.style.display = isShowing ? 'none' : 'flex';
-            menuLayers.style.display = 'none'; // Ferme les autres menus
-        };
+        btnLiveZones.onclick = (e) => { e.stopPropagation(); liveZonesMenu.style.display = liveZonesMenu.style.display === 'flex' ? 'none' : 'flex'; menuLayers.classList.remove('show'); suggestionsDiv.style.display = 'none'; };
+        btnLayers.onclick = (e) => { e.stopPropagation(); menuLayers.classList.toggle('show'); liveZonesMenu.style.display = 'none'; suggestionsDiv.style.display = 'none'; };
+        btnAbout.onclick = () => modal.style.display = 'flex';
+        document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
 
-        // Toggle Layers
-        btnLayers.onclick = (e) => {
-            e.stopPropagation();
-            const isShowing = menuLayers.style.display === 'flex';
-            menuLayers.style.display = isShowing ? 'none' : 'flex';
-            liveZonesMenu.style.display = 'none'; // Ferme les autres menus
-        };
-
-        // Fermer les menus au clic extérieur
         document.onclick = (e) => {
-            if (!liveZonesMenu.contains(e.target) && e.target !== btnLiveZones) {
-                liveZonesMenu.style.display = 'none';
-            }
-            if (!menuLayers.contains(e.target) && e.target !== btnLayers) {
-                menuLayers.style.display = 'none';
-            }
+            if (!liveZonesMenu.contains(e.target) && e.target !== btnLiveZones) liveZonesMenu.style.display = 'none';
+            if (!menuLayers.contains(e.target) && e.target !== btnLayers) menuLayers.classList.remove('show');
+            if (!suggestionsDiv.contains(e.target) && e.target !== searchInput) suggestionsDiv.style.display = 'none';
+            if (e.target == modal) modal.style.display = 'none';
         };
 
-        // Popups au clic sur le plan
+        // --- 7. POPUPS EN EL MAPA ---
         map.on('click', (e) => {
-            const features = map.queryRenderedFeatures(e.point, { 
-                layers: ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'] 
-            });
+            const features = map.queryRenderedFeatures(e.point, { layers: toggleableLayerIds });
             if (!features.length) return;
             const f = features[0];
 
-            let htmlContent = '';
-            
-            // Si on clique sur un cluster, on zoome dessus
             if (f.layer.id === 'CLUSTER-NEWS') {
                 const clusterId = f.properties.cluster_id;
                 map.getSource('gdelt-source').getClusterExpansionZoom(clusterId, (err, zoom) => {
                     if (err) return;
                     map.flyTo({ center: f.geometry.coordinates, zoom: zoom });
                 });
-                return; // Ne pas ouvrir de popup pour le cluster
+                return;
             }
             
+            let htmlContent = '';
             if (f.layer.id === 'NEWS') {
-                htmlContent = `
-                    <div style="font-family:'Inter',sans-serif;">
-                        <strong style="color:var(--primary);">${f.properties.name}</strong><br>
-                        ${f.properties.shareimage ? `<img src="${f.properties.shareimage}" style="width:100%; border-radius:6px; margin:10px 0;">` : ''}
-                        <div style="color:#ddd; font-size:12px;">${f.properties.html}</div>
-                    </div>`;
+                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary-gold);">${f.properties.name}</strong><br>${f.properties.shareimage ? `<img src="${f.properties.shareimage}" style="width:100%; border-radius:6px; margin:10px 0;">` : ''}<div style="color:#ddd; font-size:12px;">${f.properties.html}</div></div>`;
             } else if (f.layer.id === 'BID-ROUNDS') {
-                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary);">${f.properties.title}</strong><br><span style="color:#ddd;">${f.properties.description}</span></div>`;
+                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary-gold);">${f.properties.title}</strong><br><span style="color:#ddd;">${f.properties.description}</span></div>`;
             } else {
-                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary);">${f.properties.Name || f.properties.NAME || "Info"}</strong><br><span style="color:#ddd;">${f.properties.Descriptio || f.properties.Company || "Data"}</span></div>`;
+                htmlContent = `<div style="font-family:'Inter',sans-serif;"><strong style="color:var(--primary-gold);">${f.properties.Name || f.properties.NAME || "Info"}</strong><br><span style="color:#ddd;">${f.properties.Descriptio || f.properties.Company || "Data"}</span></div>`;
             }
-
             new mapboxgl.Popup({ offset: 10 }).setLngLat(e.lngLat).setHTML(htmlContent).addTo(map);
         });
 
-        // Curseur interactif
         map.on('mousemove', (e) => {
-            const features = map.queryRenderedFeatures(e.point, { 
-                layers: ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'] 
-            });
+            const features = map.queryRenderedFeatures(e.point, { layers: toggleableLayerIds });
             map.getCanvas().style.cursor = features.length ? 'pointer' : '';
         });
     </script>
