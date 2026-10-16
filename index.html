@@ -1,153 +1,760 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="color-scheme" content="dark">
+    <title>World Oil Map 2026 | Global Upstream, Downstream & Crude Prices</title>
+    <meta name="description" content="Interactive Location Intelligence platform for the Oil & Gas industry. Explore global oil blocks, refineries, pipelines, real-time crude oil prices, and EIA production data.">
+    <meta name="keywords" content="World Oil Map, crude oil prices, upstream, downstream, oil pipelines, gas pipelines, refineries, petroleum intelligence, OPEC, EIA oil data, GIS oil map">
+    <meta name="author" content="Roque Leal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#090d16">
+    <link rel="canonical" href="https://oilmap.xyz/">
+    <link rel="alternate" hreflang="x-default" href="https://oilmap.xyz/">
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
-    <meta name="author" content="Roque Leal" />
-    <meta name="copyright" content="https://oilmap.xyz" />
-    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
-    <meta property="og:title" content="World Oil Map 2026" />
-    <meta property="og:url" content="https://oilmap.xyz" />
-    <meta name="twitter:card" content="summary">
+    <link rel="apple-touch-icon" href="./img/oilmap.png">
+    <link rel="preload" as="image" href="./img/oilmap.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oilmap.xyz/">
+    <meta property="og:site_name" content="World Oil Map 2026">
+    <meta property="og:title" content="World Oil Map 2026 | Global Oil & Gas Intelligence">
+    <meta property="og:description" content="Interactive spatial intelligence on Upstream, Downstream, pipelines, and live crude oil benchmarks.">
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@roqueleal08">
-    <title>🥇 World Oil Map 2026</title>
+    <meta name="twitter:title" content="World Oil Map 2026 | Global Oil & Gas Intelligence">
+    <meta name="twitter:description" content="Explore global oil & gas fields, pipelines, refineries, and real-time crude oil prices.">
+    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "World Oil Map 2026",
+            "url": "https://oilmap.xyz/",
+            "description": "Web-based Location Intelligence application for Upstream and Downstream Oil & Gas activities, global pipelines, refineries, and real-time crude oil price benchmarks.",
+            "applicationCategory": "BusinessApplication, GeospatialApplication",
+            "operatingSystem": "All",
+            "inLanguage": ["en", "es", "fr", "ar", "zh"],
+            "isAccessibleForFree": true,
+            "author": {
+                "@type": "Person",
+                "name": "Roque Leal",
+                "url": "https://roqueleal.me/"
+            }
+        }
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
-    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
-
-
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js'></script>
-    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css' type='text/css' />
-
-
-    <script src="data/geocoder.js"></script>
+        function gtag() {
+            dataLayer.push(arguments)
+        }
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.pauseAdRequests = 1;
+        gtag('consent', 'default', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+            wait_for_update: 500
+        });
+        gtag('set', 'ads_data_redaction', true);
+    </script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
+    <script src="data/geocoder.js" defer></script>
     <style>
          :root {
-            --primary-gold: #f0b823;
-            --glass-bg: rgba(18, 18, 18, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --text-main: #ffffff;
+            --accent: #f0b823;
+            --accent-soft: rgba(240, 184, 35, .14);
+            --surface: rgba(13, 18, 30, .84);
+            --surface-elevated: rgba(20, 27, 45, .94);
+            --border: rgba(255, 255, 255, .1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --up: #10b981;
+            --down: #ef4444;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6)
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent
+        }
+        
+        html,
+        body {
+            height: 100%
         }
         
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: #000;
-            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #060911;
+            color: var(--text-primary);
             overflow: hidden;
+            -webkit-font-smoothing: antialiased
+        }
+        
+        html[dir=rtl] body {
+            direction: rtl;
+            text-align: right
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap
         }
         
         #map {
             position: absolute;
-            top: 0;
-            bottom: 0;
+            inset: 0;
             width: 100%;
+            height: 100%;
+            z-index: 1
         }
         
-        .glass-ui {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        .glass {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow)
         }
         
-        header {
+        header.top-bar {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            height: 55px;
+            top: calc(14px + env(safe-area-inset-top, 0px));
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 28px);
+            max-width: 1380px;
             z-index: 20;
+            padding: 8px 14px;
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            gap: 12px
         }
         
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-        
-        .brand h1 {
-            font-size: 1rem;
-            margin: 0;
-            color: var(--primary-gold);
-            letter-spacing: 1px;
+            cursor: pointer;
+            flex-shrink: 0;
+            user-select: none
         }
         
         .brand img {
-            height: 28px;
-        }
-        /* --- MENÚ DESPLEGABLE --- */
-        
-        #menu {
-            position: absolute;
-            top: 75px;
-            right: 15px;
-            width: 200px;
-            z-index: 15;
-            padding: 10px;
-            display: none;
-            /* Oculto por defecto */
-            flex-direction: column;
-            gap: 4px;
+            height: 30px;
+            width: 30px;
+            object-fit: contain
         }
         
-        #menu.show {
+        .brand h1 {
+            font-size: .92rem;
+            margin: 0;
+            letter-spacing: .5px;
+            font-weight: 700;
+            white-space: nowrap
+        }
+        
+        .brand h1 span {
+            color: var(--accent);
+            font-weight: 500
+        }
+        
+        .toolbar {
             display: flex;
-            /* Se muestra al activar */
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none
         }
         
-        #menu a {
-            color: rgba(255, 255, 255, 0.6);
+        .toolbar::-webkit-scrollbar {
+            display: none
+        }
+        
+        .btn-ui,
+        .nav-link,
+        .lang-select {
+            padding: 7px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-weight: 500;
+            font-size: .76rem;
+            cursor: pointer;
+            transition: all .18s ease;
             text-decoration: none;
-            font-size: 0.75rem;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: 0.2s;
-            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            outline: none
         }
         
-        #menu a.active {
-            background: var(--primary-gold);
-            color: #000;
+        .btn-ui:hover,
+        .nav-link:hover,
+        .lang-select:hover,
+        .btn-ui:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent)
+        }
+        
+        .btn-ui.active-tool {
+            background: var(--accent)!important;
+            color: #000!important;
+            font-weight: 600
+        }
+        
+        .lang-select {
+            border-color: rgba(240, 184, 35, .3);
+            color: var(--accent);
             font-weight: 600;
+            padding-right: 8px
         }
         
-        .btn-layers {
-            font-size: 0.7rem;
-            color: var(--text-main);
-            border: 1px solid var(--glass-border);
-            padding: 6px 12px;
+        .lang-select option {
+            background: #0d121e;
+            color: var(--text-primary)
+        }
+        
+        .search-wrap {
+            position: relative;
+            flex-shrink: 0
+        }
+        
+        .search-input {
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, .3);
+            color: var(--text-primary);
+            width: 190px;
+            font-size: .76rem;
+            font-family: inherit;
+            transition: width .25s ease, border-color .2s, background .2s;
+            outline: none
+        }
+        
+        .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, .65);
+            width: 235px
+        }
+        
+        #suggestions {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 260px;
+            z-index: 40;
+            max-height: 240px;
+            overflow-y: auto;
+            display: none;
+            padding: 6px;
+            border-radius: var(--radius-md)
+        }
+        
+        .suggestion-item {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: .76rem;
+            transition: background .15s
+        }
+        
+        .suggestion-item:hover {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600
+        }
+        /* Dropdown panels live outside the header (fixed) so the toolbar's overflow never clips them */
+        
+        .dropdown-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 35;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 70vh;
+            max-height: 70dvh;
+            overflow-y: auto
+        }
+        
+        .dropdown-panel.show {
+            display: flex
+        }
+        
+        .layer-item,
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: .75rem;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: .15s;
+            cursor: pointer;
+            user-select: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit
+        }
+        
+        html[dir=rtl] .shortcut-item,
+        html[dir=rtl] .layer-item {
+            text-align: right
+        }
+        
+        .layer-item:hover,
+        .shortcut-item:hover {
+            background: rgba(255, 255, 255, .08);
+            color: #fff
+        }
+        
+        .layer-item.active {
+            color: var(--text-primary);
+            font-weight: 600
+        }
+        
+        .layer-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .2);
+            transition: .2s;
+            flex-shrink: 0
+        }
+        
+        .layer-item.active .layer-dot {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent)
+        }
+        
+        #regionSidebar {
+            position: absolute;
+            top: calc(74px + env(safe-area-inset-top, 0px));
+            right: 14px;
+            width: 350px;
+            max-height: calc(100vh - 94px);
+            max-height: calc(100dvh - 94px);
+            z-index: 25;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            overflow-y: auto;
+            transform: translateX(400px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .28s cubic-bezier(.16, 1, .3, 1), opacity .25s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+        
+        #regionSidebar.open {
+            transform: none;
+            opacity: 1;
+            pointer-events: auto
+        }
+        
+        html[dir=rtl] #regionSidebar {
+            right: auto;
+            left: 14px;
+            transform: translateX(-400px)
+        }
+        
+        html[dir=rtl] #regionSidebar.open {
+            transform: none
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px
+        }
+        
+        .panel-header h2 {
+            color: var(--accent);
+            margin: 0;
+            font-size: .95rem;
+            font-weight: 700
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 12px
+        }
+        
+        .metric-card h4 {
+            margin: 0 0 4px;
+            font-size: .7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .4px
+        }
+        
+        .metric-val {
+            font-size: .98rem;
+            font-weight: 600
+        }
+        
+        .chart-box {
+            background: rgba(0, 0, 0, .25);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            height: 175px
+        }
+        
+        .meta-footer {
+            font-size: .68rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding-top: 4px
+        }
+        
+        .floating-tool {
+            position: absolute;
+            top: calc(74px + env(safe-area-inset-top, 0px));
+            left: 14px;
+            z-index: 25;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            width: 275px
+        }
+        
+        html[dir=rtl] .floating-tool {
+            left: auto;
+            right: 14px
+        }
+        
+        .floating-tool.active {
+            display: flex
+        }
+        
+        .measure-modes {
+            display: flex;
+            gap: 6px
+        }
+        
+        .measure-modes .btn-ui {
+            flex: 1;
+            justify-content: center;
+            font-size: .72rem
+        }
+        
+        .measure-readout {
+            background: rgba(0, 0, 0, .4);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: .76rem;
+            color: var(--accent);
+            line-height: 1.45
+        }
+        
+        #polyDrawHud {
+            position: absolute;
+            top: calc(74px + env(safe-area-inset-top, 0px));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: var(--radius-pill)
+        }
+        
+        #polyDrawHud.active {
+            display: flex
+        }
+        
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, .65);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px
+        }
+        
+        .modal-card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 720px;
+            max-height: 86vh;
+            max-height: 86dvh;
+            overflow-y: auto;
+            padding: 22px;
+            position: relative
+        }
+        
+        .modal-card.compact {
+            max-width: 440px
+        }
+        
+        .close-btn {
+            background: rgba(255, 255, 255, .06);
+            border: none;
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: .15s
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, .15);
+            color: #fff
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin: 12px 0 16px;
+            background: rgba(0, 0, 0, .3);
+            padding: 4px;
+            border-radius: var(--radius-pill)
+        }
+        
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: var(--radius-pill);
+            font-family: inherit;
+            font-size: .76rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .18s
+        }
+        
+        .tab-btn.active {
+            background: var(--accent);
+            color: #000
+        }
+        
+        .form-group {
+            margin-bottom: 12px
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: .75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, .35);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            font-size: .82rem;
+            outline: none
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent)
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 12px
+        }
+        
+        .stats-box {
+            background: rgba(0, 0, 0, .3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px
+        }
+        
+        .stats-box h3 {
+            font-size: .78rem;
+            color: var(--accent);
+            margin: 0 0 8px;
+            text-transform: uppercase;
+            letter-spacing: .3px
+        }
+        
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            margin-bottom: 4px;
             border-radius: 6px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.05);
-            font-weight: 600;
+            font-size: .76rem;
+            background: rgba(255, 255, 255, .02);
+            transition: background .15s
         }
         
-        .btn-layers:hover {
-            background: var(--primary-gold);
-            color: #000;
+        .stats-item:hover {
+            background: var(--accent-soft)
         }
-        /* --- OTROS ESTILOS --- */
+        
+        .mapboxgl-popup-content {
+            background: var(--surface-elevated)!important;
+            border: 1px solid var(--border)!important;
+            border-radius: var(--radius-md)!important;
+            color: var(--text-primary)!important;
+            padding: 14px!important;
+            font-family: inherit!important;
+            font-size: .8rem!important;
+            box-shadow: var(--shadow)!important;
+            max-width: 290px;
+            max-height: 310px;
+            overflow-y: auto
+        }
+        
+        .popup-blend {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: .9rem;
+            margin-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px
+        }
+        
+        .popup-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0;
+            gap: 8px
+        }
+        
+        .popup-price {
+            font-size: 1.05rem;
+            font-weight: 700
+        }
+        
+        .popup-change {
+            font-weight: 600;
+            font-size: .75rem;
+            padding: 2px 6px;
+            border-radius: 4px
+        }
+        
+        .positive {
+            color: var(--up);
+            background: rgba(16, 185, 129, .14)
+        }
+        
+        .negative {
+            color: var(--down);
+            background: rgba(239, 68, 68, .14)
+        }
+        
+        .popup-ranges {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+            font-size: .73rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+        
+        .popup-update {
+            margin-top: 6px;
+            font-size: .68rem;
+            color: var(--text-secondary);
+            text-align: right
+        }
+        
+        .cluster-popup-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border)
+        }
+        
+        .cluster-popup-item:last-child {
+            border-bottom: none
+        }
+        
+        .mapboxgl-popup-close-button {
+            color: var(--text-secondary)!important;
+            font-size: 16px!important;
+            padding: 4px 8px!important
+        }
+        
+        .custom-map-pin {
+            background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="%23ef4444" stroke="%23ffffff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3" fill="%23ffffff"></circle></svg>');
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .5))
+        }
         
         .ad-container {
             position: absolute;
-            bottom: 20px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
             left: 50%;
             transform: translateX(-50%);
             z-index: 5;
@@ -156,485 +763,1333 @@
             min-height: 50px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.1);
+            justify-content: center
         }
         
-        @media (max-width: 480px) {
+        .cc-window {
+            background: var(--surface-elevated)!important;
+            border: 1px solid var(--border)!important;
+            border-radius: var(--radius-md)!important;
+            font-family: inherit!important
+        }
+        
+        @media (max-width:768px) {
+            header.top-bar {
+                top: calc(10px + env(safe-area-inset-top, 0px));
+                width: calc(100% - 20px);
+                padding: 8px 10px;
+                flex-wrap: wrap;
+                gap: 8px
+            }
+            .search-wrap {
+                order: 3;
+                width: 100%
+            }
+            .search-input,
+            .search-input:focus {
+                width: 100%
+            }
+            .toolbar {
+                width: 100%;
+                order: 2;
+                padding-bottom: 2px
+            }
+            #suggestions {
+                width: 100%
+            }
+            #regionSidebar {
+                top: auto;
+                bottom: 0;
+                left: 0!important;
+                right: 0!important;
+                width: 100%;
+                max-height: 62vh;
+                max-height: 62dvh;
+                border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+                transform: translateY(105%);
+                padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px))
+            }
+            #regionSidebar.open {
+                transform: none
+            }
             .ad-container {
-                bottom: 60px;
-                max-width: 320px;
+                display: none
             }
-        }
-        
-        .modal {
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none;
-        }
-        
-        .modal-content {
-            margin: 15% auto;
-            padding: 30px;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-        }
-        
-        .close {
-            color: #ffffff;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        /* estilos móviles */
-        
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            /* permite que se divida en varias filas */
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            gap: 8px;
-        }
-        
-        .header .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .header-controls {
-            display: flex;
-            flex-wrap: wrap;
-            /* permite que los controles bajen de fila en móvil */
-            align-items: center;
-            gap: 8px;
-        }
-        /* estilos móviles */
-        
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            gap: 8px;
-        }
-        
-        .header .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .header-controls {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-        }
-        /* Móvil: búsqueda en segunda fila */
-        
-        @media (max-width: 480px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .header-controls {
-                width: 100%;
-                justify-content: flex-start;
-                gap: 6px;
-            }
-            .search-container {
-                order: 1;
-                /* forzar que vaya después de Blog y Contact */
-                width: 100%;
-                margin-top: 4px;
-            }
-            .search-container input {
-                width: 100%;
-                max-width: 200px;
-            }
-            .about-header {
-                font-size: 0.7rem;
-                padding: 4px 6px;
-            }
-        }
-        
-        .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
-            color: #fff;
-        }
-        
-        .mapboxgl-ctrl-logo,
-        .mapboxgl-ctrl-attrib {
-            opacity: 0.3;
-            transition: 0.3s;
-        }
-        
-        .mapboxgl-ctrl-logo:hover,
-        .mapboxgl-ctrl-attrib:hover {
-            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <div class="ad-container">
+    <div class="ad-container" aria-label="Advertisement">
+        <!-- Replace data-ad-slot with your real AdSense slot ID -->
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>
 
-    <header class="glass-ui header" style="padding: 10px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background: rgba(18,18,18,0.9); border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.5);">
-
-        <!-- Logo -->
-        <div class="brand" style="display:flex; align-items:center; gap:12px;">
-            <img src="./img/oilmap.png" alt="Icon" style="height:36px;">
-            <h1 style="font-size:1rem; color:#f0b823; margin:0; letter-spacing:1px;">WORLD OIL MAP <span style="font-weight:300; opacity:0.6;">2026</span></h1>
+    <header class="glass top-bar" role="banner">
+        <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="About World Oil Map">
+            <img src="./img/oilmap.png" width="30" height="30" fetchpriority="high" alt="World Oil Map">
+            <h1>WORLD OIL MAP <span>2026</span></h1>
         </div>
-
-        <!-- Controles -->
-        <div class="header-controls" style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
-
-            <!-- Botón Layers -->
-            <div id="btn-toggle-menu" class="btn-layers" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; background: rgba(255,255,255,0.05); color:#fff; font-weight:600; cursor:pointer; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
-                onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='#fff';">
-                LAYERS ▾
-            </div>
-
-            <!-- Barra de búsqueda justo después de Layers -->
-            <div class="search-container" style="position:relative; display:inline-block;">
-                <input type="text" id="countrySearch" placeholder="Search Oil Block..." style="padding:6px 10px; border-radius:8px; border:1px solid #f0b823; background: rgba(0,0,0,0.2); color:#fff; width:160px; font-size:0.8rem; transition:0.3s;" onfocus="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='#f0b823';"
-                    onblur="this.style.background='rgba(0,0,0,0.2)'; this.style.borderColor='#f0b823';">
-                <div id="suggestions" style="position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.95); color:#fff; z-index:30; max-height:200px; overflow-y:auto; display:none; border-radius:6px; font-size:0.8rem; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
-                </div>
-            </div>
-
-            <!-- Blog y Contact -->
-            <a href="blog.html" class="about-header" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; color:#f0b823; text-decoration:none; font-size:0.75rem; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
-                onmouseout="this.style.background='transparent'; this.style.color='#f0b823';">
-            Blog
-        </a>
-
-            <a href="contact.html" class="about-header" style="padding:6px 12px; border-radius:8px; border:1px solid #f0b823; color:#f0b823; text-decoration:none; font-size:0.75rem; transition:0.3s;" onmouseover="this.style.background='#f0b823'; this.style.color='#000';"
-                onmouseout="this.style.background='transparent'; this.style.color='#f0b823';">
-            Contact
-        </a>
-
+        <div class="search-wrap">
+            <input type="search" id="countrySearch" class="search-input" data-i18n-ph="searchPlaceholder" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+            <div id="suggestions" class="glass" role="listbox"></div>
         </div>
+        <nav class="toolbar" aria-label="Map Controls">
+            <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="regionsBtn">📍 Regions ▾</span></button>
+            <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="layersBtn">🗂️ Layers ▾</span></button>
+            <button id="btn-stats" class="btn-ui" type="button"><span data-i18n="topStatsBtn">📊 Stats</span></button>
+            <button id="btnAddPin" class="btn-ui" type="button"><span data-i18n="addPinBtn">📍 + Pin</span></button>
+            <button id="btn-measure" class="btn-ui" type="button"><span data-i18n="measureBtn">📏 Measure</span></button>
+            <a href="blog.html" class="nav-link"><span data-i18n="navBlog">Blog</span></a>
+            <a href="contact.html" class="nav-link"><span data-i18n="navContact">Contact</span></a>
+            <button id="btn-info" class="btn-ui" type="button" aria-label="About"><span>ℹ️</span></button>
+            <select id="langSelector" class="lang-select" aria-label="Select Language">
+<option value="en" selected>🌐 EN</option><option value="es">ES</option><option value="fr">FR</option><option value="ar">AR</option><option value="zh">ZH</option>
+</select>
+        </nav>
     </header>
 
-    <!-- Estilos responsive para mobile -->
-    <style>
-        @media (max-width: 480px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .header-controls {
-                width: 100%;
-                justify-content: flex-start;
-                gap: 6px;
-            }
-            .search-container {
-                order: 1;
-                /* Aparece debajo de Layers pero antes de Blog/Contact */
-                width: 100%;
-                margin-top: 4px;
-            }
-            .search-container input {
-                width: 100%;
-                max-width: 200px;
-            }
-            .about-header {
-                font-size: 0.7rem;
-                padding: 4px 6px;
-            }
-        }
-    </style>
+    <div id="regions-menu" class="dropdown-panel glass" role="menu">
+        <button class="shortcut-item" role="menuitem" data-region="Venezuela" data-lng="-66.5897" data-lat="6.4238" data-zoom="5.5">🇻🇪 Venezuela</button>
+        <button class="shortcut-item" role="menuitem" data-region="UAE" data-lng="53.8478" data-lat="23.4241" data-zoom="6.2">🇦🇪 UAE</button>
+        <button class="shortcut-item" role="menuitem" data-region="Nigeria" data-lng="8.6753" data-lat="9.0820" data-zoom="5.8">🇳🇬 Nigeria</button>
+        <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" data-i18n="globalView">🌎 Global View</button>
+    </div>
+    <div id="menu" class="dropdown-panel glass" role="menu"></div>
 
+    <div id="distanceContainer" class="floating-tool glass" aria-live="polite">
+        <div class="measure-modes">
+            <button id="btnMeasureDist" class="btn-ui active-tool" data-i18n="measureDist">📏 Distance</button>
+            <button id="btnMeasureArea" class="btn-ui" data-i18n="measureArea">📐 Area</button>
+            <button id="btnMeasureClear" class="btn-ui" aria-label="Clear">🔄</button>
+        </div>
+        <div id="measureOutput" class="measure-readout" data-i18n="measurePromptDist">Click on map to start measuring.</div>
+    </div>
 
+    <div id="polyDrawHud" class="glass">
+        <span id="polyVertexCounter" style="font-size:.78rem;font-weight:600;color:var(--accent)">📐 0 vertices</span>
+        <button id="btnFinishPoly" class="btn-ui active-tool" data-i18n="polySave">✅ Save</button>
+        <button id="btnCancelPoly" class="btn-ui" aria-label="Cancel">❌</button>
+    </div>
 
-    <nav id="menu" class="glass-ui"></nav>
+    <aside id="regionSidebar" class="glass" aria-label="Country Intelligence">
+        <div class="panel-header">
+            <h2 id="sidebarTitle">Country Profile</h2><button class="close-btn" id="closeSidebar" aria-label="Close">&times;</button></div>
+        <div class="metric-card">
+            <h4 data-i18n="sideOperators">Key Operators / Companies</h4>
+            <div id="sidebarCompanies" class="metric-val" style="font-size:.88rem">--</div>
+        </div>
+        <div class="metric-card">
+            <h4 data-i18n="sideReserves">Proven Reserves</h4>
+            <div id="sidebarReserves" class="metric-val">--</div>
+        </div>
+        <div class="metric-card">
+            <h4 data-i18n="sideQuality">Crude Quality / Benchmark</h4>
+            <div id="sidebarQuality" class="metric-val">--</div>
+        </div>
+        <div class="chart-box"><canvas id="productionChart"></canvas></div>
+        <div class="meta-footer"><span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA International Energy Statistics</span><span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+        </div>
+    </aside>
 
-    <div id='map'></div>
+    <section class="sr-only">
+        <h2>Interactive global oil and gas map</h2>
+        <p>Explore oil blocks, bid rounds, exploration areas, refineries, oil and gas pipelines and live crude benchmark prices (Brent, WTI, Murban, Merey and more), with EIA reserves and production data by country.</p>
+    </section>
+    <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
+    <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
-    <div id="aboutModal" class="modal">
-        <div class="modal-content glass-ui">
-            <span class="close">&times;</span>
-            <img src="./img/oilmap.png" style="width:70px; margin-bottom: 15px;">
-            <h1 style="color: var(--primary-gold);">World Oil Map 2026</h1>
-            <p>Location-Intelligence application for Oil and Gas sector.</p>
-            <p>Powered by <a href="https://roqueleal.me/" style="color:var(--primary-gold)">Roque LEAL</a>.</p>
+    <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true">
+        <div class="modal-card compact">
+            <div class="panel-header">
+                <h2 data-i18n="modalSpatialTitle">📍 Spatial Tools</h2><button class="close-btn" id="closeAddPinModal" aria-label="Close">&times;</button></div>
+            <div class="tabs">
+                <button type="button" class="tab-btn active" id="tabPinBtn" data-i18n="tabPin">📍 Custom Pin</button>
+                <button type="button" class="tab-btn" id="tabPolyBtn" data-i18n="tabPoly">📐 Polygon Block</button>
+            </div>
+            <form id="addPinForm">
+                <div class="form-group"><label for="pinDescription" data-i18n="labelPinDesc">Description / Title</label><input type="text" id="pinDescription" class="form-control" data-i18n-ph="phPinDesc" placeholder="e.g. Wellsite Alpha..." required></div>
+                <div class="form-group"><label for="coordType" data-i18n="labelCoordFormat">Coordinate System</label>
+                    <select id="coordType" class="form-control"><option value="geo" data-i18n="optGeo">Geographic (Lat, Lng)</option><option value="utm" data-i18n="optUtm">UTM (Zone, Easting, Northing)</option></select></div>
+                <div id="geoFields">
+                    <div class="form-group"><label for="pinLat" data-i18n="labelLat">Latitude</label><input type="number" step="any" id="pinLat" class="form-control" placeholder="10.5"></div>
+                    <div class="form-group"><label for="pinLng" data-i18n="labelLng">Longitude</label><input type="number" step="any" id="pinLng" class="form-control" placeholder="-66.9"></div>
+                </div>
+                <div id="utmFields" style="display:none">
+                    <div class="form-group"><label for="utmZone" data-i18n="labelUtmZone">UTM Zone</label><input type="text" id="utmZone" class="form-control" placeholder="19N"></div>
+                    <div class="form-group"><label for="utmEasting">Easting (X)</label><input type="number" step="any" id="utmEasting" class="form-control" placeholder="500000"></div>
+                    <div class="form-group"><label for="utmNorthing">Northing (Y)</label><input type="number" step="any" id="utmNorthing" class="form-control" placeholder="1000000"></div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:14px">
+                    <button type="submit" class="btn-ui active-tool" style="flex:1;justify-content:center" data-i18n="btnAddPinSubmit">Add Pin</button>
+                    <button type="button" id="btnAddAnother" class="btn-ui" aria-label="Add another">➕</button>
+                </div>
+            </form>
+            <div id="polygonSection" style="display:none">
+                <div class="form-group"><label for="polyNameInput" data-i18n="labelPolyName">Concession / Block Name</label><input type="text" id="polyNameInput" class="form-control" value="Block Concession 1"></div>
+                <p style="font-size:.75rem;color:var(--text-secondary);line-height:1.45" data-i18n="polyInstructions">Plot vertices directly on the map to delineate a polygon and calculate its area.</p>
+                <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center" data-i18n="btnStartDrawPoly">🖌️ Draw Polygon on Map</button>
+            </div>
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+                <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)" data-i18n="btnExportKml">📥 Export to KML</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="panel-header">
+                <h2 data-i18n="statsModalTitle">📊 Market Rankings & Fluctuations</h2><button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button></div>
+            <div class="stats-box" style="margin-top:12px">
+                <h3 data-i18n="statsChartTitle">📈 Crude Prices Overview by Location</h3>
+                <div id="priceChartContainer" style="width:100%;overflow-x:auto"></div>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-box">
+                    <h3 data-i18n="statsTopGainers">📈 Top Gainers</h3>
+                    <div id="topGainersList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3 data-i18n="statsTopLosers">📉 Top Losers</h3>
+                    <div id="topLosersList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3 data-i18n="statsHighest">💎 Highest Prices</h3>
+                    <div id="topHighestList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3 data-i18n="statsLowest">🏷️ Lowest Prices</h3>
+                    <div id="topLowestList"></div>
+                </div>
+            </div>
+            <div class="meta-footer" style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px"><span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA & Official Price Feeds</span><span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true">
+        <div class="modal-card compact" style="text-align:center">
+            <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
+            <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map">
+            <h2 style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
+            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55" data-i18n="aboutP1">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
+            <p style="font-size:.82rem"><span data-i18n="aboutP3">Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
+            <div style="display:flex;justify-content:center;gap:16px;margin:16px 0">
+                <a href="https://github.com/roqueleal/oilmap" target="_blank" rel="noopener noreferrer"><img src="./img/git.png" width="110" height="34" loading="lazy" style="height:auto" alt="GitHub"></a>
+                <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank" rel="noopener noreferrer"><img src="./img/odi.png" width="95" height="34" loading="lazy" style="height:auto" alt="ODI Certificate"></a>
+            </div>
+            <div style="padding-top:12px;border-top:1px solid var(--border);font-size:.75rem"><a href="#" id="openCookieSettings" style="color:var(--text-secondary);text-decoration:none" data-i18n="manageCookies">🍪 Manage Cookie Preferences (GDPR/AdSense)</a></div>
         </div>
     </div>
 
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+        /* ---------- helpers ---------- */
+        const $ = id => document.getElementById(id);
+        const esc = s => String(s).replace(/[&<>"']/g, c => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[c]));
 
+        /* ---------- i18n ---------- */
+        const i18n = {
+            en: {
+                searchPlaceholder: "🔍 Search Block or Country...",
+                regionsBtn: "📍 Regions ▾",
+                globalView: "🌎 Global View",
+                layersBtn: "🗂️ Layers ▾",
+                topStatsBtn: "📊 Stats",
+                addPinBtn: "📍 + Pin",
+                measureBtn: "📏 Measure",
+                navBlog: "Blog",
+                navContact: "Contact",
+                measureDist: "📏 Distance",
+                measureArea: "📐 Area",
+                measurePromptDist: "Click on map to start measuring.",
+                measurePromptArea: "Click at least 3 points to measure area.",
+                polySave: "✅ Save",
+                sideOperators: "Key Operators / Companies",
+                sideReserves: "Proven Reserves",
+                sideQuality: "Crude Quality / Benchmark",
+                sideSourcePrefix: "Source:",
+                sideRetrieved: "Captured:",
+                modalSpatialTitle: "📍 Spatial Tools",
+                tabPin: "📍 Custom Pin",
+                tabPoly: "📐 Polygon Block",
+                labelPinDesc: "Description / Title",
+                phPinDesc: "e.g. Wellsite Alpha...",
+                labelCoordFormat: "Coordinate System",
+                optGeo: "Geographic (Lat, Lng)",
+                optUtm: "UTM (Zone, Easting, Northing)",
+                labelLat: "Latitude",
+                labelLng: "Longitude",
+                labelUtmZone: "UTM Zone",
+                btnAddPinSubmit: "Add Pin",
+                labelPolyName: "Concession / Block Name",
+                polyInstructions: "Plot vertices directly on the map to delineate a polygon and calculate its area.",
+                btnStartDrawPoly: "🖌️ Draw Polygon on Map",
+                btnExportKml: "📥 Export to KML",
+                statsModalTitle: "📊 Market Rankings & Fluctuations",
+                statsChartTitle: "📈 Crude Prices Overview by Location",
+                statsTopGainers: "📈 Top Gainers",
+                statsTopLosers: "📉 Top Losers",
+                statsHighest: "💎 Highest Prices",
+                statsLowest: "🏷️ Lowest Prices",
+                aboutP1: "Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.",
+                aboutP3: "Developed by",
+                manageCookies: "🍪 Manage Cookie Preferences (GDPR/AdSense)"
+            },
+            es: {
+                searchPlaceholder: "🔍 Buscar Bloque o País...",
+                regionsBtn: "📍 Regiones ▾",
+                globalView: "🌎 Vista Global",
+                layersBtn: "🗂️ Capas ▾",
+                topStatsBtn: "📊 Estadísticas",
+                addPinBtn: "📍 + Pin",
+                measureBtn: "📏 Medir",
+                navBlog: "Blog",
+                navContact: "Contacto",
+                measureDist: "📏 Distancia",
+                measureArea: "📐 Área",
+                measurePromptDist: "Haga clic en el mapa para medir distancia.",
+                measurePromptArea: "Marque al menos 3 puntos para medir el área.",
+                polySave: "✅ Guardar",
+                sideOperators: "Operadoras Principales",
+                sideReserves: "Reservas Probadas",
+                sideQuality: "Calidad de Crudo / Referencia",
+                sideSourcePrefix: "Fuente:",
+                sideRetrieved: "Captura:",
+                modalSpatialTitle: "📍 Herramientas Espaciales",
+                tabPin: "📍 Marcador",
+                tabPoly: "📐 Bloque Poligonal",
+                labelPinDesc: "Descripción / Título",
+                phPinDesc: "ej. Pozo Alpha...",
+                labelCoordFormat: "Sistema de Coordenadas",
+                optGeo: "Geográficas (Lat, Lng)",
+                optUtm: "UTM (Zona, Este, Norte)",
+                labelLat: "Latitud",
+                labelLng: "Longitud",
+                labelUtmZone: "Zona UTM",
+                btnAddPinSubmit: "Añadir Pin",
+                labelPolyName: "Nombre del Bloque / Concesión",
+                polyInstructions: "Trace los vértices en el mapa para delimitar el polígono y calcular su superficie.",
+                btnStartDrawPoly: "🖌️ Dibujar Polígono en el Mapa",
+                btnExportKml: "📥 Exportar a KML",
+                statsModalTitle: "📊 Rankings del Mercado y Fluctuaciones",
+                statsChartTitle: "📈 Precios de Crudo por Localización",
+                statsTopGainers: "📈 Mayores Alzas",
+                statsTopLosers: "📉 Mayores Bajas",
+                statsHighest: "💎 Precios Más Altos",
+                statsLowest: "🏷️ Precios Más Bajos",
+                aboutP1: "Plataforma de Inteligencia de Localización actualizada mediante bases de datos espaciales oficiales del sector de Petróleo y Gas.",
+                aboutP3: "Desarrollado por",
+                manageCookies: "🍪 Configurar Cookies (RGPD/AdSense)"
+            },
+            fr: {
+                searchPlaceholder: "🔍 Rechercher Bloc ou Pays...",
+                regionsBtn: "📍 Régions ▾",
+                globalView: "🌎 Vue Globale",
+                layersBtn: "🗂️ Couches ▾",
+                topStatsBtn: "📊 Stats",
+                addPinBtn: "📍 + Repère",
+                measureBtn: "📏 Mesurer",
+                navBlog: "Blog",
+                navContact: "Contact",
+                measureDist: "📏 Distance",
+                measureArea: "📐 Surface",
+                measurePromptDist: "Cliquez sur la carte pour mesurer la distance.",
+                measurePromptArea: "Placez 3 points minimum pour mesurer la surface.",
+                polySave: "✅ Sauvegarder",
+                sideOperators: "Opérateurs Principaux",
+                sideReserves: "Réserves Prouvées",
+                sideQuality: "Qualité du Brut / Référence",
+                sideSourcePrefix: "Source :",
+                sideRetrieved: "Capture :",
+                modalSpatialTitle: "📍 Outils Spatiaux",
+                tabPin: "📍 Repère",
+                tabPoly: "📐 Polygone",
+                labelPinDesc: "Description / Titre",
+                phPinDesc: "ex. Puits Alpha...",
+                labelCoordFormat: "Système de Coordonnées",
+                optGeo: "Géographiques (Lat, Lng)",
+                optUtm: "UTM (Zone, Est, Nord)",
+                labelLat: "Latitude",
+                labelLng: "Longitude",
+                labelUtmZone: "Zone UTM",
+                btnAddPinSubmit: "Ajouter",
+                labelPolyName: "Nom du Bloc / Concession",
+                polyInstructions: "Placez les sommets sur la carte pour tracer un polygone et calculer sa superficie.",
+                btnStartDrawPoly: "🖌️ Tracer un Polygone",
+                btnExportKml: "📥 Exporter en KML",
+                statsModalTitle: "📊 Classements et Fluctuations du Marché",
+                statsChartTitle: "📈 Aperçu des Prix du Brut par Lieu",
+                statsTopGainers: "📈 Plus Fortes Hausses",
+                statsTopLosers: "📉 Plus Fortes Baisses",
+                statsHighest: "💎 Prix les Plus Élevés",
+                statsLowest: "🏷️ Prix les Plus Bas",
+                aboutP1: "Plateforme d'intelligence géospatiale mise à jour à partir des bases de données officielles du secteur pétrolier et gazier.",
+                aboutP3: "Développé par",
+                manageCookies: "🍪 Gérer les Cookies (RGPD/AdSense)"
+            },
+            ar: {
+                searchPlaceholder: "🔍 ابحث عن قطاع أو دولة...",
+                regionsBtn: "📍 المناطق ▾",
+                globalView: "🌎 عرض عالمي",
+                layersBtn: "🗂️ الطبقات ▾",
+                topStatsBtn: "📊 إحصائيات",
+                addPinBtn: "📍 + نقطة",
+                measureBtn: "📏 قياس",
+                navBlog: "المدونة",
+                navContact: "اتصل بنا",
+                measureDist: "📏 مسافة",
+                measureArea: "📐 مساحة",
+                measurePromptDist: "انقر على الخريطة لقياس المسافة.",
+                measurePromptArea: "حدد 3 نقاط على الأقل لحساب المساحة.",
+                polySave: "✅ حفظ",
+                sideOperators: "الشركات المشغلة الرئيسية",
+                sideReserves: "الاحتياطيات المؤكدة",
+                sideQuality: "جودة الخام القياسي",
+                sideSourcePrefix: "المصدر:",
+                sideRetrieved: "تاريخ الالتقاط:",
+                modalSpatialTitle: "📍 الأدوات المكانية",
+                tabPin: "📍 نقطة مخصصة",
+                tabPoly: "📐 مضلع امتياز",
+                labelPinDesc: "الوصف / الاسم",
+                phPinDesc: "مثال: بئر ألفا...",
+                labelCoordFormat: "نظام الإحداثيات",
+                optGeo: "جغرافية (عرض، طول)",
+                optUtm: "UTM (نطاق، شرق، شمال)",
+                labelLat: "خط العرض",
+                labelLng: "خط الطول",
+                labelUtmZone: "نطاق UTM",
+                btnAddPinSubmit: "إضافة",
+                labelPolyName: "اسم القطاع / الامتياز",
+                polyInstructions: "حدد النقاط مباشرة على الخريطة لرسم المضلع وحساب المساحة.",
+                btnStartDrawPoly: "🖌️ رسم مضلع على الخريطة",
+                btnExportKml: "📥 تصدير إلى KML",
+                statsModalTitle: "📊 تصنيفات وتقلبات السوق",
+                statsChartTitle: "📈 نظرة عامة على أسعار النفط الخام",
+                statsTopGainers: "📈 الأكثر ارتفاعاً",
+                statsTopLosers: "📉 الأكثر انخفاضاً",
+                statsHighest: "💎 أعلى الأسعار",
+                statsLowest: "🏷️ أقل الأسعار",
+                aboutP1: "منصة ذكاء مكاني محدثة باستخدام قواعد البيانات الرسمية لقطاع النفط والغاز.",
+                aboutP3: "تطوير:",
+                manageCookies: "🍪 إعدادات ملفات تعريف الارتباط"
+            },
+            zh: {
+                searchPlaceholder: "🔍 搜索油气区块或国家...",
+                regionsBtn: "📍 区域 ▾",
+                globalView: "🌎 全球视图",
+                layersBtn: "🗂️ 图层 ▾",
+                topStatsBtn: "📊 统计",
+                addPinBtn: "📍 + 标记",
+                measureBtn: "📏 测量",
+                navBlog: "博客",
+                navContact: "联系",
+                measureDist: "📏 距离",
+                measureArea: "📐 面积",
+                measurePromptDist: "点击地图开始测量距离。",
+                measurePromptArea: "至少点击3个点以测量面积。",
+                polySave: "✅ 保存",
+                sideOperators: "主要作业公司",
+                sideReserves: "探明储量",
+                sideQuality: "原油品质 / 基准",
+                sideSourcePrefix: "数据来源：",
+                sideRetrieved: "采集时间：",
+                modalSpatialTitle: "📍 空间标注工具",
+                tabPin: "📍 自定义标记",
+                tabPoly: "📐 区块多边形",
+                labelPinDesc: "描述 / 名称",
+                phPinDesc: "例如：Alpha 井场...",
+                labelCoordFormat: "坐标系统",
+                optGeo: "地理坐标 (经纬度)",
+                optUtm: "UTM 投影坐标",
+                labelLat: "纬度",
+                labelLng: "经度",
+                labelUtmZone: "UTM 区带",
+                btnAddPinSubmit: "添加标记",
+                labelPolyName: "油气区块名称",
+                polyInstructions: "直接在地图上点击节点绘制区块多边形并自动计算面积。",
+                btnStartDrawPoly: "🖌️ 在地图上绘制多边形",
+                btnExportKml: "📥 导出 KML",
+                statsModalTitle: "📊 市场排名与波动",
+                statsChartTitle: "📈 各地区原油价格概览",
+                statsTopGainers: "📈 涨幅榜",
+                statsTopLosers: "📉 跌幅榜",
+                statsHighest: "💎 最高油价",
+                statsLowest: "🏷️ 最低油价",
+                aboutP1: "基于官方空间数据库与权威数据构建的全球油气地理智能平台。",
+                aboutP3: "开发者：",
+                manageCookies: "🍪 Cookie 隐私设置"
+            }
+        };
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = i18n[lang] ? lang : 'en';
+            const d = i18n[currentLang],
+                h = document.documentElement;
+            h.lang = currentLang;
+            h.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const v = d[el.dataset.i18n];
+                if (v) el.textContent = v
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const v = d[el.dataset.i18nPh];
+                if (v) el.placeholder = v
+            });
+            $('langSelector').value = currentLang;
+            closeAllDropdowns();
+            if (measureEnabled) updateMeasureText();
+        }
+        $('langSelector').addEventListener('change', e => setLanguage(e.target.value));
+
+        /* ---------- map ---------- */
+        mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+        mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js', null, true);
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
-            center: [ -64.974,18.198],
+            center: [-64.974, 18.198],
             zoom: 3,
             antialias: true
         });
+        map.addControl(new mapboxgl.NavigationControl({
+            showCompass: true
+        }), 'bottom-right');
+        map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }), 'bottom-right');
+        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS', 'OIL PRICES'];
 
-        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'NEWS', 'CLUSTER-NEWS'];
+        /* ---------- dropdowns (fixed-position, never clipped by toolbar) ---------- */
+        const menuNav = $('menu'),
+            regionsMenu = $('regions-menu');
+        const panels = [
+            [$('btn-regions'), regionsMenu],
+            [$('btn-toggle-menu'), menuNav]
+        ];
 
-        // --- LÓGICA DE NOTICIAS (NEWS) ---
-        var urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
+        function closeAllDropdowns() {
+            panels.forEach(([b, p]) => {
+                p.classList.remove('show');
+                b.setAttribute('aria-expanded', 'false')
+            })
+        }
 
-        map.on('load', function() {
-            // Actualización periódica
-            window.setInterval(function() {
-                if (map.getSource('NEWS')) map.getSource('NEWS').setData(urlNews);
-            }, 2000);
-
-            map.addSource('NEWS', {
-                type: 'geojson',
-                data: urlNews
+        function placePanel(btn, panel) {
+            const r = btn.getBoundingClientRect(),
+                w = Math.min(220, innerWidth - 16),
+                rtl = document.documentElement.dir === 'rtl';
+            let left = rtl ? r.left : r.right - w;
+            left = Math.max(8, Math.min(left, innerWidth - w - 8));
+            Object.assign(panel.style, {
+                width: w + 'px',
+                left: left + 'px',
+                top: (r.bottom + 8) + 'px'
             });
-            map.addLayer({
-                "id": "NEWS",
-                "type": "symbol",
-                "source": "NEWS",
-                "layout": {
-                    "icon-image": "oil",
-                    "icon-size": ["interpolate", ["linear"],
-                        ["zoom"], 0, 0, 9.256, 0.1
-                    ]
+        }
+        panels.forEach(([btn, panel]) => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const was = panel.classList.contains('show');
+                closeAllDropdowns();
+                if (!was) {
+                    placePanel(btn, panel);
+                    panel.classList.add('show');
+                    btn.setAttribute('aria-expanded', 'true')
                 }
             });
+            panel.addEventListener('click', e => e.stopPropagation());
+        });
+        document.addEventListener('click', () => {
+            closeAllDropdowns();
+            $('suggestions').style.display = 'none'
+        });
+        addEventListener('resize', closeAllDropdowns);
+        addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeAllDropdowns()
+        });
+        document.querySelector('.toolbar').addEventListener('scroll', closeAllDropdowns, {
+            passive: true
+        });
 
-            // --- LÓGICA DE CLUSTER-NEWS ---
-            map.addSource("CLUSTER-NEWS", {
-                type: "geojson",
-                data: urlNews,
+        /* ---------- region sidebar (Chart.js loaded on demand) ---------- */
+        let prodChart = null,
+            chartPromise;
+
+        function loadChart() {
+            return chartPromise || (chartPromise = new Promise((res, rej) => {
+                if (window.Chart) return res();
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js';
+                s.onload = res;
+                s.onerror = rej;
+                document.head.appendChild(s);
+            }));
+        }
+        const eiaProfiles = {
+            Venezuela: {
+                companies: 'PDVSA, Chevron, Eni, Repsol',
+                reserves: '303.8 Billion bbl',
+                quality: 'Merey 16 / Hamaca (Extra-Heavy)',
+                trend: [750, 780, 810, 850]
+            },
+            UAE: {
+                companies: 'ADNOC, TotalEnergies, BP, Shell',
+                reserves: '111.0 Billion bbl',
+                quality: 'Murban (Light Sweet - 39.0° API)',
+                trend: [3200, 3300, 3400, 3450]
+            },
+            Nigeria: {
+                companies: 'NNPC, Shell, ExxonMobil, TotalEnergies, Chevron',
+                reserves: '37.0 Billion bbl',
+                quality: 'Bonny Light (Light Sweet - 32.2° API)',
+                trend: [1300, 1350, 1390, 1420]
+            }
+        };
+        document.querySelectorAll('.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
+            const name = btn.dataset.region;
+            map.flyTo({
+                center: [+btn.dataset.lng, +btn.dataset.lat],
+                zoom: +btn.dataset.zoom,
+                essential: true
+            });
+            closeAllDropdowns();
+            if (name && name !== 'Global') openRegionSidebar(name);
+            else $('regionSidebar').classList.remove('open');
+        }));
+        $('closeSidebar').onclick = () => $('regionSidebar').classList.remove('open');
+
+        function openRegionSidebar(name) {
+            $('sidebarTitle').textContent = `${name} · EIA Profile`;
+            const info = eiaProfiles[name] || {
+                companies: 'National Oil Consortiums',
+                reserves: '50.0 Billion bbl',
+                quality: 'Standard Export Blend',
+                trend: [1000, 1050, 1100, 1200]
+            };
+            $('sidebarCompanies').textContent = info.companies;
+            $('sidebarReserves').textContent = info.reserves;
+            $('sidebarQuality').textContent = info.quality;
+            $('regionSidebar').classList.add('open');
+            loadChart().then(() => {
+                if (prodChart) prodChart.destroy();
+                const tick = {
+                    color: '#94a3b8',
+                    font: {
+                        size: 10
+                    }
+                };
+                prodChart = new Chart($('productionChart').getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['2023', '2024', '2025', '2026'],
+                        datasets: [{
+                            label: 'kbbl/d',
+                            data: info.trend,
+                            backgroundColor: '#f0b823',
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: tick,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                ticks: tick,
+                                grid: {
+                                    color: 'rgba(255,255,255,.05)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }).catch(() => {});
+        }
+
+        /* ---------- price data ---------- */
+        const allBlends = [];
+        let activePopup = null,
+            globalGeojsonFeatures = [],
+            customUserPins = [],
+            customUserPolygons = [],
+            latestCaptureDate = 'Live';
+        const parseCoord = v => (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
+        const parseNumeric = v => v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
+        const updateCaptureDateNodes = s => document.querySelectorAll('.dynamic-capture-date').forEach(n => n.textContent = s);
+
+        function showPopup(lngLat, html) {
+            if (activePopup) activePopup.remove();
+            activePopup = new mapboxgl.Popup({
+                offset: 12
+            }).setLngLat(lngLat).setHTML(html).addTo(map)
+        }
+
+        map.on('load', () => {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 508" width="60" height="60"><circle cx="254" cy="254" r="254" fill="#FFD05B"/><rect x="154" y="100.5" width="200" height="306.9" rx="16" fill="#2B3B4E"/><g><path fill="#324A5E" d="M364,110.7H144c-5.6,0-10.2-4.5-10.2-10.2l0,0c0-5.6,4.5-10.2,10.2-10.2h220c5.6,0,10.2,4.5,10.2,10.2l0,0C374.2,106.1,369.6,110.7,364,110.7z"/><path fill="#324A5E" d="M372,213H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,211.9,373.4,213,372,213z"/><path fill="#324A5E" d="M372,315.3H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,314.2,373.4,315.3,372,315.3z"/><path fill="#324A5E" d="M372,417.6H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6V415C374.6,416.5,373.4,417.6,372,417.6z"/></g><path fill="#131b2a" d="M254,145c-35,0-63.5,49.2-63.5,109s28.5,109,63.5,109s63.5-49.2,63.5-109S289,145,254,145z"/><text x="254" y="292" fill="#FFFFFF" font-size="140" font-family="Inter, Arial, sans-serif" font-weight="bold" text-anchor="middle">$</text></svg>`;
+            const url = URL.createObjectURL(new Blob([svg], {
+                    type: 'image/svg+xml;charset=utf-8'
+                })),
+                img = new Image();
+            img.onload = () => {
+                if (!map.hasImage('barrel-custom-icon')) map.addImage('barrel-custom-icon', img);
+                URL.revokeObjectURL(url)
+            };
+            img.src = url;
+
+            map.addSource('user-polygons-src', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                }
+            });
+            map.addLayer({
+                id: 'user-polygons-fill',
+                type: 'fill',
+                source: 'user-polygons-src',
+                paint: {
+                    'fill-color': '#f0b823',
+                    'fill-opacity': .25
+                }
+            });
+            map.addLayer({
+                id: 'user-polygons-line',
+                type: 'line',
+                source: 'user-polygons-src',
+                paint: {
+                    'line-color': '#f0b823',
+                    'line-width': 2.2
+                }
+            });
+            map.on('click', 'user-polygons-fill', e => {
+                if (isDrawingPolygon || measureEnabled || !e.features[0]) return;
+                const p = e.features[0].properties;
+                new mapboxgl.Popup({
+                    offset: 10
+                }).setLngLat(e.lngLat).setHTML(`<div class="popup-blend">📐 ${esc(p.title)}</div><div><strong>Area:</strong> ${esc(p.areaKm2)} km² (${esc(p.areaHa)} ha)</div>`).addTo(map);
+            });
+
+            const frag = document.createDocumentFragment();
+            toggleableLayerIds.forEach(id => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'layer-item active';
+                b.setAttribute('role', 'menuitemcheckbox');
+                b.setAttribute('aria-checked', 'true');
+                b.innerHTML = `<span class="layer-dot"></span><span>${id}</span>`;
+                b.onclick = function(e) {
+                    e.preventDefault();
+                    const ids = id === 'OIL PRICES' ? ['oil-prices-layer', 'clusters', 'cluster-count'] : [id];
+                    const ref = ids.find(l => map.getLayer(l));
+                    if (!ref) return;
+                    const vis = (map.getLayoutProperty(ref, 'visibility') || 'visible') === 'visible' ? 'none' : 'visible';
+                    ids.forEach(l => {
+                        if (map.getLayer(l)) map.setLayoutProperty(l, 'visibility', vis)
+                    });
+                    this.classList.toggle('active', vis === 'visible');
+                    this.setAttribute('aria-checked', vis === 'visible');
+                };
+                frag.appendChild(b);
+            });
+            menuNav.appendChild(frag);
+
+            fetch('https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv')
+                .then(r => r.text())
+                .then(csv => Papa.parse(csv, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: res => {
+                        let captured = '';
+                        res.data.forEach(row => {
+                            const n = {};
+                            Object.keys(row).forEach(k => n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = row[k]);
+                            const AREA = n['blend'] || '',
+                                Y = parseCoord(n['lat']),
+                                X = parseCoord(n['lon']);
+                            const PRICE = n['precio'] || '0',
+                                CHANGE = n['cambio'] || '0',
+                                PCT = n['cambio %'] || '0%',
+                                WEEK = n['rango sem.'] || '-',
+                                MONTH = n['rango mes'] || '-',
+                                UPDATE = (n['captura'] || '').trim();
+                            if (UPDATE && !captured) captured = UPDATE;
+                            if (!AREA || isNaN(Y) || isNaN(X)) return;
+                            const numericPrice = parseNumeric(PRICE),
+                                numericChange = parseNumeric(CHANGE),
+                                pos = !String(CHANGE).startsWith('-');
+                            const date = UPDATE || latestCaptureDate;
+                            const html = `<div class="popup-blend">🛢️ ${esc(AREA)}</div><div class="popup-price-row"><span class="popup-price">$${esc(PRICE)} <span style="font-size:.68rem;color:#94a3b8">USD/Bl</span></span><span class="popup-change ${pos?'positive':'negative'}">${pos?'▲':'▼'} ${esc(CHANGE)} (${esc(PCT)})</span></div><div class="popup-ranges"><div>📅 <strong>Weekly:</strong> ${esc(WEEK)}</div><div>📊 <strong>Monthly:</strong> ${esc(MONTH)}</div></div><div class="popup-update">🕒 ${esc(date)}</div>`;
+                            globalGeojsonFeatures.push({
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: [X, Y]
+                                },
+                                properties: {
+                                    title: AREA,
+                                    popupContent: html
+                                }
+                            });
+                            allBlends.push({
+                                name: AREA,
+                                price: PRICE,
+                                numericPrice,
+                                change: CHANGE,
+                                numericChange,
+                                changePct: PCT,
+                                updateDate: date,
+                                coordinates: [X, Y],
+                                popupContent: html
+                            });
+                        });
+                        if (captured) latestCaptureDate = captured;
+                        updateCaptureDateNodes(latestCaptureDate);
+                        updateMapSourceAndLayers();
+                        buildStatsLists();
+                        buildPriceChart();
+                    }
+                }))
+                .catch(err => console.error('Error loading CSV:', err));
+        });
+
+        function updateMapSourceAndLayers() {
+            const data = {
+                type: 'FeatureCollection',
+                features: globalGeojsonFeatures
+            };
+            if (map.getSource('oil-prices-source')) {
+                map.getSource('oil-prices-source').setData(data);
+                return
+            }
+            map.addSource('oil-prices-source', {
+                type: 'geojson',
+                data,
                 cluster: true,
                 clusterMaxZoom: 14,
                 clusterRadius: 50
             });
-
             map.addLayer({
-                id: "CLUSTER-NEWS",
-                type: "circle",
-                source: "CLUSTER-NEWS",
-                filter: ["has", "point_count"],
+                id: 'clusters',
+                type: 'circle',
+                source: 'oil-prices-source',
+                filter: ['has', 'point_count'],
                 paint: {
-                    "circle-color": ["step", ["get", "point_count"], "#1dcaff", 5, "#fff000", 10, "#ff521d"],
-                    "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 750, 40]
+                    'circle-color': ['step', ['get', 'point_count'], '#ef4444', 10, '#f59e0b', 30, '#3b82f6'],
+                    'circle-radius': ['step', ['get', 'point_count'], 19, 10, 24, 30, 30],
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#fff',
+                    'circle-opacity': .88
                 }
             });
-
             map.addLayer({
-                id: "cluster-count",
-                type: "symbol",
-                source: "CLUSTER-NEWS",
-                filter: ["has", "point_count"],
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'oil-prices-source',
+                filter: ['has', 'point_count'],
                 layout: {
-                    "text-field": "{point_count_abbreviated}",
-                    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                    "text-size": 12
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                },
+                paint: {
+                    'text-color': '#fff'
                 }
             });
-
-            ///geocoder
-            const searchInput = document.getElementById('countrySearch');
-            const suggestionsDiv = document.getElementById('suggestions');
-
-            // Función para mostrar sugerencias
-            function showSuggestions(items) {
-                suggestionsDiv.innerHTML = '';
-                if (items.length === 0) {
-                    suggestionsDiv.style.display = 'none';
-                    return;
+            map.addLayer({
+                id: 'oil-prices-layer',
+                type: 'symbol',
+                source: 'oil-prices-source',
+                filter: ['!', ['has', 'point_count']],
+                layout: {
+                    'icon-image': 'barrel-custom-icon',
+                    'icon-size': .62,
+                    'icon-allow-overlap': true
+                },
+                paint: {
+                    'icon-opacity': ['interpolate', ['linear'],
+                        ['zoom'], 3.5, 0, 5.5, .45, 7, 1
+                    ]
                 }
-                items.forEach(item => {
-                    const div = document.createElement('div');
-                    div.style.padding = '4px 8px';
-                    div.style.cursor = 'pointer';
-                    div.textContent = item.name;
-                    div.onclick = () => {
-                        flyToResult(item);
-                        suggestionsDiv.style.display = 'none';
-                    };
-                    suggestionsDiv.appendChild(div);
+            });
+            map.on('click', 'clusters', e => {
+                if (isDrawingPolygon || measureEnabled) return;
+                const f = map.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
+                })[0];
+                map.getSource('oil-prices-source').getClusterLeaves(f.properties.cluster_id, 50, 0, (err, leaves) => {
+                    if (err) return;
+                    let h = `<div style="font-weight:700;color:var(--accent);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px">🛢️ Multiple Benchmarks (${leaves.length})</div>`;
+                    leaves.forEach(l => h += `<div class="cluster-popup-item">${l.properties.popupContent}</div>`);
+                    showPopup(f.geometry.coordinates, h);
                 });
-                suggestionsDiv.style.display = 'block';
-            }
+            });
+            map.on('click', 'oil-prices-layer', e => {
+                if (isDrawingPolygon || measureEnabled) return;
+                showPopup(e.features[0].geometry.coordinates.slice(), e.features[0].properties.popupContent);
+            });
+            ['oil-prices-layer', 'clusters'].forEach(l => {
+                map.on('mouseenter', l, () => map.getCanvas().style.cursor = 'pointer');
+                map.on('mouseleave', l, () => map.getCanvas().style.cursor = (isDrawingPolygon || measureEnabled) ? 'crosshair' : '');
+            });
+        }
+        const interactiveLayers = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
 
-            // Función para volar al resultado
-            function flyToResult(item) {
-                const [lng, lat] = item.coordinates;
-                map.flyTo({
-                    center: [lng, lat],
-                    zoom: 8
+        interactiveLayers.forEach(layerId => {
+            map.on('click', layerId, (e) => {
+                if (isDrawingPolygon || measureEnabled) return;
+
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: [layerId]
                 });
-                new mapboxgl.Popup({
-                        offset: 10
-                    })
-                    .setLngLat([lng, lat])
-                    .setHTML(`<div style="color:black"><strong>${item.name}</strong></div>`)
-                    .addTo(map);
-            }
+                if (!features.length) return;
 
-            // Escuchar input
-            searchInput.addEventListener('input', async() => {
-                const query = searchInput.value.trim().toLowerCase();
-                if (!query) {
-                    suggestionsDiv.style.display = 'none';
-                    return;
-                }
+                const feature = features[0];
+                const props = feature.properties;
+                const title = props.name || props.TITLE || props.Name || props.field_name || layerId;
 
-                let results = [];
+                const rawHtmlDesc = (layerId === 'REFINERIES') ? null : (props.Description || props.description || props.DESC || props.desc || props.Descriptio);
 
-                // 1️⃣ Buscar en customData
-                customData.features.forEach(f => {
-                    if (f.properties.title.toLowerCase().includes(query)) {
-                        results.push({
-                            name: f.properties.title,
-                            coordinates: f.geometry.coordinates
-                        });
+                let htmlContent = `<div class="popup-blend">🛢️ ${esc(title)}</div>`;
+
+                if (rawHtmlDesc) {
+                    htmlContent += `<div style="margin-top:6px;">${rawHtmlDesc}</div>`;
+                } else {
+                    // Lista ampliada de campos ignorados incluyendo 'Descriptio'
+                    const ignoredKeys = ['name', 'TITLE', 'Name', 'field_name', 'popupContent', 'Description', 'description', 'DESC', 'desc', 'Descriptio', 'DESCRIPTIO'];
+
+                    for (const [key, value] of Object.entries(props)) {
+                        if (ignoredKeys.includes(key)) continue;
+                        if (value !== null && value !== undefined && value !== '') {
+                            const isValueHtml = typeof value === 'string' && value.trim().startsWith('<') && value.trim().endsWith('>');
+                            if (isValueHtml) {
+                                htmlContent += `<div style="margin-top:4px;"><strong>${esc(key)}:</strong> ${value}</div>`;
+                            } else {
+                                htmlContent += `<div style="margin-top:4px;"><strong>${esc(key)}:</strong> ${esc(value)}</div>`;
+                            }
+                        }
                     }
-                });
-
-                // 2️⃣ Buscar en Mapbox Geocoder
-                const geocoderResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}`);
-                const geocoderData = await geocoderResponse.json();
-                if (geocoderData.features && geocoderData.features.length > 0) {
-                    geocoderData.features.forEach(f => {
-                        results.push({
-                            name: f.place_name,
-                            coordinates: f.center
-                        });
-                    });
                 }
 
-                showSuggestions(results.slice(0, 10)); // Mostrar máximo 10 sugerencias
+                showPopup(e.lngLat, htmlContent);
             });
 
-            //geocoder
-
-
-
-
-            // --- GENERAR MENÚ DESPLEGABLE DINÁMICO ---
-            const menuNav = document.getElementById('menu');
-            const btnToggle = document.getElementById('btn-toggle-menu');
-
-            // Abrir/Cerrar menú
-            btnToggle.onclick = (e) => {
-                e.stopPropagation();
-                menuNav.style.display = (menuNav.style.display === 'flex') ? 'none' : 'flex';
-            };
-
-            // Cerrar menú al hacer clic fuera
-            document.onclick = () => {
-                menuNav.style.display = 'none';
-            };
-            menuNav.onclick = (e) => e.stopPropagation();
-
-            toggleableLayerIds.forEach(id => {
-                const link = document.createElement('a');
-                link.href = '#';
-                link.className = 'active';
-                link.textContent = id.replace(/-/g, ' ');
-                link.onclick = function(e) {
-                    e.preventDefault();
-                    const visibility = map.getLayoutProperty(id, 'visibility') || 'visible';
-                    if (visibility === 'visible') {
-                        map.setLayoutProperty(id, 'visibility', 'none');
-                        this.className = '';
-                    } else {
-                        map.setLayoutProperty(id, 'visibility', 'visible');
-                        this.className = 'active';
-                    }
-                };
-                menuNav.appendChild(link);
+            map.on('mouseenter', layerId, () => {
+                if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', layerId, () => {
+                if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = '';
             });
         });
 
-        // --- INTERACCIONES Y POPUPS ---
-        map.on('click', (e) => {
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: toggleableLayerIds
+        function buildStatsLists() {
+            const top = (arr, fn) => arr.slice(0, 5).map(fn).join('');
+            const row = (i, right) => `<div class="stats-item" data-name="${esc(i.name)}" onclick="flyToBlend(this.dataset.name)"><div><span>${esc(i.name)}</span><div style="font-size:.65rem;color:var(--text-secondary)">${esc(i.updateDate)}</div></div>${right}</div>`;
+            const by = f => [...allBlends].sort(f);
+            $('topGainersList').innerHTML = top(by((a, b) => b.numericChange - a.numericChange), i => row(i, `<span class="positive">▲ ${i.numericChange>0?'+':''}${esc(i.change)} (${esc(i.changePct)})</span>`));
+            $('topLosersList').innerHTML = top(by((a, b) => a.numericChange - b.numericChange), i => row(i, `<span class="negative">▼ ${esc(i.change)} (${esc(i.changePct)})</span>`));
+            $('topHighestList').innerHTML = top(by((a, b) => b.numericPrice - a.numericPrice), i => row(i, `<strong style="color:var(--up)">$${esc(i.price)}</strong>`));
+            $('topLowestList').innerHTML = top(by((a, b) => a.numericPrice - b.numericPrice), i => row(i, `<strong style="color:var(--accent)">$${esc(i.price)}</strong>`));
+        }
+
+        function buildPriceChart() {
+            const c = $('priceChartContainer');
+            if (!c || !allBlends.length) return;
+            const s = [...allBlends].sort((a, b) => b.numericPrice - a.numericPrice).slice(0, 10),
+                max = Math.max(...s.map(b => b.numericPrice)) || 100;
+            const W = Math.max(620, 40 + s.length * 60 + 25);
+            let g = `<svg width="100%" viewBox="0 0 ${W} 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top crude prices">`;
+            [
+                [20, .06],
+                [68, .06],
+                [116, .14]
+            ].forEach(([y, o]) => g += `<line x1="40" y1="${y}" x2="${W-25}" y2="${y}" stroke="rgba(255,255,255,${o})"${o<.1?' stroke-dasharray="3,3"':''}/>`);
+            s.forEach((it, i) => {
+                const h = it.numericPrice / max * 96,
+                    x = 40 + i * 60 + 12,
+                    y = 116 - h,
+                    n = esc(it.name);
+                g += `<rect x="${x}" y="${y}" width="28" height="${h}" rx="4" fill="#f0b823" opacity=".88" style="cursor:pointer" data-name="${n}" onclick="flyToBlend(this.dataset.name)"><title>${n}: $${esc(it.price)} (${esc(it.updateDate)})</title></rect><text x="${x+14}" y="${y-5}" fill="#fff" font-size="9" font-weight="600" text-anchor="middle">$${it.numericPrice.toFixed(0)}</text><text x="${x+14}" y="128" fill="#94a3b8" font-size="8.5" text-anchor="end" transform="rotate(-35,${x+14},128)">${n}</text>`;
             });
-            if (!features.length) return;
-            const f = features[0];
+            c.innerHTML = g + '</svg>';
+        }
 
-            // Caso especial para NEWS
-            if (f.layer.id === 'NEWS') {
-                new mapboxgl.Popup().setLngLat(e.lngLat)
-                    .setHTML('<dd style="color: black;">' + f.properties.name +
-                        '<br><img src="' + f.properties.shareimage + '" style="width:75px; height:75px; object-fit:cover; display:block; margin:10px 0;" />' +
-                        f.properties.html + '</dd>').addTo(map);
-                return;
-            }
-
-            // Caso BID-ROUNDS
-            if (f.layer.id === 'BID-ROUNDS') {
-                new mapboxgl.Popup().setLngLat(e.lngLat)
-                    .setHTML('<div style="color: #000;"><dt>' + f.properties.title + '</dt>' + '<dt>' + f.properties.description + '</dt></div>').addTo(map);
-                return;
-            }
-
-            // General
-            const title = f.properties.Name || f.properties.NAME || "Info";
-            const info = f.properties.Descriptio || f.properties.Company || "Oil & Gas Data";
-            new mapboxgl.Popup({
-                    offset: 10
-                }).setLngLat(e.lngLat)
-                .setHTML(`<div style="color:#000"><strong>${title}</strong><br>${info}</div>`).addTo(map);
-        });
-
-        // Hover Effect
-        map.on('mousemove', (e) => {
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: ['REFINERIES', 'EXPLORATION', 'BID-ROUNDS', 'PRODUCTION', 'NEWS', 'CLUSTER-NEWS']
+        window.flyToBlend = function(name) {
+            const f = allBlends.find(b => b.name === name);
+            if (!f) return;
+            $('statsModal').style.display = 'none';
+            map.flyTo({
+                center: f.coordinates,
+                zoom: 9,
+                essential: true
             });
-            map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-        });
-
-        // --- MODAL LOGIC ---
-        const modal = document.getElementById('aboutModal');
-        document.querySelector('.about-header').onclick = () => modal.style.display = "block";
-        document.querySelector('.close').onclick = () => modal.style.display = "none";
-        window.onclick = (event) => {
-            if (event.target == modal) modal.style.display = "none";
+            showPopup(f.coordinates, f.popupContent);
         };
+
+        /* ---------- UTM -> lat/lng (WGS84) ---------- */
+        function utmToLatLng(zoneStr, E, N) {
+            const m = String(zoneStr).trim().toUpperCase().match(/^(\d{1,2})\s*([C-X])?$/);
+            if (!m || isNaN(E) || isNaN(N)) return [NaN, NaN];
+            const zone = +m[1],
+                south = m[2] ? m[2] < 'N' : false;
+            const a = 6378137,
+                f = 1 / 298.257223563,
+                k0 = .9996,
+                e2 = f * (2 - f),
+                ep2 = e2 / (1 - e2);
+            const x = E - 500000,
+                y = south ? N - 1e7 : N,
+                M = y / k0;
+            const mu = M / (a * (1 - e2 / 4 - 3 * e2 * e2 / 64 - 5 * e2 ** 3 / 256));
+            const e1 = (1 - Math.sqrt(1 - e2)) / (1 + Math.sqrt(1 - e2));
+            const p1 = mu + (3 * e1 / 2 - 27 * e1 ** 3 / 32) * Math.sin(2 * mu) + (21 * e1 ** 2 / 16 - 55 * e1 ** 4 / 32) * Math.sin(4 * mu) + (151 * e1 ** 3 / 96) * Math.sin(6 * mu);
+            const s = Math.sin(p1),
+                c = Math.cos(p1),
+                t = Math.tan(p1);
+            const N1 = a / Math.sqrt(1 - e2 * s * s),
+                T1 = t * t,
+                C1 = ep2 * c * c,
+                R1 = a * (1 - e2) / Math.pow(1 - e2 * s * s, 1.5),
+                D = x / (N1 * k0);
+            const lat = p1 - (N1 * t / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * ep2) * D ** 4 / 24 + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * ep2 - 3 * C1 * C1) * D ** 6 / 720);
+            const lon = (D - (1 + 2 * T1 + C1) * D ** 3 / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * ep2 + 24 * T1 * T1) * D ** 5 / 120) / c;
+            return [lat * 180 / Math.PI, (zone * 6 - 183) + lon * 180 / Math.PI];
+        }
+
+        /* ---------- pins, polygons, KML ---------- */
+        const addPinModal = $('addPinModal'),
+            addPinForm = $('addPinForm'),
+            polygonSection = $('polygonSection'),
+            coordTypeSelect = $('coordType');
+        $('btnAddPin').onclick = () => addPinModal.style.display = 'flex';
+        $('closeAddPinModal').onclick = () => addPinModal.style.display = 'none';
+
+        function showTab(pin) {
+            $('tabPinBtn').classList.toggle('active', pin);
+            $('tabPolyBtn').classList.toggle('active', !pin);
+            addPinForm.style.display = pin ? 'block' : 'none';
+            polygonSection.style.display = pin ? 'none' : 'block';
+        }
+        $('tabPinBtn').onclick = () => showTab(true);
+        $('tabPolyBtn').onclick = () => showTab(false);
+        coordTypeSelect.addEventListener('change', e => {
+            const utm = e.target.value === 'utm';
+            $('geoFields').style.display = utm ? 'none' : 'block';
+            $('utmFields').style.display = utm ? 'block' : 'none';
+        });
+
+        function handlePinSubmission(another, ev) {
+            ev.preventDefault();
+            const description = $('pinDescription').value.trim();
+            let lat, lng;
+            if (coordTypeSelect.value === 'geo') {
+                lat = parseFloat($('pinLat').value);
+                lng = parseFloat($('pinLng').value)
+            } else [lat, lng] = utmToLatLng($('utmZone').value, parseFloat($('utmEasting').value), parseFloat($('utmNorthing').value));
+            if (!description || isNaN(lat) || isNaN(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return;
+            customUserPins.push({
+                description,
+                lat,
+                lng
+            });
+            const el = document.createElement('div');
+            el.className = 'custom-map-pin';
+            const popup = new mapboxgl.Popup({
+                offset: 12
+            }).setHTML(`<div class="popup-blend">📍 Custom Pin</div><p style="margin:6px 0;color:#fff">${esc(description)}</p><div class="popup-update">${lat.toFixed(4)}, ${lng.toFixed(4)}</div>`);
+            new mapboxgl.Marker(el).setLngLat([lng, lat]).setPopup(popup).addTo(map);
+            map.flyTo({
+                center: [lng, lat],
+                zoom: 10,
+                essential: true
+            });
+            popup.addTo(map);
+            if (!another) {
+                addPinModal.style.display = 'none';
+                addPinForm.reset();
+                $('geoFields').style.display = 'block';
+                $('utmFields').style.display = 'none'
+            } else {
+                $('pinDescription').value = '';
+                $('pinDescription').focus()
+            }
+        }
+        addPinForm.addEventListener('submit', e => handlePinSubmission(false, e));
+        $('btnAddAnother').addEventListener('click', e => {
+            if (addPinForm.reportValidity()) handlePinSubmission(true, e)
+        });
+
+        let isDrawingPolygon = false,
+            polyCoordinates = [];
+        const polyDrawHud = $('polyDrawHud'),
+            polyVertexCounter = $('polyVertexCounter');
+        const polySrcSet = extra => {
+            const s = map.getSource('user-polygons-src');
+            if (s) s.setData({
+                type: 'FeatureCollection',
+                features: extra ? [...customUserPolygons, extra] : customUserPolygons
+            })
+        };
+        $('btnStartDrawPolygon').onclick = () => {
+            addPinModal.style.display = 'none';
+            isDrawingPolygon = true;
+            polyCoordinates = [];
+            polyDrawHud.classList.add('active');
+            map.getCanvas().style.cursor = 'crosshair';
+            polyVertexCounter.textContent = '📐 0 vertices';
+        };
+        map.on('click', e => {
+            if (!isDrawingPolygon) return;
+            polyCoordinates.push([e.lngLat.lng, e.lngLat.lat]);
+            polyVertexCounter.textContent = `📐 ${polyCoordinates.length} vertices`;
+            if (polyCoordinates.length >= 2) polySrcSet({
+                type: 'Feature',
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [...polyCoordinates, polyCoordinates[0]]
+                    ]
+                },
+                properties: {
+                    title: 'Drawing...'
+                }
+            });
+        });
+        $('btnFinishPoly').onclick = () => {
+            if (polyCoordinates.length < 3) return;
+            const title = $('polyNameInput').value.trim() || 'Custom Block';
+            const feat = {
+                type: 'Feature',
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [...polyCoordinates, polyCoordinates[0]]
+                    ]
+                },
+                properties: {}
+            };
+            const m2 = turf.area(feat);
+            feat.properties = {
+                title,
+                areaKm2: (m2 / 1e6).toLocaleString(undefined, {
+                    maximumFractionDigits: 2
+                }),
+                areaHa: (m2 / 1e4).toLocaleString(undefined, {
+                    maximumFractionDigits: 1
+                })
+            };
+            customUserPolygons.push(feat);
+            polySrcSet();
+            stopPolygonDrawing();
+        };
+        $('btnCancelPoly').onclick = () => {
+            stopPolygonDrawing();
+            polySrcSet()
+        };
+
+        function stopPolygonDrawing() {
+            isDrawingPolygon = false;
+            polyCoordinates = [];
+            polyDrawHud.classList.remove('active');
+            map.getCanvas().style.cursor = measureEnabled ? 'crosshair' : ''
+        }
+
+        const escapeXml = u => String(u).replace(/[<>&'"]/g, c => ({
+            '<': '&lt;',
+            '>': '&gt;',
+            '&': '&amp;',
+            "'": '&apos;',
+            '"': '&quot;'
+        }[c]));
+        $('btnExportKmlModal').onclick = () => {
+                if (!customUserPins.length && !customUserPolygons.length) {
+                    alert('No custom pins or polygons added to export yet.');
+                    return
+                }
+                let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
+                customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
+                customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
+  k+='</Document>\n</kml>';
+  const url=URL.createObjectURL(new Blob([k],{type:'application/vnd.google-earth.kml+xml'})),a=document.createElement('a');
+  a.href=url;a.download='oilmap_export.kml';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+};
+
+/* ---------- search ---------- */
+const searchInput=$('countrySearch'),suggestionsDiv=$('suggestions');let debounce;
+searchInput.addEventListener('click',e=>e.stopPropagation());
+suggestionsDiv.addEventListener('click',e=>e.stopPropagation());
+searchInput.addEventListener('input',()=>{
+  clearTimeout(debounce);
+  const q=searchInput.value.trim().toLowerCase();
+  if(!q){suggestionsDiv.style.display='none';return}
+  debounce=setTimeout(async()=>{
+    const results=[];
+    allBlends.forEach(b=>{if(b.name.toLowerCase().includes(q))results.push({name:'🛢️ '+b.name,coordinates:b.coordinates,popupContent:b.popupContent})});
+    if(typeof customData!=='undefined'&&customData.features)customData.features.forEach(f=>{
+      if(f.properties.title&&f.properties.title.toLowerCase().includes(q))results.push({name:'🛢️ '+f.properties.title,coordinates:f.geometry.coordinates,popupContent:`<strong>${esc(f.properties.title)}</strong>`});
+    });
+    try{
+      const d=await(await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?limit=5&access_token=${mapboxgl.accessToken}`)).json();
+      (d.features||[]).forEach(f=>results.push({name:'📍 '+f.place_name,coordinates:f.center,popupContent:`<strong>${esc(f.place_name)}</strong>`}));
+    }catch(e){}
+    if(searchInput.value.trim().toLowerCase()!==q)return;
+    suggestionsDiv.innerHTML='';
+    const slice=results.slice(0,8);
+    if(!slice.length){suggestionsDiv.style.display='none';return}
+    slice.forEach(item=>{
+      const div=document.createElement('div');div.className='suggestion-item';div.setAttribute('role','option');div.textContent=item.name;
+      div.onclick=()=>{
+        map.flyTo({center:item.coordinates,zoom:8,essential:true});
+        showPopup(item.coordinates,item.popupContent);
+        suggestionsDiv.style.display='none';searchInput.value=item.name;
+      };
+      suggestionsDiv.appendChild(div);
+    });
+    suggestionsDiv.style.display='block';
+  },250);
+});
+
+/* ---------- measure tool ---------- */
+const distanceContainer=$('distanceContainer'),measureOutput=$('measureOutput'),btnMeasure=$('btn-measure'),btnMD=$('btnMeasureDist'),btnMA=$('btnMeasureArea');
+let measureEnabled=false,measureMode='distance',measurePoints=[];
+const emptyFC=()=>({type:'FeatureCollection',features:[]});
+const clearMeasure=()=>{measurePoints=[];const s=map.getSource('measure-source');if(s)s.setData(emptyFC())};
+btnMeasure.addEventListener('click',()=>{
+  measureEnabled=!measureEnabled;
+  btnMeasure.classList.toggle('active-tool',measureEnabled);distanceContainer.classList.toggle('active',measureEnabled);
+  if(!measureEnabled){clearMeasure();map.off('click',measureClickHandler);map.getCanvas().style.cursor=''}
+  else{initMeasureSources();map.on('click',measureClickHandler);map.getCanvas().style.cursor='crosshair';updateMeasureText()}
+});
+function setMode(m){
+  measureMode=m;btnMD.classList.toggle('active-tool',m==='distance');btnMA.classList.toggle('active-tool',m==='area');
+  updateMeasureGraphics();updateMeasureText();
+}
+btnMD.onclick=()=>setMode('distance');btnMA.onclick=()=>setMode('area');
+$('btnMeasureClear').onclick=()=>{clearMeasure();updateMeasureText()};
+function initMeasureSources(){
+  if(map.getSource('measure-source'))return;
+  map.addSource('measure-source',{type:'geojson',data:emptyFC()});
+  map.addLayer({id:'measure-polygon-fill',type:'fill',source:'measure-source',paint:{'fill-color':'#f0b823','fill-opacity':.22},filter:['==','$type','Polygon']});
+  map.addLayer({id:'measure-line-stroke',type:'line',source:'measure-source',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#f0b823','line-width':2.2,'line-dasharray':[2,1]},filter:['in','$type','LineString','Polygon']});
+  map.addLayer({id:'measure-points-circle',type:'circle',source:'measure-source',paint:{'circle-radius':4.5,'circle-color':'#ef4444','circle-stroke-width':2,'circle-stroke-color':'#fff'},filter:['==','$type','Point']});
+}
+function measureClickHandler(e){if(!measureEnabled)return;measurePoints.push([e.lngLat.lng,e.lngLat.lat]);updateMeasureGraphics();updateMeasureText()}
+function updateMeasureGraphics(){
+  const src=map.getSource('measure-source');if(!src)return;
+  const f=measurePoints.map((pt,i)=>({type:'Feature',geometry:{type:'Point',coordinates:pt},properties:{id:i}}));
+  if(measureMode==='distance'&&measurePoints.length>=2)f.push({type:'Feature',geometry:{type:'LineString',coordinates:measurePoints},properties:{}});
+  else if(measureMode==='area'&&measurePoints.length>=3)f.push({type:'Feature',geometry:{type:'Polygon',coordinates:[[...measurePoints,measurePoints[0]]]},properties:{}});
+  src.setData({type:'FeatureCollection',features:f});
+}
+function updateMeasureText(){
+  const d=i18n[currentLang],n=measurePoints.length;
+  if(measureMode==='distance'){
+    if(n<2){measureOutput.textContent=d.measurePromptDist;return}
+    const km=turf.lineDistance({type:'Feature',geometry:{type:'LineString',coordinates:measurePoints}},'kilometers');
+    measureOutput.innerHTML=km<1?`<strong>${(km*1000).toFixed(0)} m</strong>`:`<strong>${km.toLocaleString(undefined,{maximumFractionDigits:2})} km</strong>`;
+  }else{
+    if(n<3){measureOutput.textContent=n?`${n}/3 · ${d.measurePromptArea}`:d.measurePromptArea;return}
+    const m2=turf.area({type:'Feature',geometry:{type:'Polygon',coordinates:[[...measurePoints,measurePoints[0]]]}});
+    measureOutput.innerHTML=`<strong>${(m2/1e6).toLocaleString(undefined,{maximumFractionDigits:2})} km²</strong> (${(m2/1e4).toLocaleString(undefined,{maximumFractionDigits:1})} ha)`;
+  }
+}
+
+/* ---------- modals ---------- */
+const aboutModal=$('aboutModal'),statsModal=$('statsModal');
+$('btn-info').onclick=$('brandLogo').onclick=()=>aboutModal.style.display='flex';
+$('brandLogo').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();aboutModal.style.display='flex'}});
+$('closeModal').onclick=()=>aboutModal.style.display='none';
+$('btn-stats').onclick=()=>statsModal.style.display='flex';
+$('closeStatsModal').onclick=()=>statsModal.style.display='none';
+addEventListener('click',e=>{[aboutModal,statsModal,addPinModal].forEach(m=>{if(e.target===m)m.style.display='none'})});
+
+/* ---------- AdSense: loaded after page load to protect LCP/TBT ---------- */
+addEventListener('load',()=>setTimeout(()=>{
+  const s=document.createElement('script');s.async=true;s.crossOrigin='anonymous';
+  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801';
+  s.onload=()=>{try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}};
+  document.head.appendChild(s);
+},1500));
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false" defer></script>
     <script>
-        window.cookieconsent.initialise({
-            "palette": {
-                "popup": {
-                    "background": "#007afc"
-                },
-                "button": {
-                    "background": "#fff",
-                    "text": "#007afc"
-                }
-            },
-            "theme": "edgeless",
-            "position": "bottom-left",
-            "content": {
-                "message": "This website uses cookies for the best experience. See our Privacy Policy."
+        addEventListener('load', () => {
+            function updateGoogleConsent(granted) {
+                const st = granted ? 'granted' : 'denied';
+                gtag('consent', 'update', {
+                    ad_storage: st,
+                    ad_user_data: st,
+                    ad_personalization: st,
+                    analytics_storage: st
+                });
+                window.adsbygoogle = window.adsbygoogle || [];
+                window.adsbygoogle.pauseAdRequests = 0;
             }
+            let cc;
+            if (window.cookieconsent) {
+                window.cookieconsent.initialise({
+                    palette: {
+                        popup: {
+                            background: "#0d121e",
+                            text: "#f8fafc"
+                        },
+                        button: {
+                            background: "#f0b823",
+                            text: "#000"
+                        }
+                    },
+                    theme: "edgeless",
+                    position: "bottom-left",
+                    type: "opt-in",
+                    revokable: true,
+                    content: {
+                        message: "We use cookies to optimize performance, analyze traffic, and serve personalized ads via Google AdSense (GDPR/CCPA).",
+                        allow: "Accept All",
+                        deny: "Reject",
+                        link: "Privacy Policy",
+                        href: "https://oilmap.xyz/privacy-policy.html"
+                    },
+                    onInitialise: function(status) {
+                        cc = this;
+                        if (this.hasConsented()) updateGoogleConsent(true);
+                        else if (status === cookieconsent.status.deny) updateGoogleConsent(false)
+                    },
+                    onStatusChange: function() {
+                        updateGoogleConsent(this.hasConsented())
+                    },
+                    onRevokeChoice: function() {
+                        updateGoogleConsent(false)
+                    }
+                });
+            }
+            $('openCookieSettings').addEventListener('click', e => {
+                e.preventDefault();
+                aboutModal.style.display = 'none';
+                if (cc) cc.open()
+            });
         });
     </script>
 </body>
 
-
 </html>
-
