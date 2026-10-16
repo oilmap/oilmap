@@ -1,309 +1,852 @@
 <!DOCTYPE html>
-<html amp lang="en">
+<html lang="en-US">
+
 <head>
-<meta charset="utf-8">
-    <!-- BEGIN SHAREAHOLIC CODE -->
-<link rel='preload' href='https://apps.shareaholic.com/assets/pub/shareaholic.js' as='script' />
-<script data-cfasync="false" async src="https://apps.shareaholic.com/assets/pub/shareaholic.js" data-shr-siteid="67c18c9b7cd5695a23187dd11c4214c3"></script>
-<!-- END SHAREAHOLIC CODE -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-136089997-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-136089997-1');
-</script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136089997-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-136089997-1');
+    </script>
+
     <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-WXJ6F8F');</script>
-        <!-- End Google Tag Manager -->
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="canonical" href="http://www.oilmap.xyz"/>
-<meta name="author" content="Roque Leal" />
-<meta name="copyright" content="https://oilmap.xyz" />
-<meta property="fb:admins" content="1573187928" />
-<meta name="keywords" content="OIL, MAP, CRUDE, PETROLEUM, OIL&GAS, INTELLIGENCE, MAPPING, MAPBOX, GAS, PIPELINE" />
-<meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" link rel="image_src" type="image/jpg" href="https://oilmap.xyz/img/preview.jpg" />
-<meta property="og:image:width" content="400" />
-<meta property="og:image:height" content="300" />
-<meta property="og:title" content="Oil Map 2019" /> 
-<meta property="og:description" content="This map provide live oil prices of various oil bourses based on established chemical profiles, delivery locations, and financial terms." />        
-<meta property="og:url" content="https://oilmap.xyz" />     
-<meta name="twitter:card" content="summary">
-<meta name="twitter:site" content="@roqueleal08">
-<meta name="twitter:title" content="Oil Prices Map">
-<meta name="twitter:description" content="In the international petroleum industry, crude oil products are traded on various oil bourses based on established chemical profiles, delivery locations, and financial terms">
-<meta name="twitter:creator" content="@roqueleal08">
-<meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
-    <title>Oil Prices</title>
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WXJ6F8F');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="canonical" href="https://www.oilmap.xyz/prices/oilprices.html" />
+    <meta name="author" content="Roque Leal" />
+    <meta name="copyright" content="https://oilmap.xyz" />
+    <title>🛢️ World Oil Prices Map 2026</title>
     <link rel="icon" type="image/png" href="data/oilmap.png" sizes="16x16">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet & MarkerCluster CSS -->
     <link href="assets/leaflet-0.7.7/leaflet.css" rel="stylesheet" />
     <link href="assets/leaflet.markercluster/MarkerCluster.css" rel="stylesheet" />
     <link href="assets/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet" />
 
-</head>
-<body>
-     <!-- Google Tag Manager (noscript) -->
-     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WXJ6F8F"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
+    <!-- PapaParse para leer CSV en línea -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
     <style>
+         :root {
+            --primary-gold: #f0b823;
+            --glass-bg: rgba(18, 18, 18, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
         
         body {
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: var(--text-main);
+            overflow: hidden;
         }
-        header {
-            position: relative;
-            display: block;
+        
+        #map {
+            position: absolute;
             top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .glass-ui {
+            background: var(--glass-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        header.header {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            z-index: 1000;
+            padding: 10px 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .brand img {
+            height: 34px;
+            width: auto;
+        }
+        
+        .brand h1 {
+            font-size: 1rem;
+            color: var(--primary-gold);
+            margin: 0;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-ui,
+        .nav-link {
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-ui:hover,
+        .nav-link:hover {
+            border-color: var(--primary-gold);
+            background: rgba(240, 184, 35, 0.15);
+            color: var(--primary-gold);
+        }
+        /* --- CINTILLO DE PRECIOS (TICKER) --- */
+        
+        .ticker-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 42px;
+            background: rgba(10, 15, 30, 0.92);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--primary-gold);
+            z-index: 1000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-wrapper {
+            display: flex;
+            white-space: nowrap;
+            animation: tickerScroll 180s linear infinite;
+        }
+        
+        .ticker-wrapper:hover {
+            animation-play-state: paused;
+        }
+        
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 24px;
+            font-size: 0.82rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .ticker-item:hover {
+            color: var(--primary-gold);
+        }
+        
+        .ticker-name {
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+        
+        .ticker-price {
+            font-weight: 700;
+            color: #10b981;
+        }
+        
+        @keyframes tickerScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        /* --- BUSCADOR --- */
+        
+        .search-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .search-input {
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            width: 190px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            outline: none;
+            transition: width 0.25s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-gold);
+            width: 230px;
+        }
+        
+        #suggestions {
+            position: absolute;
+            top: calc(100% + 6px);
             left: 0;
             right: 0;
-            text-transform: uppercase;
-            z-index:1;
+            min-width: 240px;
+            z-index: 1005;
+            max-height: 240px;
+            overflow-y: auto;
+            display: none;
+            padding: 6px;
         }
-        #legend {
-            position: absolute;
-            left: 24px;
-            bottom: 120px;
-            z-index: 1;
+        
+        .suggestion-item {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        #map { position:absolute; top:0; bottom:0; width:100%; z-index:-1;}
-        dl {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
+        
+        .suggestion-item:hover {
+            background: var(--primary-gold);
+            color: #000;
+            font-weight: 600;
         }
-        dt {
-            margin-left: 0;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .sidebar > div:first-child button {
-            border-radius:3px 3px 0 0;
-        }
-        .sidebar > div:last-child button {
-            border-radius:0 0 3px 3px;
-        }
-        /* Dark attribution */
-         .mapboxgl-ctrl.mapboxgl-ctrl-attrib a { color:#fff; }
-        /* modal styling */
-        .modal {
+        /* --- PANEL DE ESTADÍSTICAS / RANKING (TOP STATS MODAL) --- */
+        
+        .stats-modal {
             position: fixed;
-            z-index: 1;
+            z-index: 2500;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            text-align: center;
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 40px;
-            border: 1px solid #888;
-            width: 40%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .leaflet-popup-content {
-            margin: 7px;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
         
-        a {
+        .stats-content {
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            position: relative;
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stats-header h2 {
+            color: var(--primary-gold);
+            margin: 0;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media (max-width: 650px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .stats-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .stats-box h3 {
+            font-size: 0.85rem;
+            color: var(--primary-gold);
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 4px;
+        }
+        
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s;
+        }
+        
+        .stats-item:hover {
+            background: rgba(240, 184, 35, 0.2);
+            color: var(--primary-gold);
+        }
+        /* --- ESTILOS DEL POPUP --- */
+        
+        .leaflet-popup-content-wrapper {
+            background: rgba(15, 23, 42, 0.96) !important;
+            backdrop-filter: blur(12px);
+            color: #f8fafc !important;
+            border: 1px solid var(--primary-gold);
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+        }
+        
+        .leaflet-popup-tip {
+            background: var(--primary-gold) !important;
+        }
+        
+        .leaflet-popup-content {
+            margin: 14px 16px !important;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            min-width: 220px;
+        }
+        
+        .popup-blend {
+            color: var(--primary-gold);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 5px;
+        }
+        
+        .popup-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0;
+        }
+        
+        .popup-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .popup-change {
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .positive {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+        }
+        
+        .negative {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+        }
+        
+        .popup-ranges {
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .popup-update {
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: right;
+        }
+        
+        .leaflet-top {
+            top: 80px !important;
+        }
+        
+        .modal {
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .modal-content a {
+            color: var(--primary-gold);
+            font-weight: 600;
             text-decoration: none;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
+        
+        .close {
+            color: var(--text-muted);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 26px;
+            font-weight: bold;
             cursor: pointer;
         }
-        @media (max-width: 600px) {
-            h3 {
-              
-                font-size: 16px!important;
-                padding: 12px!important;
-                text-align: center;
-                overflow: hidden;
-                 width: 1px;
-                height: 1px;
+        
+        .close:hover {
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            header.header {
+                top: 10px;
+                left: 10px;
+                right: 10px;
             }
-            .modal-content{
-                width:100%;
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
             }
-            body { margin:0; padding:0; }
+            .search-container {
+                order: 10;
+                width: 100%;
+                margin-top: 4px;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .leaflet-top {
+                top: 135px !important;
+            }
+            .ticker-container {
+                height: 36px;
+            }
         }
-            
-         #menu {
-        background: #fff;
-        position: absolute;
-        z-index: 1;
-        top: 10px;
-        left: 10px;
-        width: 120px;
-        font-family: 'Open Sans', sans-serif;
-        border: 1px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-        }
-        #menu a {
-            font-size: 13px;
-            color: #404040;
-            display: block;
-            margin: 0;
-            text-decoration: none;
-            border-bottom: 1px solid #404040;
-            text-align: center;
-        }
-        #menu a:last-child {
-            border: none;
-            background-color: #fad201 ;
-            color: #404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a:hover {
-            background-color: #fad201;
-            color:#404040;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active {
-            background-color: #3887be;
-            color: #ffffff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #menu a.active:hover {
-            background: #3074a4;
-        }
-
-          </style>
+    </style>
 </head>
+
+<body>
+    <header class="glass-ui header">
+        <div class="brand" id="brandLogo">
+            <img src="data/oilmap.png" onerror="this.src='../img/oilmap.png'" alt="Oil Map Logo">
+            <h1>OIL PRICES MAP <span style="font-weight:300; opacity:0.6;">2026</span></h1>
+        </div>
+
+        <div class="header-controls">
+            <div class="search-container">
+                <input type="text" id="blendSearch" class="search-input" placeholder="🔍 Search Crude Blend..." autocomplete="off">
+                <div id="suggestions" class="glass-ui"></div>
+            </div>
+
+            <button id="btn-stats" class="btn-ui" type="button">📊 Top Stats</button>
+            <a href="../index.html" class="nav-link">🗺️ World Map</a>
+            <a href="../blog.html" class="nav-link">Blog</a>
+            <a href="../contact.html" class="nav-link">Contact</a>
+            <button id="btn-info" class="btn-ui" type="button">ℹ️ Info</button>
+        </div>
+    </header>
+
     <div id="map"></div>
 
+    <!-- Cintillo Inferior de Precios (Ticker) -->
+    <div class="ticker-container">
+        <div class="ticker-wrapper" id="tickerWrapper">
+            <!-- Los precios se cargarán dinámicamente aquí -->
+        </div>
+    </div>
+
+    <!-- Modal de Estadísticas / Top Rankings -->
+    <div id="statsModal" class="stats-modal">
+        <div class="stats-content glass-ui">
+            <div class="stats-header">
+                <h2>📊 Market Rankings & Fluctuations</h2>
+                <span class="close" id="closeStatsModal">&times;</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-box">
+                    <h3>📈 Top Gainers / High Fluctuation</h3>
+                    <div id="topGainersList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3>📉 Top Losers / Low Fluctuation</h3>
+                    <div id="topLosersList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3>💎 Highest Prices</h3>
+                    <div id="topHighestList"></div>
+                </div>
+                <div class="stats-box">
+                    <h3>🏷️ Lowest Prices</h3>
+                    <div id="topLowestList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Información (About) -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content glass-ui">
+            <span class="close" id="closeModal">&times;</span>
+            <h2 style="color: var(--primary-gold); margin-top: 0;">World Oil Price Map 2026</h2>
+            <p>🛢️ Live crude oil prices based on chemical profiles and delivery locations.</p>
+            <p>Part of the <a href="https://oilmap.xyz" target="_blank" rel="noopener">oilmap.xyz</a> initiative by Roque Leal.</p>
+        </div>
+    </div>
+
+    <!-- Scripts de Leaflet -->
     <script src="assets/leaflet-0.7.7/leaflet.js"></script>
     <script src="assets/leaflet.markercluster/leaflet.markercluster.js"></script>
-    <script src="assets/tabletop.js"></script>
- 		
-<!-- modal-->
-<div id="aboutModal" class="modal" style="display: none;">
-
-    <!-- modal content -->
-    <div class="modal-content">
-        <span class="close">×</span>
-        <p></p><h1>World Oil Price Map 2020</h1><br>
-                
-            This map contains large-scale data compiled thanks to webscrapping from different sources.
-        
-            For more information you can consult directly at <a href="https://www.reuters.com/subjects/oil" target="_blank">Reuters </a>.<br>It is also updated from more detailed sources Official</a>.<br>
-
-        <br>This project is part of initiative <a href="https://oilmap.xyz" target="_blank" >oilmap.xyz
-    </a> let me invite you to collaborate in updating and sharing this information, participating together we will have more updated information, you can comment and write me<a href="mailto:roqueleal@gmail.com"> roqueleal@gmail.com
-    </a>.<br>
-    </div>
-</div>
-
- <!-- menu -->
 
     <script>
-    
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            const accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
 
-            //https://docs.google.com/spreadsheets/d/12QEiwF0fxUXct_v1gWm2OCwsL7dnrxTXZkyvh3O3jrI/pubhtml  
-
-            Tabletop.init({
-                key: '1sBdyFA9e2V6gKv875NihdwAHHdHhMvbw2qEDn2OVZBI',
-                callback: function(sheet, tabletop) {
-                    for (var i in sheet) {
-                        var data = sheet[i]; //getting e row from table
-
-                        var content = '<b>Area: </b>' + data.AREA +
-                            '</br>' + '<b>Price: </b>' + data.PRICE +  '<b> $USD/Barrel</b>'  +
-                            '</br>' +'<b>Update: </b>' + data.UPDATE +
-                            '</br>';
-                        var point = L.marker([data.Y, data.X], {
-                            icon: mki,
-                            title: data.blend,
-                            riseOnHover: true
-                        }).bindPopup(content);
-                        markerClusters.addLayer(point);
-                        map.addLayer(markerClusters);
-                    }
-                },
-                simpleSheet: true
+            const layerMapboxDark = L.tileLayer(`https://api.mapbox.com/styles/v1/roqueleal/cjsw2utru068x1fqmjlolpa30/tiles/256/{z}/{x}/{y}@2x?access_token=${accessToken}`, {
+                attribution: '&copy; Mapbox &copy; OpenStreetMap'
             });
 
-             var layerMapbox = new L.tileLayer('https://api.mapbox.com/styles/v1/roqueleal/cjsw2utru068x1fqmjlolpa30/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw', {
-                attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
-            });
-           
-            var map = new L.map('map', {
+            const map = L.map('map', {
                 minZoom: 2,
                 maxZoom: 18,
-                layers: [layerMapbox]
+                layers: [layerMapboxDark],
+                zoomControl: false
             });
-            
 
-            var markerClusters = new L.MarkerClusterGroup({
+            L.control.zoom({
+                position: 'bottomright'
+            }).addTo(map);
+
+            const markerClusters = new L.MarkerClusterGroup({
                 spiderfyOnMaxZoom: true,
                 showCoverageOnHover: false,
                 zoomToBoundsOnClick: true,
-                disableClusteringAtZoom: 16
+                disableClusteringAtZoom: 14
             });
 
-            var mki = new L.icon({
+            const mki = L.icon({
                 iconUrl: 'data/barrel.png',
                 iconAnchor: [16, 16],
                 popupAnchor: [0, -16]
-            })
+            });
+
             map.fitBounds([
-                [85, -180],
-                [-85, 180]
+                [65, -130],
+                [-45, 140]
             ]);
 
-            var baseMaps = {
-                "Mapbox Streets": layerMapboxStreets,
-                "Mapbox Imagery": layerMapboxImagery
+            const csvUrl = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+            const allBlends = [];
+
+            function parseCoord(val) {
+                if (val === null || val === undefined || val === '') return NaN;
+                const cleanVal = String(val).replace(/["']/g, '').replace(',', '.').trim();
+                return parseFloat(cleanVal);
+            }
+
+            function parseNumeric(val) {
+                if (!val) return 0;
+                return parseFloat(String(val).replace(/["$]/g, '').replace(',', '.').trim()) || 0;
+            }
+
+            try {
+                const response = await fetch(csvUrl);
+                const csvText = await response.text();
+
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        let tickerItemsArray = [];
+
+                        results.data.forEach(row => {
+                            const rowNormalized = {};
+                            Object.keys(row).forEach(k => {
+                                const cleanKey = k.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                rowNormalized[cleanKey] = row[k];
+                            });
+
+                            const AREA = rowNormalized['blend'] || '';
+                            const Y = parseCoord(rowNormalized['lat']);
+                            const X = parseCoord(rowNormalized['lon']);
+                            const PRICE_RAW = rowNormalized['precio'] || '0';
+                            const CHANGE = rowNormalized['cambio'] || '0';
+                            const CHANGE_PCT = rowNormalized['cambio %'] || '0%';
+                            const WEEK_RANGE = rowNormalized['rango sem.'] || '-';
+                            const MONTH_RANGE = rowNormalized['rango mes'] || '-';
+                            const UPDATE = rowNormalized['captura'] || '';
+
+                            if (!AREA || isNaN(Y) || isNaN(X)) return;
+
+                            const numericPrice = parseNumeric(PRICE_RAW);
+                            const numericChange = parseNumeric(CHANGE);
+
+                            const isPositive = !String(CHANGE).startsWith('-');
+                            const changeClass = isPositive ? 'positive' : 'negative';
+                            const changeIcon = isPositive ? '▲' : '▼';
+
+                            const content = `
+                                <div class="popup-blend">🛢️ ${AREA}</div>
+                                <div class="popup-price-row">
+                                    <span class="popup-price">$${PRICE_RAW} <span style="font-size:0.7rem; color:#94a3b8;">USD/Bl</span></span>
+                                    <span class="popup-change ${changeClass}">${changeIcon} ${CHANGE} (${CHANGE_PCT})</span>
+                                </div>
+                                <div class="popup-ranges">
+                                    <div>📅 <strong>Weekly:</strong> ${WEEK_RANGE}</div>
+                                    <div>📊 <strong>Monthly:</strong> ${MONTH_RANGE}</div>
+                                </div>
+                                <div class="popup-update">🕒 Update: ${UPDATE || 'Live'}</div>
+                            `;
+
+                            const marker = L.marker([Y, X], {
+                                icon: mki,
+                                title: AREA,
+                                riseOnHover: true
+                            }).bindPopup(content);
+
+                            markerClusters.addLayer(marker);
+
+                            allBlends.push({
+                                name: AREA,
+                                price: PRICE_RAW,
+                                numericPrice: numericPrice,
+                                change: CHANGE,
+                                numericChange: numericChange,
+                                changePct: CHANGE_PCT,
+                                lat: Y,
+                                lng: X,
+                                marker: marker
+                            });
+
+                            tickerItemsArray.push(`
+                                <div class="ticker-item" onclick="zoomToBlend('${AREA}')">
+                                    <span class="ticker-name">🛢️ ${AREA}:</span>
+                                    <span class="ticker-price">$${PRICE_RAW}</span>
+                                    <span class="popup-change ${changeClass}" style="font-size:0.75rem; padding:1px 4px;">${changeIcon} ${CHANGE_PCT}</span>
+                                </div>
+                            `);
+                        });
+
+                        map.addLayer(markerClusters);
+
+                        const tickerWrapper = document.getElementById('tickerWrapper');
+                        if (tickerItemsArray.length > 0) {
+                            tickerWrapper.innerHTML = tickerItemsArray.join('') + tickerItemsArray.join('');
+                        }
+
+                        // Poblar listas de estadísticas / Top Rankings
+                        buildStatsLists();
+                    }
+                });
+            } catch (err) {
+                console.error('Error downloading CSV from GitHub:', err);
+            }
+
+            window.zoomToBlend = function(blendName) {
+                const found = allBlends.find(b => b.name === blendName);
+                if (found) {
+                    markerClusters.zoomToShowLayer(found.marker, () => {
+                        map.setView([found.lat, found.lng], 8);
+                        found.marker.openPopup();
+                    });
+                }
             };
 
-            L.control.layers(baseMaps, null, {
-                collapsed: false
-            }).addTo(map);
+            function buildStatsLists() {
+                const topGainersList = document.getElementById('topGainersList');
+                const topLosersList = document.getElementById('topLosersList');
+                const topHighestList = document.getElementById('topHighestList');
+                const topLowestList = document.getElementById('topLowestList');
+
+                // Ordenar por mayor cambio numérico
+                const sortedByGain = [...allBlends].sort((a, b) => b.numericChange - a.numericChange);
+                const sortedByLoss = [...allBlends].sort((a, b) => a.numericChange - b.numericChange);
+                const sortedByPriceHigh = [...allBlends].sort((a, b) => b.numericPrice - a.numericPrice);
+                const sortedByPriceLow = [...allBlends].sort((a, b) => a.numericPrice - b.numericPrice);
+
+                topGainersList.innerHTML = sortedByGain.slice(0, 5).map(item => `
+                    <div class="stats-item" onclick="closeStatsAndZoom('${item.name}')">
+                      <span>${item.name}</span>
+                      <span class="positive">▲ +${item.change} (${item.changePct})</span>
+                    </div>
+                `).join('');
+
+                topLosersList.innerHTML = sortedByLoss.slice(0, 5).map(item => `
+                    <div class="stats-item" onclick="closeStatsAndZoom('${item.name}')">
+                      <span>${item.name}</span>
+                      <span class="negative">▼ ${item.change} (${item.changePct})</span>
+                    </div>
+                `).join('');
+
+                topHighestList.innerHTML = sortedByPriceHigh.slice(0, 5).map(item => `
+                    <div class="stats-item" onclick="closeStatsAndZoom('${item.name}')">
+                      <span>${item.name}</span>
+                      <strong style="color: #10b981;">$${item.price}</strong>
+                    </div>
+                `).join('');
+
+                topLowestList.innerHTML = sortedByPriceLow.slice(0, 5).map(item => `
+                    <div class="stats-item" onclick="closeStatsAndZoom('${item.name}')">
+                      <span>${item.name}</span>
+                      <strong style="color: #f0b823;">$${item.price}</strong>
+                    </div>
+                `).join('');
+            }
+
+            window.closeStatsAndZoom = function(blendName) {
+                document.getElementById('statsModal').style.display = 'none';
+                zoomToBlend(blendName);
+            };
+
+            // --- BUSCADOR ---
+            const searchInput = document.getElementById('blendSearch');
+            const suggestionsDiv = document.getElementById('suggestions');
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim().toLowerCase();
+                suggestionsDiv.innerHTML = '';
+
+                if (!query) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+
+                const matches = allBlends.filter(b => b.name.toLowerCase().includes(query)).slice(0, 8);
+                if (matches.length === 0) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+
+                matches.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerHTML = `<span>🛢️ ${item.name}</span><strong>$${item.price}</strong>`;
+                    div.onclick = () => {
+                        suggestionsDiv.style.display = 'none';
+                        searchInput.value = item.name;
+                        markerClusters.zoomToShowLayer(item.marker, () => {
+                            map.setView([item.lat, item.lng], 8);
+                            item.marker.openPopup();
+                        });
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+
+                suggestionsDiv.style.display = 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target)) suggestionsDiv.style.display = 'none';
+            });
+
+            // --- MODALS CONTROL ---
+            const aboutModal = document.getElementById('aboutModal');
+            const statsModal = document.getElementById('statsModal');
+
+            document.getElementById('btn-info').onclick = () => aboutModal.style.display = 'flex';
+            document.getElementById('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+            document.getElementById('closeModal').onclick = () => aboutModal.style.display = 'none';
+
+            document.getElementById('btn-stats').onclick = () => statsModal.style.display = 'flex';
+            document.getElementById('closeStatsModal').onclick = () => statsModal.style.display = 'none';
+
+            window.onclick = (e) => {
+                if (e.target === aboutModal) aboutModal.style.display = 'none';
+                if (e.target === statsModal) statsModal.style.display = 'none';
+            };
         });
     </script>
- <script>
-// modal interaction
-    var modal = document.getElementById('aboutModal');
-    modal.style.display = "block";
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    var aboutHeader = document.getElementsByClassName("about-header")[0];
-    aboutHeader.onclick = function() {
-        document.body.style.cursor = "pointer";
-        modal.style.display = "block";
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";      }
-    }
-</script>
-
 </body>
+
 </html>
