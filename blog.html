@@ -15,35 +15,22 @@
     <meta property="og:url" content="https://oilmap.xyz" />
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@roqueleal08">
-    <title>🥇Blog</title>
+    <title>🥇 Blog · World Oil Map 2026</title>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- CSS VARIABLES (OilMap Palette Style) --- */
-        
          :root {
             --bg-body: #0f172a;
-            /* Slate 900 - Fondo principal */
             --bg-card: #1e293b;
-            /* Slate 800 - Fondo tarjetas */
             --bg-header: #020617;
-            /* Slate 950 - Header */
             --border-color: #334155;
-            /* Slate 700 - Bordes */
             --text-main: #f1f5f9;
-            /* Slate 100 - Texto blanco */
             --text-muted: #94a3b8;
-            /* Slate 400 - Texto secundario */
             --accent: #10b981;
-            /* Emerald 500 - Color "Petróleo/Energía" */
             --accent-hover: #34d399;
-            /* Emerald 400 */
+            --primary-gold: #f0b823;
         }
         
         * {
@@ -58,13 +45,11 @@
             color: var(--text-main);
             -webkit-font-smoothing: antialiased;
         }
-        /* --- HEADER --- */
         
         header {
             background-color: var(--bg-header);
             border-bottom: 1px solid var(--border-color);
             padding: 12px 20px;
-            /* Ajustado ligeramente el padding vertical */
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -78,16 +63,39 @@
         .brand {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
-        /* Nuevo estilo para la imagen del logo */
         
-        .logo-img {
-            height: 36px;
-            /* Altura fija para el header */
-            width: auto;
-            display: block;
+        .brand h1 {
+            font-size: 1rem;
+            margin: 0;
+            color: var(--primary-gold);
+            letter-spacing: 1px;
         }
-        /* --- LAYOUT --- */
+        
+        .brand h1 a {
+            color: var(--primary-gold);
+            text-decoration: none;
+        }
+        
+        .brand img {
+            height: 28px;
+            width: auto;
+        }
+        
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.2s;
+            margin-left: 15px;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: white;
+        }
         
         .blog-container {
             max-width: 1400px;
@@ -114,7 +122,6 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        /* --- CUSTOM SELECT --- */
         
         select {
             background: var(--bg-body);
@@ -127,16 +134,15 @@
             cursor: pointer;
             outline: none;
             transition: border 0.2s, box-shadow 0.2s;
-            min-width: 200px;
+            min-width: 260px;
         }
         
         select:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
         }
-        /* --- TITLES --- */
         
-        h1 {
+        h1.main-title {
             font-weight: 700;
             font-size: 2rem;
             margin-bottom: 10px;
@@ -151,14 +157,12 @@
             margin-top: 0;
             font-size: 1rem;
         }
-        /* --- GRID --- */
         
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
         }
-        /* --- NEWS CARD --- */
         
         .news-card {
             background: var(--bg-card);
@@ -168,7 +172,6 @@
             transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
         
         .news-card:hover {
@@ -176,7 +179,6 @@
             border-color: var(--accent);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
-        /* Header de la tarjeta (País y menciones) */
         
         .card-meta {
             padding: 12px 16px;
@@ -187,7 +189,7 @@
             background: rgba(0, 0, 0, 0.2);
         }
         
-        .badge-country {
+        .badge-source {
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -195,102 +197,60 @@
             letter-spacing: 0.05em;
         }
         
-        .badge-mentions {
+        .badge-date {
             font-size: 0.75rem;
             background: rgba(16, 185, 129, 0.1);
-            /* Verde transparente */
             color: var(--accent);
             padding: 4px 8px;
             border-radius: 4px;
             font-weight: 600;
         }
-        /* Contenido de GDELT */
         
-        .card-content {
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-        /* Estilos específicos para sobreescribir el HTML que viene de GDELT */
-        
-        .gdelt-content {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--text-muted);
-        }
-        /* Imagen que viene de GDELT */
-        
-        .gdelt-content img {
+        .card-image {
             width: 100%;
             height: 180px;
             object-fit: cover;
             border-bottom: 1px solid var(--border-color);
-            margin: 0 !important;
             display: block;
-            border-radius: 0 !important;
+            background: #020617;
         }
-        /* Texto y enlaces que vienen de GDELT */
         
         .gdelt-text-wrapper {
             padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
         
         .gdelt-text-wrapper a {
             color: var(--text-main) !important;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             display: block;
             margin-bottom: 8px;
             transition: color 0.2s;
+            line-height: 1.4;
         }
         
         .gdelt-text-wrapper a:hover {
             color: var(--accent) !important;
         }
-        /* Ocultar elementos basura que a veces trae GDELT */
         
-        .gdelt-text-wrapper br {
-            display: none;
+        .news-snippet {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+            flex: 1;
         }
-        /* Animación de carga */
         
         .loader {
             text-align: center;
             padding: 40px;
             color: var(--text-muted);
             font-style: italic;
-        }
-        
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .brand h1 {
-            font-size: 1rem;
-            margin: 0;
-            color: var(--primary-gold);
-            letter-spacing: 1px;
-        }
-        
-        .brand img {
-            height: 28px;
-        }
-        
-        .nav-links a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            transition: color 0.2s;
-        }
-        
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: white;
+            grid-column: 1 / -1;
         }
     </style>
 </head>
@@ -299,13 +259,14 @@
 
     <header>
         <div class="brand">
-            <img src="./img/oilmap.png" alt="Icon">
+            <img src="./img/oilmap.png" alt="Icon" onerror="this.style.display='none'">
             <h1>
                 <a href="index.html">WORLD OIL MAP 2026</a>
             </h1>
         </div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
+            <a href="blog.html" class="active">Blog</a>
             <a href="contact.html">Contact</a>
         </nav>
     </header>
@@ -313,129 +274,112 @@
     <div class="blog-container">
 
         <div class="controls">
-            <strong>Region Filter</strong>
-            <select id="countryFilter">
-                <option value="all">Global</option>
+            <strong>Topic Filter</strong>
+            <select id="topicFilter">
+                <option value="crude oil market">Global Petroleum & Oil Market</option>
+                <option value="OPEC oil production">OPEC & Production</option>
+                <option value="oil and gas exploration upstream">Upstream & Exploration</option>
+                <option value="oil refinery downstream">Downstream & Refineries</option>
+                <option value="crude oil prices barrel">Crude Oil Prices</option>
             </select>
         </div>
 
-        <h1 id="countryTitle">Global Petroleum News</h1>
-        <p class="subtitle" id="subtitle">Real-time intelligence aggregation powered by GDELT Project.</p>
+        <h1 class="main-title" id="pageTitle">Global Petroleum News</h1>
+        <p class="subtitle" id="subtitle">Real-time English intelligence aggregation powered by professional news feeds.</p>
 
         <section id="news" class="news-grid">
-            <div class="loader">Accessing satellite feeds & global news streams...</div>
+            <div class="loader">Accessing global news streams...</div>
         </section>
 
     </div>
 
     <script>
-        const urlNews = 'https://api.gdeltproject.org/api/v2/geo/geo?zoomwheel=0&query=petroleum%20(sourcelang:zho%20OR%20sourcelang:eng%20OR%20sourcelang:rus%20OR%20sourcelang:spa)%20&mode=pointdata&format=geojson';
-
-        let allFeatures = [];
-
-        async function loadNews() {
-            try {
-                const res = await fetch(urlNews);
-                const data = await res.json();
-                allFeatures = data.features;
-
-                populateCountries();
-                renderNews('all');
-            } catch (error) {
-                document.getElementById('news').innerHTML = '<div class="loader" style="color:#ef4444">Error loading data stream.</div>';
-                console.error(error);
-            }
-        }
-
-        function populateCountries() {
-            const select = document.getElementById('countryFilter');
-            const countries = new Set();
-
-            allFeatures.forEach(f => {
-                if (f.properties.name) countries.add(f.properties.name);
-            });
-
-            [...countries].sort().forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c;
-                opt.textContent = c;
-                select.appendChild(opt);
-            });
-
-            select.addEventListener('change', e => renderNews(e.target.value));
-        }
-
-        function renderNews(country) {
+        // Nota: Para producción real en un dominio público, es recomendable obtener una llave gratuita en https://newsapi.org/
+        // Usamos una clave de demostración o respaldos públicos de RSS si prefieres evitar registros.
+        async function loadNews(query = 'crude oil market') {
             const container = document.getElementById('news');
-            const title = document.getElementById('countryTitle');
+            container.innerHTML = '<div class="loader">Fetching live intelligence feeds in English...</div>';
 
-            container.innerHTML = '';
+            // Usamos un servicio RSS-to-JSON gratuito (como rss2json) conectado a feeds confiables del sector energético en inglés (como OilPrice.com)
+            // Esto garantiza noticias reales, actuales, en inglés y sin restricciones estrictas de CORS o llaves de pago.
+            const rssUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://oilprice.com/rss/main')}`;
 
-            let filtered = country === 'all' ?
-                allFeatures :
-                allFeatures.filter(f => f.properties.name === country);
+            try {
+                const response = await fetch(rssUrl);
+                const data = await response.json();
 
-            // Update titles
-            const titleText = country === 'all' ? 'Global Petroleum News' : `${country} · Intelligence Report`;
-            title.textContent = titleText;
-            document.title = 'OilMap · ' + titleText;
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = '<div class="loader">No recent English reports found.</div>';
+                    return;
+                }
 
-            // Sorting by relevance/mentions
-            const countMap = {};
-            filtered.forEach(f => {
-                const name = f.properties.name || 'Unknown';
-                countMap[name] = (countMap[name] || 0) + 1;
-            });
+                container.innerHTML = '';
 
-            filtered.sort((a, b) => {
-                return countMap[b.properties.name] - countMap[a.properties.name];
-            });
+                // Filtrar según el tópico seleccionado de forma simulada/efectiva en el cliente
+                const filteredItems = data.items.filter(item => {
+                    const text = (item.title + ' ' + item.description).toLowerCase();
+                    const q = query.toLowerCase();
+                    if (q.includes('opec')) return text.includes('opec') || text.includes('production');
+                    if (q.includes('upstream') || q.includes('exploration')) return text.includes('upstream') || text.includes('drill') || text.includes('exploration');
+                    if (q.includes('downstream') || q.includes('refinery')) return text.includes('refin') || text.includes('downstream');
+                    if (q.includes('price')) return text.includes('price') || text.includes('barrel') || text.includes('brent');
+                    return true;
+                });
 
-            // Limit items for performance
-            const displayList = filtered.slice(0, 48);
+                const itemsToDisplay = filteredItems.length > 0 ? filteredItems : data.items;
 
-            if (displayList.length === 0) {
-                container.innerHTML = '<div class="loader">No reports found for this region.</div>';
-                return;
-            }
+                itemsToDisplay.forEach(article => {
+                            const card = document.createElement('div');
+                            card.className = 'news-card';
 
-            displayList.forEach(f => {
-                        const p = f.properties;
-                        const mentionCount = countMap[p.name];
+                            let dateStr = 'Recent';
+                            if (article.pubDate) {
+                                const dateObj = new Date(article.pubDate);
+                                dateStr = dateObj.toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                });
+                            }
 
-                        // Construct Card
-                        const card = document.createElement('div');
-                        card.className = 'news-card';
+                            // Extraer imagen del contenido si existe
+                            let imageUrl = './img/preview.jpg';
+                            const imgMatch = article.description.match(/<img[^>]+src="([^">]+)"/);
+                            if (imgMatch && imgMatch[1]) {
+                                imageUrl = imgMatch[1];
+                            }
 
-                        // Parsing the HTML provided by GDELT slightly to clean it up visually
-                        // We create a wrapper to separate Image from Text since GDELT sends them mixed
-                        // NOTE: GDELT html usually contains an <a><img></a> structure.
+                            // Limpiar descripción de etiquetas HTML para el snippet
+                            let cleanDesc = article.description.replace(/<[^>]*>?/gm, '');
+                            if (cleanDesc.length > 120) cleanDesc = cleanDesc.substring(0, 120) + '...';
 
-                        let rawHtml = p.html;
-                        // Add target blank to links
-                        rawHtml = rawHtml.replace('<a ', '<a target="_blank" rel="noopener" ');
-
-                        card.innerHTML = `
-                    <div class="card-meta">
-                        <span class="badge-country">${p.country || 'International'}</span>
-                        <span class="badge-mentions">Vol: ${mentionCount}</span>
-                    </div>
-                    
-                    <div class="card-content">
-                        <div class="gdelt-content">
-                             ${!rawHtml.includes('<img') && p.shareimage ? `<img src="${p.shareimage}" loading="lazy" />` : ''}
-                             
-                             <div class="gdelt-text-wrapper">
-                                ${rawHtml}
-                             </div>
+                            card.innerHTML = `
+                        <div class="card-meta">
+                            <span class="badge-source">OilPrice.com / Global Feed</span>
+                            <span class="badge-date">${dateStr}</span>
                         </div>
-                    </div>
-                `;
+                        ${imageUrl ? `<img src="${imageUrl}" class="card-image" loading="lazy" onerror="this.style.display='none'" />` : ''}
+                        <div class="gdelt-text-wrapper">
+                            <a href="${article.link}" target="_blank" rel="noopener">${article.title}</a>
+                            <p class="news-snippet">${cleanDesc}</p>
+                        </div>
+                    `;
 
-                container.appendChild(card);
-            });
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                container.innerHTML = '<div class="loader" style="color:#ef4444">Error loading data stream. Please check your connection.</div>';
+                console.error('Error fetching news feed:', error);
+            }
         }
 
+        // Manejador del selector de categorías
+        document.getElementById('topicFilter').addEventListener('change', (e) => {
+            loadNews(e.target.value);
+        });
+
+        // Carga inicial
         loadNews();
     </script>
 </body>
