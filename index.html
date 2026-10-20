@@ -16,6 +16,7 @@
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
     <link rel="apple-touch-icon" href="./img/oilmap.png">
     <link rel="preload" as="image" href="./img/oilmap.png">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://oilmap.xyz/">
     <meta property="og:site_name" content="World Oil Map 2026">
@@ -54,10 +55,11 @@
         window.dataLayer = window.dataLayer || [];
 
         function gtag() {
-            dataLayer.push(arguments)
+            dataLayer.push(arguments);
         }
         window.adsbygoogle = window.adsbygoogle || [];
-        window.adsbygoogle.pauseAdRequests = 1;
+        window.googlefc = window.googlefc || {};
+        window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
         gtag('consent', 'default', {
             ad_storage: 'denied',
             ad_user_data: 'denied',
@@ -67,11 +69,10 @@
         });
         gtag('set', 'ads_data_redaction', true);
     </script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css">
     <script src="data/geocoder.js" defer></script>
     <style>
          :root {
@@ -294,7 +295,6 @@
             color: #000;
             font-weight: 600
         }
-        /* Dropdown panels live outside the header (fixed) so the toolbar's overflow never clips them */
         
         .dropdown-panel {
             position: fixed;
@@ -362,6 +362,88 @@
         .layer-item.active .layer-dot {
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent)
+        }
+        /* SmartView Panel Styles */
+        
+        #smartViewSidebar {
+            position: absolute;
+            top: calc(74px + env(safe-area-inset-top, 0px));
+            left: 14px;
+            width: 380px;
+            max-height: calc(100vh - 94px);
+            max-height: calc(100dvh - 94px);
+            z-index: 26;
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            overflow-y: auto;
+            transform: translateX(-420px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .28s cubic-bezier(.16, 1, .3, 1), opacity .25s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+        
+        #smartViewSidebar.open {
+            transform: none;
+            opacity: 1;
+            pointer-events: auto
+        }
+        
+        .smart-slicer-input {
+            width: 100%;
+            padding: 7px 12px;
+            background: rgba(0, 0, 0, .4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            color: var(--text-primary);
+            font-size: .76rem;
+            font-family: inherit;
+            outline: none;
+            margin-bottom: 6px
+        }
+        
+        .smart-slicer-input:focus {
+            border-color: var(--accent)
+        }
+        
+        .smart-list {
+            max-height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: rgba(0, 0, 0, .3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 6px
+        }
+        
+        .smart-list-item {
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: .74rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, .02);
+            transition: background .15s
+        }
+        
+        .smart-list-item:hover {
+            background: var(--accent-soft);
+            color: var(--accent)
+        }
+        
+        .smart-chart-box {
+            background: rgba(0, 0, 0, .25);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            height: 160px;
+            position: relative
         }
         
         #regionSidebar {
@@ -580,7 +662,7 @@
             padding: 6px 10px;
             border-radius: var(--radius-pill);
             font-family: inherit;
-            font-size: .76rem;
+            font-size: .74rem;
             font-weight: 600;
             cursor: pointer;
             transition: .18s
@@ -766,13 +848,6 @@
             justify-content: center
         }
         
-        .cc-window {
-            background: var(--surface-elevated)!important;
-            border: 1px solid var(--border)!important;
-            border-radius: var(--radius-md)!important;
-            font-family: inherit!important
-        }
-        
         @media (max-width:768px) {
             header.top-bar {
                 top: calc(10px + env(safe-area-inset-top, 0px));
@@ -797,6 +872,7 @@
             #suggestions {
                 width: 100%
             }
+            #smartViewSidebar,
             #regionSidebar {
                 top: auto;
                 bottom: 0;
@@ -809,6 +885,7 @@
                 transform: translateY(105%);
                 padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px))
             }
+            #smartViewSidebar.open,
             #regionSidebar.open {
                 transform: none
             }
@@ -821,7 +898,6 @@
 
 <body>
     <div class="ad-container" aria-label="Advertisement">
-        <!-- Replace data-ad-slot with your real AdSense slot ID -->
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
     </div>
 
@@ -835,6 +911,7 @@
             <div id="suggestions" class="glass" role="listbox"></div>
         </div>
         <nav class="toolbar" aria-label="Map Controls">
+            <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
             <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="regionsBtn">📍 Regions ▾</span></button>
             <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="layersBtn">🗂️ Layers ▾</span></button>
             <button id="btn-stats" class="btn-ui" type="button"><span data-i18n="topStatsBtn">📊 Stats</span></button>
@@ -844,13 +921,44 @@
             <a href="contact.html" class="nav-link"><span data-i18n="navContact">Contact</span></a>
             <button id="btn-info" class="btn-ui" type="button" aria-label="About"><span>ℹ️</span></button>
             <select id="langSelector" class="lang-select" aria-label="Select Language">
-<option value="en" selected>🌐 EN</option><option value="es">ES</option><option value="fr">FR</option><option value="ar">AR</option><option value="zh">ZH</option>
-</select>
+                <option value="en" selected>🌐 EN</option>
+                <option value="es">ES</option>
+                <option value="fr">FR</option>
+                <option value="ar">AR</option>
+                <option value="zh">ZH</option>
+            </select>
         </nav>
     </header>
 
+    <!-- SmartView Live Analytics Sidebar -->
+    <aside id="smartViewSidebar" class="glass" aria-label="SmartView Dashboard">
+        <div class="panel-header">
+            <h2>⚡ SmartView Live Dashboard</h2>
+            <button class="close-btn" id="closeSmartView" aria-label="Close">&times;</button>
+        </div>
+        <div class="form-group" style="margin-bottom:6px">
+            <label for="smartSlicer">🔍 Slicer / Filter View Items</label>
+            <input type="search" id="smartSlicer" class="smart-slicer-input" placeholder="Filter by FAC_NAME, COMMODITY or Type...">
+        </div>
+        <div style="font-size:.72rem;color:var(--text-secondary);display:flex;justify-content:space-between">
+            <span id="smartItemCount">0 items visible in view</span>
+            <span id="smartStatus" style="color:var(--accent)">Live tracking active</span>
+        </div>
+        <div id="smartListContainer" class="smart-list">
+            <div style="padding:10px;text-align:center;color:var(--text-secondary);font-size:.74rem">Pan or zoom map to load visible items...</div>
+        </div>
+        <div class="smart-chart-box">
+            <div style="font-size:.7rem;color:var(--accent);font-weight:600;margin-bottom:4px">📐 Top Block Areas (km²)</div>
+            <canvas id="smartAreaChart"></canvas>
+        </div>
+        <div class="smart-chart-box">
+            <div style="font-size:.7rem;color:var(--accent);font-weight:600;margin-bottom:4px">🔵 Wells & Pipelines by Type / Commodity</div>
+            <canvas id="smartWellsChart"></canvas>
+        </div>
+    </aside>
+
     <div id="regions-menu" class="dropdown-panel glass" role="menu">
-        <button class="shortcut-item" role="menuitem" data-region="Venezuela" data-lng="-66.5897" data-lat="6.4238" data-zoom="5.5">🇻🇪 Venezuela</button>
+        <button class="shortcut-item" role="menuitem" data-region="Venezuela" data-lng="-65.2311" data-lat="9.4529" data-zoom="7.02">🇻🇪 Venezuela</button>
         <button class="shortcut-item" role="menuitem" data-region="UAE" data-lng="53.8478" data-lat="23.4241" data-zoom="6.2">🇦🇪 UAE</button>
         <button class="shortcut-item" role="menuitem" data-region="Nigeria" data-lng="8.6753" data-lat="9.0820" data-zoom="5.8">🇳🇬 Nigeria</button>
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" data-i18n="globalView">🌎 Global View</button>
@@ -874,7 +982,9 @@
 
     <aside id="regionSidebar" class="glass" aria-label="Country Intelligence">
         <div class="panel-header">
-            <h2 id="sidebarTitle">Country Profile</h2><button class="close-btn" id="closeSidebar" aria-label="Close">&times;</button></div>
+            <h2 id="sidebarTitle">Country Profile</h2>
+            <button class="close-btn" id="closeSidebar" aria-label="Close">&times;</button>
+        </div>
         <div class="metric-card">
             <h4 data-i18n="sideOperators">Key Operators / Companies</h4>
             <div id="sidebarCompanies" class="metric-val" style="font-size:.88rem">--</div>
@@ -888,7 +998,9 @@
             <div id="sidebarQuality" class="metric-val">--</div>
         </div>
         <div class="chart-box"><canvas id="productionChart"></canvas></div>
-        <div class="meta-footer"><span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA International Energy Statistics</span><span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+        <div class="meta-footer">
+            <span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA International Energy Statistics</span>
+            <span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
         </div>
     </aside>
 
@@ -902,15 +1014,26 @@
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card compact">
             <div class="panel-header">
-                <h2 data-i18n="modalSpatialTitle">📍 Spatial Tools</h2><button class="close-btn" id="closeAddPinModal" aria-label="Close">&times;</button></div>
+                <h2 data-i18n="modalSpatialTitle">📍 Spatial Tools</h2>
+                <button class="close-btn" id="closeAddPinModal" aria-label="Close">&times;</button>
+            </div>
             <div class="tabs">
                 <button type="button" class="tab-btn active" id="tabPinBtn" data-i18n="tabPin">📍 Custom Pin</button>
                 <button type="button" class="tab-btn" id="tabPolyBtn" data-i18n="tabPoly">📐 Polygon Block</button>
+                <button type="button" class="tab-btn" id="tabKmlBtn" data-i18n="tabKml">📂 Import KML</button>
             </div>
             <form id="addPinForm">
-                <div class="form-group"><label for="pinDescription" data-i18n="labelPinDesc">Description / Title</label><input type="text" id="pinDescription" class="form-control" data-i18n-ph="phPinDesc" placeholder="e.g. Wellsite Alpha..." required></div>
-                <div class="form-group"><label for="coordType" data-i18n="labelCoordFormat">Coordinate System</label>
-                    <select id="coordType" class="form-control"><option value="geo" data-i18n="optGeo">Geographic (Lat, Lng)</option><option value="utm" data-i18n="optUtm">UTM (Zone, Easting, Northing)</option></select></div>
+                <div class="form-group">
+                    <label for="pinDescription" data-i18n="labelPinDesc">Description / Title</label>
+                    <input type="text" id="pinDescription" class="form-control" data-i18n-ph="phPinDesc" placeholder="e.g. Wellsite Alpha..." required>
+                </div>
+                <div class="form-group">
+                    <label for="coordType" data-i18n="labelCoordFormat">Coordinate System</label>
+                    <select id="coordType" class="form-control">
+                        <option value="geo" data-i18n="optGeo">Geographic (Lat, Lng)</option>
+                        <option value="utm" data-i18n="optUtm">UTM (Zone, Easting, Northing)</option>
+                    </select>
+                </div>
                 <div id="geoFields">
                     <div class="form-group"><label for="pinLat" data-i18n="labelLat">Latitude</label><input type="number" step="any" id="pinLat" class="form-control" placeholder="10.5"></div>
                     <div class="form-group"><label for="pinLng" data-i18n="labelLng">Longitude</label><input type="number" step="any" id="pinLng" class="form-control" placeholder="-66.9"></div>
@@ -930,6 +1053,14 @@
                 <p style="font-size:.75rem;color:var(--text-secondary);line-height:1.45" data-i18n="polyInstructions">Plot vertices directly on the map to delineate a polygon and calculate its area.</p>
                 <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center" data-i18n="btnStartDrawPoly">🖌️ Draw Polygon on Map</button>
             </div>
+            <div id="kmlSection" style="display:none">
+                <div class="form-group">
+                    <label for="kmlFileInput" data-i18n="labelKmlFile">Select KML File (.kml)</label>
+                    <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple>
+                </div>
+                <p id="kmlStatusMsg" style="font-size:.75rem;color:var(--text-secondary);line-height:1.45" data-i18n="kmlInstructions">Upload your own KML files (Points, Lines, or Polygons) to display them on the map.</p>
+                <button type="button" id="btnClearKml" class="btn-ui" style="width:100%;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear Imported KML</button>
+            </div>
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
                 <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)" data-i18n="btnExportKml">📥 Export to KML</button>
             </div>
@@ -939,7 +1070,9 @@
     <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card">
             <div class="panel-header">
-                <h2 data-i18n="statsModalTitle">📊 Market Rankings & Fluctuations</h2><button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button></div>
+                <h2 data-i18n="statsModalTitle">📊 Market Rankings & Fluctuations</h2>
+                <button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button>
+            </div>
             <div class="stats-box" style="margin-top:12px">
                 <h3 data-i18n="statsChartTitle">📈 Crude Prices Overview by Location</h3>
                 <div id="priceChartContainer" style="width:100%;overflow-x:auto"></div>
@@ -962,7 +1095,9 @@
                     <div id="topLowestList"></div>
                 </div>
             </div>
-            <div class="meta-footer" style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px"><span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA & Official Price Feeds</span><span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+            <div class="meta-footer" style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">
+                <span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA & Official Price Feeds</span>
+                <span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
             </div>
         </div>
     </div>
@@ -978,7 +1113,9 @@
                 <a href="https://github.com/roqueleal/oilmap" target="_blank" rel="noopener noreferrer"><img src="./img/git.png" width="110" height="34" loading="lazy" style="height:auto" alt="GitHub"></a>
                 <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank" rel="noopener noreferrer"><img src="./img/odi.png" width="95" height="34" loading="lazy" style="height:auto" alt="ODI Certificate"></a>
             </div>
-            <div style="padding-top:12px;border-top:1px solid var(--border);font-size:.75rem"><a href="#" id="openCookieSettings" style="color:var(--text-secondary);text-decoration:none" data-i18n="manageCookies">🍪 Manage Cookie Preferences (GDPR/AdSense)</a></div>
+            <div style="padding-top:12px;border-top:1px solid var(--border);font-size:.75rem">
+                <a href="https://oilmap.xyz/privacy-policy.html" id="openCookieSettings" style="color:var(--text-secondary);text-decoration:none" data-i18n="manageCookies">🍪 Manage Cookie Preferences (Google CMP)</a>
+            </div>
         </div>
     </div>
 
@@ -1018,6 +1155,7 @@
                 modalSpatialTitle: "📍 Spatial Tools",
                 tabPin: "📍 Custom Pin",
                 tabPoly: "📐 Polygon Block",
+                tabKml: "📂 Import KML",
                 labelPinDesc: "Description / Title",
                 phPinDesc: "e.g. Wellsite Alpha...",
                 labelCoordFormat: "Coordinate System",
@@ -1030,6 +1168,8 @@
                 labelPolyName: "Concession / Block Name",
                 polyInstructions: "Plot vertices directly on the map to delineate a polygon and calculate its area.",
                 btnStartDrawPoly: "🖌️ Draw Polygon on Map",
+                labelKmlFile: "Select KML File (.kml)",
+                kmlInstructions: "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.",
                 btnExportKml: "📥 Export to KML",
                 statsModalTitle: "📊 Market Rankings & Fluctuations",
                 statsChartTitle: "📈 Crude Prices Overview by Location",
@@ -1039,7 +1179,7 @@
                 statsLowest: "🏷️ Lowest Prices",
                 aboutP1: "Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.",
                 aboutP3: "Developed by",
-                manageCookies: "🍪 Manage Cookie Preferences (GDPR/AdSense)"
+                manageCookies: "🍪 Manage Cookie Preferences (Google CMP)"
             },
             es: {
                 searchPlaceholder: "🔍 Buscar Bloque o País...",
@@ -1064,6 +1204,7 @@
                 modalSpatialTitle: "📍 Herramientas Espaciales",
                 tabPin: "📍 Marcador",
                 tabPoly: "📐 Bloque Poligonal",
+                tabKml: "📂 Importar KML",
                 labelPinDesc: "Descripción / Título",
                 phPinDesc: "ej. Pozo Alpha...",
                 labelCoordFormat: "Sistema de Coordenadas",
@@ -1076,6 +1217,8 @@
                 labelPolyName: "Nombre del Bloque / Concesión",
                 polyInstructions: "Trace los vértices en el mapa para delimitar el polígono y calcular su superficie.",
                 btnStartDrawPoly: "🖌️ Dibujar Polígono en el Mapa",
+                labelKmlFile: "Seleccionar archivo KML (.kml)",
+                kmlInstructions: "Cargue sus propios archivos KML (Puntos, Líneas o Polígonos) para visualizarlos en el mapa.",
                 btnExportKml: "📥 Exportar a KML",
                 statsModalTitle: "📊 Rankings del Mercado y Fluctuaciones",
                 statsChartTitle: "📈 Precios de Crudo por Localización",
@@ -1085,7 +1228,7 @@
                 statsLowest: "🏷️ Precios Más Bajos",
                 aboutP1: "Plataforma de Inteligencia de Localización actualizada mediante bases de datos espaciales oficiales del sector de Petróleo y Gas.",
                 aboutP3: "Desarrollado por",
-                manageCookies: "🍪 Configurar Cookies (RGPD/AdSense)"
+                manageCookies: "🍪 Configurar Cookies (Google CMP)"
             },
             fr: {
                 searchPlaceholder: "🔍 Rechercher Bloc ou Pays...",
@@ -1110,6 +1253,7 @@
                 modalSpatialTitle: "📍 Outils Spatiaux",
                 tabPin: "📍 Repère",
                 tabPoly: "📐 Polygone",
+                tabKml: "📂 Importer KML",
                 labelPinDesc: "Description / Titre",
                 phPinDesc: "ex. Puits Alpha...",
                 labelCoordFormat: "Système de Coordonnées",
@@ -1122,6 +1266,8 @@
                 labelPolyName: "Nom du Bloc / Concession",
                 polyInstructions: "Placez les sommets sur la carte pour tracer un polygone et calculer sa superficie.",
                 btnStartDrawPoly: "🖌️ Tracer un Polygone",
+                labelKmlFile: "Sélectionner un fichier KML (.kml)",
+                kmlInstructions: "Importez vos propres fichiers KML sur la carte.",
                 btnExportKml: "📥 Exporter en KML",
                 statsModalTitle: "📊 Classements et Fluctuations du Marché",
                 statsChartTitle: "📈 Aperçu des Prix du Brut par Lieu",
@@ -1131,7 +1277,7 @@
                 statsLowest: "🏷️ Prix les Plus Bas",
                 aboutP1: "Plateforme d'intelligence géospatiale mise à jour à partir des bases de données officielles du secteur pétrolier et gazier.",
                 aboutP3: "Développé par",
-                manageCookies: "🍪 Gérer les Cookies (RGPD/AdSense)"
+                manageCookies: "🍪 Gérer les Cookies (Google CMP)"
             },
             ar: {
                 searchPlaceholder: "🔍 ابحث عن قطاع أو دولة...",
@@ -1156,6 +1302,7 @@
                 modalSpatialTitle: "📍 الأدوات المكانية",
                 tabPin: "📍 نقطة مخصصة",
                 tabPoly: "📐 مضلع امتياز",
+                tabKml: "📂 استيراد KML",
                 labelPinDesc: "الوصف / الاسم",
                 phPinDesc: "مثال: بئر ألفا...",
                 labelCoordFormat: "نظام الإحداثيات",
@@ -1168,6 +1315,8 @@
                 labelPolyName: "اسم القطاع / الامتياز",
                 polyInstructions: "حدد النقاط مباشرة على الخريطة لرسم المضلع وحساب المساحة.",
                 btnStartDrawPoly: "🖌️ رسم مضلع على الخريطة",
+                labelKmlFile: "اختر ملف KML",
+                kmlInstructions: "قم بتحميل ملفات KML الخاصة بك لعرضها على الخريطة.",
                 btnExportKml: "📥 تصدير إلى KML",
                 statsModalTitle: "📊 تصنيفات وتقلبات السوق",
                 statsChartTitle: "📈 نظرة عامة على أسعار النفط الخام",
@@ -1202,6 +1351,7 @@
                 modalSpatialTitle: "📍 空间标注工具",
                 tabPin: "📍 自定义标记",
                 tabPoly: "📐 区块多边形",
+                tabKml: "📂 导入 KML",
                 labelPinDesc: "描述 / 名称",
                 phPinDesc: "例如：Alpha 井场...",
                 labelCoordFormat: "坐标系统",
@@ -1214,6 +1364,8 @@
                 labelPolyName: "油气区块名称",
                 polyInstructions: "直接在地图上点击节点绘制区块多边形并自动计算面积。",
                 btnStartDrawPoly: "🖌️ 在地图上绘制多边形",
+                labelKmlFile: "选择 KML 文件 (.kml)",
+                kmlInstructions: "上传您自己的 KML 文件以在地图上显示。",
                 btnExportKml: "📥 导出 KML",
                 statsModalTitle: "📊 市场排名与波动",
                 statsChartTitle: "📈 各地区原油价格概览",
@@ -1236,11 +1388,11 @@
             h.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const v = d[el.dataset.i18n];
-                if (v) el.textContent = v
+                if (v) el.textContent = v;
             });
             document.querySelectorAll('[data-i18n-ph]').forEach(el => {
                 const v = d[el.dataset.i18nPh];
-                if (v) el.placeholder = v
+                if (v) el.placeholder = v;
             });
             $('langSelector').value = currentLang;
             closeAllDropdowns();
@@ -1248,31 +1400,109 @@
         }
         $('langSelector').addEventListener('change', e => setLanguage(e.target.value));
 
-        /* ---------- map ---------- */
-        mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
-        mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js', null, true);
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/roqueleal/ckg8c3kqf3udn19p3zhhhia61',
-            center: [-64.974, 18.198],
-            zoom: 3,
-            antialias: true
-        });
-        map.addControl(new mapboxgl.NavigationControl({
-            showCompass: true
-        }), 'bottom-right');
-        map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
-        map.addControl(new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }), 'bottom-right');
-        const toggleableLayerIds = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS', 'OIL PRICES'];
-
-        /* ---------- dropdowns (fixed-position, never clipped by toolbar) ---------- */
+        /* ---------- configuración de capas y menú ---------- */
         const menuNav = $('menu'),
             regionsMenu = $('regions-menu');
+
+        const layerMenuConfig = [{
+            label: 'PRODUCTION',
+            targets: ['PRODUCTION'],
+            defaultActive: true
+        }, {
+            label: 'EXPLORATION',
+            targets: ['EXPLORATION'],
+            defaultActive: true
+        }, {
+            label: 'BID-ROUNDS',
+            targets: ['BID-ROUNDS', 'bid-6mpdnh'],
+            defaultActive: true
+        }, {
+            label: 'REFINERIES',
+            targets: ['REFINERIES'],
+            defaultActive: true
+        }, {
+            label: 'OFFSHORE PLATFORMS',
+            targets: ['offshore-platforms'],
+            defaultActive: false
+        }, {
+            label: 'OIL & GAS WELLS',
+            targets: ['oil-and-gas-wells'],
+            defaultActive: false
+        }, {
+            label: 'OIL-PIPELINE',
+            targets: ['OIL-PIPELINE'],
+            defaultActive: true
+        }, {
+            label: 'GAS-PIPELINE',
+            targets: ['GAS-PIPELINE'],
+            defaultActive: true
+        }, {
+            label: 'DEPOSITS',
+            targets: ['DEPOSITS'],
+            defaultActive: false
+        }, {
+            label: 'OIL PRICES',
+            targets: ['oil-prices-layer', 'clusters', 'cluster-count'],
+            defaultActive: true
+        }];
+
+        function initLayerMenuDOM() {
+            menuNav.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            layerMenuConfig.forEach(item => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.dataset.layerGroup = item.label;
+                b.className = 'layer-item' + (item.defaultActive ? ' active' : '');
+                b.setAttribute('role', 'menuitemcheckbox');
+                b.setAttribute('aria-checked', String(item.defaultActive));
+                b.innerHTML = `<span class="layer-dot"></span><span>${item.label}</span>`;
+
+                b.onclick = function(e) {
+                    e.preventDefault();
+                    const isNowActive = !this.classList.contains('active');
+                    const nextVis = isNowActive ? 'visible' : 'none';
+                    this.classList.toggle('active', isNowActive);
+                    this.setAttribute('aria-checked', String(isNowActive));
+
+                    if (!map) return;
+                    item.targets.forEach(l => {
+                        if (map.getLayer(l)) {
+                            map.setLayoutProperty(l, 'visibility', nextVis);
+                        }
+                    });
+
+                    if ((item.label === 'PRODUCTION' || item.label === 'EXPLORATION') && map.getLayer('2027-blocks')) {
+                        const prodBtn = menuNav.querySelector('[data-layer-group="PRODUCTION"]');
+                        const expBtn = menuNav.querySelector('[data-layer-group="EXPLORATION"]');
+                        const anyActive = (prodBtn && prodBtn.classList.contains('active')) || (expBtn && expBtn.classList.contains('active'));
+                        map.setLayoutProperty('2027-blocks', 'visibility', anyActive ? 'visible' : 'none');
+                    }
+                };
+                frag.appendChild(b);
+            });
+            menuNav.appendChild(frag);
+        }
+        initLayerMenuDOM();
+
+        function syncLayerMenuWithMap() {
+            layerMenuConfig.forEach(item => {
+                if (item.label === 'OIL PRICES') return;
+                const desiredVis = item.defaultActive ? 'visible' : 'none';
+                item.targets.forEach(l => {
+                    if (map.getLayer(l)) {
+                        map.setLayoutProperty(l, 'visibility', desiredVis);
+                    }
+                });
+                const btn = menuNav.querySelector(`[data-layer-group="${item.label}"]`);
+                if (btn) {
+                    btn.classList.toggle('active', item.defaultActive);
+                    btn.setAttribute('aria-checked', String(item.defaultActive));
+                }
+            });
+        }
+
+        /* ---------- dropdowns ---------- */
         const panels = [
             [$('btn-regions'), regionsMenu],
             [$('btn-toggle-menu'), menuNav]
@@ -1281,13 +1511,13 @@
         function closeAllDropdowns() {
             panels.forEach(([b, p]) => {
                 p.classList.remove('show');
-                b.setAttribute('aria-expanded', 'false')
-            })
+                b.setAttribute('aria-expanded', 'false');
+            });
         }
 
         function placePanel(btn, panel) {
             const r = btn.getBoundingClientRect(),
-                w = Math.min(220, innerWidth - 16),
+                w = Math.min(230, innerWidth - 16),
                 rtl = document.documentElement.dir === 'rtl';
             let left = rtl ? r.left : r.right - w;
             left = Math.max(8, Math.min(left, innerWidth - w - 8));
@@ -1305,22 +1535,291 @@
                 if (!was) {
                     placePanel(btn, panel);
                     panel.classList.add('show');
-                    btn.setAttribute('aria-expanded', 'true')
+                    btn.setAttribute('aria-expanded', 'true');
                 }
             });
             panel.addEventListener('click', e => e.stopPropagation());
         });
         document.addEventListener('click', () => {
             closeAllDropdowns();
-            $('suggestions').style.display = 'none'
+            $('suggestions').style.display = 'none';
         });
         addEventListener('resize', closeAllDropdowns);
         addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeAllDropdowns()
+            if (e.key === 'Escape') closeAllDropdowns();
         });
         document.querySelector('.toolbar').addEventListener('scroll', closeAllDropdowns, {
             passive: true
         });
+
+        /* ---------- mapa mapbox ---------- */
+        mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+        try {
+            if (mapboxgl.getRTLTextPluginStatus && mapboxgl.getRTLTextPluginStatus() === 'unavailable') {
+                mapboxgl.setRTLTextPlugin(
+                    'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.min.js',
+                    null,
+                    true
+                );
+            }
+        } catch (err) {}
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g',
+            projection: 'mercator',
+            center: [-65.23113417230971, 9.452890894236447],
+            zoom: 7.015741913020643,
+            bearing: 0,
+            pitch: 0,
+            antialias: true
+        });
+
+        map.addControl(new mapboxgl.NavigationControl({
+            showCompass: true
+        }), 'bottom-right');
+        map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }), 'bottom-right');
+
+        /* ---------- SmartView Live Dashboard Logic ---------- */
+        let smartViewActive = false;
+        let smartAreaChart = null,
+            smartWellsChart = null;
+        let liveViewItems = [];
+        let currentDisplayedSmartItems = [];
+        let smartDebounceTimer = null;
+
+        $('btn-smartview').addEventListener('click', () => {
+            smartViewActive = !smartViewActive;
+            $('btn-smartview').classList.toggle('active-tool', smartViewActive);
+            $('smartViewSidebar').classList.toggle('open', smartViewActive);
+            if (smartViewActive) {
+                loadChart().then(refreshSmartViewData);
+            }
+        });
+        $('closeSmartView').addEventListener('click', () => {
+            smartViewActive = false;
+            $('btn-smartview').classList.remove('active-tool');
+            $('smartViewSidebar').classList.remove('open');
+        });
+
+        map.on('moveend', () => {
+            if (!smartViewActive) return;
+            clearTimeout(smartDebounceTimer);
+            smartDebounceTimer = setTimeout(refreshSmartViewData, 250);
+        });
+
+        const smartQueryLayers = [
+            'REFINERIES',
+            'PRODUCTION',
+            'EXPLORATION',
+            'offshore-platforms',
+            'oil-and-gas-wells',
+            'OIL-PIPELINE',
+            'GAS-PIPELINE',
+            'kml-custom-fill',
+            'kml-custom-line',
+            'kml-custom-point'
+        ];
+
+        function refreshSmartViewData() {
+            if (!smartViewActive) return;
+            try {
+                const rendered = map.queryRenderedFeatures({
+                    layers: smartQueryLayers.filter(l => map.getLayer(l))
+                });
+                const uniqueMap = new Map();
+
+                rendered.forEach(f => {
+                    const p = f.properties || {};
+                    const facName = p.FAC_NAME || p.Name || p.title || p.NAME || 'Unnamed Item';
+                    const commodity = p.COMMODITY || p.commodity || (f.layer.id === 'OIL-PIPELINE' ? 'Oil' : f.layer.id === 'GAS-PIPELINE' ? 'Gas' : '');
+                    let type = f.layer.id;
+                    if (type === 'PRODUCTION' || type === 'EXPLORATION') type = 'Block';
+                    else if (type === 'REFINERIES') type = 'Refinery';
+                    else if (type === 'offshore-platforms' || type === 'oil-and-gas-wells') type = 'Well/Platform';
+                    else if (type === 'OIL-PIPELINE') type = 'Oil Pipeline';
+                    else if (type === 'GAS-PIPELINE') type = 'Gas Pipeline';
+                    else if (type.indexOf('kml-custom') === 0) type = 'Custom KML';
+
+                    let coords = null;
+                    if (f.geometry.type === 'Point') coords = f.geometry.coordinates;
+                    else if (f.geometry.type === 'Polygon') coords = f.geometry.coordinates[0][0];
+                    else if (f.geometry.type === 'MultiPolygon') coords = f.geometry.coordinates[0][0][0];
+                    else if (f.geometry.type === 'LineString') coords = f.geometry.coordinates[Math.floor(f.geometry.coordinates.length / 2)];
+                    else if (f.geometry.type === 'MultiLineString' && f.geometry.coordinates[0]) coords = f.geometry.coordinates[0][Math.floor(f.geometry.coordinates[0].length / 2)];
+
+                    const key = `${type}_${facName}_${commodity}`;
+                    if (coords && !uniqueMap.has(key)) {
+                        uniqueMap.set(key, {
+                            name: facName,
+                            facName: facName,
+                            commodity: commodity,
+                            type,
+                            area: parseFloat(p.Area_km2) || 0,
+                            drillType: commodity || p.DRILL_TYPE || p.FAC_TYPE || 'Standard',
+                            coordinates: coords
+                        });
+                    }
+                });
+
+                liveViewItems = Array.from(uniqueMap.values());
+                const q = $('smartSlicer').value.toLowerCase().trim();
+                const filtered = q ? liveViewItems.filter(i =>
+                    i.name.toLowerCase().includes(q) ||
+                    i.facName.toLowerCase().includes(q) ||
+                    i.commodity.toLowerCase().includes(q) ||
+                    i.type.toLowerCase().includes(q)
+                ) : liveViewItems;
+                renderSmartList(filtered);
+                updateSmartCharts(liveViewItems);
+            } catch (err) {
+                console.error('SmartView query error:', err);
+            }
+        }
+
+        $('smartSlicer').addEventListener('input', e => {
+            const q = e.target.value.toLowerCase().trim();
+            const filtered = q ? liveViewItems.filter(i =>
+                i.name.toLowerCase().includes(q) ||
+                i.facName.toLowerCase().includes(q) ||
+                i.commodity.toLowerCase().includes(q) ||
+                i.type.toLowerCase().includes(q)
+            ) : liveViewItems;
+            renderSmartList(filtered);
+        });
+
+        function renderSmartList(items) {
+            const container = $('smartListContainer');
+            currentDisplayedSmartItems = items.slice(0, 50);
+            $('smartItemCount').textContent = `${items.length} items visible in view`;
+            if (!items.length) {
+                container.innerHTML = `<div style="padding:10px;text-align:center;color:var(--text-secondary);font-size:.74rem">No items found in current view.</div>`;
+                return;
+            }
+            container.innerHTML = currentDisplayedSmartItems.map((it, idx) => `
+                <div class="smart-list-item" onclick="flyToSmartIdx(${idx})">
+                    <div>
+                        <div><strong>${esc(it.facName)}</strong> <span style="font-size:.65rem;color:var(--text-secondary)">(${esc(it.type)})</span></div>
+                        <div style="font-size:.66rem;color:var(--accent);margin-top:2px">FAC_NAME: ${esc(it.facName)} · COMMODITY: ${esc(it.commodity || 'N/A')}</div>
+                    </div>
+                    <span style="color:var(--accent);font-size:.68rem">📍 Zoom</span>
+                </div>
+            `).join('') + (items.length > 50 ? `<div style="text-align:center;font-size:.65rem;color:var(--text-secondary);padding:4px">+${items.length - 50} more items...</div>` : '');
+        }
+
+        window.flyToSmartIdx = function(idx) {
+            const it = currentDisplayedSmartItems[idx];
+            if (!it) return;
+            window.flyToSmartItem(it.coordinates[0], it.coordinates[1], it.facName, it.commodity, it.type);
+        };
+
+        window.flyToSmartItem = function(lng, lat, name, commodity, type) {
+            map.flyTo({
+                center: [lng, lat],
+                zoom: 11,
+                essential: true
+            });
+            showPopup([lng, lat], `
+                <div class="popup-blend">⚡ ${esc(type || 'SmartView Item')}</div>
+                <div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(name)}</div>
+                <div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity || 'N/A')}</div>
+            `);
+        };
+
+        function updateSmartCharts(items) {
+            loadChart().then(() => {
+                const blocks = items.filter(i => i.type === 'Block' && i.area > 0).sort((a, b) => b.area - a.area).slice(0, 5);
+                const areaCtx = $('smartAreaChart').getContext('2d');
+                if (smartAreaChart) smartAreaChart.destroy();
+                smartAreaChart = new Chart(areaCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: blocks.map(b => b.name.length > 15 ? b.name.substring(0, 15) + '...' : b.name),
+                        datasets: [{
+                            data: blocks.map(b => b.area),
+                            backgroundColor: '#f0b823',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#94a3b8',
+                                    font: {
+                                        size: 9
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#94a3b8',
+                                    font: {
+                                        size: 9
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,.05)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const wellTypes = {};
+                items.filter(i => i.type === 'Well/Platform' || i.type === 'Oil Pipeline' || i.type === 'Gas Pipeline').forEach(w => {
+                    const label = w.commodity || w.drillType || w.type;
+                    wellTypes[label] = (wellTypes[label] || 0) + 1;
+                });
+                const wellKeys = Object.keys(wellTypes).slice(0, 4);
+                const wellVals = wellKeys.map(k => wellTypes[k]);
+
+                const wellCtx = $('smartWellsChart').getContext('2d');
+                if (smartWellsChart) smartWellsChart.destroy();
+                smartWellsChart = new Chart(wellCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: wellKeys.length ? wellKeys : ['No Wells in view'],
+                        datasets: [{
+                            data: wellVals.length ? wellVals : [1],
+                            backgroundColor: ['#f0b823', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: '#f8fafc',
+                                    boxWidth: 10,
+                                    font: {
+                                        size: 9
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }).catch(() => {});
+        }
 
         /* ---------- region sidebar (Chart.js loaded on demand) ---------- */
         let prodChart = null,
@@ -1427,12 +1926,13 @@
             }).catch(() => {});
         }
 
-        /* ---------- price data ---------- */
+        /* ---------- price data & layers initialization ---------- */
         const allBlends = [];
         let activePopup = null,
             globalGeojsonFeatures = [],
             customUserPins = [],
             customUserPolygons = [],
+            customKmlFeatures = [],
             latestCaptureDate = 'Live';
         const parseCoord = v => (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
         const parseNumeric = v => v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
@@ -1442,10 +1942,12 @@
             if (activePopup) activePopup.remove();
             activePopup = new mapboxgl.Popup({
                 offset: 12
-            }).setLngLat(lngLat).setHTML(html).addTo(map)
+            }).setLngLat(lngLat).setHTML(html).addTo(map);
         }
 
         map.on('load', () => {
+            syncLayerMenuWithMap();
+
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 508" width="60" height="60"><circle cx="254" cy="254" r="254" fill="#FFD05B"/><rect x="154" y="100.5" width="200" height="306.9" rx="16" fill="#2B3B4E"/><g><path fill="#324A5E" d="M364,110.7H144c-5.6,0-10.2-4.5-10.2-10.2l0,0c0-5.6,4.5-10.2,10.2-10.2h220c5.6,0,10.2,4.5,10.2,10.2l0,0C374.2,106.1,369.6,110.7,364,110.7z"/><path fill="#324A5E" d="M372,213H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,211.9,373.4,213,372,213z"/><path fill="#324A5E" d="M372,315.3H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,314.2,373.4,315.3,372,315.3z"/><path fill="#324A5E" d="M372,417.6H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6V415C374.6,416.5,373.4,417.6,372,417.6z"/></g><path fill="#131b2a" d="M254,145c-35,0-63.5,49.2-63.5,109s28.5,109,63.5,109s63.5-49.2,63.5-109S289,145,254,145z"/><text x="254" y="292" fill="#FFFFFF" font-size="140" font-family="Inter, Arial, sans-serif" font-weight="bold" text-anchor="middle">$</text></svg>`;
             const url = URL.createObjectURL(new Blob([svg], {
                     type: 'image/svg+xml;charset=utf-8'
@@ -1453,7 +1955,7 @@
                 img = new Image();
             img.onload = () => {
                 if (!map.hasImage('barrel-custom-icon')) map.addImage('barrel-custom-icon', img);
-                URL.revokeObjectURL(url)
+                URL.revokeObjectURL(url);
             };
             img.src = url;
 
@@ -1490,86 +1992,71 @@
                 }).setLngLat(e.lngLat).setHTML(`<div class="popup-blend">📐 ${esc(p.title)}</div><div><strong>Area:</strong> ${esc(p.areaKm2)} km² (${esc(p.areaHa)} ha)</div>`).addTo(map);
             });
 
-            const frag = document.createDocumentFragment();
-            toggleableLayerIds.forEach(id => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.className = 'layer-item active';
-                b.setAttribute('role', 'menuitemcheckbox');
-                b.setAttribute('aria-checked', 'true');
-                b.innerHTML = `<span class="layer-dot"></span><span>${id}</span>`;
-                b.onclick = function(e) {
-                    e.preventDefault();
-                    const ids = id === 'OIL PRICES' ? ['oil-prices-layer', 'clusters', 'cluster-count'] : [id];
-                    const ref = ids.find(l => map.getLayer(l));
-                    if (!ref) return;
-                    const vis = (map.getLayoutProperty(ref, 'visibility') || 'visible') === 'visible' ? 'none' : 'visible';
-                    ids.forEach(l => {
-                        if (map.getLayer(l)) map.setLayoutProperty(l, 'visibility', vis)
-                    });
-                    this.classList.toggle('active', vis === 'visible');
-                    this.setAttribute('aria-checked', vis === 'visible');
-                };
-                frag.appendChild(b);
-            });
-            menuNav.appendChild(frag);
-
             fetch('https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv')
                 .then(r => r.text())
-                .then(csv => Papa.parse(csv, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: res => {
-                        let captured = '';
-                        res.data.forEach(row => {
-                            const n = {};
-                            Object.keys(row).forEach(k => n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = row[k]);
-                            const AREA = n['blend'] || '',
-                                Y = parseCoord(n['lat']),
-                                X = parseCoord(n['lon']);
-                            const PRICE = n['precio'] || '0',
-                                CHANGE = n['cambio'] || '0',
-                                PCT = n['cambio %'] || '0%',
-                                WEEK = n['rango sem.'] || '-',
-                                MONTH = n['rango mes'] || '-',
-                                UPDATE = (n['captura'] || '').trim();
-                            if (UPDATE && !captured) captured = UPDATE;
-                            if (!AREA || isNaN(Y) || isNaN(X)) return;
-                            const numericPrice = parseNumeric(PRICE),
-                                numericChange = parseNumeric(CHANGE),
-                                pos = !String(CHANGE).startsWith('-');
-                            const date = UPDATE || latestCaptureDate;
-                            const html = `<div class="popup-blend">🛢️ ${esc(AREA)}</div><div class="popup-price-row"><span class="popup-price">$${esc(PRICE)} <span style="font-size:.68rem;color:#94a3b8">USD/Bl</span></span><span class="popup-change ${pos?'positive':'negative'}">${pos?'▲':'▼'} ${esc(CHANGE)} (${esc(PCT)})</span></div><div class="popup-ranges"><div>📅 <strong>Weekly:</strong> ${esc(WEEK)}</div><div>📊 <strong>Monthly:</strong> ${esc(MONTH)}</div></div><div class="popup-update">🕒 ${esc(date)}</div>`;
-                            globalGeojsonFeatures.push({
-                                type: 'Feature',
-                                geometry: {
-                                    type: 'Point',
-                                    coordinates: [X, Y]
-                                },
-                                properties: {
-                                    title: AREA,
-                                    popupContent: html
-                                }
-                            });
-                            allBlends.push({
-                                name: AREA,
-                                price: PRICE,
-                                numericPrice,
-                                change: CHANGE,
-                                numericChange,
-                                changePct: PCT,
-                                updateDate: date,
-                                coordinates: [X, Y],
-                                popupContent: html
-                            });
+                .then(csv => {
+                    const parseRunner = () => {
+                        if (typeof Papa === 'undefined') {
+                            setTimeout(parseRunner, 100);
+                            return;
+                        }
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true,
+                            complete: res => {
+                                let captured = '';
+                                res.data.forEach(row => {
+                                    const n = {};
+                                    Object.keys(row).forEach(k => n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = row[k]);
+                                    const AREA = n['blend'] || '',
+                                        Y = parseCoord(n['lat']),
+                                        X = parseCoord(n['lon']);
+                                    const PRICE = n['precio'] || '0',
+                                        CHANGE = n['cambio'] || '0',
+                                        PCT = n['cambio %'] || '0%',
+                                        WEEK = n['rango sem.'] || '-',
+                                        MONTH = n['rango mes'] || '-',
+                                        UPDATE = (n['captura'] || '').trim();
+                                    if (UPDATE && !captured) captured = UPDATE;
+                                    if (!AREA || isNaN(Y) || isNaN(X)) return;
+                                    const numericPrice = parseNumeric(PRICE),
+                                        numericChange = parseNumeric(CHANGE),
+                                        pos = !String(CHANGE).startsWith('-');
+                                    const date = UPDATE || latestCaptureDate;
+                                    const html = `<div class="popup-blend">🛢️ ${esc(AREA)}</div><div class="popup-price-row"><span class="popup-price">$${esc(PRICE)} <span style="font-size:.68rem;color:#94a3b8">USD/Bl</span></span><span class="popup-change ${pos?'positive':'negative'}">${pos?'▲':'▼'} ${esc(CHANGE)} (${esc(PCT)})</span></div><div class="popup-ranges"><div>📅 <strong>Weekly:</strong> ${esc(WEEK)}</div><div>📊 <strong>Monthly:</strong> ${esc(MONTH)}</div></div><div class="popup-update">🕒 ${esc(date)}</div>`;
+                                    globalGeojsonFeatures.push({
+                                        type: 'Feature',
+                                        geometry: {
+                                            type: 'Point',
+                                            coordinates: [X, Y]
+                                        },
+                                        properties: {
+                                            title: AREA,
+                                            popupContent: html
+                                        }
+                                    });
+                                    allBlends.push({
+                                        name: AREA,
+                                        price: PRICE,
+                                        numericPrice,
+                                        change: CHANGE,
+                                        numericChange,
+                                        changePct: PCT,
+                                        updateDate: date,
+                                        coordinates: [X, Y],
+                                        popupContent: html
+                                    });
+                                });
+                                if (captured) latestCaptureDate = captured;
+                                updateCaptureDateNodes(latestCaptureDate);
+                                updateMapSourceAndLayers();
+                                buildStatsLists();
+                                buildPriceChart();
+                            }
                         });
-                        if (captured) latestCaptureDate = captured;
-                        updateCaptureDateNodes(latestCaptureDate);
-                        updateMapSourceAndLayers();
-                        buildStatsLists();
-                        buildPriceChart();
-                    }
-                }))
+                    };
+                    parseRunner();
+                })
                 .catch(err => console.error('Error loading CSV:', err));
         });
 
@@ -1580,8 +2067,11 @@
             };
             if (map.getSource('oil-prices-source')) {
                 map.getSource('oil-prices-source').setData(data);
-                return
+                return;
             }
+            const oilPricesBtn = menuNav.querySelector('[data-layer-group="OIL PRICES"]');
+            const initVis = (oilPricesBtn && !oilPricesBtn.classList.contains('active')) ? 'none' : 'visible';
+
             map.addSource('oil-prices-source', {
                 type: 'geojson',
                 data,
@@ -1594,6 +2084,9 @@
                 type: 'circle',
                 source: 'oil-prices-source',
                 filter: ['has', 'point_count'],
+                layout: {
+                    visibility: initVis
+                },
                 paint: {
                     'circle-color': ['step', ['get', 'point_count'], '#ef4444', 10, '#f59e0b', 30, '#3b82f6'],
                     'circle-radius': ['step', ['get', 'point_count'], 19, 10, 24, 30, 30],
@@ -1608,6 +2101,7 @@
                 source: 'oil-prices-source',
                 filter: ['has', 'point_count'],
                 layout: {
+                    visibility: initVis,
                     'text-field': '{point_count_abbreviated}',
                     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
                     'text-size': 12
@@ -1622,6 +2116,7 @@
                 source: 'oil-prices-source',
                 filter: ['!', ['has', 'point_count']],
                 layout: {
+                    visibility: initVis,
                     'icon-image': 'barrel-custom-icon',
                     'icon-size': .62,
                     'icon-allow-overlap': true
@@ -1653,47 +2148,92 @@
                 map.on('mouseleave', l, () => map.getCanvas().style.cursor = (isDrawingPolygon || measureEnabled) ? 'crosshair' : '');
             });
         }
-        const interactiveLayers = ['PRODUCTION', 'BID-ROUNDS', 'EXPLORATION', 'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
+
+        /* ---------- interactividad de capas ---------- */
+        const interactiveLayers = ['PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'REFINERIES', 'offshore-platforms', 'oil-and-gas-wells', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
+
+        const fieldLabels = {
+            FAC_NAME: 'FAC_NAME',
+            COMMODITY: 'COMMODITY',
+            Type: 'Type',
+            Company: 'Company',
+            Country: 'Country',
+            COUNTRY: 'Country',
+            Area_km2: 'Area (km²)',
+            source: 'Source',
+            Source: 'Source',
+            OPERATOR: 'Operator',
+            FAC_TYPE: 'Facility Type',
+            FAC_STATUS: 'Status',
+            INSTALL_DATE: 'Install Date',
+            SPUD_DATE: 'Spud Date',
+            DRILL_TYPE: 'Drill Type',
+            REGION: 'Region',
+            STATE_PROV: 'State / Province',
+            CATEGORY: 'Category',
+            ON_OFFSHORE: 'Location',
+            SRC_DATE: 'Source Date',
+            OGIM_STATUS: 'OGIM Status',
+            RESINFO: 'Resource',
+            DISC: 'Discovery Year',
+            PROD: 'Production Year',
+            SOURCEINFO: 'Source Info',
+            OTHERINFO: 'Other Info',
+            LOCSOURCE: 'Location Source'
+        };
+        const orderedDisplayFields = ['FAC_NAME', 'COMMODITY', 'Type', 'Company', 'OPERATOR', 'RESINFO', 'FAC_TYPE', 'DRILL_TYPE', 'FAC_STATUS', 'OGIM_STATUS', 'CATEGORY', 'ON_OFFSHORE', 'Country', 'COUNTRY', 'REGION', 'STATE_PROV', 'Area_km2', 'INSTALL_DATE', 'SPUD_DATE', 'DISC', 'PROD', 'source', 'Source', 'SOURCEINFO', 'LOCSOURCE', 'OTHERINFO'];
+        const ignoredInternalKeys = new Set(['Name', 'NAME', 'title', 'TITLE', 'field_name', 'description', 'Description', 'Descriptio', 'DESCRIPTIO', 'DESC', 'desc', 'popupContent', 'fid', 'OGIM_ID', 'FAC_ID', 'SRC_REF_ID', 'LATITUDE', 'LONGITUDE', 'LAT', 'LONG', 'bbox', 'PRIMKEY', 'FIPSCODE', 'COWCODE', 'CONTCODE', 'SITENUM', 'VERSION', 'RES', 'DISCPRES', 'PRODPRES', 'FIELDINFO']);
 
         interactiveLayers.forEach(layerId => {
-            map.on('click', layerId, (e) => {
+            map.on('click', layerId, e => {
                 if (isDrawingPolygon || measureEnabled) return;
-
                 const features = map.queryRenderedFeatures(e.point, {
                     layers: [layerId]
                 });
                 if (!features.length) return;
+                const props = features[0].properties || {};
 
-                const feature = features[0];
-                const props = feature.properties;
-                const title = props.name || props.TITLE || props.Name || props.field_name || layerId;
-
-                const rawHtmlDesc = (layerId === 'REFINERIES') ? null : (props.Description || props.description || props.DESC || props.desc || props.Descriptio);
-
-                let htmlContent = `<div class="popup-blend">🛢️ ${esc(title)}</div>`;
-
-                if (rawHtmlDesc) {
-                    htmlContent += `<div style="margin-top:6px;">${rawHtmlDesc}</div>`;
-                } else {
-                    // Lista ampliada de campos ignorados incluyendo 'Descriptio'
-                    const ignoredKeys = ['name', 'TITLE', 'Name', 'field_name', 'popupContent', 'Description', 'description', 'DESC', 'desc', 'Descriptio', 'DESCRIPTIO'];
-
-                    for (const [key, value] of Object.entries(props)) {
-                        if (ignoredKeys.includes(key)) continue;
-                        if (value !== null && value !== undefined && value !== '') {
-                            const isValueHtml = typeof value === 'string' && value.trim().startsWith('<') && value.trim().endsWith('>');
-                            if (isValueHtml) {
-                                htmlContent += `<div style="margin-top:4px;"><strong>${esc(key)}:</strong> ${value}</div>`;
-                            } else {
-                                htmlContent += `<div style="margin-top:4px;"><strong>${esc(key)}:</strong> ${esc(value)}</div>`;
-                            }
-                        }
-                    }
+                if (layerId === 'OIL-PIPELINE' || layerId === 'GAS-PIPELINE') {
+                    const facName = props.FAC_NAME || props.Name || props.NAME || 'N/A';
+                    const commodity = props.COMMODITY || props.commodity || (layerId === 'OIL-PIPELINE' ? 'Oil' : 'Gas');
+                    let pipeHtml = `<div class="popup-blend">🛢️ ${esc(layerId)}</div>`;
+                    pipeHtml += `<div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(facName)}</div>`;
+                    pipeHtml += `<div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity)}</div>`;
+                    showPopup(e.lngLat, pipeHtml);
+                    return;
                 }
 
+                const title = props.Name || props.FAC_NAME || props.title || props.NAME || props.TITLE || props.field_name || layerId;
+                let htmlContent = `<div class="popup-blend">🛢️ ${esc(title)}</div>`;
+                const rawDesc = props.description || props.Descriptio || props.Description || props.DESC || props.desc;
+                if (rawDesc && String(rawDesc).trim() !== '') {
+                    const strDesc = String(rawDesc).trim();
+                    const isHtml = strDesc.startsWith('<') && strDesc.endsWith('>');
+                    htmlContent += `<div style="margin-top:6px;">${isHtml ? strDesc : esc(strDesc)}</div>`;
+                }
+                const renderedKeys = new Set();
+                orderedDisplayFields.forEach(key => {
+                    if (!(key in props)) return;
+                    const val = props[key];
+                    if (val === null || val === undefined || val === '' || val === '---' || val === -9999 || val === '-9999') return;
+                    renderedKeys.add(key);
+                    let formattedVal = val;
+                    if (key === 'Area_km2' && !isNaN(parseFloat(val))) {
+                        formattedVal = `${Number(val).toLocaleString(undefined, { maximumFractionDigits: 2 })} km²`;
+                    }
+                    const label = fieldLabels[key] || key;
+                    htmlContent += `<div style="margin-top:4px;"><strong>${esc(label)}:</strong> ${esc(formattedVal)}</div>`;
+                });
+                for (const [key, value] of Object.entries(props)) {
+                    if (renderedKeys.has(key) || ignoredInternalKeys.has(key)) continue;
+                    if (value !== null && value !== undefined && value !== '' && value !== -9999 && value !== '-9999') {
+                        const isValueHtml = typeof value === 'string' && value.trim().startsWith('<') && value.trim().endsWith('>');
+                        const label = fieldLabels[key] || key;
+                        htmlContent += `<div style="margin-top:4px;"><strong>${esc(label)}:</strong> ${isValueHtml ? value : esc(value)}</div>`;
+                    }
+                }
                 showPopup(e.lngLat, htmlContent);
             });
-
             map.on('mouseenter', layerId, () => {
                 if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = 'pointer';
             });
@@ -1746,7 +2286,7 @@
             showPopup(f.coordinates, f.popupContent);
         };
 
-        /* ---------- UTM -> lat/lng (WGS84) ---------- */
+        /* ---------- UTM & Spatial Tools ---------- */
         function utmToLatLng(zoneStr, E, N) {
             const m = String(zoneStr).trim().toUpperCase().match(/^(\d{1,2})\s*([C-X])?$/);
             if (!m || isNaN(E) || isNaN(N)) return [NaN, NaN];
@@ -1776,22 +2316,26 @@
             return [lat * 180 / Math.PI, (zone * 6 - 183) + lon * 180 / Math.PI];
         }
 
-        /* ---------- pins, polygons, KML ---------- */
         const addPinModal = $('addPinModal'),
             addPinForm = $('addPinForm'),
             polygonSection = $('polygonSection'),
+            kmlSection = $('kmlSection'),
             coordTypeSelect = $('coordType');
         $('btnAddPin').onclick = () => addPinModal.style.display = 'flex';
         $('closeAddPinModal').onclick = () => addPinModal.style.display = 'none';
 
-        function showTab(pin) {
-            $('tabPinBtn').classList.toggle('active', pin);
-            $('tabPolyBtn').classList.toggle('active', !pin);
-            addPinForm.style.display = pin ? 'block' : 'none';
-            polygonSection.style.display = pin ? 'none' : 'block';
+        function showTab(tabName) {
+            $('tabPinBtn').classList.toggle('active', tabName === 'pin');
+            $('tabPolyBtn').classList.toggle('active', tabName === 'poly');
+            $('tabKmlBtn').classList.toggle('active', tabName === 'kml');
+            addPinForm.style.display = tabName === 'pin' ? 'block' : 'none';
+            polygonSection.style.display = tabName === 'poly' ? 'block' : 'none';
+            kmlSection.style.display = tabName === 'kml' ? 'block' : 'none';
         }
-        $('tabPinBtn').onclick = () => showTab(true);
-        $('tabPolyBtn').onclick = () => showTab(false);
+        $('tabPinBtn').onclick = () => showTab('pin');
+        $('tabPolyBtn').onclick = () => showTab('poly');
+        $('tabKmlBtn').onclick = () => showTab('kml');
+
         coordTypeSelect.addEventListener('change', e => {
             const utm = e.target.value === 'utm';
             $('geoFields').style.display = utm ? 'none' : 'block';
@@ -1804,7 +2348,7 @@
             let lat, lng;
             if (coordTypeSelect.value === 'geo') {
                 lat = parseFloat($('pinLat').value);
-                lng = parseFloat($('pinLng').value)
+                lng = parseFloat($('pinLng').value);
             } else [lat, lng] = utmToLatLng($('utmZone').value, parseFloat($('utmEasting').value), parseFloat($('utmNorthing').value));
             if (!description || isNaN(lat) || isNaN(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return;
             customUserPins.push({
@@ -1828,16 +2372,219 @@
                 addPinModal.style.display = 'none';
                 addPinForm.reset();
                 $('geoFields').style.display = 'block';
-                $('utmFields').style.display = 'none'
+                $('utmFields').style.display = 'none';
             } else {
                 $('pinDescription').value = '';
-                $('pinDescription').focus()
+                $('pinDescription').focus();
             }
         }
         addPinForm.addEventListener('submit', e => handlePinSubmission(false, e));
         $('btnAddAnother').addEventListener('click', e => {
-            if (addPinForm.reportValidity()) handlePinSubmission(true, e)
+            if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
+
+        /* ---------- Importar KML propios en Spatial Tools ---------- */
+        function initKmlSources() {
+            if (map.getSource('kml-custom-source')) return;
+            map.addSource('kml-custom-source', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                }
+            });
+            map.addLayer({
+                id: 'kml-custom-fill',
+                type: 'fill',
+                source: 'kml-custom-source',
+                paint: {
+                    'fill-color': '#3b82f6',
+                    'fill-opacity': 0.25
+                },
+                filter: ['==', '$type', 'Polygon']
+            });
+            map.addLayer({
+                id: 'kml-custom-line',
+                type: 'line',
+                source: 'kml-custom-source',
+                layout: {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                paint: {
+                    'line-color': '#10b981',
+                    'line-width': 2.5
+                },
+                filter: ['in', '$type', 'LineString', 'Polygon']
+            });
+            map.addLayer({
+                id: 'kml-custom-point',
+                type: 'circle',
+                source: 'kml-custom-source',
+                paint: {
+                    'circle-radius': 5.5,
+                    'circle-color': '#f0b823',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#fff'
+                },
+                filter: ['==', '$type', 'Point']
+            });
+            ['kml-custom-fill', 'kml-custom-line', 'kml-custom-point'].forEach(lid => {
+                map.on('click', lid, e => {
+                    if (isDrawingPolygon || measureEnabled || !e.features || !e.features.length) return;
+                    const p = e.features[0].properties || {};
+                    const facName = p.FAC_NAME || p.Name || 'Custom KML';
+                    const commodity = p.COMMODITY || 'Custom KML';
+                    let html = `<div class="popup-blend">📂 ${esc(facName)}</div>`;
+                    html += `<div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(facName)}</div>`;
+                    html += `<div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity)}</div>`;
+                    if (p.description) html += `<div style="margin-top:4px;">${esc(p.description)}</div>`;
+                    showPopup(e.lngLat, html);
+                });
+                map.on('mouseenter', lid, () => {
+                    if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = 'pointer';
+                });
+                map.on('mouseleave', lid, () => {
+                    if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = '';
+                });
+            });
+        }
+
+        function parseKmlCoordinates(text) {
+            return String(text || '').trim().split(/\s+/).map(s => {
+                const p = s.split(',');
+                const lng = parseFloat(p[0]),
+                    lat = parseFloat(p[1]);
+                return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
+            }).filter(Boolean);
+        }
+
+        function extractKmlFeatures(xmlStr, fileName) {
+            const xml = new DOMParser().parseFromString(xmlStr, 'text/xml');
+            const placemarks = xml.getElementsByTagName('Placemark');
+            const out = [];
+            for (let i = 0; i < placemarks.length; i++) {
+                const pm = placemarks[i];
+                const nameEl = pm.getElementsByTagName('name')[0];
+                const descEl = pm.getElementsByTagName('description')[0];
+                const name = nameEl ? nameEl.textContent.trim() : `${fileName} #${i + 1}`;
+                const desc = descEl ? descEl.textContent.trim() : '';
+                const props = {
+                    Name: name,
+                    FAC_NAME: name,
+                    COMMODITY: 'Custom KML',
+                    description: desc
+                };
+
+                const simpleData = pm.getElementsByTagName('SimpleData');
+                for (let j = 0; j < simpleData.length; j++) {
+                    const k = simpleData[j].getAttribute('name');
+                    if (k) props[k] = simpleData[j].textContent.trim();
+                }
+
+                const pts = pm.getElementsByTagName('Point');
+                for (let j = 0; j < pts.length; j++) {
+                    const cEl = pts[j].getElementsByTagName('coordinates')[0];
+                    const coords = cEl ? parseKmlCoordinates(cEl.textContent) : [];
+                    if (coords.length) out.push({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: coords[0]
+                        },
+                        properties: Object.assign({}, props)
+                    });
+                }
+
+                const lines = pm.getElementsByTagName('LineString');
+                for (let j = 0; j < lines.length; j++) {
+                    const cEl = lines[j].getElementsByTagName('coordinates')[0];
+                    const coords = cEl ? parseKmlCoordinates(cEl.textContent) : [];
+                    if (coords.length >= 2) out.push({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: coords
+                        },
+                        properties: Object.assign({}, props)
+                    });
+                }
+
+                const polys = pm.getElementsByTagName('Polygon');
+                for (let j = 0; j < polys.length; j++) {
+                    const cEl = polys[j].getElementsByTagName('coordinates')[0];
+                    const coords = cEl ? parseKmlCoordinates(cEl.textContent) : [];
+                    if (coords.length >= 3) {
+                        const first = coords[0],
+                            last = coords[coords.length - 1];
+                        if (first[0] !== last[0] || first[1] !== last[1]) coords.push([first[0], first[1]]);
+                        out.push({
+                            type: 'Feature',
+                            geometry: {
+                                type: 'Polygon',
+                                coordinates: [coords]
+                            },
+                            properties: Object.assign({}, props)
+                        });
+                    }
+                }
+            }
+            return out;
+        }
+
+        $('kmlFileInput').addEventListener('change', e => {
+            const files = Array.from(e.target.files || []);
+            if (!files.length) return;
+            initKmlSources();
+            let loaded = 0;
+            const addedFeatures = [];
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    const feats = extractKmlFeatures(ev.target.result, file.name);
+                    customKmlFeatures.push(...feats);
+                    addedFeatures.push(...feats);
+                    loaded++;
+                    if (loaded === files.length) {
+                        const src = map.getSource('kml-custom-source');
+                        if (src) src.setData({
+                            type: 'FeatureCollection',
+                            features: customKmlFeatures
+                        });
+                        $('kmlStatusMsg').textContent = `✅ ${customKmlFeatures.length} KML feature(s) loaded on map.`;
+                        $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
+                        if (addedFeatures.length) {
+                            const bounds = new mapboxgl.LngLatBounds();
+                            addedFeatures.forEach(f => {
+                                if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates);
+                                else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c));
+                                else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c));
+                            });
+                            if (!bounds.isEmpty()) map.fitBounds(bounds, {
+                                padding: 50,
+                                maxZoom: 12
+                            });
+                        }
+                        addPinModal.style.display = 'none';
+                        e.target.value = '';
+                        if (smartViewActive) setTimeout(refreshSmartViewData, 300);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        });
+
+        $('btnClearKml').onclick = () => {
+            customKmlFeatures = [];
+            const src = map.getSource('kml-custom-source');
+            if (src) src.setData({
+                type: 'FeatureCollection',
+                features: []
+            });
+            $('kmlStatusMsg').textContent = i18n[currentLang].kmlInstructions;
+            $('btnClearKml').style.display = 'none';
+            if (smartViewActive) refreshSmartViewData();
+        };
 
         let isDrawingPolygon = false,
             polyCoordinates = [];
@@ -1848,7 +2595,7 @@
             if (s) s.setData({
                 type: 'FeatureCollection',
                 features: extra ? [...customUserPolygons, extra] : customUserPolygons
-            })
+            });
         };
         $('btnStartDrawPolygon').onclick = () => {
             addPinModal.style.display = 'none';
@@ -1888,7 +2635,7 @@
                 },
                 properties: {}
             };
-            const m2 = turf.area(feat);
+            const m2 = (typeof turf !== 'undefined') ? turf.area(feat) : 0;
             feat.properties = {
                 title,
                 areaKm2: (m2 / 1e6).toLocaleString(undefined, {
@@ -1904,14 +2651,14 @@
         };
         $('btnCancelPoly').onclick = () => {
             stopPolygonDrawing();
-            polySrcSet()
+            polySrcSet();
         };
 
         function stopPolygonDrawing() {
             isDrawingPolygon = false;
             polyCoordinates = [];
             polyDrawHud.classList.remove('active');
-            map.getCanvas().style.cursor = measureEnabled ? 'crosshair' : ''
+            map.getCanvas().style.cursor = measureEnabled ? 'crosshair' : '';
         }
 
         const escapeXml = u => String(u).replace(/[<>&'"]/g, c => ({
@@ -1922,173 +2669,153 @@
             '"': '&quot;'
         }[c]));
         $('btnExportKmlModal').onclick = () => {
-                if (!customUserPins.length && !customUserPolygons.length) {
-                    alert('No custom pins or polygons added to export yet.');
-                    return
+                if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
+                    alert('No custom pins, polygons, or KML features added to export yet.');
+                    return;
                 }
                 let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
                 customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
                 customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
-  k+='</Document>\n</kml>';
-  const url=URL.createObjectURL(new Blob([k],{type:'application/vnd.google-earth.kml+xml'})),a=document.createElement('a');
-  a.href=url;a.download='oilmap_export.kml';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-};
+            customKmlFeatures.forEach(f => {
+                const nm = escapeXml(f.properties.FAC_NAME || f.properties.Name || 'KML Item');
+                if (f.geometry.type === 'Point') k += `  <Placemark>\n    <name>${nm}</name>\n    <Point><coordinates>${f.geometry.coordinates[0]},${f.geometry.coordinates[1]},0</coordinates></Point>\n  </Placemark>\n`;
+                else if (f.geometry.type === 'LineString') k += `  <Placemark>\n    <name>${nm}</name>\n    <LineString><coordinates>${f.geometry.coordinates.map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LineString>\n  </Placemark>\n`;
+                else if (f.geometry.type === 'Polygon') k += `  <Placemark>\n    <name>${nm}</name>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${f.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`;
+            });
+            k += '</Document>\n</kml>';
+            const url = URL.createObjectURL(new Blob([k], { type: 'application/vnd.google-earth.kml+xml' })), a = document.createElement('a');
+            a.href = url; a.download = 'oilmap_export.kml'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        };
 
-/* ---------- search ---------- */
-const searchInput=$('countrySearch'),suggestionsDiv=$('suggestions');let debounce;
-searchInput.addEventListener('click',e=>e.stopPropagation());
-suggestionsDiv.addEventListener('click',e=>e.stopPropagation());
-searchInput.addEventListener('input',()=>{
-  clearTimeout(debounce);
-  const q=searchInput.value.trim().toLowerCase();
-  if(!q){suggestionsDiv.style.display='none';return}
-  debounce=setTimeout(async()=>{
-    const results=[];
-    allBlends.forEach(b=>{if(b.name.toLowerCase().includes(q))results.push({name:'🛢️ '+b.name,coordinates:b.coordinates,popupContent:b.popupContent})});
-    if(typeof customData!=='undefined'&&customData.features)customData.features.forEach(f=>{
-      if(f.properties.title&&f.properties.title.toLowerCase().includes(q))results.push({name:'🛢️ '+f.properties.title,coordinates:f.geometry.coordinates,popupContent:`<strong>${esc(f.properties.title)}</strong>`});
-    });
-    try{
-      const d=await(await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?limit=5&access_token=${mapboxgl.accessToken}`)).json();
-      (d.features||[]).forEach(f=>results.push({name:'📍 '+f.place_name,coordinates:f.center,popupContent:`<strong>${esc(f.place_name)}</strong>`}));
-    }catch(e){}
-    if(searchInput.value.trim().toLowerCase()!==q)return;
-    suggestionsDiv.innerHTML='';
-    const slice=results.slice(0,8);
-    if(!slice.length){suggestionsDiv.style.display='none';return}
-    slice.forEach(item=>{
-      const div=document.createElement('div');div.className='suggestion-item';div.setAttribute('role','option');div.textContent=item.name;
-      div.onclick=()=>{
-        map.flyTo({center:item.coordinates,zoom:8,essential:true});
-        showPopup(item.coordinates,item.popupContent);
-        suggestionsDiv.style.display='none';searchInput.value=item.name;
-      };
-      suggestionsDiv.appendChild(div);
-    });
-    suggestionsDiv.style.display='block';
-  },250);
-});
-
-/* ---------- measure tool ---------- */
-const distanceContainer=$('distanceContainer'),measureOutput=$('measureOutput'),btnMeasure=$('btn-measure'),btnMD=$('btnMeasureDist'),btnMA=$('btnMeasureArea');
-let measureEnabled=false,measureMode='distance',measurePoints=[];
-const emptyFC=()=>({type:'FeatureCollection',features:[]});
-const clearMeasure=()=>{measurePoints=[];const s=map.getSource('measure-source');if(s)s.setData(emptyFC())};
-btnMeasure.addEventListener('click',()=>{
-  measureEnabled=!measureEnabled;
-  btnMeasure.classList.toggle('active-tool',measureEnabled);distanceContainer.classList.toggle('active',measureEnabled);
-  if(!measureEnabled){clearMeasure();map.off('click',measureClickHandler);map.getCanvas().style.cursor=''}
-  else{initMeasureSources();map.on('click',measureClickHandler);map.getCanvas().style.cursor='crosshair';updateMeasureText()}
-});
-function setMode(m){
-  measureMode=m;btnMD.classList.toggle('active-tool',m==='distance');btnMA.classList.toggle('active-tool',m==='area');
-  updateMeasureGraphics();updateMeasureText();
-}
-btnMD.onclick=()=>setMode('distance');btnMA.onclick=()=>setMode('area');
-$('btnMeasureClear').onclick=()=>{clearMeasure();updateMeasureText()};
-function initMeasureSources(){
-  if(map.getSource('measure-source'))return;
-  map.addSource('measure-source',{type:'geojson',data:emptyFC()});
-  map.addLayer({id:'measure-polygon-fill',type:'fill',source:'measure-source',paint:{'fill-color':'#f0b823','fill-opacity':.22},filter:['==','$type','Polygon']});
-  map.addLayer({id:'measure-line-stroke',type:'line',source:'measure-source',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#f0b823','line-width':2.2,'line-dasharray':[2,1]},filter:['in','$type','LineString','Polygon']});
-  map.addLayer({id:'measure-points-circle',type:'circle',source:'measure-source',paint:{'circle-radius':4.5,'circle-color':'#ef4444','circle-stroke-width':2,'circle-stroke-color':'#fff'},filter:['==','$type','Point']});
-}
-function measureClickHandler(e){if(!measureEnabled)return;measurePoints.push([e.lngLat.lng,e.lngLat.lat]);updateMeasureGraphics();updateMeasureText()}
-function updateMeasureGraphics(){
-  const src=map.getSource('measure-source');if(!src)return;
-  const f=measurePoints.map((pt,i)=>({type:'Feature',geometry:{type:'Point',coordinates:pt},properties:{id:i}}));
-  if(measureMode==='distance'&&measurePoints.length>=2)f.push({type:'Feature',geometry:{type:'LineString',coordinates:measurePoints},properties:{}});
-  else if(measureMode==='area'&&measurePoints.length>=3)f.push({type:'Feature',geometry:{type:'Polygon',coordinates:[[...measurePoints,measurePoints[0]]]},properties:{}});
-  src.setData({type:'FeatureCollection',features:f});
-}
-function updateMeasureText(){
-  const d=i18n[currentLang],n=measurePoints.length;
-  if(measureMode==='distance'){
-    if(n<2){measureOutput.textContent=d.measurePromptDist;return}
-    const km=turf.lineDistance({type:'Feature',geometry:{type:'LineString',coordinates:measurePoints}},'kilometers');
-    measureOutput.innerHTML=km<1?`<strong>${(km*1000).toFixed(0)} m</strong>`:`<strong>${km.toLocaleString(undefined,{maximumFractionDigits:2})} km</strong>`;
-  }else{
-    if(n<3){measureOutput.textContent=n?`${n}/3 · ${d.measurePromptArea}`:d.measurePromptArea;return}
-    const m2=turf.area({type:'Feature',geometry:{type:'Polygon',coordinates:[[...measurePoints,measurePoints[0]]]}});
-    measureOutput.innerHTML=`<strong>${(m2/1e6).toLocaleString(undefined,{maximumFractionDigits:2})} km²</strong> (${(m2/1e4).toLocaleString(undefined,{maximumFractionDigits:1})} ha)`;
-  }
-}
-
-/* ---------- modals ---------- */
-const aboutModal=$('aboutModal'),statsModal=$('statsModal');
-$('btn-info').onclick=$('brandLogo').onclick=()=>aboutModal.style.display='flex';
-$('brandLogo').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();aboutModal.style.display='flex'}});
-$('closeModal').onclick=()=>aboutModal.style.display='none';
-$('btn-stats').onclick=()=>statsModal.style.display='flex';
-$('closeStatsModal').onclick=()=>statsModal.style.display='none';
-addEventListener('click',e=>{[aboutModal,statsModal,addPinModal].forEach(m=>{if(e.target===m)m.style.display='none'})});
-
-/* ---------- AdSense: loaded after page load to protect LCP/TBT ---------- */
-addEventListener('load',()=>setTimeout(()=>{
-  const s=document.createElement('script');s.async=true;s.crossOrigin='anonymous';
-  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801';
-  s.onload=()=>{try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}};
-  document.head.appendChild(s);
-},1500));
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false" defer></script>
-    <script>
-        addEventListener('load', () => {
-            function updateGoogleConsent(granted) {
-                const st = granted ? 'granted' : 'denied';
-                gtag('consent', 'update', {
-                    ad_storage: st,
-                    ad_user_data: st,
-                    ad_personalization: st,
-                    analytics_storage: st
-                });
-                window.adsbygoogle = window.adsbygoogle || [];
-                window.adsbygoogle.pauseAdRequests = 0;
-            }
-            let cc;
-            if (window.cookieconsent) {
-                window.cookieconsent.initialise({
-                    palette: {
-                        popup: {
-                            background: "#0d121e",
-                            text: "#f8fafc"
-                        },
-                        button: {
-                            background: "#f0b823",
-                            text: "#000"
-                        }
-                    },
-                    theme: "edgeless",
-                    position: "bottom-left",
-                    type: "opt-in",
-                    revokable: true,
-                    content: {
-                        message: "We use cookies to optimize performance, analyze traffic, and serve personalized ads via Google AdSense (GDPR/CCPA).",
-                        allow: "Accept All",
-                        deny: "Reject",
-                        link: "Privacy Policy",
-                        href: "https://oilmap.xyz/privacy-policy.html"
-                    },
-                    onInitialise: function(status) {
-                        cc = this;
-                        if (this.hasConsented()) updateGoogleConsent(true);
-                        else if (status === cookieconsent.status.deny) updateGoogleConsent(false)
-                    },
-                    onStatusChange: function() {
-                        updateGoogleConsent(this.hasConsented())
-                    },
-                    onRevokeChoice: function() {
-                        updateGoogleConsent(false)
+        /* ---------- search ---------- */
+        const searchInput = $('countrySearch'), suggestionsDiv = $('suggestions');
+        let debounce;
+        searchInput.addEventListener('click', e => e.stopPropagation());
+        suggestionsDiv.addEventListener('click', e => e.stopPropagation());
+        searchInput.addEventListener('input', () => {
+            clearTimeout(debounce);
+            const q = searchInput.value.trim().toLowerCase();
+            if (!q) { suggestionsDiv.style.display = 'none'; return; }
+            debounce = setTimeout(async () => {
+                const results = []; const seen = new Set();
+                allBlends.forEach(b => {
+                    if (b.name.toLowerCase().includes(q)) {
+                        seen.add(b.name.toLowerCase());
+                        results.push({ name: '🛢️ ' + b.name, coordinates: b.coordinates, popupContent: b.popupContent });
                     }
                 });
+                try {
+                    const activeSearchLayers = interactiveLayers.filter(l => map.getLayer(l));
+                    if (activeSearchLayers.length) {
+                        const rendered = map.queryRenderedFeatures({ layers: activeSearchLayers });
+                        rendered.forEach(f => {
+                            const p = f.properties || {};
+                            const label = p.Name || p.FAC_NAME || p.title || p.NAME;
+                            if (!label || !String(label).toLowerCase().includes(q) || seen.has(String(label).toLowerCase())) return;
+                            let coords = null;
+                            if (f.geometry.type === 'Point') coords = f.geometry.coordinates;
+                            else if (f.geometry.type === 'Polygon') coords = f.geometry.coordinates[0][0];
+                            else if (f.geometry.type === 'MultiPolygon') coords = f.geometry.coordinates[0][0][0];
+                            else if (f.geometry.type === 'LineString') coords = f.geometry.coordinates[0];
+                            if (coords) {
+                                seen.add(String(label).toLowerCase());
+                                results.push({ name: '🗺️ ' + label, coordinates: coords, popupContent: `<div class="popup-blend">🛢️ ${esc(label)}</div>` });
+                            }
+                        });
+                    }
+                } catch (e) {}
+                try {
+                    const d = await (await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?limit=5&access_token=${mapboxgl.accessToken}`)).json();
+                    (d.features || []).forEach(f => results.push({ name: '📍 ' + f.place_name, coordinates: f.center, popupContent: `<strong>${esc(f.place_name)}</strong>` }));
+                } catch (e) {}
+                if (searchInput.value.trim().toLowerCase() !== q) return;
+                suggestionsDiv.innerHTML = '';
+                const slice = results.slice(0, 8);
+                if (!slice.length) { suggestionsDiv.style.display = 'none'; return; }
+                slice.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item'; div.setAttribute('role', 'option'); div.textContent = item.name;
+                    div.onclick = () => {
+                        map.flyTo({ center: item.coordinates, zoom: 8, essential: true });
+                        showPopup(item.coordinates, item.popupContent);
+                        suggestionsDiv.style.display = 'none'; searchInput.value = item.name;
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = 'block';
+            }, 250);
+        });
+
+        /* ---------- measure tool ---------- */
+        const distanceContainer = $('distanceContainer'), measureOutput = $('measureOutput'), btnMeasure = $('btn-measure'), btnMD = $('btnMeasureDist'), btnMA = $('btnMeasureArea');
+        let measureEnabled = false, measureMode = 'distance', measurePoints = [];
+        const emptyFC = () => ({ type: 'FeatureCollection', features: [] });
+        const clearMeasure = () => { measurePoints = []; const s = map.getSource('measure-source'); if (s) s.setData(emptyFC()); };
+        btnMeasure.addEventListener('click', () => {
+            measureEnabled = !measureEnabled;
+            btnMeasure.classList.toggle('active-tool', measureEnabled);
+            distanceContainer.classList.toggle('active', measureEnabled);
+            if (!measureEnabled) { clearMeasure(); map.off('click', measureClickHandler); map.getCanvas().style.cursor = ''; }
+            else { initMeasureSources(); map.on('click', measureClickHandler); map.getCanvas().style.cursor = 'crosshair'; updateMeasureText(); }
+        });
+        function setMode(m) {
+            measureMode = m; btnMD.classList.toggle('active-tool', m === 'distance'); btnMA.classList.toggle('active-tool', m === 'area');
+            updateMeasureGraphics(); updateMeasureText();
+        }
+        btnMD.onclick = () => setMode('distance'); btnMA.onclick = () => setMode('area');
+        $('btnMeasureClear').onclick = () => { clearMeasure(); updateMeasureText(); };
+        function initMeasureSources() {
+            if (map.getSource('measure-source')) return;
+            map.addSource('measure-source', { type: 'geojson', data: emptyFC() });
+            map.addLayer({ id: 'measure-polygon-fill', type: 'fill', source: 'measure-source', paint: { 'fill-color': '#f0b823', 'fill-opacity': .22 }, filter: ['==', '$type', 'Polygon'] });
+            map.addLayer({ id: 'measure-line-stroke', type: 'line', source: 'measure-source', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#f0b823', 'line-width': 2.2, 'line-dasharray': [2, 1] }, filter: ['in', '$type', 'LineString', 'Polygon'] });
+            map.addLayer({ id: 'measure-points-circle', type: 'circle', source: 'measure-source', paint: { 'circle-radius': 4.5, 'circle-color': '#ef4444', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }, filter: ['==', '$type', 'Point'] });
+        }
+        function measureClickHandler(e) { if (!measureEnabled) return; measurePoints.push([e.lngLat.lng, e.lngLat.lat]); updateMeasureGraphics(); updateMeasureText(); }
+        function updateMeasureGraphics() {
+            const src = map.getSource('measure-source'); if (!src) return;
+            const f = measurePoints.map((pt, i) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: pt }, properties: { id: i } }));
+            if (measureMode === 'distance' && measurePoints.length >= 2) f.push({ type: 'Feature', geometry: { type: 'LineString', coordinates: measurePoints }, properties: {} });
+            else if (measureMode === 'area' && measurePoints.length >= 3) f.push({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[...measurePoints, measurePoints[0]]] }, properties: {} });
+            src.setData({ type: 'FeatureCollection', features: f });
+        }
+        function updateMeasureText() {
+            const d = i18n[currentLang], n = measurePoints.length;
+            if (measureMode === 'distance') {
+                if (n < 2) { measureOutput.textContent = d.measurePromptDist; return; }
+                const km = turf.lineDistance({ type: 'Feature', geometry: { type: 'LineString', coordinates: measurePoints } }, 'kilometers');
+                measureOutput.innerHTML = km < 1 ? `<strong>${(km*1000).toFixed(0)} m</strong>` : `<strong>${km.toLocaleString(undefined,{maximumFractionDigits:2})} km</strong>`;
+            } else {
+                if (n < 3) { measureOutput.textContent = n ? `${n}/3 · ${d.measurePromptArea}` : d.measurePromptArea; return; }
+                const m2 = turf.area({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[...measurePoints, measurePoints[0]]] } });
+                measureOutput.innerHTML = `<strong>${(m2/1e6).toLocaleString(undefined,{maximumFractionDigits:2})} km²</strong> (${(m2/1e4).toLocaleString(undefined,{maximumFractionDigits:1})} ha)`;
             }
-            $('openCookieSettings').addEventListener('click', e => {
+        }
+
+        /* ---------- modals & Google CMP ---------- */
+        const aboutModal = $('aboutModal'), statsModal = $('statsModal');
+        $('btn-info').onclick = $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+        $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
+        $('closeModal').onclick = () => aboutModal.style.display = 'none';
+        $('btn-stats').onclick = () => statsModal.style.display = 'flex';
+        $('closeStatsModal').onclick = () => statsModal.style.display = 'none';
+        addEventListener('click', e => { [aboutModal, statsModal, addPinModal].forEach(m => { if (e.target === m) m.style.display = 'none'; }); });
+
+        $('openCookieSettings').addEventListener('click', e => {
+            if (window.googlefc && typeof window.googlefc.showRevocationMessage === 'function') {
                 e.preventDefault();
                 aboutModal.style.display = 'none';
-                if (cc) cc.open()
-            });
+                window.googlefc.callbackQueue.push(window.googlefc.showRevocationMessage);
+            }
         });
+
+        /* ---------- Google AdSense & Google CMP ---------- */
+        addEventListener('load', () => setTimeout(() => {
+            const s = document.createElement('script'); s.async = true; s.crossOrigin = 'anonymous';
+            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801';
+            s.onload = () => { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {} };
+            document.head.appendChild(s);
+        }, 1500));
     </script>
 </body>
 
