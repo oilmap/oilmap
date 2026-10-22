@@ -263,6 +263,15 @@
             margin: 0 0 8px;
         }
 
+        .own-title a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .own-title a:hover {
+            color: var(--accent);
+        }
+
         .own-body {
             margin-top: 12px;
             font-size: 0.9rem;
@@ -437,7 +446,10 @@
             wrap.className = 'gdelt-text-wrapper';
             const title = document.createElement('h3');
             title.className = 'own-title';
-            title.textContent = a.title;
+            const link = document.createElement('a');
+            link.href = `news/${a.slug}.html`;
+            link.textContent = a.title;
+            title.append(link);
             const summary = document.createElement('p');
             summary.className = 'news-snippet';
             summary.textContent = a.summary || '';
