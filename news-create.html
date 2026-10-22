@@ -384,13 +384,9 @@
                 </div>
                 <p class="hint">
                     Se descargan <code>data/news.json</code> y una página <code>blog/&lt;slug&gt;.html</code> por cada noticia.
-                    Sube ambos al repositorio. Luego añade las URLs al sitemap y el fragmento de llms.txt.
+                    Sube ambos al repositorio. El sitemap.xml y llms.txt se generan solos en cada despliegue.
                 </p>
                 <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
-                <h2 class="panel-title" style="margin-top:20px">Sitemap.xml</h2>
-                <textarea class="snippet" id="sitemap" readonly></textarea>
-                <h2 class="panel-title" style="margin-top:20px">Fragmento para llms.txt</h2>
-                <textarea class="snippet" id="llms" readonly></textarea>
             </div>
         </section>
     </div>
@@ -634,12 +630,6 @@
                 row.append(info, del);
                 list.append(row);
             });
-            $('sitemap').value = articles.map(a =>
-                `<url>\n\t<loc>${BASE}/blog/${a.slug}.html</loc>\n\t<lastmod>${a.updated || a.date}</lastmod>\n\t<priority>0.7</priority>\n</url>`
-            ).join('\n');
-            $('llms').value = articles.length
-                ? '## News\n' + articles.map(a => `- [${a.title}](${BASE}/blog/${a.slug}.html): ${a.summary}`).join('\n')
-                : '';
         }
 
         function sortArticles() {
