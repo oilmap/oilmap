@@ -376,7 +376,7 @@
                     Se descargan <code>data/news.json</code> y una página <code>news/&lt;slug&gt;.html</code> por cada noticia.
                     Sube ambos al repositorio. Luego añade las URLs al sitemap y el fragmento de llms.txt.
                 </p>
-                <p class="hint" id="viewsNote"></p>
+                <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
                 <h2 class="panel-title" style="margin-top:20px">Sitemap.xml</h2>
                 <textarea class="snippet" id="sitemap" readonly></textarea>
                 <h2 class="panel-title" style="margin-top:20px">Fragmento para llms.txt</h2>
@@ -389,7 +389,7 @@
         const $ = id => document.getElementById(id);
         const BASE = 'https://www.oilmap.xyz';
         // Endpoint del contador: GET ?slug=<slug>&hit=1 debe responder {"views": n}. Vacío = contador oculto.
-        const VIEW_ENDPOINT = '';
+        const VIEW_ENDPOINT = '/api/views';
         const FIELDS = ['title', 'seoTitle', 'slug', 'lang', 'author', 'date', 'updated', 'image', 'summary', 'keywords', 'keyPoints', 'sources', 'body'];
         const LABELS = {
             en: { langName: 'English', ogLocale: 'en_US', home: 'Home', blog: 'Blog', back: 'Back to the blog', by: 'By', published: 'Published', updated: 'Updated', keyPoints: 'Key takeaways', sources: 'Sources', views: 'views' },
@@ -550,6 +550,7 @@
             fetch(endpoint + sep + 'slug=' + encodeURIComponent(${JSON.stringify(a.slug)}) + '&hit=1')
                 .then(function (r) { return r.json(); })
                 .then(function (d) {
+                    if (typeof d.views !== 'number') return;
                     el.textContent = Number(d.views).toLocaleString(${JSON.stringify(a.lang)}) + ' ' + el.dataset.label;
                     el.hidden = false;
                 })
@@ -687,10 +688,6 @@
                 setTimeout(() => download(`${a.slug}.html`, buildArticlePage(a), 'text/html'), 300 * (i + 1));
             });
         });
-
-        $('viewsNote').textContent = VIEW_ENDPOINT
-            ? 'Contador de vistas activo.'
-            : 'El contador de vistas está inactivo hasta definir VIEW_ENDPOINT en este archivo.';
 
         fetch('data/news.json', { cache: 'no-store' })
             .then(r => r.ok ? r.json() : [])
