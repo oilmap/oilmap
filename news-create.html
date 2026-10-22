@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <title>Crear noticia · World Oil Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-header: #020617;
+            --border-color: #334155;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --accent-hover: #34d399;
+            --primary-gold: #f0b823;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background: rgba(2, 6, 23, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand h1 {
+            font-size: 1rem;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .brand h1 a {
+            color: var(--primary-gold);
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 28px;
+            width: auto;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .panel + .panel {
+            margin-top: 24px;
+        }
+
+        h2.panel-title {
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 14px 0 6px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font: inherit;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            min-height: 240px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--accent);
+            color: #022c22;
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        button.secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        button.danger {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #7f1d1d;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        button.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 14px 0 0;
+        }
+
+        code {
+            color: var(--primary-gold);
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .list-item small {
+            color: var(--text-muted);
+        }
+
+        .empty {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .news-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-meta {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .badge-source {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .badge-date {
+            font-size: 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            display: block;
+            background: #020617;
+        }
+
+        .gdelt-text-wrapper {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .own-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0 0 8px;
+        }
+
+        .news-snippet {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .own-body {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .own-body summary {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .own-body p {
+            margin: 10px 0 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <img src="./img/oilmap.png" alt="Icon" onerror="this.style.display='none'">
+            <h1><a href="index.html">WORLD OIL MAP 2026</a></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="blog.html">Blog</a>
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
+
+    <div class="wrap">
+        <section>
+            <div class="panel">
+                <h2 class="panel-title">Nueva noticia</h2>
+                <form id="form">
+                    <label for="title">Título</label>
+                    <input id="title" required>
+
+                    <label for="date">Fecha</label>
+                    <input id="date" type="date" required>
+
+                    <label for="image">URL de imagen (opcional)</label>
+                    <input id="image" type="url" placeholder="https://...">
+
+                    <label for="summary">Resumen (se muestra en la tarjeta)</label>
+                    <input id="summary" maxlength="220">
+
+                    <label for="body">Contenido (separa los párrafos con una línea en blanco)</label>
+                    <textarea id="body" required></textarea>
+
+                    <div class="actions">
+                        <button type="submit">Añadir noticia</button>
+                        <button type="button" class="secondary" id="clear">Limpiar formulario</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="panel">
+                <h2 class="panel-title">Vista previa</h2>
+                <div id="preview"></div>
+            </div>
+
+            <div class="panel">
+                <h2 class="panel-title">Noticias publicadas (<span id="count">0</span>)</h2>
+                <div id="list"></div>
+                <div class="actions">
+                    <button type="button" id="download">Descargar news.json</button>
+                </div>
+                <p class="hint">
+                    Para publicar: reemplaza <code>data/news.json</code> por el archivo descargado y sube los cambios.
+                    El blog mostrará las noticias en cuanto el archivo esté en el sitio.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        const FIELDS = ['title', 'date', 'image', 'summary', 'body'];
+        let articles = [];
+
+        function formatDate(iso) {
+            const d = new Date(iso + 'T00:00:00');
+            return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function buildCard(a) {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+
+            const meta = document.createElement('div');
+            meta.className = 'card-meta';
+            const source = document.createElement('span');
+            source.className = 'badge-source';
+            source.textContent = 'World Oil Map';
+            const date = document.createElement('span');
+            date.className = 'badge-date';
+            date.textContent = formatDate(a.date);
+            meta.append(source, date);
+            card.append(meta);
+
+            if (a.image) {
+                const img = document.createElement('img');
+                img.className = 'card-image';
+                img.src = a.image;
+                img.alt = '';
+                img.onerror = () => img.remove();
+                card.append(img);
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = 'gdelt-text-wrapper';
+            const title = document.createElement('h3');
+            title.className = 'own-title';
+            title.textContent = a.title;
+            const summary = document.createElement('p');
+            summary.className = 'news-snippet';
+            summary.textContent = a.summary || '';
+            const details = document.createElement('details');
+            details.className = 'own-body';
+            const toggle = document.createElement('summary');
+            toggle.textContent = 'Read more';
+            details.append(toggle);
+            a.body.split(/\n\s*\n/).filter(Boolean).forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text.trim();
+                details.append(p);
+            });
+            wrap.append(title, summary, details);
+            card.append(wrap);
+            return card;
+        }
+
+        function readForm() {
+            const data = {};
+            FIELDS.forEach(f => data[f] = $(f).value.trim());
+            return data;
+        }
+
+        function renderPreview() {
+            const d = readForm();
+            $('preview').innerHTML = '';
+            $('preview').append(buildCard({
+                title: d.title || 'Título de la noticia',
+                date: d.date || new Date().toISOString().slice(0, 10),
+                image: d.image,
+                summary: d.summary || 'Resumen de la noticia...',
+                body: d.body || 'Contenido de la noticia...'
+            }));
+        }
+
+        function renderList() {
+            $('count').textContent = articles.length;
+            const list = $('list');
+            list.innerHTML = '';
+            if (articles.length === 0) {
+                list.innerHTML = '<p class="empty">Todavía no hay noticias.</p>';
+                return;
+            }
+            articles.forEach(a => {
+                const row = document.createElement('div');
+                row.className = 'list-item';
+                const info = document.createElement('span');
+                info.textContent = a.title + ' ';
+                const small = document.createElement('small');
+                small.textContent = formatDate(a.date);
+                info.append(small);
+                const del = document.createElement('button');
+                del.type = 'button';
+                del.className = 'danger';
+                del.textContent = 'Eliminar';
+                del.addEventListener('click', () => {
+                    if (!confirm('¿Eliminar esta noticia?')) return;
+                    articles = articles.filter(x => x.id !== a.id);
+                    renderList();
+                });
+                row.append(info, del);
+                list.append(row);
+            });
+        }
+
+        function sortArticles() {
+            articles.sort((a, b) => b.date.localeCompare(a.date));
+        }
+
+        $('form').addEventListener('submit', e => {
+            e.preventDefault();
+            const d = readForm();
+            articles.push({ id: Date.now().toString(36), ...d });
+            sortArticles();
+            renderList();
+            e.target.reset();
+            renderPreview();
+        });
+
+        $('clear').addEventListener('click', () => {
+            $('form').reset();
+            renderPreview();
+        });
+
+        FIELDS.forEach(f => $(f).addEventListener('input', renderPreview));
+
+        $('download').addEventListener('click', () => {
+            const blob = new Blob([JSON.stringify(articles, null, 2) + '\n'], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'news.json';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        });
+
+        fetch('data/news.json', { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : [])
+            .then(data => {
+                articles = data;
+                sortArticles();
+            })
+            .catch(() => { articles = []; })
+            .finally(() => {
+                renderList();
+                renderPreview();
+            });
+    </script>
+</body>
+
+</html>

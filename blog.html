@@ -252,6 +252,33 @@
             font-style: italic;
             grid-column: 1 / -1;
         }
+        #ownNews:not(:empty) {
+            margin-bottom: 24px;
+        }
+
+        .own-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0 0 8px;
+        }
+
+        .own-body {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .own-body summary {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .own-body p {
+            margin: 10px 0 0;
+        }
     </style>
 </head>
 
@@ -286,6 +313,8 @@
 
         <h1 class="main-title" id="pageTitle">Global Petroleum News</h1>
         <p class="subtitle" id="subtitle">Real-time English intelligence aggregation powered by professional news feeds.</p>
+
+        <section id="ownNews" class="news-grid"></section>
 
         <section id="news" class="news-grid">
             <div class="loader">Accessing global news streams...</div>
@@ -374,12 +403,80 @@
             }
         }
 
+        function formatOwnDate(iso) {
+            const d = new Date(iso + 'T00:00:00');
+            return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function buildOwnCard(a) {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+
+            const meta = document.createElement('div');
+            meta.className = 'card-meta';
+            const source = document.createElement('span');
+            source.className = 'badge-source';
+            source.textContent = 'World Oil Map';
+            const date = document.createElement('span');
+            date.className = 'badge-date';
+            date.textContent = formatOwnDate(a.date);
+            meta.append(source, date);
+            card.append(meta);
+
+            if (a.image) {
+                const img = document.createElement('img');
+                img.className = 'card-image';
+                img.src = a.image;
+                img.alt = '';
+                img.loading = 'lazy';
+                img.onerror = () => img.remove();
+                card.append(img);
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = 'gdelt-text-wrapper';
+            const title = document.createElement('h3');
+            title.className = 'own-title';
+            title.textContent = a.title;
+            const summary = document.createElement('p');
+            summary.className = 'news-snippet';
+            summary.textContent = a.summary || '';
+            const details = document.createElement('details');
+            details.className = 'own-body';
+            const toggle = document.createElement('summary');
+            toggle.textContent = 'Read more';
+            details.append(toggle);
+            a.body.split(/\n\s*\n/).filter(Boolean).forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text.trim();
+                details.append(p);
+            });
+            wrap.append(title, summary, details);
+            card.append(wrap);
+            return card;
+        }
+
+        async function loadOwnNews() {
+            const container = document.getElementById('ownNews');
+            try {
+                const response = await fetch('data/news.json', { cache: 'no-store' });
+                if (!response.ok) return;
+                const articles = await response.json();
+                articles
+                    .sort((a, b) => b.date.localeCompare(a.date))
+                    .forEach(article => container.appendChild(buildOwnCard(article)));
+            } catch (error) {
+                console.error('Error loading own news:', error);
+            }
+        }
+
         // Manejador del selector de categorías
         document.getElementById('topicFilter').addEventListener('change', (e) => {
             loadNews(e.target.value);
         });
 
         // Carga inicial
+        loadOwnNews();
         loadNews();
     </script>
 </body>
