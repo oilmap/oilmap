@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
     const ref = getDb().collection('views').doc(slug);
     if (hit === '1' && !BOTS.test(req.headers['user-agent'] || '')) {
       // Solo cuenta si el artículo existe de verdad (evita crear contadores falsos)
-      const exists = await fetch(`${SITE}/news/${slug}.html`, { method: 'HEAD' }).then(r => r.ok).catch(() => false);
+      const exists = await fetch(`${SITE}/blog/${slug}.html`, { method: 'HEAD' }).then(r => r.ok).catch(() => false);
       if (exists) await ref.set({ views: FieldValue.increment(1) }, { merge: true });
     }
     const snap = await ref.get();

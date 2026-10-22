@@ -308,7 +308,7 @@
                     <label for="seoTitle">Título SEO <small><span id="cSeo">0</span>/60</small></label>
                     <input id="seoTitle" maxlength="60" placeholder="Si lo dejas vacío se usa el título">
 
-                    <label for="slug">URL (slug) <small>news/<span id="slugPreview"></span>.html</small></label>
+                    <label for="slug">URL (slug) <small>blog/<span id="slugPreview"></span>.html</small></label>
                     <input id="slug" placeholder="se genera desde el título">
 
                     <label for="summary">Meta descripción <small><span id="cDesc">0</span>/160 · también es la respuesta directa</small></label>
@@ -373,7 +373,7 @@
                     <button type="button" id="download">Descargar archivos para publicar</button>
                 </div>
                 <p class="hint">
-                    Se descargan <code>data/news.json</code> y una página <code>news/&lt;slug&gt;.html</code> por cada noticia.
+                    Se descargan <code>data/news.json</code> y una página <code>blog/&lt;slug&gt;.html</code> por cada noticia.
                     Sube ambos al repositorio. Luego añade las URLs al sitemap y el fragmento de llms.txt.
                 </p>
                 <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
@@ -441,7 +441,7 @@
 
         function buildArticlePage(a) {
             const L = LABELS[a.lang] || LABELS.en;
-            const url = `${BASE}/news/${a.slug}.html`;
+            const url = `${BASE}/blog/${a.slug}.html`;
             const title = a.seoTitle || `${a.title} · World Oil Map`;
             const image = a.image || `${BASE}/img/preview.jpg`;
             const keywords = a.keywords.split(',').map(k => k.trim()).filter(Boolean).join(', ');
@@ -565,7 +565,7 @@
         function renderPreview() {
             const d = readForm();
             const slug = d.slug || slugify(d.title);
-            $('serpUrl').textContent = `${BASE}/news/${slug}.html`;
+            $('serpUrl').textContent = `${BASE}/blog/${slug}.html`;
             $('serpTitle').textContent = d.seoTitle || (d.title ? `${d.title} · World Oil Map` : 'Título de la noticia');
             $('serpDesc').textContent = d.summary || 'La meta descripción aparecerá aquí.';
             $('slugPreview').textContent = slug;
@@ -610,7 +610,7 @@
                 const info = document.createElement('span');
                 info.textContent = a.title + ' ';
                 const small = document.createElement('small');
-                small.textContent = `${formatDate(a.date)} · ${a.lang.toUpperCase()} · /news/${a.slug}.html`;
+                small.textContent = `${formatDate(a.date)} · ${a.lang.toUpperCase()} · /blog/${a.slug}.html`;
                 info.append(small);
                 const del = document.createElement('button');
                 del.type = 'button';
@@ -625,10 +625,10 @@
                 list.append(row);
             });
             $('sitemap').value = articles.map(a =>
-                `<url>\n\t<loc>${BASE}/news/${a.slug}.html</loc>\n\t<lastmod>${a.updated || a.date}</lastmod>\n\t<priority>0.7</priority>\n</url>`
+                `<url>\n\t<loc>${BASE}/blog/${a.slug}.html</loc>\n\t<lastmod>${a.updated || a.date}</lastmod>\n\t<priority>0.7</priority>\n</url>`
             ).join('\n');
             $('llms').value = articles.length
-                ? '## News\n' + articles.map(a => `- [${a.title}](${BASE}/news/${a.slug}.html): ${a.summary}`).join('\n')
+                ? '## News\n' + articles.map(a => `- [${a.title}](${BASE}/blog/${a.slug}.html): ${a.summary}`).join('\n')
                 : '';
         }
 
