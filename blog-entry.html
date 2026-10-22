@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <title>Crear noticia · World Oil Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-header: #020617;
+            --border-color: #334155;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --accent-hover: #34d399;
+            --primary-gold: #f0b823;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background: rgba(2, 6, 23, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand h1 {
+            font-size: 1rem;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .brand h1 a {
+            color: var(--primary-gold);
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 28px;
+            width: auto;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .panel + .panel {
+            margin-top: 24px;
+        }
+
+        h2.panel-title {
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 16px;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 14px 0 6px;
+        }
+
+        label small {
+            font-size: 0.75rem;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font: inherit;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            min-height: 240px;
+            resize: vertical;
+        }
+
+        textarea.short {
+            min-height: 96px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--accent);
+            color: #022c22;
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        button.secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        button.danger {
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid #7f1d1d;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        button.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 14px 0 0;
+        }
+
+        code {
+            color: var(--primary-gold);
+        }
+
+        .serp {
+            background: #fff;
+            color: #202124;
+            border-radius: 12px;
+            padding: 16px 18px;
+            font-family: arial, sans-serif;
+        }
+
+        .serp-url {
+            font-size: 0.85rem;
+            color: #4d5156;
+            word-break: break-all;
+        }
+
+        .serp-title {
+            font-size: 1.25rem;
+            color: #1a0dab;
+            margin: 4px 0;
+            line-height: 1.3;
+        }
+
+        .serp-desc {
+            font-size: 0.9rem;
+            color: #4d5156;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .checks {
+            list-style: none;
+            padding: 0;
+            margin: 14px 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .checks li {
+            padding: 4px 0;
+        }
+
+        .checks .ok {
+            color: var(--accent);
+        }
+
+        .checks .no {
+            color: #f87171;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .list-item small {
+            color: var(--text-muted);
+        }
+
+        .empty {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        textarea.snippet {
+            min-height: 120px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <img src="./img/oilmap.png" alt="Icon" onerror="this.style.display='none'">
+            <h1><a href="index.html">WORLD OIL MAP 2026</a></h1>
+        </div>
+        <nav class="nav-links">
+            <a href="blog.html">Blog</a>
+            <a href="index.html">Home</a>
+        </nav>
+    </header>
+
+    <div class="wrap">
+        <section>
+            <div class="panel">
+                <h2 class="panel-title">Nueva noticia</h2>
+                <form id="form">
+                    <label for="title">Título (H1) <small>Con la palabra clave al inicio</small></label>
+                    <input id="title" required>
+
+                    <label for="seoTitle">Título SEO <small><span id="cSeo">0</span>/60</small></label>
+                    <input id="seoTitle" maxlength="60" placeholder="Si lo dejas vacío se usa el título">
+
+                    <label for="slug">URL (slug) <small>blog/<span id="slugPreview"></span>.html</small></label>
+                    <input id="slug" placeholder="se genera desde el título">
+
+                    <label for="summary">Meta descripción <small><span id="cDesc">0</span>/160 · también es la respuesta directa</small></label>
+                    <input id="summary" maxlength="160" required>
+
+                    <label for="keywords">Palabras clave (separadas por comas) <small>La primera es la principal</small></label>
+                    <input id="keywords" placeholder="brent crude price, opec, oil production">
+
+                    <label for="lang">Idioma del contenido <small>Se declara en la página y en los datos</small></label>
+                    <select id="lang">
+                        <option value="en">English (en)</option>
+                        <option value="es">Español (es)</option>
+                        <option value="pt">Português (pt)</option>
+                        <option value="fr">Français (fr)</option>
+                    </select>
+
+                    <label for="topicFilter">Tema del blog <small>Se usa como filtro en la página del blog</small></label>
+                    <select id="topicFilter" required>
+                        <option value="">Selecciona un tema</option>
+                        <option value="market">Global Petroleum &amp; Oil Market</option>
+                        <option value="opec">OPEC &amp; Production</option>
+                        <option value="upstream">Upstream &amp; Exploration</option>
+                        <option value="downstream">Downstream &amp; Refineries</option>
+                        <option value="prices">Crude Oil Prices</option>
+                    </select>
+
+                    <label for="author">Autor <small>Nombre visible y en los datos estructurados</small></label>
+                    <input id="author" required placeholder="Roque Leal">
+
+                    <label for="date">Fecha de publicación</label>
+                    <input id="date" type="date" required>
+
+                    <label for="updated">Fecha de última actualización <small>Opcional</small></label>
+                    <input id="updated" type="date">
+
+                    <label for="image">URL de imagen (opcional)</label>
+                    <input id="image" type="url" placeholder="https://...">
+
+                    <label for="keyPoints">Puntos clave <small>Una línea por punto · 3 a 5</small></label>
+                    <textarea id="keyPoints" class="short" placeholder="Brent cerró en 82 USD por barril.&#10;La OPEP+ mantuvo sus recortes."></textarea>
+
+                    <label for="sources">Fuentes <small>Una por línea: Nombre | https://url</small></label>
+                    <textarea id="sources" class="short" placeholder="OPEC Monthly Oil Market Report | https://www.opec.org/"></textarea>
+
+                    <label for="body">Contenido <small><span id="cWords">0</span> palabras (recomendado 300+)</small></label>
+                    <textarea id="body" required></textarea>
+
+                    <div class="actions">
+                        <button type="submit">Añadir noticia</button>
+                        <button type="button" class="secondary" id="clear">Limpiar formulario</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="panel">
+                <h2 class="panel-title">Vista previa en Google</h2>
+                <div class="serp">
+                    <div class="serp-url" id="serpUrl"></div>
+                    <div class="serp-title" id="serpTitle"></div>
+                    <p class="serp-desc" id="serpDesc"></p>
+                </div>
+                <h2 class="panel-title" style="margin-top:20px">Checklist SEO y autoridad</h2>
+                <ul class="checks" id="checks"></ul>
+            </div>
+
+            <div class="panel">
+                <h2 class="panel-title">Noticias publicadas (<span id="count">0</span>)</h2>
+                <div id="list"></div>
+                <div class="actions">
+                    <button type="button" id="download">Descargar archivos para publicar</button>
+                </div>
+                <p class="hint">
+                    Se descargan <code>data/news.json</code> y una página <code>blog/&lt;slug&gt;.html</code> por cada noticia.
+                    Sube ambos al repositorio. El sitemap.xml y llms.txt se generan solos en cada despliegue.
+                </p>
+                <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        const BASE = 'https://www.oilmap.xyz';
+        // Endpoint del contador: GET ?slug=<slug>&hit=1 debe responder {"views": n}. Vacío = contador oculto.
+        const VIEW_ENDPOINT = '/api/views';
+        const FIELDS = ['title', 'seoTitle', 'slug', 'lang', 'topicFilter', 'author', 'date', 'updated', 'image', 'summary', 'keywords', 'keyPoints', 'sources', 'body'];
+        const LABELS = {
+            en: { langName: 'English', ogLocale: 'en_US', home: 'Home', blog: 'Blog', back: 'Back to the blog', by: 'By', published: 'Published', updated: 'Updated', keyPoints: 'Key takeaways', sources: 'Sources', views: 'views' },
+            es: { langName: 'Español', ogLocale: 'es_ES', home: 'Inicio', blog: 'Blog', back: 'Volver al blog', by: 'Por', published: 'Publicado', updated: 'Actualizado', keyPoints: 'Puntos clave', sources: 'Fuentes', views: 'vistas' },
+            pt: { langName: 'Português', ogLocale: 'pt_BR', home: 'Início', blog: 'Blog', back: 'Voltar ao blog', by: 'Por', published: 'Publicado', updated: 'Atualizado', keyPoints: 'Pontos-chave', sources: 'Fontes', views: 'visualizações' },
+            fr: { langName: 'Français', ogLocale: 'fr_FR', home: 'Accueil', blog: 'Blog', back: 'Retour au blog', by: 'Par', published: 'Publié', updated: 'Mis à jour', keyPoints: 'Points clés', sources: 'Sources', views: 'vues' }
+        };
+        let articles = [];
+        let slugTouched = false;
+
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function formatDate(iso, locale = 'en-US') {
+            const d = new Date(iso + 'T00:00:00');
+            return isNaN(d) ? iso : d.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function slugify(text) {
+            return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'noticia';
+        }
+
+        function paragraphs(body) {
+            return body.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+        }
+
+        function parseLines(text) {
+            return text.split('\n').map(l => l.trim()).filter(Boolean);
+        }
+
+        function parseSources(text) {
+            return parseLines(text).map(line => {
+                const [name, url] = line.includes('|') ? line.split('|').map(s => s.trim()) : [line, line];
+                return { name: name || url, url };
+            }).filter(s => /^https?:\/\//.test(s.url));
+        }
+
+        function wordCount(text) {
+            return text.split(/\s+/).filter(Boolean).length;
+        }
+
+        function readForm() {
+            const data = {};
+            FIELDS.forEach(f => data[f] = $(f).value.trim());
+            return data;
+        }
+
+        function buildArticlePage(a) {
+            const L = LABELS[a.lang] || LABELS.en;
+            const url = `${BASE}/blog/${a.slug}.html`;
+            const title = a.seoTitle || `${a.title} · World Oil Map`;
+            const image = a.image || `${BASE}/img/preview.jpg`;
+            const keywords = a.keywords.split(',').map(k => k.trim()).filter(Boolean).join(', ');
+            const updated = a.updated || a.date;
+            const sources = parseSources(a.sources);
+            const points = parseLines(a.keyPoints);
+            const paras = paragraphs(a.body);
+            const ld = {
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: a.title,
+                description: a.summary,
+                inLanguage: a.lang,
+                url,
+                mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+                datePublished: a.date,
+                dateModified: updated,
+                image: [image],
+                keywords,
+                articleSection: 'Oil and Gas',
+                wordCount: wordCount(a.body),
+                author: { '@type': 'Person', name: a.author },
+                publisher: { '@type': 'Organization', name: 'World Oil Map', url: BASE, logo: { '@type': 'ImageObject', url: `${BASE}/img/oilmap.png` } },
+                speakable: { '@type': 'SpeakableSpecification', cssSelector: ['.lead', '.key-points'] },
+                isAccessibleForFree: true
+            };
+            if (sources.length) ld.citation = sources.map(s => s.url);
+            const body = paras.map(p => `<p>${esc(p)}</p>`).join('\n        ');
+            const pointsHtml = points.map(p => `<li>${esc(p)}</li>`).join('');
+            const sourcesHtml = sources.map(s => `<li><a href="${esc(s.url)}" rel="noopener">${esc(s.name)}</a></li>`).join('');
+            return `<!DOCTYPE html>
+<html lang="${a.lang}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${esc(title)}</title>
+    <meta name="description" content="${esc(a.summary)}">
+    <meta name="keywords" content="${esc(keywords)}">
+    <meta name="author" content="${esc(a.author)}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="${url}">
+    <link rel="icon" type="image/png" href="../img/oilmap.png" sizes="16x16">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="World Oil Map">
+    <meta property="og:locale" content="${L.ogLocale}">
+    <meta property="og:title" content="${esc(title)}">
+    <meta property="og:description" content="${esc(a.summary)}">
+    <meta property="og:url" content="${url}">
+    <meta property="og:image" content="${esc(image)}">
+    <meta property="article:published_time" content="${a.date}">
+    <meta property="article:modified_time" content="${updated}">
+    <meta property="article:author" content="${esc(a.author)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${esc(title)}">
+    <meta name="twitter:description" content="${esc(a.summary)}">
+    <meta name="twitter:image" content="${esc(image)}">
+    <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}<\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; line-height: 1.7; }
+        header { background: #020617; border-bottom: 1px solid #334155; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: #f0b823; text-decoration: none; font-weight: 600; letter-spacing: 1px; font-size: 1rem; }
+        nav a { color: #aaa; text-decoration: none; font-size: 14px; margin-left: 15px; }
+        article { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+        .meta { color: #10b981; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .lang-badge { background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 4px; margin-right: 6px; }
+        h1 { font-size: 2rem; line-height: 1.25; margin: 8px 0 12px; }
+        .byline { color: #94a3b8; font-size: 0.9rem; margin: 0 0 16px; }
+        .views { color: #10b981; }
+        .lead { color: #94a3b8; font-size: 1.1rem; }
+        .key-points { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px 20px; margin: 20px 0; }
+        .key-points ul { margin: 0; padding-left: 20px; color: #cbd5e1; }
+        .key-points h2, .sources h2 { font-size: 0.85rem; color: #f0b823; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 8px; }
+        article img { width: 100%; border-radius: 12px; border: 1px solid #334155; margin: 20px 0; }
+        article p { color: #cbd5e1; }
+        .sources { margin-top: 32px; border-top: 1px solid #334155; padding-top: 16px; font-size: 0.9rem; }
+        .sources ul { padding-left: 20px; margin: 0; }
+        .sources a { color: #34d399; }
+        .back { display: inline-block; margin-top: 30px; color: #10b981; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../index.html">WORLD OIL MAP 2026</a>
+        <nav><a href="../blog.html">${L.blog}</a><a href="../index.html">${L.home}</a></nav>
+    </header>
+    <main>
+    <article>
+        <div class="meta"><span class="lang-badge">${esc(L.langName)}</span><time datetime="${a.date}">${esc(formatDate(a.date, a.lang))}</time></div>
+        <h1>${esc(a.title)}</h1>
+        <p class="byline">${L.by} ${esc(a.author)} · ${L.published} <time datetime="${a.date}">${esc(formatDate(a.date, a.lang))}</time> · ${L.updated} <time datetime="${updated}">${esc(formatDate(updated, a.lang))}</time> · <span class="views" id="views" hidden data-label="${esc(L.views)}"></span></p>
+        <p class="lead">${esc(a.summary)}</p>
+        ${points.length ? `<section class="key-points"><h2>${L.keyPoints}</h2><ul>${pointsHtml}</ul></section>` : ''}
+        ${a.image ? `<img src="${esc(a.image)}" alt="${esc(a.title)}">` : ''}
+        ${body}
+        ${sources.length ? `<section class="sources"><h2>${L.sources}</h2><ul>${sourcesHtml}</ul></section>` : ''}
+        <a class="back" href="../blog.html">${L.back}</a>
+    </article>
+    </main>
+    <script>
+        (function () {
+            var endpoint = ${JSON.stringify(VIEW_ENDPOINT)};
+            var el = document.getElementById('views');
+            if (!endpoint || !el) return;
+            var sep = endpoint.indexOf('?') === -1 ? '?' : '&';
+            fetch(endpoint + sep + 'slug=' + encodeURIComponent(${JSON.stringify(a.slug)}) + '&hit=1')
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (typeof d.views !== 'number') return;
+                    el.textContent = Number(d.views).toLocaleString(${JSON.stringify(a.lang)}) + ' ' + el.dataset.label;
+                    el.hidden = false;
+                })
+                .catch(function () {});
+        })();
+    <\/script>
+</body>
+</html>
+`;
+        }
+
+        function renderPreview() {
+            const d = readForm();
+            const slug = d.slug || slugify(d.title);
+            $('serpUrl').textContent = `${BASE}/blog/${slug}.html`;
+            $('serpTitle').textContent = d.seoTitle || (d.title ? `${d.title} · World Oil Map` : 'Título de la noticia');
+            $('serpDesc').textContent = d.summary || 'La meta descripción aparecerá aquí.';
+            $('slugPreview').textContent = slug;
+            $('cSeo').textContent = d.seoTitle.length;
+            $('cDesc').textContent = d.summary.length;
+            $('cWords').textContent = wordCount(d.body);
+            renderChecks(d, slug);
+        }
+
+        function renderChecks(d, slug) {
+            const primary = d.keywords.split(',')[0].trim().toLowerCase();
+            const first = paragraphs(d.body)[0] || '';
+            const points = parseLines(d.keyPoints);
+            const sources = parseSources(d.sources);
+            const checks = [
+                ['Título SEO entre 30 y 60 caracteres', d.seoTitle.length >= 30 && d.seoTitle.length <= 60],
+                ['Meta descripción entre 120 y 160 caracteres', d.summary.length >= 120 && d.summary.length <= 160],
+                ['Hay una palabra clave principal', primary.length > 0],
+                ['Palabra clave en el título', !!primary && (d.title + ' ' + d.seoTitle).toLowerCase().includes(primary)],
+                ['Palabra clave en la descripción', !!primary && d.summary.toLowerCase().includes(primary)],
+                ['Palabra clave en la URL', !!primary && slug.includes(slugify(primary))],
+                ['Palabra clave en el primer párrafo', !!primary && first.toLowerCase().includes(primary)],
+                ['Contenido de 300 palabras o más', wordCount(d.body) >= 300],
+                ['Autor indicado (E-E-A-T)', d.author.length >= 2],
+                ['Al menos una fuente con enlace https', sources.length > 0],
+                ['3 a 5 puntos clave para respuestas de IA', points.length >= 3 && points.length <= 5]
+            ];
+            $('checks').innerHTML = checks.map(([label, ok]) =>
+                `<li><span class="${ok ? 'ok' : 'no'}">${ok ? 'OK' : 'Pendiente'}</span> · ${label}</li>`).join('');
+        }
+
+        function renderList() {
+            $('count').textContent = articles.length;
+            const list = $('list');
+            list.innerHTML = '';
+            if (articles.length === 0) {
+                list.innerHTML = '<p class="empty">Todavía no hay noticias.</p>';
+            }
+            articles.forEach(a => {
+                const row = document.createElement('div');
+                row.className = 'list-item';
+                const info = document.createElement('span');
+                info.textContent = a.title + ' ';
+                const small = document.createElement('small');
+                small.textContent = `${formatDate(a.date)} · ${a.lang.toUpperCase()} · /blog/${a.slug}.html`;
+                info.append(small);
+                const del = document.createElement('button');
+                del.type = 'button';
+                del.className = 'danger';
+                del.textContent = 'Eliminar';
+                del.addEventListener('click', () => {
+                    if (!confirm('¿Eliminar esta noticia?')) return;
+                    articles = articles.filter(x => x.id !== a.id);
+                    renderList();
+                });
+                row.append(info, del);
+                list.append(row);
+            });
+        }
+
+        function sortArticles() {
+            articles.sort((a, b) => b.date.localeCompare(a.date));
+        }
+
+        function download(filename, content, type) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob([content], { type }));
+            link.download = filename;
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        }
+
+        $('title').addEventListener('input', () => {
+            if (!slugTouched) $('slug').value = slugify($('title').value);
+            renderPreview();
+        });
+
+        $('slug').addEventListener('input', () => {
+            slugTouched = true;
+            $('slug').value = slugify($('slug').value);
+            renderPreview();
+        });
+
+        $('form').addEventListener('submit', e => {
+            e.preventDefault();
+            const d = readForm();
+            const id = Date.now().toString(36);
+            const slug = d.slug || slugify(d.title);
+            const unique = articles.some(a => a.slug === slug) ? `${slug}-${id}` : slug;
+            articles.push({ id, ...d, slug: unique });
+            sortArticles();
+            renderList();
+            e.target.reset();
+            $('lang').value = d.lang;
+            $('topicFilter').value = d.topicFilter;
+            $('author').value = d.author;
+            slugTouched = false;
+            renderPreview();
+        });
+
+        $('clear').addEventListener('click', () => {
+            $('form').reset();
+            slugTouched = false;
+            renderPreview();
+        });
+
+        FIELDS.forEach(f => {
+            $(f).addEventListener('input', renderPreview);
+            $(f).addEventListener('change', renderPreview);
+        });
+
+        $('download').addEventListener('click', () => {
+            download('news.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
+            articles.forEach((a, i) => {
+                setTimeout(() => download(`${a.slug}.html`, buildArticlePage(a), 'text/html'), 300 * (i + 1));
+            });
+        });
+
+        fetch('data/news.json', { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : [])
+            .then(data => { articles = data; sortArticles(); })
+            .catch(() => { articles = []; })
+            .finally(() => {
+                renderList();
+                renderPreview();
+            });
+    </script>
+</body>
+
+</html>

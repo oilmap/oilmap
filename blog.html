@@ -103,26 +103,6 @@
             padding: 30px 20px;
         }
         
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            align-items: center;
-            background: var(--bg-card);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-        
-        .controls strong {
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
         select {
             background: var(--bg-body);
             color: var(--text-main);
@@ -245,12 +225,55 @@
             flex: 1;
         }
         
-        .loader {
-            text-align: center;
-            padding: 40px;
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .filter-bar label {
             color: var(--text-muted);
-            font-style: italic;
-            grid-column: 1 / -1;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #ownNews:not(:empty) {
+            margin-bottom: 24px;
+        }
+
+        .own-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin: 0 0 8px;
+        }
+
+        .own-title a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .own-title a:hover {
+            color: var(--accent);
+        }
+
+        .own-body {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .own-body summary {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .own-body p {
+            margin: 10px 0 0;
         }
     </style>
 </head>
@@ -273,114 +296,109 @@
 
     <div class="blog-container">
 
-        <div class="controls">
-            <strong>Topic Filter</strong>
+        <h1 class="main-title" id="pageTitle">Global Petroleum News</h1>
+        <p class="subtitle" id="subtitle">News and analysis published by World Oil Map.</p>
+
+        <div class="filter-bar">
+            <label for="topicFilter">Topic</label>
             <select id="topicFilter">
-                <option value="crude oil market">Global Petroleum & Oil Market</option>
-                <option value="OPEC oil production">OPEC & Production</option>
-                <option value="oil and gas exploration upstream">Upstream & Exploration</option>
-                <option value="oil refinery downstream">Downstream & Refineries</option>
-                <option value="crude oil prices barrel">Crude Oil Prices</option>
+                <option value="all">All topics</option>
+                <option value="market">Global Petroleum &amp; Oil Market</option>
+                <option value="opec">OPEC &amp; Production</option>
+                <option value="upstream">Upstream &amp; Exploration</option>
+                <option value="downstream">Downstream &amp; Refineries</option>
+                <option value="prices">Crude Oil Prices</option>
             </select>
         </div>
 
-        <h1 class="main-title" id="pageTitle">Global Petroleum News</h1>
-        <p class="subtitle" id="subtitle">Real-time English intelligence aggregation powered by professional news feeds.</p>
-
-        <section id="news" class="news-grid">
-            <div class="loader">Accessing global news streams...</div>
-        </section>
+        <section id="ownNews" class="news-grid"></section>
 
     </div>
 
     <script>
-        // Nota: Para producción real en un dominio público, es recomendable obtener una llave gratuita en https://newsapi.org/
-        // Usamos una clave de demostración o respaldos públicos de RSS si prefieres evitar registros.
-        async function loadNews(query = 'crude oil market') {
-            const container = document.getElementById('news');
-            container.innerHTML = '<div class="loader">Fetching live intelligence feeds in English...</div>';
+        function formatOwnDate(iso) {
+            const d = new Date(iso + 'T00:00:00');
+            return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
 
-            // Usamos un servicio RSS-to-JSON gratuito (como rss2json) conectado a feeds confiables del sector energético en inglés (como OilPrice.com)
-            // Esto garantiza noticias reales, actuales, en inglés y sin restricciones estrictas de CORS o llaves de pago.
-            const rssUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://oilprice.com/rss/main')}`;
+        function buildOwnCard(a) {
+            const card = document.createElement('div');
+            card.className = 'news-card';
 
+            const meta = document.createElement('div');
+            meta.className = 'card-meta';
+            const source = document.createElement('span');
+            source.className = 'badge-source';
+            source.textContent = `World Oil Map · ${a.lang.toUpperCase()}`;
+            const date = document.createElement('span');
+            date.className = 'badge-date';
+            date.textContent = formatOwnDate(a.date);
+            meta.append(source, date);
+            card.append(meta);
+
+            if (a.image) {
+                const img = document.createElement('img');
+                img.className = 'card-image';
+                img.src = a.image;
+                img.alt = '';
+                img.loading = 'lazy';
+                img.onerror = () => img.remove();
+                card.append(img);
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = 'gdelt-text-wrapper';
+            const title = document.createElement('h3');
+            title.className = 'own-title';
+            const link = document.createElement('a');
+            link.href = `blog/${a.slug}.html`;
+            link.textContent = a.title;
+            link.lang = a.lang;
+            title.append(link);
+            const summary = document.createElement('p');
+            summary.className = 'news-snippet';
+            summary.textContent = a.summary || '';
+            const details = document.createElement('details');
+            details.className = 'own-body';
+            const toggle = document.createElement('summary');
+            toggle.textContent = 'Read more';
+            details.append(toggle);
+            a.body.split(/\n\s*\n/).filter(Boolean).forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text.trim();
+                details.append(p);
+            });
+            wrap.append(title, summary, details);
+            card.append(wrap);
+            return card;
+        }
+
+        let ownArticles = [];
+
+        function renderOwnNews() {
+            const container = document.getElementById('ownNews');
+            const topic = document.getElementById('topicFilter').value;
+            container.innerHTML = '';
+            ownArticles
+                .filter(a => topic === 'all' || a.topicFilter === topic)
+                .forEach(article => container.appendChild(buildOwnCard(article)));
+        }
+
+        async function loadOwnNews() {
             try {
-                const response = await fetch(rssUrl);
-                const data = await response.json();
-
-                if (!data.items || data.items.length === 0) {
-                    container.innerHTML = '<div class="loader">No recent English reports found.</div>';
-                    return;
-                }
-
-                container.innerHTML = '';
-
-                // Filtrar según el tópico seleccionado de forma simulada/efectiva en el cliente
-                const filteredItems = data.items.filter(item => {
-                    const text = (item.title + ' ' + item.description).toLowerCase();
-                    const q = query.toLowerCase();
-                    if (q.includes('opec')) return text.includes('opec') || text.includes('production');
-                    if (q.includes('upstream') || q.includes('exploration')) return text.includes('upstream') || text.includes('drill') || text.includes('exploration');
-                    if (q.includes('downstream') || q.includes('refinery')) return text.includes('refin') || text.includes('downstream');
-                    if (q.includes('price')) return text.includes('price') || text.includes('barrel') || text.includes('brent');
-                    return true;
-                });
-
-                const itemsToDisplay = filteredItems.length > 0 ? filteredItems : data.items;
-
-                itemsToDisplay.forEach(article => {
-                            const card = document.createElement('div');
-                            card.className = 'news-card';
-
-                            let dateStr = 'Recent';
-                            if (article.pubDate) {
-                                const dateObj = new Date(article.pubDate);
-                                dateStr = dateObj.toLocaleDateString('en-US', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    year: 'numeric'
-                                });
-                            }
-
-                            // Extraer imagen del contenido si existe
-                            let imageUrl = './img/preview.jpg';
-                            const imgMatch = article.description.match(/<img[^>]+src="([^">]+)"/);
-                            if (imgMatch && imgMatch[1]) {
-                                imageUrl = imgMatch[1];
-                            }
-
-                            // Limpiar descripción de etiquetas HTML para el snippet
-                            let cleanDesc = article.description.replace(/<[^>]*>?/gm, '');
-                            if (cleanDesc.length > 120) cleanDesc = cleanDesc.substring(0, 120) + '...';
-
-                            card.innerHTML = `
-                        <div class="card-meta">
-                            <span class="badge-source">OilPrice.com / Global Feed</span>
-                            <span class="badge-date">${dateStr}</span>
-                        </div>
-                        ${imageUrl ? `<img src="${imageUrl}" class="card-image" loading="lazy" onerror="this.style.display='none'" />` : ''}
-                        <div class="gdelt-text-wrapper">
-                            <a href="${article.link}" target="_blank" rel="noopener">${article.title}</a>
-                            <p class="news-snippet">${cleanDesc}</p>
-                        </div>
-                    `;
-
-                    container.appendChild(card);
-                });
-
+                const response = await fetch('data/news.json', { cache: 'no-store' });
+                if (!response.ok) return;
+                ownArticles = (await response.json())
+                    .sort((a, b) => b.date.localeCompare(a.date));
+                renderOwnNews();
             } catch (error) {
-                container.innerHTML = '<div class="loader" style="color:#ef4444">Error loading data stream. Please check your connection.</div>';
-                console.error('Error fetching news feed:', error);
+                console.error('Error loading own news:', error);
             }
         }
 
-        // Manejador del selector de categorías
-        document.getElementById('topicFilter').addEventListener('change', (e) => {
-            loadNews(e.target.value);
-        });
+        document.getElementById('topicFilter').addEventListener('change', renderOwnNews);
 
-        // Carga inicial
-        loadNews();
+        loadOwnNews();
     </script>
 </body>
 
