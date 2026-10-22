@@ -325,6 +325,16 @@
                         <option value="fr">Français (fr)</option>
                     </select>
 
+                    <label for="topicFilter">Tema del blog <small>Se usa como filtro en la página del blog</small></label>
+                    <select id="topicFilter" required>
+                        <option value="">Selecciona un tema</option>
+                        <option value="market">Global Petroleum &amp; Oil Market</option>
+                        <option value="opec">OPEC &amp; Production</option>
+                        <option value="upstream">Upstream &amp; Exploration</option>
+                        <option value="downstream">Downstream &amp; Refineries</option>
+                        <option value="prices">Crude Oil Prices</option>
+                    </select>
+
                     <label for="author">Autor <small>Nombre visible y en los datos estructurados</small></label>
                     <input id="author" required placeholder="Roque Leal">
 
@@ -390,7 +400,7 @@
         const BASE = 'https://www.oilmap.xyz';
         // Endpoint del contador: GET ?slug=<slug>&hit=1 debe responder {"views": n}. Vacío = contador oculto.
         const VIEW_ENDPOINT = '/api/views';
-        const FIELDS = ['title', 'seoTitle', 'slug', 'lang', 'author', 'date', 'updated', 'image', 'summary', 'keywords', 'keyPoints', 'sources', 'body'];
+        const FIELDS = ['title', 'seoTitle', 'slug', 'lang', 'topicFilter', 'author', 'date', 'updated', 'image', 'summary', 'keywords', 'keyPoints', 'sources', 'body'];
         const LABELS = {
             en: { langName: 'English', ogLocale: 'en_US', home: 'Home', blog: 'Blog', back: 'Back to the blog', by: 'By', published: 'Published', updated: 'Updated', keyPoints: 'Key takeaways', sources: 'Sources', views: 'views' },
             es: { langName: 'Español', ogLocale: 'es_ES', home: 'Inicio', blog: 'Blog', back: 'Volver al blog', by: 'Por', published: 'Publicado', updated: 'Actualizado', keyPoints: 'Puntos clave', sources: 'Fuentes', views: 'vistas' },
@@ -666,6 +676,7 @@
             renderList();
             e.target.reset();
             $('lang').value = d.lang;
+            $('topicFilter').value = d.topicFilter;
             $('author').value = d.author;
             slugTouched = false;
             renderPreview();

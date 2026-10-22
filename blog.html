@@ -225,6 +225,20 @@
             flex: 1;
         }
         
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .filter-bar label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         #ownNews:not(:empty) {
             margin-bottom: 24px;
         }
@@ -284,6 +298,18 @@
 
         <h1 class="main-title" id="pageTitle">Global Petroleum News</h1>
         <p class="subtitle" id="subtitle">News and analysis published by World Oil Map.</p>
+
+        <div class="filter-bar">
+            <label for="topicFilter">Topic</label>
+            <select id="topicFilter">
+                <option value="all">All topics</option>
+                <option value="market">Global Petroleum &amp; Oil Market</option>
+                <option value="opec">OPEC &amp; Production</option>
+                <option value="upstream">Upstream &amp; Exploration</option>
+                <option value="downstream">Downstream &amp; Refineries</option>
+                <option value="prices">Crude Oil Prices</option>
+            </select>
+        </div>
 
         <section id="ownNews" class="news-grid"></section>
 
@@ -347,20 +373,30 @@
             return card;
         }
 
-        async function loadOwnNews() {
+        let ownArticles = [];
+
+        function renderOwnNews() {
             const container = document.getElementById('ownNews');
+            const topic = document.getElementById('topicFilter').value;
+            container.innerHTML = '';
+            ownArticles
+                .filter(a => topic === 'all' || a.topicFilter === topic)
+                .forEach(article => container.appendChild(buildOwnCard(article)));
+        }
+
+        async function loadOwnNews() {
             try {
                 const response = await fetch('data/news.json', { cache: 'no-store' });
                 if (!response.ok) return;
-                const articles = await response.json();
-                articles
-                    .sort((a, b) => b.date.localeCompare(a.date))
-                    .forEach(article => container.appendChild(buildOwnCard(article)));
+                ownArticles = (await response.json())
+                    .sort((a, b) => b.date.localeCompare(a.date));
+                renderOwnNews();
             } catch (error) {
                 console.error('Error loading own news:', error);
             }
         }
 
+        document.getElementById('topicFilter').addEventListener('change', renderOwnNews);
 
         loadOwnNews();
     </script>
