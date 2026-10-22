@@ -425,7 +425,7 @@
             meta.className = 'card-meta';
             const source = document.createElement('span');
             source.className = 'badge-source';
-            source.textContent = 'World Oil Map';
+            source.textContent = `World Oil Map · ${a.lang.toUpperCase()}`;
             const date = document.createElement('span');
             date.className = 'badge-date';
             date.textContent = formatOwnDate(a.date);
@@ -449,6 +449,7 @@
             const link = document.createElement('a');
             link.href = `news/${a.slug}.html`;
             link.textContent = a.title;
+            link.lang = a.lang;
             title.append(link);
             const summary = document.createElement('p');
             summary.className = 'news-snippet';
