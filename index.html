@@ -222,7 +222,31 @@
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-        
+
+        .lang-select {
+            padding: 7px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .76rem;
+            cursor: pointer;
+            outline: none
+        }
+
+        .lang-select:hover,
+        .lang-select:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent)
+        }
+
+        .lang-select option {
+            background: #0d121e;
+            color: var(--text-primary)
+        }
+
         .btn-ui.active-tool {
             background: var(--accent)!important;
             color: #000!important;
@@ -880,6 +904,7 @@
         </div>
         <nav class="toolbar" aria-label="Map Controls">
             <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
+            <a href="oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
             <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>📍 Regions ▾</span></button>
             <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
             <button id="btn-stats" class="btn-ui" type="button"><span>📊 Stats</span></button>
@@ -888,7 +913,11 @@
             <a href="blog.html" class="nav-link"><span>Blog</span></a>
             <a href="contact.html" class="nav-link"><span>Contact</span></a>
             <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
-            <a href="oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
+            <select id="langSelector" class="lang-select" aria-label="Select Language">
+                <option value="/">🌐 EN</option>
+                <option value="/es/">🌐 ES</option>
+                <option value="/fr/">🌐 FR</option>
+            </select>
         </nav>
     </header>
 
@@ -2481,6 +2510,7 @@
         /* ---------- modals & Google CMP ---------- */
         const aboutModal = $('aboutModal'), statsModal = $('statsModal');
         $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+        $('langSelector').addEventListener('change', e => location.href = e.target.value);
         $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
         $('closeModal').onclick = () => aboutModal.style.display = 'none';
         $('btn-stats').onclick = () => statsModal.style.display = 'flex';
