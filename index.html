@@ -889,7 +889,6 @@
             <a href="contact.html" class="nav-link"><span>Contact</span></a>
             <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
             <a href="oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
-            <button id="btn-info" class="btn-ui" type="button" aria-label="About"><span>ℹ️</span></button>
         </nav>
     </header>
 
@@ -2481,7 +2480,7 @@
 
         /* ---------- modals & Google CMP ---------- */
         const aboutModal = $('aboutModal'), statsModal = $('statsModal');
-        $('btn-info').onclick = $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+        $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
         $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
         $('closeModal').onclick = () => aboutModal.style.display = 'none';
         $('btn-stats').onclick = () => statsModal.style.display = 'flex';
