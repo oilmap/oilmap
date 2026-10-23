@@ -100,6 +100,103 @@
             color: #94a3b8;
         }
 
+        .form-title {
+            margin-top: 40px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            font-size: 0.95em;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            font: inherit;
+            color: #f8fafc;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: 2px solid #38bdf8;
+            outline-offset: 1px;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row label {
+            min-width: 0;
+        }
+
+        .hp-field {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        #contactSubmit {
+            font: inherit;
+            font-weight: 600;
+            color: #0f172a;
+            background-color: #38bdf8;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            cursor: pointer;
+        }
+
+        #contactSubmit:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        #contactStatus {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        #contactStatus.ok {
+            color: #4ade80;
+        }
+
+        #contactStatus.error {
+            color: #f87171;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+
         footer {
             margin-top: 50px;
             font-size: 0.9em;
@@ -147,6 +244,33 @@
                 <a class="contact-email" id="contactEmail" href="#" rel="nofollow">Mostrar correo</a>
                 <span class="contact-note">Please include a clear subject line and a short description of your request.</span>
             </div>
+
+            <h2 class="form-title">Send a message</h2>
+            <form id="contactForm" class="contact-form" novalidate>
+                <div class="form-row">
+                    <label>
+                        <span>Name</span>
+                        <input type="text" name="name" maxlength="100" required autocomplete="name">
+                    </label>
+                    <label>
+                        <span>Email</span>
+                        <input type="email" name="email" maxlength="150" required autocomplete="email">
+                    </label>
+                </div>
+                <label>
+                    <span>Subject</span>
+                    <input type="text" name="subject" maxlength="150" required>
+                </label>
+                <label>
+                    <span>Message</span>
+                    <textarea name="message" rows="6" maxlength="3000" required></textarea>
+                </label>
+                <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true">
+                <div class="form-footer">
+                    <button type="submit" id="contactSubmit">Send message</button>
+                    <p id="contactStatus" role="status"></p>
+                </div>
+            </form>
         </div>
 
         <div class="section">
@@ -198,6 +322,43 @@
             const link = document.getElementById('contactEmail');
             link.href = 'mailto:' + email;
             link.textContent = email;
+        })();
+
+        (function () {
+            const form = document.getElementById('contactForm');
+            const button = document.getElementById('contactSubmit');
+            const status = document.getElementById('contactStatus');
+            const messages = {
+                INVALID_EMAIL: 'Please enter a valid email address.',
+                default: 'Something went wrong. Please try again or use the email above.'
+            };
+
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                if (!form.reportValidity()) return;
+
+                button.disabled = true;
+                status.className = '';
+                status.textContent = 'Sending…';
+
+                try {
+                    const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) throw new Error(data.error);
+                    status.className = 'ok';
+                    status.textContent = 'Thank you. Your message has been sent.';
+                    form.reset();
+                } catch (err) {
+                    status.className = 'error';
+                    status.textContent = messages[err.message] || messages.default;
+                } finally {
+                    button.disabled = false;
+                }
+            });
         })();
     </script>
 
