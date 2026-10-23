@@ -12,6 +12,9 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#090d16">
     <link rel="canonical" href="https://oilmap.xyz/">
+    <link rel="alternate" hreflang="en" href="https://oilmap.xyz/">
+    <link rel="alternate" hreflang="es" href="https://oilmap.xyz/es/">
+    <link rel="alternate" hreflang="fr" href="https://oilmap.xyz/fr/">
     <link rel="alternate" hreflang="x-default" href="https://oilmap.xyz/">
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
     <link rel="apple-touch-icon" href="./img/oilmap.png">
@@ -1398,7 +1401,11 @@
             closeAllDropdowns();
             if (measureEnabled) updateMeasureText();
         }
-        $('langSelector').addEventListener('change', e => setLanguage(e.target.value));
+        const LANG_PAGES = { en: '/', es: '/es/', fr: '/fr/' };
+        $('langSelector').addEventListener('change', e => {
+            if (LANG_PAGES[e.target.value]) location.href = LANG_PAGES[e.target.value];
+            else setLanguage(e.target.value);
+        });
 
         /* ---------- configuración de capas y menú ---------- */
         const menuNav = $('menu'),

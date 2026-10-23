@@ -1,5 +1,5 @@
 {
-  "buildCommand": "node scripts/build-seo.js",
+  "buildCommand": "node scripts/build-seo.js && node scripts/build-i18n.js",
   "outputDirectory": ".",
   "headers": [
     {

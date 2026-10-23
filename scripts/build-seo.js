@@ -6,6 +6,8 @@ const BASE = 'https://www.oilmap.xyz';
 const STATIC = [
     { path: '/', priority: '1.0' },
     { path: '/blog.html', priority: '0.9' },
+    { path: '/es/', priority: '0.9' },
+    { path: '/fr/', priority: '0.9' },
 ];
 
 const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
