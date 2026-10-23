@@ -4,39 +4,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="color-scheme" content="dark">
-    <title>Crude Oil Price Charts and Rankings | World Oil Map</title>
-    <meta name="description" content="Crude oil price charts and market rankings: top gainers, top losers, highest and lowest prices across global crude benchmarks, from the World Oil Map price dataset.">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#090d16">
+    <title>Crude Oil Prices: Brent, WTI, Murban, Merey and More | World Oil Map</title>
+    <meta name="description" content="Live-updating crude oil price dashboard: Brent, WTI, Murban, Merey and other global blends with daily change, weekly and monthly ranges, spreads, and spatial map.">
     <link rel="canonical" href="https://oilmap.xyz/oil_price_charts.html">
-    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
-    <link rel="apple-touch-icon" href="./img/oilmap.png">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#0b1120">
     <meta property="og:type" content="website">
+    <meta property="og:title" content="Crude Oil Prices: Brent, WTI, Murban, Merey and More">
+    <meta property="og:description" content="Global crude benchmarks with change, ranges, spreads and market breadth, updated from the World Oil Map price dataset.">
     <meta property="og:url" content="https://oilmap.xyz/oil_price_charts.html">
-    <meta property="og:site_name" content="World Oil Map 2026">
-    <meta property="og:title" content="Crude Oil Price Charts and Rankings | World Oil Map">
-    <meta property="og:description" content="Crude oil price chart and market rankings: gainers, losers, highest and lowest benchmark prices.">
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Crude Oil Price Charts and Rankings | World Oil Map">
-    <meta name="twitter:description" content="Crude oil price chart and market rankings from the World Oil Map dataset.">
-    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+    <link rel="icon" type="image/png" href="./img/oilmap.png">
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
     <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "Crude Oil Price Charts and Rankings",
+            "name": "Crude Oil Prices: Brent, WTI, Murban, Merey and More",
             "url": "https://oilmap.xyz/oil_price_charts.html",
-            "description": "Crude oil price charts and market rankings with top gainers, top losers, highest and lowest benchmark prices.",
+            "description": "Crude oil price dashboard with global benchmarks, daily change, weekly and monthly ranges, and benchmark spreads.",
             "isPartOf": {
                 "@type": "WebSite",
-                "name": "World Oil Map 2026",
+                "name": "World Oil Map",
                 "url": "https://oilmap.xyz/"
             },
             "author": {
@@ -47,355 +44,828 @@
         }
     </script>
     <style>
-        :root {
-            --accent: #f0b823;
-            --accent-soft: rgba(240, 184, 35, .14);
-            --surface: rgba(13, 18, 30, .84);
-            --surface-elevated: rgba(20, 27, 45, .94);
-            --border: rgba(255, 255, 255, .1);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
+         :root {
+            color-scheme: dark;
+            --bg: #0b1120;
+            --surface: rgba(20, 29, 49, 0.55);
+            --ink: #e8edf6;
+            --mute: #8794ab;
+            --line: rgba(255, 255, 255, .09);
+            --gold: #f0b823;
+            --gold-soft: rgba(240, 184, 35, .12);
             --up: #10b981;
-            --down: #ef4444;
-            --radius-lg: 14px;
-            --radius-md: 10px;
-            --radius-pill: 999px;
-            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            --dn: #ef4444;
+            --dot: #4b5870;
         }
-
+        
         * {
             box-sizing: border-box;
         }
-
+        
         html {
-            scroll-padding-top: 90px;
+            scroll-padding-top: 76px;
         }
-
+        
         body {
             margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #060911;
-            color: var(--text-primary);
-            -webkit-font-smoothing: antialiased;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 15px/1.6 'Inter', system-ui, sans-serif;
             font-variant-numeric: tabular-nums;
+            -webkit-font-smoothing: antialiased;
         }
-
+        
         a {
-            color: var(--accent);
+            color: var(--gold);
         }
-
+        
         :focus-visible {
-            outline: 2px solid var(--accent);
+            outline: 2px solid var(--gold);
             outline-offset: 2px;
         }
-
-        header.top-bar {
+        /* Header */
+        
+        header {
             position: sticky;
             top: 0;
-            z-index: 20;
-            margin: 14px auto 0;
-            width: calc(100% - 28px);
-            max-width: 1380px;
-            padding: 8px 14px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            background: var(--surface);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: var(--shadow);
+            z-index: 30;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(11, 17, 32, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
         }
-
+        
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-primary);
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: .04em;
             text-decoration: none;
-            flex-shrink: 0;
+            font-size: .95rem;
         }
-
+        
         .brand img {
-            height: 30px;
-            width: 30px;
+            height: 26px;
+            width: 26px;
             object-fit: contain;
         }
-
-        .brand-title {
-            font-size: .92rem;
-            font-weight: 700;
-            letter-spacing: .5px;
-            white-space: nowrap;
-        }
-
-        .brand-title span {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .toolbar {
+        
+        nav {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 18px;
             overflow-x: auto;
-            scrollbar-width: none;
         }
-
-        .toolbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .nav-link {
-            padding: 7px 12px;
-            border-radius: var(--radius-pill);
-            border: 1px solid transparent;
-            background: rgba(255, 255, 255, .05);
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: .76rem;
+        
+        nav a {
+            color: var(--mute);
             text-decoration: none;
+            font-size: .85rem;
             white-space: nowrap;
-            transition: all .18s ease;
+            transition: color .15s;
         }
-
-        .nav-link:hover,
-        .nav-link[aria-current="page"] {
-            background: var(--accent-soft);
-            border-color: rgba(240, 184, 35, .35);
-            color: var(--accent);
+        
+        nav a:hover,
+        nav a[aria-current] {
+            color: var(--ink);
         }
-
+        /* Layout */
+        
         main {
-            max-width: 1280px;
+            max-width: 1160px;
             margin: 0 auto;
-            padding: 40px 20px 32px;
+            padding: 44px 24px 32px;
         }
-
+        
         h1 {
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
-            line-height: 1.15;
-            font-weight: 700;
-            letter-spacing: -.02em;
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: -.025em;
             margin: 0 0 12px;
         }
-
+        
         .lead {
-            color: var(--text-secondary);
-            max-width: 72ch;
-            margin: 0 0 8px;
-            font-size: 1rem;
+            font-size: 1.12rem;
+            color: var(--ink);
+            max-width: 68ch;
+            margin: 0 0 12px;
+            min-height: 1.8em;
         }
-
-        .capture {
-            color: var(--text-secondary);
-            font-size: .8rem;
-            margin: 0;
-        }
-
-        .panel-header {
+        /* Status & Breadth Bar */
+        
+        .status-bar {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
         }
-
-        .panel-header h2 {
-            color: var(--accent);
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--mute);
+            font-size: .82rem;
             margin: 0;
-            font-size: .95rem;
-            font-weight: 700;
         }
-
-        .glass-card {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            padding: 22px;
-            margin-top: 28px;
+        
+        .status i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dot);
+            display: inline-block;
         }
-
-        .stats-box {
-            background: rgba(0, 0, 0, .3);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 12px;
+        
+        .status.ok i {
+            background: var(--up);
+            box-shadow: 0 0 8px var(--up);
         }
-
-        .stats-box h2 {
+        
+        .status.err i {
+            background: var(--dn);
+        }
+        
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+        
+        .link-btn {
+            color: var(--gold);
+            font-size: .82rem;
+            padding: 2px 0;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        
+        .breadth-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: .78rem;
-            color: var(--accent);
-            margin: 0 0 8px;
-            text-transform: uppercase;
-            letter-spacing: .3px;
+            color: var(--mute);
         }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
+        
+        .breadth-bar {
+            width: 180px;
+            height: 6px;
+            border-radius: 99px;
+            background: var(--line);
+            overflow: hidden;
+            display: flex;
         }
-
-        .stats-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
+        
+        .breadth-up {
+            background: var(--up);
+            height: 100%;
+            transition: width .4s ease;
         }
-
-        .stats-item {
+        
+        .breadth-flat {
+            background: var(--dot);
+            height: 100%;
+            transition: width .4s ease;
+        }
+        
+        .breadth-dn {
+            background: var(--dn);
+            height: 100%;
+            transition: width .4s ease;
+        }
+        
+        section {
+            margin-top: 52px;
+        }
+        
+        .sec-head {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 8px;
-            margin-bottom: 4px;
-            border-radius: 6px;
-            font-size: .76rem;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        h2 {
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+            letter-spacing: -.01em;
+        }
+        
+        .sub {
+            color: var(--mute);
+            font-size: .85rem;
+            margin: 0;
+            max-width: 70ch;
+        }
+        /* Key Benchmarks Board */
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .tile {
+            padding: 20px 18px 18px 20px;
+            border-left: 1px solid var(--line);
+            cursor: pointer;
+            transition: background .15s;
+        }
+        
+        .tile:first-child {
+            border-left: 0;
+            padding-left: 0;
+        }
+        
+        .tile:hover {
             background: rgba(255, 255, 255, .02);
         }
-
-        .item-date {
-            font-size: .65rem;
-            color: var(--text-secondary);
+        
+        .tile-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
         }
-
-        .positive {
+        
+        .tile h3 {
+            margin: 0;
+            font-size: .84rem;
+            font-weight: 500;
+            color: var(--mute);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .spread-tag {
+            font-size: .68rem;
+            color: var(--mute);
+            background: rgba(255, 255, 255, .05);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        
+        .px {
+            font-size: 1.95rem;
+            font-weight: 600;
+            letter-spacing: -.02em;
+            margin: 4px 0 2px;
+            line-height: 1.15;
+        }
+        
+        .px small {
+            font-size: .74rem;
+            color: var(--mute);
+            font-weight: 400;
+            margin-left: 4px;
+            letter-spacing: 0;
+        }
+        
+        .d {
+            margin: 0 0 14px;
+            font-size: .84rem;
+            font-weight: 500;
+        }
+        
+        .up {
             color: var(--up);
-            background: rgba(16, 185, 129, .14);
-            padding: 2px 6px;
-            border-radius: 4px;
         }
-
-        .negative {
-            color: var(--down);
-            background: rgba(239, 68, 68, .14);
-            padding: 2px 6px;
-            border-radius: 4px;
+        
+        .dn {
+            color: var(--dn);
         }
-
-        .chart-wrap {
+        
+        .gauge {
+            position: relative;
+            height: 2px;
+            background: var(--line);
+            margin: 8px 0 6px;
+        }
+        
+        .gauge i {
+            position: absolute;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: var(--gold);
+            transition: left .5s ease;
+        }
+        
+        .lh {
+            display: flex;
+            justify-content: space-between;
+            color: var(--mute);
+            font-size: .72rem;
+            margin: 0;
+        }
+        /* Interactive Spread Calculator */
+        
+        .spread-bar {
+            margin-top: 20px;
+            padding: 14px 18px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        
+        .spread-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: .84rem;
+        }
+        
+        .spread-select {
+            background: #0b1120;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 5px 10px;
+            font: inherit;
+            font-size: .82rem;
+        }
+        
+        .spread-readout {
+            font-size: .95rem;
+            font-weight: 600;
+        }
+        
+        .pill-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .pill {
+            padding: 4px 10px;
+            border-radius: 99px;
+            border: 1px solid var(--line);
+            font-size: .75rem;
+            color: var(--mute);
+            transition: all .15s;
+        }
+        
+        .pill:hover,
+        .pill.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-soft);
+        }
+        /* Split Map + Movers or Full Width SVG */
+        
+        .chart {
             width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+        
+        .chart text {
+            fill: var(--mute);
+            font: 500 11px 'Inter', sans-serif;
+        }
+        
+        .chart .lab {
+            fill: var(--ink);
+        }
+        
+        .chart circle {
+            cursor: pointer;
+            transition: r .15s;
+        }
+        
+        .chart circle:hover {
+            r: 7px;
+        }
+        
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 28px;
+            align-items: start;
+        }
+        
+        .map-card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #060911;
+        }
+        
+        #priceMap {
+            width: 100%;
+            height: 340px;
+        }
+        
+        .map-caption {
+            padding: 8px 12px;
+            font-size: .75rem;
+            color: var(--mute);
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Table & Tools */
+        
+        .tools {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        input[type=search] {
+            font: inherit;
+            color: var(--ink);
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid var(--line);
+            padding: 7px 0;
+            width: min(260px, 100%);
+            font-size: .88rem;
+        }
+        
+        input[type=search]::placeholder {
+            color: var(--mute);
+        }
+        
+        input[type=search]:focus {
+            outline: none;
+            border-bottom-color: var(--gold);
+        }
+        
+        .wrap {
             overflow-x: auto;
         }
-
-        .cta {
-            display: inline-block;
-            margin-top: 18px;
-            padding: 8px 16px;
-            border-radius: var(--radius-pill);
-            background: var(--accent);
-            color: #000;
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .86rem;
+            min-width: 720px;
+        }
+        
+        th,
+        td {
+            padding: 11px 10px;
+            text-align: right;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap;
+        }
+        
+        th:first-child,
+        td:first-child {
+            text-align: left;
+            padding-left: 0;
+        }
+        
+        th {
+            font-weight: 500;
+            color: var(--mute);
+            font-size: .76rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+        
+        th button {
+            color: inherit;
+            font: inherit;
+            padding: 0;
+        }
+        
+        th[aria-sort] button {
+            color: var(--ink);
             font-weight: 600;
-            font-size: .82rem;
-            text-decoration: none;
         }
-
-        .meta-footer {
-            font-size: .75rem;
-            color: var(--text-secondary);
-            margin-top: 14px;
-            border-top: 1px solid var(--border);
-            padding-top: 10px;
+        
+        th[aria-sort=ascending] button::after {
+            content: " \2191";
+            color: var(--gold);
         }
-
+        
+        th[aria-sort=descending] button::after {
+            content: " \2193";
+            color: var(--gold);
+        }
+        
+        tbody tr {
+            cursor: pointer;
+            transition: background .12s;
+        }
+        
+        tbody tr:hover td {
+            background: rgba(255, 255, 255, .025);
+        }
+        
+        tr.hit td {
+            background: var(--gold-soft);
+        }
+        
+        td .gauge {
+            width: 84px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 8px 0 0;
+        }
+        
+        td .rg {
+            color: var(--mute);
+            font-size: .76rem;
+        }
+        
+        .loc-btn {
+            font-size: .74rem;
+            color: var(--mute);
+            padding: 2px 6px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+        }
+        
+        .loc-btn:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+        /* Mapbox Popup */
+        
+        .mapboxgl-popup-content {
+            background: #141b2d !important;
+            border: 1px solid var(--line) !important;
+            border-radius: 8px !important;
+            color: var(--ink) !important;
+            padding: 10px 12px !important;
+            font: 400 13px/1.4 'Inter', sans-serif !important;
+        }
+        
+        .mapboxgl-popup-close-button {
+            color: var(--mute) !important;
+        }
+        /* About Footer */
+        
+        .about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            border-top: 1px solid var(--line);
+            padding-top: 36px;
+        }
+        
+        .about p,
+        .about dd {
+            color: var(--mute);
+            margin: 0 0 12px;
+            font-size: .88rem;
+        }
+        
+        .about dt {
+            font-weight: 600;
+            font-size: .9rem;
+            color: var(--ink);
+        }
+        
+        .about dd {
+            margin-bottom: 14px;
+            margin-left: 0;
+        }
+        
         footer {
-            max-width: 1280px;
-            margin: 40px auto 0;
-            padding: 24px 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
+            max-width: 1160px;
+            margin: 56px auto 0;
+            padding: 24px;
+            border-top: 1px solid var(--line);
+            color: var(--mute);
             font-size: .82rem;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
         }
-
-        @media (max-width: 768px) {
-            header.top-bar {
-                flex-wrap: wrap;
-                padding: 8px 10px;
-                gap: 8px;
+        
+        @media (max-width: 860px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
             }
-            .toolbar {
-                width: 100%;
+        }
+        
+        @media (max-width: 640px) {
+            main {
+                padding-top: 28px;
+            }
+            .tile {
+                border-left: 0;
+                padding-left: 0;
+                border-top: 1px solid var(--line);
+            }
+            .tile:first-child {
+                border-top: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <header class="top-bar">
-        <a class="brand" href="/">
-            <img src="/img/oilmap.png" width="30" height="30" alt="" onerror="this.style.display='none'">
-            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
-        </a>
-        <nav class="toolbar" aria-label="Main">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/oil_price_charts.html" aria-current="page">Oil charts</a>
-            <a class="nav-link" href="/oil_market.html">Oil market</a>
-            <a class="nav-link" href="/blog.html">Blog</a>
-            <a class="nav-link" href="/cited-by.html">Cited by</a>
-            <a class="nav-link" href="/data_lineage.html">Data lineage</a>
-            <a class="nav-link" href="/contact.html">Contact</a>
+    <header>
+        <a class="brand" href="./index.html"><img src="./img/oilmap.png" alt="" onerror="this.style.display='none'">WORLD OIL MAP</a>
+        <nav>
+            <a href="./index.html">Map</a>
+            <a href="./oil_price_charts.html" aria-current="page">Oil market</a>
+            <a href="./blog.html">Blog</a>
+            <a href="./contact.html">Contact</a>
         </nav>
     </header>
 
     <main>
-        <h1>Crude oil price charts and rankings</h1>
-        <p class="lead">Compare global crude benchmarks by price, daily change and extremes, using the same price dataset that drives the World Oil Map.</p>
-        <p class="capture" id="capture">Loading the latest capture…</p>
+        <h1>Crude oil market</h1>
+        <p class="lead" id="summary" aria-live="polite">Loading the latest global crude benchmarks…</p>
 
-        <section class="glass-card" aria-labelledby="h-chart">
-            <div class="panel-header">
-                <h2 id="h-chart">Crude prices overview by location</h2>
+        <div class="status-bar">
+            <p class="status" id="statusBox">
+                <i></i>
+                <span id="status">Connecting to the live price feed…</span>
+                <button id="refresh" class="link-btn" type="button">Refresh now</button>
+            </p>
+            <div class="breadth-wrap" id="breadthBox" style="display:none">
+                <span id="breadthText">Market breadth</span>
+                <div class="breadth-bar" title="Advancing vs Declining blends">
+                    <div class="breadth-up" id="barUp" style="width:50%"></div>
+                    <div class="breadth-flat" id="barFlat" style="width:0%"></div>
+                    <div class="breadth-dn" id="barDn" style="width:50%"></div>
+                </div>
             </div>
-            <p class="capture" style="margin-top:10px">Top 10 blends by price, in USD per barrel. Chart updates with each capture.</p>
-            <div class="chart-wrap" id="priceChart"></div>
+        </div>
+
+        <!-- Key Benchmarks -->
+        <section aria-labelledby="h-board">
+            <div class="sec-head">
+                <div>
+                    <h2 id="h-board">Key benchmarks</h2>
+                    <p class="sub">The gold dot marks where today's price sits inside its weekly low–high range. Click any card to locate on the map.</p>
+                </div>
+            </div>
+            <div class="board" id="board"></div>
+
+            <!-- Spread Calculator -->
+            <div class="spread-bar" aria-label="Crude spread calculator">
+                <div class="spread-controls">
+                    <span>Spread comparator:</span>
+                    <select id="spreadA" class="spread-select" aria-label="First crude blend"></select>
+                    <span style="color:var(--mute)">vs.</span>
+                    <select id="spreadB" class="spread-select" aria-label="Second crude blend"></select>
+                    <span id="spreadResult" class="spread-readout">--</span>
+                </div>
+                <div class="pill-group" id="spreadPresets">
+                    <button type="button" class="pill" data-a="brent" data-b="wti">Brent – WTI</button>
+                    <button type="button" class="pill" data-a="brent" data-b="merey">Brent – Merey</button>
+                    <button type="button" class="pill" data-a="brent" data-b="urals">Brent – Urals</button>
+                    <button type="button" class="pill" data-a="murban" data-b="dubai">Murban – Dubai</button>
+                </div>
+            </div>
         </section>
 
-        <section class="glass-card" aria-labelledby="h-rankings">
-            <div class="panel-header">
-                <h2 id="h-rankings">Market rankings and fluctuations</h2>
-            </div>
-            <div class="stats-grid">
-                <div class="stats-box">
-                    <h3>Top gainers</h3>
-                    <ol class="stats-list" id="topGainers"></ol>
+        <!-- Price Ladder -->
+        <section aria-labelledby="h-ladder">
+            <div class="sec-head">
+                <div>
+                    <h2 id="h-ladder">Price ladder</h2>
+                    <p class="sub">Every tracked blend on one axis. Gold dots are key benchmarks. Click any dot to inspect and locate it.</p>
                 </div>
-                <div class="stats-box">
-                    <h3>Top losers</h3>
-                    <ol class="stats-list" id="topLosers"></ol>
-                </div>
-                <div class="stats-box">
-                    <h3>Highest prices</h3>
-                    <ol class="stats-list" id="topHighest"></ol>
-                </div>
-                <div class="stats-box">
-                    <h3>Lowest prices</h3>
-                    <ol class="stats-list" id="topLowest"></ol>
+                <div class="pill-group">
+                    <button type="button" class="pill active" id="modePrice">By Price ($/bbl)</button>
+                    <button type="button" class="pill" id="modePct">By Daily Move (%)</button>
                 </div>
             </div>
-            <div class="meta-footer">
-                <span><strong>Source:</strong> EIA &amp; Official Price Feeds</span>
+            <svg class="chart" id="ladder" role="img" aria-label="All crude blends plotted on a horizontal axis"></svg>
+        </section>
+
+        <!-- Biggest Movers + Spatial Map -->
+        <section aria-labelledby="h-movers">
+            <div class="grid-2col">
+                <div>
+                    <h2 id="h-movers">Biggest moves</h2>
+                    <p class="sub" style="margin-bottom:14px">Largest percentage gains and losses in the latest capture.</p>
+                    <svg class="chart" id="movers" role="img" aria-label="Largest percentage gainers and losers"></svg>
+                </div>
+                <div>
+                    <h2>Geographic distribution</h2>
+                    <p class="sub" style="margin-bottom:14px">Benchmark pricing hubs colored by daily direction.</p>
+                    <div class="map-card">
+                        <div id="priceMap" role="application" aria-label="Crude oil benchmarks map"></div>
+                        <div class="map-caption">
+                            <span>🟢 Up · 🔴 Down · 🟡 Selected</span>
+                            <button type="button" class="link-btn" id="resetMapBtn">Reset global view</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a class="cta" href="/">Open the interactive map →</a>
+        </section>
+
+        <!-- All Blends Table -->
+        <section aria-labelledby="h-table">
+            <div class="tools">
+                <div>
+                    <h2 id="h-table">All blends</h2>
+                    <p class="sub">Sort any column. Click a row to highlight on the map and ladder. Prices in USD/bbl.</p>
+                </div>
+                <div class="search-box">
+                    <div class="pill-group" id="filterPills">
+                        <button type="button" class="pill active" data-f="all">All</button>
+                        <button type="button" class="pill" data-f="up">Gainers ▲</button>
+                        <button type="button" class="pill" data-f="dn">Losers ▼</button>
+                        <button type="button" class="pill" data-f="bm">Benchmarks ★</button>
+                    </div>
+                    <input type="search" id="q" placeholder="Search a blend…" aria-label="Search a blend">
+                    <button type="button" class="pill" id="exportCsvBtn" title="Download current table as CSV">↓ CSV</button>
+                </div>
+            </div>
+            <div class="wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col"><button data-k="name">Blend</button></th>
+                            <th scope="col"><button data-k="price">Price</button></th>
+                            <th scope="col"><button data-k="chg">Change</button></th>
+                            <th scope="col"><button data-k="pct">Change %</button></th>
+                            <th scope="col"><button data-k="spread">vs. Brent</button></th>
+                            <th scope="col"><button data-k="wk">Week range</button></th>
+                            <th scope="col"><button data-k="mo">Month range</button></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- About & Reference -->
+        <section class="about" aria-labelledby="h-about">
+            <div>
+                <h2 id="h-about">Benchmarks explained</h2>
+                <dl>
+                    <dt>Brent</dt>
+                    <dd>International light sweet benchmark from the North Sea, used as the primary reference for crude traded across Europe, Africa and the Middle East.</dd>
+                    <dt>WTI</dt>
+                    <dd>West Texas Intermediate, the U.S. light sweet benchmark (~39.6° API), priced at the Cushing, Oklahoma storage and pipeline hub.</dd>
+                    <dt>Murban</dt>
+                    <dd>Light sweet crude from Abu Dhabi (~39° API), a key physical and futures reference for Middle East exports to Asian refiners.</dd>
+                    <dt>Merey</dt>
+                    <dd>Venezuelan heavy sour crude blend (Merey 16), priced at a structural discount to light sweet benchmarks due to higher density and sulfur content.</dd>
+                </dl>
+            </div>
+            <div>
+                <h2>How to read this dashboard</h2>
+                <p><strong>Change</strong> reflects the latest daily move reported in the price feed. <strong>Weekly and monthly ranges</strong> display the minimum and maximum prices for each period, while the gold dot marks where the current price sits
+                    within that corridor.</p>
+                <p><strong>vs. Brent</strong> measures each blend's premium (+) or discount (–) relative to the Brent international benchmark, reflecting quality differentials (API gravity and sulfur) and freight logistics.</p>
+                <h2>Data & updates</h2>
+                <p>Prices are sourced from the open World Oil Map dataset on GitHub, compiled from EIA and official market feeds. The dashboard refreshes automatically every 5 minutes.</p>
+                <p><a href="./index.html">Explore full upstream blocks, refineries & pipelines on the World Oil Map →</a></p>
+            </div>
         </section>
     </main>
 
     <footer>
         <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
-        <span>Open Data · Crude Price Charts</span>
+        <span>Open Data · Tabular Financial View</span>
     </footer>
 
     <script>
         (function() {
             var CSV = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+            var MAPBOX_TOKEN = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+
             var $ = function(id) {
                 return document.getElementById(id);
             };
@@ -410,115 +880,447 @@
                     }[c];
                 });
             };
-            var parseCoord = function(v) {
-                return (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
+            var num = function(v) {
+                var x = parseFloat(String(v == null ? '' : v).replace(/["$%+\s]/g, '').replace(',', '.'));
+                return isNaN(x) ? null : x;
             };
-            var parseNumeric = function(v) {
-                return v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
+            var range = function(v) {
+                var m = String(v || '').match(/\d+(?:[.,]\d+)?/g);
+                if (!m || m.length < 2) return null;
+                var a = m.slice(0, 2).map(function(x) {
+                    return parseFloat(x.replace(',', '.'));
+                });
+                return [Math.min(a[0], a[1]), Math.max(a[0], a[1])];
             };
             var f2 = function(x) {
                 return x.toFixed(2);
             };
+            var sg = function(x) {
+                return (x > 0 ? '+' : '') + f2(x);
+            };
+            var cls = function(x) {
+                return x > 0 ? 'up' : x < 0 ? 'dn' : '';
+            };
+            var arrow = function(x) {
+                return x > 0 ? '\u25B2 ' : x < 0 ? '\u25BC ' : '';
+            };
 
-            var blends = [];
+            var rows = [],
+                capture = '',
+                checked = null;
+            var sortKey = 'price',
+                sortDir = -1,
+                query = '',
+                filterMode = 'all',
+                ladderMode = 'price',
+                hl = '';
+            var brentPrice = null,
+                map = null,
+                mapReady = false,
+                mapPopup = null;
+            var PATS = [/brent/i, /wti|west texas/i, /murban/i, /merey/i, /dubai/i, /urals/i];
 
-            function parse(text) {
-                var captured = '';
-                blends = [];
-                Papa.parse(text, {
-                    header: true,
-                    skipEmptyLines: true
-                }).data.forEach(function(row) {
-                    var n = {};
-                    Object.keys(row).forEach(function(k) {
-                        n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = row[k];
+            function status(err) {
+                var box = $('statusBox');
+                box.className = 'status ' + (err ? 'err' : 'ok');
+                $('status').textContent = err ?
+                    'Could not reach the price feed' + (rows.length ? '. Showing last cached data.' : '. Try again shortly.') :
+                    'Captured ' + (capture || 'recently') + ' · Checked ' + checked.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
                     });
-                    var name = n['blend'] || '',
-                        lat = parseCoord(n['lat']),
-                        lon = parseCoord(n['lon']);
-                    var update = (n['captura'] || '').trim();
-                    if (update && !captured) captured = update;
-                    if (!name || isNaN(lat) || isNaN(lon)) return;
-                    var price = n['precio'] || '0',
-                        change = n['cambio'] || '0',
-                        pct = n['cambio %'] || '0%';
-                    blends.push({
-                        name: name,
-                        price: price,
-                        numericPrice: parseNumeric(price),
-                        change: change,
-                        numericChange: parseNumeric(change),
-                        changePct: pct,
-                        updateDate: update || 'Live'
-                    });
+            }
+
+            function gauge(price, r) {
+                if (!r) return '';
+                var p = r[1] === r[0] ? 0.5 : Math.min(1, Math.max(0, (price - r[0]) / (r[1] - r[0])));
+                return '<div class="gauge"><i style="left:' + (p * 100).toFixed(1) + '%"></i></div>';
+            }
+
+            function benchmarks() {
+                var out = [];
+                PATS.forEach(function(p) {
+                    var m = rows.filter(function(r) {
+                            return p.test(r.name) && out.indexOf(r) < 0;
+                        })
+                        .sort(function(a, b) {
+                            return a.name.length - b.name.length;
+                        })[0];
+                    if (m) out.push(m);
                 });
-                if (captured) $('capture').textContent = 'Last capture: ' + captured;
-                else $('capture').textContent = 'Latest available capture';
-                render();
+                rows.slice().sort(function(a, b) {
+                    return b.price - a.price;
+                }).forEach(function(r) {
+                    if (out.length < 6 && out.indexOf(r) < 0) out.push(r);
+                });
+                return out.slice(0, 6);
+            }
+
+            function summary() {
+                var up = rows.filter(function(r) {
+                    return r.chg > 0;
+                }).length;
+                var dn = rows.filter(function(r) {
+                    return r.chg < 0;
+                }).length;
+                var flat = rows.length - up - dn;
+                var avg = rows.reduce(function(s, r) {
+                    return s + r.pct;
+                }, 0) / (rows.length || 1);
+
+                var t = up + ' of ' + rows.length + ' blends are advancing and ' + dn + ' are declining (avg move ' + sg(avg) + '%).';
+                var br = rows.filter(function(r) {
+                    return /brent/i.test(r.name);
+                })[0];
+                var wt = rows.filter(function(r) {
+                    return /wti|west texas/i.test(r.name);
+                })[0];
+                if (br && wt) {
+                    var d = br.price - wt.price;
+                    t += ' Brent trades $' + f2(Math.abs(d)) + (d >= 0 ? ' above' : ' below') + ' WTI.';
+                }
+                $('summary').textContent = t;
+
+                if (rows.length) {
+                    $('breadthBox').style.display = 'flex';
+                    $('breadthText').textContent = up + ' ▲ · ' + dn + ' ▼';
+                    $('barUp').style.width = (up / rows.length * 100).toFixed(1) + '%';
+                    $('barFlat').style.width = (flat / rows.length * 100).toFixed(1) + '%';
+                    $('barDn').style.width = (dn / rows.length * 100).toFixed(1) + '%';
+                }
+            }
+
+            function board(bm) {
+                $('board').innerHTML = bm.map(function(r) {
+                    var sp = (brentPrice != null && !/brent/i.test(r.name)) ?
+                        '<span class="spread-tag">' + sg(r.price - brentPrice) + ' vs Brent</span>' :
+                        '<span class="spread-tag">Benchmark</span>';
+                    return '<article class="tile" data-n="' + esc(r.name) + '">' +
+                        '<div class="tile-head"><h3>' + esc(r.name) + '</h3>' + sp + '</div>' +
+                        '<p class="px">$' + f2(r.price) + '<small>/bbl</small></p>' +
+                        '<p class="d ' + cls(r.chg) + '">' + arrow(r.chg) + sg(r.chg) + ' (' + sg(r.pct) + '%)</p>' +
+                        gauge(r.price, r.wk) +
+                        (r.wk ? '<p class="lh"><span>$' + f2(r.wk[0]) + '</span><span>Week</span><span>$' + f2(r.wk[1]) + '</span></p>' : '') +
+                        '</article>';
+                }).join('');
+            }
+
+            function initSpreadCalculator() {
+                var selA = $('spreadA'),
+                    selB = $('spreadB');
+                if (!rows.length) return;
+                var sorted = rows.slice().sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+                var opts = sorted.map(function(r) {
+                    return '<option value="' + esc(r.name) + '">' + esc(r.name) + ' ($' + f2(r.price) + ')</option>';
+                }).join('');
+                selA.innerHTML = opts;
+                selB.innerHTML = opts;
+
+                var br = rows.find(function(r) {
+                    return /brent/i.test(r.name);
+                }) || rows[0];
+                var wt = rows.find(function(r) {
+                    return /wti|west texas/i.test(r.name);
+                }) || rows[1] || rows[0];
+                selA.value = br.name;
+                selB.value = wt.name;
+                updateSpreadReadout();
+            }
+
+            function updateSpreadReadout() {
+                var a = rows.find(function(r) {
+                    return r.name === $('spreadA').value;
+                });
+                var b = rows.find(function(r) {
+                    return r.name === $('spreadB').value;
+                });
+                if (!a || !b) return;
+                var diff = a.price - b.price;
+                var pct = b.price ? (diff / b.price * 100) : 0;
+                $('spreadResult').innerHTML = '<span class="' + cls(diff) + '">' + sg(diff) + ' USD/bbl (' + sg(pct) + '%)</span>';
+            }
+
+            function ladder(bm) {
+                var W = 1000,
+                    L = 28,
+                    R = 28;
+                var isPct = ladderMode === 'pct';
+                var vals = rows.map(function(r) {
+                    return isPct ? r.pct : r.price;
+                });
+                var minV = Math.min.apply(null, vals),
+                    maxV = Math.max.apply(null, vals);
+                var lo = isPct ? Math.floor(minV - 0.5) : Math.floor(minV - 2);
+                var hi = isPct ? Math.ceil(maxV + 0.5) : Math.ceil(maxV + 2);
+                if (hi === lo) hi = lo + 1;
+
+                var x = function(v) {
+                    return L + (v - lo) / (hi - lo) * (W - L - R);
+                };
+                var sorted = rows.slice().sort(function(a, b) {
+                    return (isPct ? a.pct - b.pct : a.price - b.price);
+                });
+                var lv = [],
+                    dots = '';
+                var ext = [sorted[0], sorted[sorted.length - 1]];
+
+                var pos = sorted.map(function(r) {
+                    var val = isPct ? r.pct : r.price;
+                    var cx = x(val),
+                        k = 0;
+                    while (lv[k] !== undefined && cx - lv[k] < 13) k++;
+                    lv[k] = cx;
+                    return {
+                        r: r,
+                        cx: cx,
+                        k: k
+                    };
+                });
+
+                var top = 26 + lv.length * 13,
+                    base = top + 8;
+                pos.forEach(function(o) {
+                    var isBm = bm.indexOf(o.r) >= 0;
+                    var isHl = o.r.name === hl;
+                    var cy = base - 12 - o.k * 13;
+                    var fill = isHl ? '#ffffff' : isBm ? '#f0b823' : (o.r.chg > 0 ? '#10b981' : o.r.chg < 0 ? '#ef4444' : '#4b5870');
+                    dots += '<circle data-n="' + esc(o.r.name) + '" cx="' + o.cx.toFixed(1) + '" cy="' + cy + '" r="' + (isHl ? 7 : isBm ? 5.8 : 4.2) + '" fill="' + fill + '" stroke="#0b1120" stroke-width="1.2">' +
+                        '<title>' + esc(o.r.name) + ': $' + f2(o.r.price) + ' (' + sg(o.r.pct) + '%)</title></circle>';
+                    if (isBm || ext.indexOf(o.r) >= 0 || isHl) {
+                        dots += '<text class="lab" x="' + o.cx.toFixed(1) + '" y="' + (cy - 9) + '" text-anchor="middle">' +
+                            esc(o.r.name.length > 16 ? o.r.name.slice(0, 15) + '\u2026' : o.r.name) + '</text>';
+                    }
+                });
+
+                var ticks = '',
+                    span = hi - lo;
+                var step = isPct ? (span > 12 ? 2 : 1) : (span > 80 ? 20 : span > 35 ? 10 : 5);
+                for (var t = Math.ceil(lo / step) * step; t <= hi; t += step) {
+                    var lbl = isPct ? sg(t) + '%' : '$' + t;
+                    ticks += '<line x1="' + x(t) + '" x2="' + x(t) + '" y1="' + base + '" y2="' + (base + 5) + '" stroke="#8794ab"/>' +
+                        '<text x="' + x(t) + '" y="' + (base + 20) + '" text-anchor="middle">' + lbl + '</text>';
+                }
+
+                var s = $('ladder');
+                s.setAttribute('viewBox', '0 0 ' + W + ' ' + (base + 28));
+                s.innerHTML = '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + base + '" y2="' + base + '" stroke="rgba(255,255,255,.2)"/>' + ticks + dots;
+            }
+
+            function movers() {
+                var g = rows.filter(function(r) {
+                    return r.pct > 0;
+                }).sort(function(a, b) {
+                    return b.pct - a.pct;
+                }).slice(0, 6);
+                var l = rows.filter(function(r) {
+                    return r.pct < 0;
+                }).sort(function(a, b) {
+                    return a.pct - b.pct;
+                }).slice(0, 6);
+                var list = g.concat(l.reverse());
+                var s = $('movers');
+                if (!list.length) {
+                    s.innerHTML = '';
+                    return;
+                }
+                var max = Math.max.apply(null, list.map(function(r) {
+                    return Math.abs(r.pct);
+                })) || 1;
+                var cx = 340,
+                    half = 190,
+                    h = 27,
+                    out = '';
+                list.forEach(function(r, i) {
+                    var w = Math.abs(r.pct) / max * half,
+                        y = i * h + 4,
+                        pos = r.pct >= 0;
+                    out += '<g style="cursor:pointer" data-n="' + esc(r.name) + '">' +
+                        '<text x="0" y="' + (y + 13) + '">' + esc(r.name.length > 22 ? r.name.slice(0, 21) + '\u2026' : r.name) + '</text>' +
+                        '<rect x="' + (pos ? cx : cx - w) + '" y="' + y + '" width="' + Math.max(w, 2) + '" height="16" rx="2" fill="' + (pos ? '#10b981' : '#ef4444') + '">' +
+                        '<title>' + esc(r.name) + ': $' + f2(r.price) + ' (' + sg(r.pct) + '%)</title></rect>' +
+                        '<text class="lab" x="' + (pos ? cx + w + 8 : cx - w - 8) + '" y="' + (y + 13) + '" text-anchor="' + (pos ? 'start' : 'end') + '">' + sg(r.pct) + '%</text>' +
+                        '</g>';
+                });
+                s.setAttribute('viewBox', '0 0 600 ' + (list.length * h + 8));
+                s.innerHTML = '<line x1="' + cx + '" x2="' + cx + '" y1="0" y2="' + (list.length * h + 8) + '" stroke="rgba(255,255,255,.2)"/>' + out;
+            }
+
+            function rangeCell(price, r) {
+                if (!r) return '<td>\u2013</td>';
+                return '<td>' + gauge(price, r) + '<span class="rg">$' + f2(r[0]) + '\u2013$' + f2(r[1]) + '</span></td>';
+            }
+
+            function getFilteredSortedRows(bm) {
+                var q = query.trim().toLowerCase(),
+                    k = sortKey;
+                var key = function(r) {
+                    if (k === 'name') return r.name.toLowerCase();
+                    if (k === 'spread') return brentPrice != null ? r.price - brentPrice : 0;
+                    if (k === 'wk' || k === 'mo') return r[k] ? r[k][1] - r[k][0] : -1;
+                    return r[k];
+                };
+                return rows.filter(function(r) {
+                    if (q && r.name.toLowerCase().indexOf(q) < 0) return false;
+                    if (filterMode === 'up') return r.chg > 0;
+                    if (filterMode === 'dn') return r.chg < 0;
+                    if (filterMode === 'bm') return bm.indexOf(r) >= 0;
+                    return true;
+                }).sort(function(a, b) {
+                    var x = key(a),
+                        y = key(b);
+                    return (x < y ? -1 : x > y ? 1 : 0) * sortDir * (k === 'name' ? -1 : 1);
+                });
+            }
+
+            function table(bm) {
+                var list = getFilteredSortedRows(bm || benchmarks());
+                $('tbody').innerHTML = list.length ? list.map(function(r) {
+                    var sp = brentPrice != null ? r.price - brentPrice : 0;
+                    return '<tr data-n="' + esc(r.name) + '"' + (r.name === hl ? ' class="hit"' : '') + '>' +
+                        '<td><strong>' + esc(r.name) + '</strong></td>' +
+                        '<td>$' + f2(r.price) + '</td>' +
+                        '<td class="' + cls(r.chg) + '">' + sg(r.chg) + '</td>' +
+                        '<td class="' + cls(r.pct) + '">' + arrow(r.pct) + sg(r.pct) + '%</td>' +
+                        '<td class="' + cls(sp) + '">' + (/brent/i.test(r.name) ? 'Ref' : sg(sp)) + '</td>' +
+                        rangeCell(r.price, r.wk) +
+                        rangeCell(r.price, r.mo) +
+                        '</tr>';
+                }).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--mute);padding:24px">No crude blend matches your filter.</td></tr>';
+
+                document.querySelectorAll('th').forEach(function(th) {
+                    var b = th.querySelector('button');
+                    if (b && b.dataset.k === sortKey) {
+                        th.setAttribute('aria-sort', sortDir > 0 ? (sortKey === 'name' ? 'descending' : 'ascending') : (sortKey === 'name' ? 'ascending' : 'descending'));
+                    } else {
+                        th.removeAttribute('aria-sort');
+                    }
+                });
+            }
+
+            function initOrUpdateMap() {
+                if (typeof mapboxgl === 'undefined') return;
+                var features = rows.filter(function(r) {
+                    return !isNaN(r.lat) && !isNaN(r.lon);
+                }).map(function(r) {
+                    return {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [r.lon, r.lat]
+                        },
+                        properties: {
+                            name: r.name,
+                            price: f2(r.price),
+                            chg: sg(r.chg),
+                            pct: sg(r.pct),
+                            dir: r.chg > 0 ? 1 : r.chg < 0 ? -1 : 0,
+                            selected: r.name === hl ? 1 : 0
+                        }
+                    };
+                });
+
+                var geojson = {
+                    type: 'FeatureCollection',
+                    features: features
+                };
+
+                if (!map) {
+                    mapboxgl.accessToken = MAPBOX_TOKEN;
+                    map = new mapboxgl.Map({
+                        container: 'priceMap',
+                        style: 'mapbox://styles/mapbox/dark-v11',
+                        center: [10, 22],
+                        zoom: 1.25,
+                        attributionControl: false
+                    });
+                    map.addControl(new mapboxgl.NavigationControl({
+                        showCompass: false
+                    }), 'top-right');
+                    map.on('load', function() {
+                        mapReady = true;
+                        map.addSource('crude-pts', {
+                            type: 'geojson',
+                            data: geojson
+                        });
+                        map.addLayer({
+                            id: 'crude-circles',
+                            type: 'circle',
+                            source: 'crude-pts',
+                            paint: {
+                                'circle-radius': ['case', ['==', ['get', 'selected'], 1], 8, 5.5],
+                                'circle-color': [
+                                    'case', ['==', ['get', 'selected'], 1], '#f0b823', ['==', ['get', 'dir'], 1], '#10b981', ['==', ['get', 'dir'], -1], '#ef4444',
+                                    '#8794ab'
+                                ],
+                                'circle-stroke-width': 1.5,
+                                'circle-stroke-color': '#0b1120'
+                            }
+                        });
+                        map.on('click', 'crude-circles', function(e) {
+                            var p = e.features[0].properties;
+                            selectBlend(p.name, false);
+                        });
+                        map.on('mouseenter', 'crude-circles', function() {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+                        map.on('mouseleave', 'crude-circles', function() {
+                            map.getCanvas().style.cursor = '';
+                        });
+                    });
+                } else if (mapReady && map.getSource('crude-pts')) {
+                    map.getSource('crude-pts').setData(geojson);
+                }
+            }
+
+            function selectBlend(name, scrollTable) {
+                var found = rows.find(function(r) {
+                    return r.name === name;
+                });
+                if (!found) return;
+                hl = name;
+                var bm = benchmarks();
+                ladder(bm);
+                table(bm);
+                initOrUpdateMap();
+
+                if (map && mapReady && !isNaN(found.lat) && !isNaN(found.lon)) {
+                    map.flyTo({
+                        center: [found.lon, found.lat],
+                        zoom: 4.5,
+                        essential: true
+                    });
+                    if (mapPopup) mapPopup.remove();
+                    mapPopup = new mapboxgl.Popup({
+                            offset: 10
+                        })
+                        .setLngLat([found.lon, found.lat])
+                        .setHTML('<strong>' + esc(found.name) + '</strong><br>$' + f2(found.price) + '/bbl <span class="' + cls(found.chg) + '">(' + sg(found.pct) + '%)</span>')
+                        .addTo(map);
+                }
+                if (scrollTable) {
+                    var rowEl = document.querySelector('#tbody tr[data-n="' + CSS.escape(name) + '"]');
+                    if (rowEl) rowEl.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
             }
 
             function render() {
-                var top = function(arr, fn) {
-                    return arr.slice(0, 5).map(fn).join('');
-                };
-                var by = function(f) {
-                    return blends.slice().sort(f);
-                };
-                var item = function(b, right) {
-                    return '<li class="stats-item"><div><span>' + esc(b.name) + '</span><div class="item-date">' + esc(b.updateDate) + '</div></div>' + right + '</li>';
-                };
-
-                $('topGainers').innerHTML = top(by(function(a, b) {
-                    return b.numericChange - a.numericChange;
-                }), function(b) {
-                    return item(b, '<span class="positive">▲ ' + (b.numericChange > 0 ? '+' : '') + esc(b.change) + ' (' + esc(b.changePct) + ')</span>');
+                var br = rows.find(function(r) {
+                    return /brent/i.test(r.name);
                 });
-                $('topLosers').innerHTML = top(by(function(a, b) {
-                    return a.numericChange - b.numericChange;
-                }), function(b) {
-                    return item(b, '<span class="negative">▼ ' + esc(b.change) + ' (' + esc(b.changePct) + ')</span>');
-                });
-                $('topHighest').innerHTML = top(by(function(a, b) {
-                    return b.numericPrice - a.numericPrice;
-                }), function(b) {
-                    return item(b, '<strong style="color:var(--up)">$' + esc(b.price) + '</strong>');
-                });
-                $('topLowest').innerHTML = top(by(function(a, b) {
-                    return a.numericPrice - b.numericPrice;
-                }), function(b) {
-                    return item(b, '<strong style="color:var(--accent)">$' + esc(b.price) + '</strong>');
-                });
-
-                renderChart();
-            }
-
-            function renderChart() {
-                var s = blends.slice().sort(function(a, b) {
-                    return b.numericPrice - a.numericPrice;
-                }).slice(0, 10);
-                if (!s.length) return;
-                var max = Math.max.apply(null, s.map(function(b) {
-                    return b.numericPrice;
-                })) || 100;
-                var W = Math.max(620, 40 + s.length * 60 + 25);
-                var g = '<svg width="100%" viewBox="0 0 ' + W + ' 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top 10 crude blends by price">';
-                [
-                    [20, .06],
-                    [68, .06],
-                    [116, .14]
-                ].forEach(function(p) {
-                    g += '<line x1="40" y1="' + p[0] + '" x2="' + (W - 25) + '" y2="' + p[0] + '" stroke="rgba(255,255,255,' + p[1] + ')"' + (p[1] < .1 ? ' stroke-dasharray="3,3"' : '') + '/>';
-                });
-                s.forEach(function(it, i) {
-                    var h = it.numericPrice / max * 96,
-                        x = 40 + i * 60 + 12,
-                        y = 116 - h,
-                        n = esc(it.name);
-                    g += '<rect x="' + x + '" y="' + y + '" width="28" height="' + h + '" rx="4" fill="#f0b823" opacity=".88"><title>' + n + ': $' + esc(it.price) + ' (' + esc(it.updateDate) + ')</title></rect>' +
-                        '<text x="' + (x + 14) + '" y="' + (y - 5) + '" fill="#fff" font-size="9" font-weight="600" text-anchor="middle">$' + it.numericPrice.toFixed(0) + '</text>' +
-                        '<text x="' + (x + 14) + '" y="128" fill="#94a3b8" font-size="8.5" text-anchor="end" transform="rotate(-35,' + (x + 14) + ',128)">' + n + '</text>';
-                });
-                $('priceChart').innerHTML = g + '</svg>';
+                brentPrice = br ? br.price : null;
+                var bm = benchmarks();
+                summary();
+                board(bm);
+                initSpreadCalculator();
+                ladder(bm);
+                movers();
+                table(bm);
+                initOrUpdateMap();
             }
 
             function load() {
@@ -526,17 +1328,173 @@
                     setTimeout(load, 100);
                     return;
                 }
-                fetch(CSV)
+                fetch(CSV + '?t=' + Math.floor(Date.now() / 3e5), {
+                        cache: 'no-store'
+                    })
                     .then(function(r) {
                         if (!r.ok) throw new Error(r.status);
                         return r.text();
                     })
-                    .then(parse)
+                    .then(function(text) {
+                        var data = [],
+                            cap = '';
+                        Papa.parse(text, {
+                            header: true,
+                            skipEmptyLines: true
+                        }).data.forEach(function(raw) {
+                            var n = {};
+                            Object.keys(raw).forEach(function(k) {
+                                n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = raw[k];
+                            });
+                            var name = (n['blend'] || '').trim(),
+                                price = num(n['precio']);
+                            if (!name || price == null) return;
+                            var c = (n['captura'] || '').trim();
+                            if (c && !cap) cap = c;
+                            data.push({
+                                name: name,
+                                price: price,
+                                chg: num(n['cambio']) || 0,
+                                pct: num(n['cambio %']) || 0,
+                                wk: range(n['rango sem.']),
+                                mo: range(n['rango mes']),
+                                lat: num(n['lat']),
+                                lon: num(n['lon'])
+                            });
+                        });
+                        if (!data.length) throw new Error('empty');
+                        rows = data;
+                        capture = cap;
+                        checked = new Date();
+                        render();
+                        status(false);
+                    })
                     .catch(function() {
-                        $('capture').textContent = 'Could not load the price feed. Try again later.';
+                        status(true);
                     });
             }
 
+            /* Event Listeners */
+            document.querySelectorAll('th button').forEach(function(b) {
+                b.addEventListener('click', function() {
+                    var k = b.dataset.k;
+                    if (sortKey === k) sortDir *= -1;
+                    else {
+                        sortKey = k;
+                        sortDir = -1;
+                    }
+                    table();
+                });
+            });
+
+            $('q').addEventListener('input', function(e) {
+                query = e.target.value;
+                hl = '';
+                table();
+            });
+            $('refresh').addEventListener('click', load);
+
+            $('board').addEventListener('click', function(e) {
+                var tile = e.target.closest('.tile');
+                if (tile && tile.dataset.n) selectBlend(tile.dataset.n, true);
+            });
+
+            $('ladder').addEventListener('click', function(e) {
+                var n = e.target.getAttribute && e.target.getAttribute('data-n');
+                if (n) selectBlend(n, true);
+            });
+
+            $('movers').addEventListener('click', function(e) {
+                var g = e.target.closest('g[data-n]');
+                if (g) selectBlend(g.dataset.n, true);
+            });
+
+            $('tbody').addEventListener('click', function(e) {
+                var tr = e.target.closest('tr[data-n]');
+                if (tr) selectBlend(tr.dataset.n, false);
+            });
+
+            $('modePrice').addEventListener('click', function() {
+                ladderMode = 'price';
+                $('modePrice').classList.add('active');
+                $('modePct').classList.remove('active');
+                ladder(benchmarks());
+            });
+            $('modePct').addEventListener('click', function() {
+                ladderMode = 'pct';
+                $('modePct').classList.add('active');
+                $('modePrice').classList.remove('active');
+                ladder(benchmarks());
+            });
+
+            $('filterPills').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-f]');
+                if (!btn) return;
+                filterMode = btn.dataset.f;
+                document.querySelectorAll('#filterPills .pill').forEach(function(p) {
+                    p.classList.toggle('active', p === btn);
+                });
+                table();
+            });
+
+            $('spreadA').addEventListener('change', updateSpreadReadout);
+            $('spreadB').addEventListener('change', updateSpreadReadout);
+
+            $('spreadPresets').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-a]');
+                if (!btn) return;
+                var rxA = new RegExp(btn.dataset.a, 'i'),
+                    rxB = new RegExp(btn.dataset.b, 'i');
+                var mA = rows.find(function(r) {
+                    return rxA.test(r.name);
+                });
+                var mB = rows.find(function(r) {
+                    return rxB.test(r.name);
+                });
+                if (mA && mB) {
+                    $('spreadA').value = mA.name;
+                    $('spreadB').value = mB.name;
+                    updateSpreadReadout();
+                }
+            });
+
+            $('resetMapBtn').addEventListener('click', function() {
+                hl = '';
+                if (mapPopup) mapPopup.remove();
+                if (map) map.flyTo({
+                    center: [10, 22],
+                    zoom: 1.25
+                });
+                initOrUpdateMap();
+                ladder(benchmarks());
+                table();
+            });
+
+            $('exportCsvBtn').addEventListener('click', function() {
+                var list = getFilteredSortedRows(benchmarks());
+                if (!list.length) return;
+                var csvContent = 'Blend,Price_USD,Change,Change_Pct,Spread_vs_Brent,Week_Low,Week_High,Month_Low,Month_High\n' +
+                    list.map(function(r) {
+                        var sp = brentPrice != null ? f2(r.price - brentPrice) : '';
+                        return '"' + r.name.replace(/"/g, '""') + '",' + f2(r.price) + ',' + f2(r.chg) + ',' + f2(r.pct) + '%,' + sp + ',' +
+                            (r.wk ? f2(r.wk[0]) + ',' + f2(r.wk[1]) : ',') + ',' + (r.mo ? f2(r.mo[0]) + ',' + f2(r.mo[1]) : ',');
+                    }).join('\n');
+                var url = URL.createObjectURL(new Blob([csvContent], {
+                    type: 'text/csv;charset=utf-8;'
+                }));
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'world_oil_map_prices.csv';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            setInterval(function() {
+                if (!document.hidden) load();
+            }, 300000);
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden && (!checked || Date.now() - checked > 300000)) load();
+            });
             load();
         })();
     </script>
