@@ -78,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
     <script src="data/geocoder.js" defer></script>
     <style>
-         :root {
+        :root {
             --accent: #f0b823;
             --accent-soft: rgba(240, 184, 35, .14);
             --surface: rgba(13, 18, 30, .84);
@@ -188,7 +188,9 @@
             gap: 6px;
             overflow-x: auto;
             scrollbar-width: none;
-            -ms-overflow-style: none
+            -ms-overflow-style: none;
+            flex: 1;
+            min-width: 0;
         }
         
         .toolbar::-webkit-scrollbar {
@@ -232,7 +234,8 @@
             font-family: inherit;
             font-size: .76rem;
             cursor: pointer;
-            outline: none
+            outline: none;
+            flex-shrink: 0;
         }
 
         .lang-select:hover,
@@ -370,7 +373,6 @@
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent)
         }
-        /* SmartView Panel Styles */
         
         #smartViewSidebar {
             position: absolute;
@@ -857,9 +859,12 @@
                 width: 100%
             }
             .toolbar {
-                width: 100%;
+                width: calc(100% - 60px);
                 order: 2;
                 padding-bottom: 2px
+            }
+            .lang-select {
+                order: 2;
             }
             #suggestions {
                 width: 100%
@@ -895,7 +900,7 @@
 
     <header class="glass top-bar" role="banner">
         <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="About World Oil Map">
-            <img src="./img/oilmap.png" width="30" height="30" fetchpriority="high" alt="World Oil Map">
+            <img src="./img/oilmap.png" width="30" height="30" fetchpriority="high" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'30\' height=\'30\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
             <h1>WORLD OIL MAP <span>2026</span></h1>
         </div>
         <div class="search-wrap">
@@ -913,12 +918,12 @@
             <a href="blog.html" class="nav-link"><span>Blog</span></a>
             <a href="contact.html" class="nav-link"><span>Contact</span></a>
             <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
-            <select id="langSelector" class="lang-select" aria-label="Select Language">
-                <option value="/">🌐 EN</option>
-                <option value="/es/">🌐 ES</option>
-                <option value="/fr/">🌐 FR</option>
-            </select>
         </nav>
+        <select id="langSelector" class="lang-select" aria-label="Select Language">
+            <option value="/">🌐 EN</option>
+            <option value="/es/">🌐 ES</option>
+            <option value="/fr/">🌐 FR</option>
+        </select>
     </header>
 
     <!-- SmartView Live Analytics Sidebar -->
@@ -1101,7 +1106,7 @@
     <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card compact" style="text-align:center">
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
-            <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map">
+            <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
             <h2 style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
             <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
             <p style="font-size:.82rem"><span>Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
@@ -2385,13 +2390,13 @@
             '"': '&quot;'
         }[c]));
         $('btnExportKmlModal').onclick = () => {
-                if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
-                    alert('No custom pins, polygons, or KML features added to export yet.');
-                    return;
-                }
-                let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
-                customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
-                customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
+            if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
+                alert('No custom pins, polygons, or KML features added to export yet.');
+                return;
+            }
+            let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
+            customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
+            customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
             customKmlFeatures.forEach(f => {
                 const nm = escapeXml(f.properties.FAC_NAME || f.properties.Name || 'KML Item');
                 if (f.geometry.type === 'Point') k += `  <Placemark>\n    <name>${nm}</name>\n    <Point><coordinates>${f.geometry.coordinates[0]},${f.geometry.coordinates[1]},0</coordinates></Point>\n  </Placemark>\n`;
