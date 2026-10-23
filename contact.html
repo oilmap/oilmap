@@ -72,49 +72,105 @@
             color: var(--accent-hover);
         }
 
-        header {
+        header.top-bar {
             position: sticky;
-            top: 0;
+            top: calc(12px + env(safe-area-inset-top, 0px));
             z-index: 100;
+            width: calc(100% - 28px);
+            max-width: 1380px;
+            margin: 14px auto 0;
+            padding: 8px 14px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 20px;
-            background: rgba(2, 6, 23, 0.9);
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px);
+            gap: 12px;
+            background: rgba(13, 18, 30, .84);
+            border: 1px solid rgba(255, 255, 255, .1);
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: #f8fafc;
         }
 
         .brand img {
-            height: 28px;
-            width: auto;
+            height: 30px;
+            width: 30px;
+            object-fit: contain;
         }
 
-        .brand a {
-            color: var(--gold);
-            text-decoration: none;
+        .brand-title {
+            font-size: .92rem;
             font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 1px;
+            letter-spacing: .5px;
+            white-space: nowrap;
         }
 
-        .nav a {
-            color: #aaa;
+        .brand-title span {
+            color: #f0b823;
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: #f8fafc;
+            font-size: .76rem;
+            font-weight: 500;
             text-decoration: none;
-            font-size: 14px;
-            margin-left: 15px;
+            white-space: nowrap;
+            transition: all .18s ease;
         }
 
-        .nav a:hover,
-        .nav a.active {
-            color: #fff;
+        .nav-link:hover,
+        .nav-link[aria-current="page"] {
+            background: rgba(240, 184, 35, .14);
+            border-color: rgba(240, 184, 35, .35);
+            color: #f0b823;
         }
+
+        @media (max-width: 600px) {
+            header.top-bar {
+                width: calc(100% - 20px);
+                padding: 6px 10px;
+            }
+
+            .brand-title {
+                font-size: .8rem;
+            }
+
+            .nav-link {
+                padding: 6px 9px;
+                font-size: .72rem;
+            }
+        }
+
+
+
+
+
 
         main {
             max-width: 1100px;
@@ -321,9 +377,6 @@
                 font-size: 1.6rem;
             }
 
-            .nav a {
-                margin-left: 10px;
-            }
 
             .form-row {
                 flex-direction: column;
@@ -334,16 +387,17 @@
 
 <body>
 
-    <header>
-        <div class="brand">
-            <img src="/img/oilmap.png" alt="" onerror="this.style.display='none'">
-            <a href="/">WORLD OIL MAP 2026</a>
-        </div>
-        <nav class="nav">
-            <a href="/">Home</a>
-            <a href="/blog.html">Blog</a>
-            <a href="/cited-by.html">Cited by</a>
-            <a href="/contact.html" class="active">Contact</a>
+    <header class="top-bar">
+        <a class="brand" href="/">
+            <img src="/img/oilmap.png" width="30" height="30" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+        <nav class="toolbar" aria-label="Main">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog.html">Blog</a>
+            <a class="nav-link" href="/cited-by.html">Cited by</a>
+            <a class="nav-link" href="/data_lineage.html">Data lineage</a>
+            <a class="nav-link" href="/contact.html" aria-current="page">Contact</a>
         </nav>
     </header>
 
