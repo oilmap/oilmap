@@ -216,11 +216,11 @@ const html = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/img/oilmap.png" sizes="16x16">
     <title>Data Lineage and Sources | World Oil Map</title>
-    <meta name="description" content="Data lineage for World Oil Map: ${sourceCount} official government, regulator and research sources for oil and gas wells, pipelines, refineries and infrastructure, derived from OGIM v2.7.">
+    <meta name="description" content="Data lineage for World Oil Map: ${sourceCount} official government, regulator and research sources for oil and gas wells, pipelines, refineries and infrastructure, derived from OGIM v3.">
     <link rel="canonical" href="https://oilmap.xyz/data_lineage.html">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Data Lineage and Sources | World Oil Map">
-    <meta property="og:description" content="Official sources behind World Oil Map, referenced from the OGIM v2.7 database.">
+    <meta property="og:description" content="Official sources behind World Oil Map, referenced from the OGIM v3 database.">
     <meta property="og:url" content="https://oilmap.xyz/data_lineage.html">
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
@@ -228,11 +228,11 @@ const html = `<!DOCTYPE html>
     {
         "@context": "https://schema.org",
         "@type": "Dataset",
-        "name": "World Oil Map data lineage: OGIM v2.7 source references",
+        "name": "World Oil Map data lineage: OGIM v3 source references",
         "description": "Source references for oil and gas infrastructure data used by World Oil Map, including wells, pipelines, refineries, compressor stations, LNG facilities and license blocks.",
         "url": "https://oilmap.xyz/data_lineage.html",
         "creator": { "@type": "Person", "name": "Roque Leal" },
-        "isBasedOn": { "@type": "Dataset", "name": "Oil and Gas Infrastructure Mapping (OGIM) Database v2.7", "identifier": "${OGIM_DOI}", "url": "${OGIM_DOI}" },
+        "isBasedOn": { "@type": "Dataset", "name": "Oil and Gas Infrastructure Mapping (OGIM) Database v3", "identifier": "${OGIM_DOI}", "url": "${OGIM_DOI}" },
         "citation": "${ESSD_DOI}",
         "license": "https://www.gnu.org/licenses/gpl-3.0.html",
         "spatialCoverage": "Global"
@@ -291,13 +291,13 @@ const html = `<!DOCTYPE html>
         <h1>Data Lineage and Sources</h1>
         <p class="lead">
             World Oil Map relies on official government, regulator and research datasets for oil and gas infrastructure.
-            This page lists the source references compiled in the Oil and Gas Infrastructure Mapping (OGIM) database, version 2.7,
+            This page lists the source references compiled in the Oil and Gas Infrastructure Mapping (OGIM) database, version 3,
             with the country, region, infrastructure types and last visit date recorded for each source.
         </p>
 
         <h2>How to cite</h2>
         <div class="cite">
-            <p><strong>OGIM database, version 2.7:</strong> O’Brien, M.A., Omara, M., Himmelberger, A., Gautam, R. Oil and Gas Infrastructure Mapping (OGIM) Database. <a href="${OGIM_DOI}" target="_blank" rel="noopener">${OGIM_DOI}</a></p>
+            <p><strong>OGIM database, version 3:</strong> O’Brien, M.A., Omara, M., Himmelberger, A., Gautam, R. Oil and Gas Infrastructure Mapping (OGIM) Database. <a href="${OGIM_DOI}" target="_blank" rel="noopener">${OGIM_DOI}</a></p>
             <p><strong>OGIM database License:</strong> These datasets are provided under a Creative Commons Attribution 4.0 International Public License, unless otherwise noted.</p>
             <p><strong>Created by:</strong> Omara et al</p>
             <p><strong>Curated in GEE by:</strong> Samapriya Roy</p>
@@ -321,7 +321,7 @@ const html = `<!DOCTYPE html>
         </div>
 
         <footer>
-            Source references from OGIM v2.7. For more information about each source, see the Data_Catalog layer of the OGIM GeoPackage.
+            Source references from OGIM v3. For more information about each source, see the Data_Catalog layer of the OGIM GeoPackage.
             © 2026 World Oil Map · Open Data · Open Source
         </footer>
     </div>
