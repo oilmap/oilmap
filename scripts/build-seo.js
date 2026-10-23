@@ -9,6 +9,7 @@ const STATIC = [
     { path: '/es/', priority: '0.9' },
     { path: '/fr/', priority: '0.9' },
     { path: '/data_lineage.html', priority: '0.8' },
+    { path: '/cited-by/', priority: '0.8' },
 ];
 
 const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
