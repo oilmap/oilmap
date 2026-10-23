@@ -297,7 +297,7 @@ const html = `<!DOCTYPE html>
 
         <h2>How to cite</h2>
         <div class="cite">
-            <p><strong>OGIM database:</strong> O’Brien, M.A., Omara, M., Himmelberger, A., Gautam, R. Oil and Gas Infrastructure Mapping (OGIM) Database. <a href="${OGIM_DOI}" target="_blank" rel="noopener">${OGIM_DOI}</a></p>
+            <p><strong>OGIM database, version 2.7:</strong> O’Brien, M.A., Omara, M., Himmelberger, A., Gautam, R. Oil and Gas Infrastructure Mapping (OGIM) Database. <a href="${OGIM_DOI}" target="_blank" rel="noopener">${OGIM_DOI}</a></p>
             <p><strong>OGIM database License:</strong> These datasets are provided under a Creative Commons Attribution 4.0 International Public License, unless otherwise noted.</p>
             <p><strong>Created by:</strong> Omara et al</p>
             <p><strong>Curated in GEE by:</strong> Samapriya Roy</p>
