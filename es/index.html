@@ -342,6 +342,10 @@
             text-align: right
         }
         
+        a.shortcut-item {
+            text-decoration: none
+        }
+
         .layer-item:hover,
         .shortcut-item:hover {
             background: rgba(255, 255, 255, .08);
@@ -922,6 +926,8 @@
             <button id="btn-measure" class="btn-ui" type="button"><span data-i18n="measureBtn">📏 Medir</span></button>
             <a href="/blog.html" class="nav-link"><span data-i18n="navBlog">Blog</span></a>
             <a href="/contact.html" class="nav-link"><span data-i18n="navContact">Contacto</span></a>
+            <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
+            <a href="/oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
             <button id="btn-info" class="btn-ui" type="button" aria-label="About"><span>ℹ️</span></button>
             <select id="langSelector" class="lang-select" aria-label="Select Language">
                 <option value="en">🌐 EN</option>
@@ -965,6 +971,10 @@
         <button class="shortcut-item" role="menuitem" data-region="UAE" data-lng="53.8478" data-lat="23.4241" data-zoom="6.2">🇦🇪 UAE</button>
         <button class="shortcut-item" role="menuitem" data-region="Nigeria" data-lng="8.6753" data-lat="9.0820" data-zoom="5.8">🇳🇬 Nigeria</button>
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" data-i18n="globalView">🌎 Vista Global</button>
+    </div>
+    <div id="source-menu" class="dropdown-panel glass" role="menu">
+        <a class="shortcut-item" role="menuitem" href="/cited-by.html">Cited by</a>
+        <a class="shortcut-item" role="menuitem" href="/data_lineage.html">Data Lineage</a>
     </div>
     <div id="menu" class="dropdown-panel glass" role="menu"></div>
 
@@ -1512,7 +1522,8 @@
         /* ---------- dropdowns ---------- */
         const panels = [
             [$('btn-regions'), regionsMenu],
-            [$('btn-toggle-menu'), menuNav]
+            [$('btn-toggle-menu'), menuNav],
+            [$('btn-source'), $('source-menu')]
         ];
 
         function closeAllDropdowns() {

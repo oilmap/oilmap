@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -45,7 +45,7 @@
             "description": "Web-based Location Intelligence application for Upstream and Downstream Oil & Gas activities, global pipelines, refineries, and real-time crude oil price benchmarks.",
             "applicationCategory": "BusinessApplication, GeospatialApplication",
             "operatingSystem": "All",
-            "inLanguage": ["en", "es", "fr", "ar", "zh"],
+            "inLanguage": ["en", "es", "fr"],
             "isAccessibleForFree": true,
             "author": {
                 "@type": "Person",
@@ -111,11 +111,6 @@
             color: var(--text-primary);
             overflow: hidden;
             -webkit-font-smoothing: antialiased
-        }
-        
-        html[dir=rtl] body {
-            direction: rtl;
-            text-align: right
         }
         
         .sr-only {
@@ -201,8 +196,7 @@
         }
         
         .btn-ui,
-        .nav-link,
-        .lang-select {
+        .nav-link {
             padding: 7px 12px;
             border-radius: var(--radius-pill);
             border: 1px solid transparent;
@@ -223,29 +217,40 @@
         
         .btn-ui:hover,
         .nav-link:hover,
-        .lang-select:hover,
         .btn-ui:focus-visible {
             background: var(--accent-soft);
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-        
+
+        .lang-select {
+            padding: 7px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .76rem;
+            cursor: pointer;
+            outline: none
+        }
+
+        .lang-select:hover,
+        .lang-select:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent)
+        }
+
+        .lang-select option {
+            background: #0d121e;
+            color: var(--text-primary)
+        }
+
         .btn-ui.active-tool {
             background: var(--accent)!important;
             color: #000!important;
             font-weight: 600
-        }
-        
-        .lang-select {
-            border-color: rgba(240, 184, 35, .3);
-            color: var(--accent);
-            font-weight: 600;
-            padding-right: 8px
-        }
-        
-        .lang-select option {
-            background: #0d121e;
-            color: var(--text-primary)
         }
         
         .search-wrap {
@@ -337,11 +342,10 @@
             font-family: inherit
         }
         
-        html[dir=rtl] .shortcut-item,
-        html[dir=rtl] .layer-item {
-            text-align: right
+        a.shortcut-item {
+            text-decoration: none
         }
-        
+
         .layer-item:hover,
         .shortcut-item:hover {
             background: rgba(255, 255, 255, .08);
@@ -475,16 +479,6 @@
             pointer-events: auto
         }
         
-        html[dir=rtl] #regionSidebar {
-            right: auto;
-            left: 14px;
-            transform: translateX(-400px)
-        }
-        
-        html[dir=rtl] #regionSidebar.open {
-            transform: none
-        }
-        
         .panel-header {
             display: flex;
             justify-content: space-between;
@@ -549,11 +543,6 @@
             padding: 12px;
             border-radius: var(--radius-md);
             width: 275px
-        }
-        
-        html[dir=rtl] .floating-tool {
-            left: auto;
-            right: 14px
         }
         
         .floating-tool.active {
@@ -910,25 +899,24 @@
             <h1>WORLD OIL MAP <span>2026</span></h1>
         </div>
         <div class="search-wrap">
-            <input type="search" id="countrySearch" class="search-input" data-i18n-ph="searchPlaceholder" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+            <input type="search" id="countrySearch" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
             <div id="suggestions" class="glass" role="listbox"></div>
         </div>
         <nav class="toolbar" aria-label="Map Controls">
             <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
-            <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="regionsBtn">📍 Regions ▾</span></button>
-            <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="layersBtn">🗂️ Layers ▾</span></button>
-            <button id="btn-stats" class="btn-ui" type="button"><span data-i18n="topStatsBtn">📊 Stats</span></button>
-            <button id="btnAddPin" class="btn-ui" type="button"><span data-i18n="addPinBtn">📍 + Pin</span></button>
-            <button id="btn-measure" class="btn-ui" type="button"><span data-i18n="measureBtn">📏 Measure</span></button>
-            <a href="blog.html" class="nav-link"><span data-i18n="navBlog">Blog</span></a>
-            <a href="contact.html" class="nav-link"><span data-i18n="navContact">Contact</span></a>
-            <button id="btn-info" class="btn-ui" type="button" aria-label="About"><span>ℹ️</span></button>
+            <a href="oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
+            <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>📍 Regions ▾</span></button>
+            <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
+            <button id="btn-stats" class="btn-ui" type="button"><span>📊 Stats</span></button>
+            <button id="btnAddPin" class="btn-ui" type="button"><span>📍 + Pin</span></button>
+            <button id="btn-measure" class="btn-ui" type="button"><span>📏 Measure</span></button>
+            <a href="blog.html" class="nav-link"><span>Blog</span></a>
+            <a href="contact.html" class="nav-link"><span>Contact</span></a>
+            <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
             <select id="langSelector" class="lang-select" aria-label="Select Language">
-                <option value="en" selected>🌐 EN</option>
-                <option value="es">ES</option>
-                <option value="fr">FR</option>
-                <option value="ar">AR</option>
-                <option value="zh">ZH</option>
+                <option value="/">🌐 EN</option>
+                <option value="/es/">🌐 ES</option>
+                <option value="/fr/">🌐 FR</option>
             </select>
         </nav>
     </header>
@@ -961,25 +949,30 @@
     </aside>
 
     <div id="regions-menu" class="dropdown-panel glass" role="menu">
-        <button class="shortcut-item" role="menuitem" data-region="Venezuela" data-lng="-65.2311" data-lat="9.4529" data-zoom="7.02">🇻🇪 Venezuela</button>
-        <button class="shortcut-item" role="menuitem" data-region="UAE" data-lng="53.8478" data-lat="23.4241" data-zoom="6.2">🇦🇪 UAE</button>
-        <button class="shortcut-item" role="menuitem" data-region="Nigeria" data-lng="8.6753" data-lat="9.0820" data-zoom="5.8">🇳🇬 Nigeria</button>
-        <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" data-i18n="globalView">🌎 Global View</button>
+        <a class="shortcut-item" role="menuitem" href="venezuela_petroleum_market.html">🇻🇪 Venezuela</a>
+        <a class="shortcut-item" role="menuitem" href="uae_petroleum_market.html">🇦🇪 UAE</a>
+        <a class="shortcut-item" role="menuitem" href="nigeria_petroleum_market.html">🇳🇬 Nigeria</a>
+        <a class="shortcut-item" role="menuitem" href="argentina_petroleum_market.html">🇦🇷 Argentina</a>
+        <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3">🌎 Global View</button>
+    </div>
+    <div id="source-menu" class="dropdown-panel glass" role="menu">
+        <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
+        <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
     </div>
     <div id="menu" class="dropdown-panel glass" role="menu"></div>
 
     <div id="distanceContainer" class="floating-tool glass" aria-live="polite">
         <div class="measure-modes">
-            <button id="btnMeasureDist" class="btn-ui active-tool" data-i18n="measureDist">📏 Distance</button>
-            <button id="btnMeasureArea" class="btn-ui" data-i18n="measureArea">📐 Area</button>
+            <button id="btnMeasureDist" class="btn-ui active-tool">📏 Distance</button>
+            <button id="btnMeasureArea" class="btn-ui">📐 Area</button>
             <button id="btnMeasureClear" class="btn-ui" aria-label="Clear">🔄</button>
         </div>
-        <div id="measureOutput" class="measure-readout" data-i18n="measurePromptDist">Click on map to start measuring.</div>
+        <div id="measureOutput" class="measure-readout">Click on map to start measuring.</div>
     </div>
 
     <div id="polyDrawHud" class="glass">
         <span id="polyVertexCounter" style="font-size:.78rem;font-weight:600;color:var(--accent)">📐 0 vertices</span>
-        <button id="btnFinishPoly" class="btn-ui active-tool" data-i18n="polySave">✅ Save</button>
+        <button id="btnFinishPoly" class="btn-ui active-tool">✅ Save</button>
         <button id="btnCancelPoly" class="btn-ui" aria-label="Cancel">❌</button>
     </div>
 
@@ -989,21 +982,21 @@
             <button class="close-btn" id="closeSidebar" aria-label="Close">&times;</button>
         </div>
         <div class="metric-card">
-            <h4 data-i18n="sideOperators">Key Operators / Companies</h4>
+            <h4>Key Operators / Companies</h4>
             <div id="sidebarCompanies" class="metric-val" style="font-size:.88rem">--</div>
         </div>
         <div class="metric-card">
-            <h4 data-i18n="sideReserves">Proven Reserves</h4>
+            <h4>Proven Reserves</h4>
             <div id="sidebarReserves" class="metric-val">--</div>
         </div>
         <div class="metric-card">
-            <h4 data-i18n="sideQuality">Crude Quality / Benchmark</h4>
+            <h4>Crude Quality / Benchmark</h4>
             <div id="sidebarQuality" class="metric-val">--</div>
         </div>
         <div class="chart-box"><canvas id="productionChart"></canvas></div>
         <div class="meta-footer">
-            <span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA International Energy Statistics</span>
-            <span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+            <span><strong>Source:</strong> EIA International Energy Statistics</span>
+            <span><strong>Captured:</strong> <span class="dynamic-capture-date">--</span></span>
         </div>
     </aside>
 
@@ -1017,55 +1010,55 @@
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card compact">
             <div class="panel-header">
-                <h2 data-i18n="modalSpatialTitle">📍 Spatial Tools</h2>
+                <h2>📍 Spatial Tools</h2>
                 <button class="close-btn" id="closeAddPinModal" aria-label="Close">&times;</button>
             </div>
             <div class="tabs">
-                <button type="button" class="tab-btn active" id="tabPinBtn" data-i18n="tabPin">📍 Custom Pin</button>
-                <button type="button" class="tab-btn" id="tabPolyBtn" data-i18n="tabPoly">📐 Polygon Block</button>
-                <button type="button" class="tab-btn" id="tabKmlBtn" data-i18n="tabKml">📂 Import KML</button>
+                <button type="button" class="tab-btn active" id="tabPinBtn">📍 Custom Pin</button>
+                <button type="button" class="tab-btn" id="tabPolyBtn">📐 Polygon Block</button>
+                <button type="button" class="tab-btn" id="tabKmlBtn">📂 Import KML</button>
             </div>
             <form id="addPinForm">
                 <div class="form-group">
-                    <label for="pinDescription" data-i18n="labelPinDesc">Description / Title</label>
-                    <input type="text" id="pinDescription" class="form-control" data-i18n-ph="phPinDesc" placeholder="e.g. Wellsite Alpha..." required>
+                    <label for="pinDescription">Description / Title</label>
+                    <input type="text" id="pinDescription" class="form-control" placeholder="e.g. Wellsite Alpha..." required>
                 </div>
                 <div class="form-group">
-                    <label for="coordType" data-i18n="labelCoordFormat">Coordinate System</label>
+                    <label for="coordType">Coordinate System</label>
                     <select id="coordType" class="form-control">
-                        <option value="geo" data-i18n="optGeo">Geographic (Lat, Lng)</option>
-                        <option value="utm" data-i18n="optUtm">UTM (Zone, Easting, Northing)</option>
+                        <option value="geo">Geographic (Lat, Lng)</option>
+                        <option value="utm">UTM (Zone, Easting, Northing)</option>
                     </select>
                 </div>
                 <div id="geoFields">
-                    <div class="form-group"><label for="pinLat" data-i18n="labelLat">Latitude</label><input type="number" step="any" id="pinLat" class="form-control" placeholder="10.5"></div>
-                    <div class="form-group"><label for="pinLng" data-i18n="labelLng">Longitude</label><input type="number" step="any" id="pinLng" class="form-control" placeholder="-66.9"></div>
+                    <div class="form-group"><label for="pinLat">Latitude</label><input type="number" step="any" id="pinLat" class="form-control" placeholder="10.5"></div>
+                    <div class="form-group"><label for="pinLng">Longitude</label><input type="number" step="any" id="pinLng" class="form-control" placeholder="-66.9"></div>
                 </div>
                 <div id="utmFields" style="display:none">
-                    <div class="form-group"><label for="utmZone" data-i18n="labelUtmZone">UTM Zone</label><input type="text" id="utmZone" class="form-control" placeholder="19N"></div>
+                    <div class="form-group"><label for="utmZone">UTM Zone</label><input type="text" id="utmZone" class="form-control" placeholder="19N"></div>
                     <div class="form-group"><label for="utmEasting">Easting (X)</label><input type="number" step="any" id="utmEasting" class="form-control" placeholder="500000"></div>
                     <div class="form-group"><label for="utmNorthing">Northing (Y)</label><input type="number" step="any" id="utmNorthing" class="form-control" placeholder="1000000"></div>
                 </div>
                 <div style="display:flex;gap:8px;margin-top:14px">
-                    <button type="submit" class="btn-ui active-tool" style="flex:1;justify-content:center" data-i18n="btnAddPinSubmit">Add Pin</button>
+                    <button type="submit" class="btn-ui active-tool" style="flex:1;justify-content:center">Add Pin</button>
                     <button type="button" id="btnAddAnother" class="btn-ui" aria-label="Add another">➕</button>
                 </div>
             </form>
             <div id="polygonSection" style="display:none">
-                <div class="form-group"><label for="polyNameInput" data-i18n="labelPolyName">Concession / Block Name</label><input type="text" id="polyNameInput" class="form-control" value="Block Concession 1"></div>
-                <p style="font-size:.75rem;color:var(--text-secondary);line-height:1.45" data-i18n="polyInstructions">Plot vertices directly on the map to delineate a polygon and calculate its area.</p>
-                <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center" data-i18n="btnStartDrawPoly">🖌️ Draw Polygon on Map</button>
+                <div class="form-group"><label for="polyNameInput">Concession / Block Name</label><input type="text" id="polyNameInput" class="form-control" value="Block Concession 1"></div>
+                <p style="font-size:.75rem;color:var(--text-secondary);line-height:1.45">Plot vertices directly on the map to delineate a polygon and calculate its area.</p>
+                <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center">🖌️ Draw Polygon on Map</button>
             </div>
             <div id="kmlSection" style="display:none">
                 <div class="form-group">
-                    <label for="kmlFileInput" data-i18n="labelKmlFile">Select KML File (.kml)</label>
+                    <label for="kmlFileInput">Select KML File (.kml)</label>
                     <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple>
                 </div>
-                <p id="kmlStatusMsg" style="font-size:.75rem;color:var(--text-secondary);line-height:1.45" data-i18n="kmlInstructions">Upload your own KML files (Points, Lines, or Polygons) to display them on the map.</p>
+                <p id="kmlStatusMsg" style="font-size:.75rem;color:var(--text-secondary);line-height:1.45">Upload your own KML files (Points, Lines, or Polygons) to display them on the map.</p>
                 <button type="button" id="btnClearKml" class="btn-ui" style="width:100%;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear Imported KML</button>
             </div>
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-                <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)" data-i18n="btnExportKml">📥 Export to KML</button>
+                <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)">📥 Export to KML</button>
             </div>
         </div>
     </div>
@@ -1073,34 +1066,34 @@
     <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card">
             <div class="panel-header">
-                <h2 data-i18n="statsModalTitle">📊 Market Rankings & Fluctuations</h2>
+                <h2>📊 Market Rankings & Fluctuations</h2>
                 <button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button>
             </div>
             <div class="stats-box" style="margin-top:12px">
-                <h3 data-i18n="statsChartTitle">📈 Crude Prices Overview by Location</h3>
+                <h3>📈 Crude Prices Overview by Location</h3>
                 <div id="priceChartContainer" style="width:100%;overflow-x:auto"></div>
             </div>
             <div class="stats-grid">
                 <div class="stats-box">
-                    <h3 data-i18n="statsTopGainers">📈 Top Gainers</h3>
+                    <h3>📈 Top Gainers</h3>
                     <div id="topGainersList"></div>
                 </div>
                 <div class="stats-box">
-                    <h3 data-i18n="statsTopLosers">📉 Top Losers</h3>
+                    <h3>📉 Top Losers</h3>
                     <div id="topLosersList"></div>
                 </div>
                 <div class="stats-box">
-                    <h3 data-i18n="statsHighest">💎 Highest Prices</h3>
+                    <h3>💎 Highest Prices</h3>
                     <div id="topHighestList"></div>
                 </div>
                 <div class="stats-box">
-                    <h3 data-i18n="statsLowest">🏷️ Lowest Prices</h3>
+                    <h3>🏷️ Lowest Prices</h3>
                     <div id="topLowestList"></div>
                 </div>
             </div>
             <div class="meta-footer" style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">
-                <span><strong data-i18n="sideSourcePrefix">Source:</strong> EIA & Official Price Feeds</span>
-                <span><strong data-i18n="sideRetrieved">Captured:</strong> <span class="dynamic-capture-date">--</span></span>
+                <span><strong>Source:</strong> EIA & Official Price Feeds</span>
+                <span><strong>Captured:</strong> <span class="dynamic-capture-date">--</span></span>
             </div>
         </div>
     </div>
@@ -1110,14 +1103,14 @@
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
             <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map">
             <h2 style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
-            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55" data-i18n="aboutP1">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
-            <p style="font-size:.82rem"><span data-i18n="aboutP3">Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
+            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
+            <p style="font-size:.82rem"><span>Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
             <div style="display:flex;justify-content:center;gap:16px;margin:16px 0">
                 <a href="https://github.com/roqueleal/oilmap" target="_blank" rel="noopener noreferrer"><img src="./img/git.png" width="110" height="34" loading="lazy" style="height:auto" alt="GitHub"></a>
                 <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank" rel="noopener noreferrer"><img src="./img/odi.png" width="95" height="34" loading="lazy" style="height:auto" alt="ODI Certificate"></a>
             </div>
             <div style="padding-top:12px;border-top:1px solid var(--border);font-size:.75rem">
-                <a href="https://oilmap.xyz/privacy-policy.html" id="openCookieSettings" style="color:var(--text-secondary);text-decoration:none" data-i18n="manageCookies">🍪 Manage Cookie Preferences (Google CMP)</a>
+                <a href="https://oilmap.xyz/privacy-policy.html" id="openCookieSettings" style="color:var(--text-secondary);text-decoration:none">🍪 Manage Cookie Preferences (Google CMP)</a>
             </div>
         </div>
     </div>
@@ -1132,280 +1125,6 @@
             '"': '&quot;',
             "'": '&#39;'
         }[c]));
-
-        /* ---------- i18n ---------- */
-        const i18n = {
-            en: {
-                searchPlaceholder: "🔍 Search Block or Country...",
-                regionsBtn: "📍 Regions ▾",
-                globalView: "🌎 Global View",
-                layersBtn: "🗂️ Layers ▾",
-                topStatsBtn: "📊 Stats",
-                addPinBtn: "📍 + Pin",
-                measureBtn: "📏 Measure",
-                navBlog: "Blog",
-                navContact: "Contact",
-                measureDist: "📏 Distance",
-                measureArea: "📐 Area",
-                measurePromptDist: "Click on map to start measuring.",
-                measurePromptArea: "Click at least 3 points to measure area.",
-                polySave: "✅ Save",
-                sideOperators: "Key Operators / Companies",
-                sideReserves: "Proven Reserves",
-                sideQuality: "Crude Quality / Benchmark",
-                sideSourcePrefix: "Source:",
-                sideRetrieved: "Captured:",
-                modalSpatialTitle: "📍 Spatial Tools",
-                tabPin: "📍 Custom Pin",
-                tabPoly: "📐 Polygon Block",
-                tabKml: "📂 Import KML",
-                labelPinDesc: "Description / Title",
-                phPinDesc: "e.g. Wellsite Alpha...",
-                labelCoordFormat: "Coordinate System",
-                optGeo: "Geographic (Lat, Lng)",
-                optUtm: "UTM (Zone, Easting, Northing)",
-                labelLat: "Latitude",
-                labelLng: "Longitude",
-                labelUtmZone: "UTM Zone",
-                btnAddPinSubmit: "Add Pin",
-                labelPolyName: "Concession / Block Name",
-                polyInstructions: "Plot vertices directly on the map to delineate a polygon and calculate its area.",
-                btnStartDrawPoly: "🖌️ Draw Polygon on Map",
-                labelKmlFile: "Select KML File (.kml)",
-                kmlInstructions: "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.",
-                btnExportKml: "📥 Export to KML",
-                statsModalTitle: "📊 Market Rankings & Fluctuations",
-                statsChartTitle: "📈 Crude Prices Overview by Location",
-                statsTopGainers: "📈 Top Gainers",
-                statsTopLosers: "📉 Top Losers",
-                statsHighest: "💎 Highest Prices",
-                statsLowest: "🏷️ Lowest Prices",
-                aboutP1: "Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.",
-                aboutP3: "Developed by",
-                manageCookies: "🍪 Manage Cookie Preferences (Google CMP)"
-            },
-            es: {
-                searchPlaceholder: "🔍 Buscar Bloque o País...",
-                regionsBtn: "📍 Regiones ▾",
-                globalView: "🌎 Vista Global",
-                layersBtn: "🗂️ Capas ▾",
-                topStatsBtn: "📊 Estadísticas",
-                addPinBtn: "📍 + Pin",
-                measureBtn: "📏 Medir",
-                navBlog: "Blog",
-                navContact: "Contacto",
-                measureDist: "📏 Distancia",
-                measureArea: "📐 Área",
-                measurePromptDist: "Haga clic en el mapa para medir distancia.",
-                measurePromptArea: "Marque al menos 3 puntos para medir el área.",
-                polySave: "✅ Guardar",
-                sideOperators: "Operadoras Principales",
-                sideReserves: "Reservas Probadas",
-                sideQuality: "Calidad de Crudo / Referencia",
-                sideSourcePrefix: "Fuente:",
-                sideRetrieved: "Captura:",
-                modalSpatialTitle: "📍 Herramientas Espaciales",
-                tabPin: "📍 Marcador",
-                tabPoly: "📐 Bloque Poligonal",
-                tabKml: "📂 Importar KML",
-                labelPinDesc: "Descripción / Título",
-                phPinDesc: "ej. Pozo Alpha...",
-                labelCoordFormat: "Sistema de Coordenadas",
-                optGeo: "Geográficas (Lat, Lng)",
-                optUtm: "UTM (Zona, Este, Norte)",
-                labelLat: "Latitud",
-                labelLng: "Longitud",
-                labelUtmZone: "Zona UTM",
-                btnAddPinSubmit: "Añadir Pin",
-                labelPolyName: "Nombre del Bloque / Concesión",
-                polyInstructions: "Trace los vértices en el mapa para delimitar el polígono y calcular su superficie.",
-                btnStartDrawPoly: "🖌️ Dibujar Polígono en el Mapa",
-                labelKmlFile: "Seleccionar archivo KML (.kml)",
-                kmlInstructions: "Cargue sus propios archivos KML (Puntos, Líneas o Polígonos) para visualizarlos en el mapa.",
-                btnExportKml: "📥 Exportar a KML",
-                statsModalTitle: "📊 Rankings del Mercado y Fluctuaciones",
-                statsChartTitle: "📈 Precios de Crudo por Localización",
-                statsTopGainers: "📈 Mayores Alzas",
-                statsTopLosers: "📉 Mayores Bajas",
-                statsHighest: "💎 Precios Más Altos",
-                statsLowest: "🏷️ Precios Más Bajos",
-                aboutP1: "Plataforma de Inteligencia de Localización actualizada mediante bases de datos espaciales oficiales del sector de Petróleo y Gas.",
-                aboutP3: "Desarrollado por",
-                manageCookies: "🍪 Configurar Cookies (Google CMP)"
-            },
-            fr: {
-                searchPlaceholder: "🔍 Rechercher Bloc ou Pays...",
-                regionsBtn: "📍 Régions ▾",
-                globalView: "🌎 Vue Globale",
-                layersBtn: "🗂️ Couches ▾",
-                topStatsBtn: "📊 Stats",
-                addPinBtn: "📍 + Repère",
-                measureBtn: "📏 Mesurer",
-                navBlog: "Blog",
-                navContact: "Contact",
-                measureDist: "📏 Distance",
-                measureArea: "📐 Surface",
-                measurePromptDist: "Cliquez sur la carte pour mesurer la distance.",
-                measurePromptArea: "Placez 3 points minimum pour mesurer la surface.",
-                polySave: "✅ Sauvegarder",
-                sideOperators: "Opérateurs Principaux",
-                sideReserves: "Réserves Prouvées",
-                sideQuality: "Qualité du Brut / Référence",
-                sideSourcePrefix: "Source :",
-                sideRetrieved: "Capture :",
-                modalSpatialTitle: "📍 Outils Spatiaux",
-                tabPin: "📍 Repère",
-                tabPoly: "📐 Polygone",
-                tabKml: "📂 Importer KML",
-                labelPinDesc: "Description / Titre",
-                phPinDesc: "ex. Puits Alpha...",
-                labelCoordFormat: "Système de Coordonnées",
-                optGeo: "Géographiques (Lat, Lng)",
-                optUtm: "UTM (Zone, Est, Nord)",
-                labelLat: "Latitude",
-                labelLng: "Longitude",
-                labelUtmZone: "Zone UTM",
-                btnAddPinSubmit: "Ajouter",
-                labelPolyName: "Nom du Bloc / Concession",
-                polyInstructions: "Placez les sommets sur la carte pour tracer un polygone et calculer sa superficie.",
-                btnStartDrawPoly: "🖌️ Tracer un Polygone",
-                labelKmlFile: "Sélectionner un fichier KML (.kml)",
-                kmlInstructions: "Importez vos propres fichiers KML sur la carte.",
-                btnExportKml: "📥 Exporter en KML",
-                statsModalTitle: "📊 Classements et Fluctuations du Marché",
-                statsChartTitle: "📈 Aperçu des Prix du Brut par Lieu",
-                statsTopGainers: "📈 Plus Fortes Hausses",
-                statsTopLosers: "📉 Plus Fortes Baisses",
-                statsHighest: "💎 Prix les Plus Élevés",
-                statsLowest: "🏷️ Prix les Plus Bas",
-                aboutP1: "Plateforme d'intelligence géospatiale mise à jour à partir des bases de données officielles du secteur pétrolier et gazier.",
-                aboutP3: "Développé par",
-                manageCookies: "🍪 Gérer les Cookies (Google CMP)"
-            },
-            ar: {
-                searchPlaceholder: "🔍 ابحث عن قطاع أو دولة...",
-                regionsBtn: "📍 المناطق ▾",
-                globalView: "🌎 عرض عالمي",
-                layersBtn: "🗂️ الطبقات ▾",
-                topStatsBtn: "📊 إحصائيات",
-                addPinBtn: "📍 + نقطة",
-                measureBtn: "📏 قياس",
-                navBlog: "المدونة",
-                navContact: "اتصل بنا",
-                measureDist: "📏 مسافة",
-                measureArea: "📐 مساحة",
-                measurePromptDist: "انقر على الخريطة لقياس المسافة.",
-                measurePromptArea: "حدد 3 نقاط على الأقل لحساب المساحة.",
-                polySave: "✅ حفظ",
-                sideOperators: "الشركات المشغلة الرئيسية",
-                sideReserves: "الاحتياطيات المؤكدة",
-                sideQuality: "جودة الخام القياسي",
-                sideSourcePrefix: "المصدر:",
-                sideRetrieved: "تاريخ الالتقاط:",
-                modalSpatialTitle: "📍 الأدوات المكانية",
-                tabPin: "📍 نقطة مخصصة",
-                tabPoly: "📐 مضلع امتياز",
-                tabKml: "📂 استيراد KML",
-                labelPinDesc: "الوصف / الاسم",
-                phPinDesc: "مثال: بئر ألفا...",
-                labelCoordFormat: "نظام الإحداثيات",
-                optGeo: "جغرافية (عرض، طول)",
-                optUtm: "UTM (نطاق، شرق، شمال)",
-                labelLat: "خط العرض",
-                labelLng: "خط الطول",
-                labelUtmZone: "نطاق UTM",
-                btnAddPinSubmit: "إضافة",
-                labelPolyName: "اسم القطاع / الامتياز",
-                polyInstructions: "حدد النقاط مباشرة على الخريطة لرسم المضلع وحساب المساحة.",
-                btnStartDrawPoly: "🖌️ رسم مضلع على الخريطة",
-                labelKmlFile: "اختر ملف KML",
-                kmlInstructions: "قم بتحميل ملفات KML الخاصة بك لعرضها على الخريطة.",
-                btnExportKml: "📥 تصدير إلى KML",
-                statsModalTitle: "📊 تصنيفات وتقلبات السوق",
-                statsChartTitle: "📈 نظرة عامة على أسعار النفط الخام",
-                statsTopGainers: "📈 الأكثر ارتفاعاً",
-                statsTopLosers: "📉 الأكثر انخفاضاً",
-                statsHighest: "💎 أعلى الأسعار",
-                statsLowest: "🏷️ أقل الأسعار",
-                aboutP1: "منصة ذكاء مكاني محدثة باستخدام قواعد البيانات الرسمية لقطاع النفط والغاز.",
-                aboutP3: "تطوير:",
-                manageCookies: "🍪 إعدادات ملفات تعريف الارتباط"
-            },
-            zh: {
-                searchPlaceholder: "🔍 搜索油气区块或国家...",
-                regionsBtn: "📍 区域 ▾",
-                globalView: "🌎 全球视图",
-                layersBtn: "🗂️ 图层 ▾",
-                topStatsBtn: "📊 统计",
-                addPinBtn: "📍 + 标记",
-                measureBtn: "📏 测量",
-                navBlog: "博客",
-                navContact: "联系",
-                measureDist: "📏 距离",
-                measureArea: "📐 面积",
-                measurePromptDist: "点击地图开始测量距离。",
-                measurePromptArea: "至少点击3个点以测量面积。",
-                polySave: "✅ 保存",
-                sideOperators: "主要作业公司",
-                sideReserves: "探明储量",
-                sideQuality: "原油品质 / 基准",
-                sideSourcePrefix: "数据来源：",
-                sideRetrieved: "采集时间：",
-                modalSpatialTitle: "📍 空间标注工具",
-                tabPin: "📍 自定义标记",
-                tabPoly: "📐 区块多边形",
-                tabKml: "📂 导入 KML",
-                labelPinDesc: "描述 / 名称",
-                phPinDesc: "例如：Alpha 井场...",
-                labelCoordFormat: "坐标系统",
-                optGeo: "地理坐标 (经纬度)",
-                optUtm: "UTM 投影坐标",
-                labelLat: "纬度",
-                labelLng: "经度",
-                labelUtmZone: "UTM 区带",
-                btnAddPinSubmit: "添加标记",
-                labelPolyName: "油气区块名称",
-                polyInstructions: "直接在地图上点击节点绘制区块多边形并自动计算面积。",
-                btnStartDrawPoly: "🖌️ 在地图上绘制多边形",
-                labelKmlFile: "选择 KML 文件 (.kml)",
-                kmlInstructions: "上传您自己的 KML 文件以在地图上显示。",
-                btnExportKml: "📥 导出 KML",
-                statsModalTitle: "📊 市场排名与波动",
-                statsChartTitle: "📈 各地区原油价格概览",
-                statsTopGainers: "📈 涨幅榜",
-                statsTopLosers: "📉 跌幅榜",
-                statsHighest: "💎 最高油价",
-                statsLowest: "🏷️ 最低油价",
-                aboutP1: "基于官方空间数据库与权威数据构建的全球油气地理智能平台。",
-                aboutP3: "开发者：",
-                manageCookies: "🍪 Cookie 隐私设置"
-            }
-        };
-        let currentLang = 'en';
-
-        function setLanguage(lang) {
-            currentLang = i18n[lang] ? lang : 'en';
-            const d = i18n[currentLang],
-                h = document.documentElement;
-            h.lang = currentLang;
-            h.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const v = d[el.dataset.i18n];
-                if (v) el.textContent = v;
-            });
-            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-                const v = d[el.dataset.i18nPh];
-                if (v) el.placeholder = v;
-            });
-            $('langSelector').value = currentLang;
-            closeAllDropdowns();
-            if (measureEnabled) updateMeasureText();
-        }
-        const LANG_PAGES = { en: '/', es: '/es/', fr: '/fr/' };
-        $('langSelector').addEventListener('change', e => {
-            if (LANG_PAGES[e.target.value]) location.href = LANG_PAGES[e.target.value];
-            else setLanguage(e.target.value);
-        });
 
         /* ---------- configuración de capas y menú ---------- */
         const menuNav = $('menu'),
@@ -1512,7 +1231,8 @@
         /* ---------- dropdowns ---------- */
         const panels = [
             [$('btn-regions'), regionsMenu],
-            [$('btn-toggle-menu'), menuNav]
+            [$('btn-toggle-menu'), menuNav],
+            [$('btn-source'), $('source-menu')]
         ];
 
         function closeAllDropdowns() {
@@ -1524,9 +1244,8 @@
 
         function placePanel(btn, panel) {
             const r = btn.getBoundingClientRect(),
-                w = Math.min(230, innerWidth - 16),
-                rtl = document.documentElement.dir === 'rtl';
-            let left = rtl ? r.left : r.right - w;
+                w = Math.min(230, innerWidth - 16);
+            let left = r.right - w;
             left = Math.max(8, Math.min(left, innerWidth - w - 8));
             Object.assign(panel.style, {
                 width: w + 'px',
@@ -1561,16 +1280,6 @@
 
         /* ---------- mapa mapbox ---------- */
         mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
-        try {
-            if (mapboxgl.getRTLTextPluginStatus && mapboxgl.getRTLTextPluginStatus() === 'unavailable') {
-                mapboxgl.setRTLTextPlugin(
-                    'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.min.js',
-                    null,
-                    true
-                );
-            }
-        } catch (err) {}
-
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g',
@@ -1862,7 +1571,7 @@
                 trend: [1300, 1350, 1390, 1420]
             }
         };
-        document.querySelectorAll('.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('button.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
             const name = btn.dataset.region;
             map.flyTo({
                 center: [+btn.dataset.lng, +btn.dataset.lat],
@@ -2588,7 +2297,7 @@
                 type: 'FeatureCollection',
                 features: []
             });
-            $('kmlStatusMsg').textContent = i18n[currentLang].kmlInstructions;
+            $('kmlStatusMsg').textContent = "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.";
             $('btnClearKml').style.display = 'none';
             if (smartViewActive) refreshSmartViewData();
         };
@@ -2787,13 +2496,13 @@
             src.setData({ type: 'FeatureCollection', features: f });
         }
         function updateMeasureText() {
-            const d = i18n[currentLang], n = measurePoints.length;
+            const n = measurePoints.length;
             if (measureMode === 'distance') {
-                if (n < 2) { measureOutput.textContent = d.measurePromptDist; return; }
+                if (n < 2) { measureOutput.textContent = "Click on map to start measuring."; return; }
                 const km = turf.lineDistance({ type: 'Feature', geometry: { type: 'LineString', coordinates: measurePoints } }, 'kilometers');
                 measureOutput.innerHTML = km < 1 ? `<strong>${(km*1000).toFixed(0)} m</strong>` : `<strong>${km.toLocaleString(undefined,{maximumFractionDigits:2})} km</strong>`;
             } else {
-                if (n < 3) { measureOutput.textContent = n ? `${n}/3 · ${d.measurePromptArea}` : d.measurePromptArea; return; }
+                if (n < 3) { measureOutput.textContent = n ? `${n}/3 · ${"Click at least 3 points to measure area."}` : "Click at least 3 points to measure area."; return; }
                 const m2 = turf.area({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[...measurePoints, measurePoints[0]]] } });
                 measureOutput.innerHTML = `<strong>${(m2/1e6).toLocaleString(undefined,{maximumFractionDigits:2})} km²</strong> (${(m2/1e4).toLocaleString(undefined,{maximumFractionDigits:1})} ha)`;
             }
@@ -2801,7 +2510,8 @@
 
         /* ---------- modals & Google CMP ---------- */
         const aboutModal = $('aboutModal'), statsModal = $('statsModal');
-        $('btn-info').onclick = $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+        $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
+        $('langSelector').addEventListener('change', e => location.href = e.target.value);
         $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
         $('closeModal').onclick = () => aboutModal.style.display = 'none';
         $('btn-stats').onclick = () => statsModal.style.display = 'flex';

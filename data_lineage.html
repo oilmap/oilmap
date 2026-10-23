@@ -59,6 +59,12 @@
         .countries { line-height: 1.8; color: var(--muted); font-size: 0.9em; }
         footer { max-width: 1100px; margin: 40px auto 0; padding: 24px 20px 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9em; }
         @media (max-width: 600px) { h1 { font-size: 1.6rem; } }
+            .nav-dropdown-btn { font-family: inherit; border: 1px solid transparent; cursor: pointer; background: rgba(255,255,255,.05); color: #f8fafc; }
+        .nav-dropdown-btn:hover, .nav-dropdown-btn.is-active { background: rgba(240,184,35,.14); border-color: rgba(240,184,35,.35); color: #f0b823; }
+        .nav-dropdown-menu { display: none; position: fixed; z-index: 200; flex-direction: column; gap: 2px; min-width: 170px; padding: 6px; border-radius: 10px; background: rgba(13,18,30,.97); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 12px 32px -4px rgba(0,0,0,.6); }
+        .nav-dropdown-menu.show { display: flex; }
+        .nav-dropdown-menu a { padding: 8px 10px; border-radius: 6px; color: #94a3b8; font-size: .76rem; text-decoration: none; white-space: nowrap; }
+        .nav-dropdown-menu a:hover, .nav-dropdown-menu a[aria-current="page"] { background: rgba(240,184,35,.14); color: #f0b823; }
     </style>
 </head>
 <body>
@@ -69,9 +75,9 @@
         </a>
         <nav class="toolbar" aria-label="Main">
             <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/oil_price_charts.html">Intelligence</a>
             <a class="nav-link" href="/blog.html">Blog</a>
-            <a class="nav-link" href="/cited-by.html">Cited by</a>
-            <a class="nav-link" href="/data_lineage.html" aria-current="page">Data lineage</a>
+            <div class="nav-dropdown"><button type="button" class="nav-link nav-dropdown-btn is-active" aria-haspopup="true" aria-expanded="false">Sources ▾</button><div class="nav-dropdown-menu" role="menu"><a href="/cited-by.html">Cited by</a><a href="/data_lineage.html" aria-current="page">Data lineage</a></div></div>
             <a class="nav-link" href="/contact.html">Contact</a>
         </nav>
     </header>
@@ -301,5 +307,27 @@
             © 2026 World Oil Map · Open Data · Open Source
         </footer>
     </div>
+<script>
+(function () {
+    var b = document.querySelector('.nav-dropdown-btn'), m = document.querySelector('.nav-dropdown-menu');
+    document.body.appendChild(m);
+    function close() { m.classList.remove('show'); b.setAttribute('aria-expanded', 'false'); }
+    b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = !m.classList.contains('show');
+        close();
+        if (open) {
+            m.classList.add('show');
+            var r = b.getBoundingClientRect();
+            m.style.top = (r.bottom + 8) + 'px';
+            m.style.left = Math.max(8, Math.min(r.left, innerWidth - m.offsetWidth - 8)) + 'px';
+            b.setAttribute('aria-expanded', 'true');
+        }
+    });
+    m.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('click', close);
+    addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
 </body>
 </html>
