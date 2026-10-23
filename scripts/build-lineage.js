@@ -203,7 +203,7 @@ const rows = RAW.split('\n').map(line => {
     const link = url
         ? `<a href="${esc(url)}" rel="noopener" target="_blank">${esc(url)}</a>`
         : '—';
-    return `<tr><td>${id}</td><td>${esc(name)}</td><td>${year}</td><td>${esc(country)}</td><td>${esc(region)}</td><td>${visit}</td><td>${esc(types)}</td><td class="src">${link}</td></tr>`;
+    return `<tr><td>${id}</td><td>${esc(name)}</td><td>${year}</td><td>${esc(country)}</td><td>${esc(region)}</td><td>${visit}</td><td>${esc(types.replaceAll('O&G', 'Oil & Gas'))}</td><td class="src">${link}</td></tr>`;
 });
 
 const countries = [...new Set(RAW.split('\n').map(l => l.split('|')[3]))].sort();
