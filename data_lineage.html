@@ -28,25 +28,49 @@
     }
     </script>
     <style>
-        body { font-family: Arial, Helvetica, sans-serif; background-color: #0f172a; color: #e5e7eb; margin: 0; }
-        .container { max-width: 1200px; margin: auto; padding: 40px 20px; }
-        a { color: #38bdf8; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        h1, h2 { color: #f8fafc; }
-        .lead { max-width: 820px; line-height: 1.6; }
-        .cite { background-color: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 20px; line-height: 1.6; font-size: 0.95em; }
-        .table-wrap { overflow-x: auto; margin-top: 24px; }
+        :root { --bg-body: #0f172a; --bg-card: #1e293b; --bg-header: #020617; --border: #334155; --text: #f1f5f9; --muted: #94a3b8; --accent: #10b981; --accent-hover: #34d399; --gold: #f0b823; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-body); color: var(--text); line-height: 1.65; margin: 0; -webkit-font-smoothing: antialiased; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { color: var(--accent-hover); }
+        header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(2, 6, 23, 0.9); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand img { height: 28px; width: auto; }
+        .brand a { color: var(--gold); font-weight: 700; font-size: 1rem; letter-spacing: 1px; }
+        .nav a { color: #aaa; font-size: 14px; margin-left: 15px; }
+        .nav a:hover, .nav a.active { color: #fff; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 36px 20px 20px; }
+        h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 12px; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { color: var(--text); font-size: 1.3rem; margin: 48px 0 10px; }
+        .lead { color: var(--muted); max-width: 780px; margin: 0 0 24px; }
+        .cite { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; line-height: 1.6; font-size: 0.95em; color: #cbd5e1; }
+        .cite p { margin: 0 0 12px; }
+        .cite p:last-child { margin-bottom: 0; }
+        .table-wrap { overflow-x: auto; margin-top: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
         table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
-        th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #334155; vertical-align: top; }
-        th { color: #f8fafc; background-color: #1e293b; position: sticky; top: 0; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { color: var(--text); background: rgba(0, 0, 0, 0.2); position: sticky; top: 0; font-weight: 600; }
+        td { color: #cbd5e1; }
         td.src { word-break: break-all; }
-        .countries { line-height: 1.8; color: #94a3b8; font-size: 0.9em; }
-        footer { margin-top: 50px; font-size: 0.9em; color: #94a3b8; }
+        .countries { line-height: 1.8; color: var(--muted); font-size: 0.9em; }
+        footer { max-width: 1100px; margin: 40px auto 0; padding: 24px 20px 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9em; }
+        @media (max-width: 600px) { h1 { font-size: 1.6rem; } .nav a { margin-left: 10px; } }
     </style>
 </head>
 <body>
+    <header>
+        <div class="brand">
+            <img src="/img/oilmap.png" alt="" onerror="this.style.display='none'">
+            <a href="/">WORLD OIL MAP 2026</a>
+        </div>
+        <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/cited-by.html">Cited by</a>
+            <a href="/contact.html">Contact</a>
+        </nav>
+    </header>
     <div class="container">
-        <p><a href="/">World Oil Map 2026</a> · <a href="/contact.html">Contact</a></p>
 
         <h1>Data Lineage and Sources</h1>
         <p class="lead">
