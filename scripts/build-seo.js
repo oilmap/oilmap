@@ -34,7 +34,14 @@ const news = articles.map(a =>
 fs.writeFileSync(path.join(root, 'llms.txt'),
 `# World Oil Map
 
-> Oil market maps, prices and news.
+> World Oil Map is an open-source interactive map of global oil and gas infrastructure, including wells, pipelines, refineries and LNG facilities, built from official national datasets and the OGIM v2.7 database. The site also publishes oil market news.
+
+## Key pages
+- [Home](${BASE}/): interactive map of oil and gas exploration, production and infrastructure
+- [Blog](${BASE}/blog.html): oil market, OPEC, upstream and downstream news
+- [Data lineage](${BASE}/data_lineage.html): official source references and citation details for the data
+- [Cited by](${BASE}/cited-by.html): publications, courses and recognitions that cite or use the project
+- [Contact](${BASE}/contact.html): data corrections, research collaboration and data sharing
 
 ## News
 ${news.join('\n') || '- No articles yet'}
