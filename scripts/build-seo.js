@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const BASE = 'https://www.oilmap.xyz';
+const BASE = 'https://oilmap.xyz';
 const STATIC = [
     { path: '/', priority: '1.0' },
     { path: '/blog.html', priority: '0.9' },

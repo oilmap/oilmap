@@ -275,21 +275,12 @@
             color: var(--accent);
         }
 
-        .own-body {
-            margin-top: 12px;
-            font-size: 0.9rem;
+        .news-card[hidden] {
+            display: none;
+        }
+
+        .news-empty {
             color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .own-body summary {
-            color: var(--accent);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .own-body p {
-            margin: 10px 0 0;
         }
 
         footer {
@@ -346,7 +337,11 @@
             </select>
         </div>
 
-        <section id="ownNews" class="news-grid"></section>
+        <section id="ownNews" class="news-grid">
+            <!-- news:start -->
+            <p class="news-empty">No articles have been published yet.</p>
+            <!-- news:end -->
+        </section>
 
     </div>
 
@@ -355,89 +350,12 @@
     </footer>
 
     <script>
-        function formatOwnDate(iso) {
-            const d = new Date(iso + 'T00:00:00');
-            return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-
-        function buildOwnCard(a) {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-
-            const meta = document.createElement('div');
-            meta.className = 'card-meta';
-            const source = document.createElement('span');
-            source.className = 'badge-source';
-            source.textContent = `World Oil Map · ${a.lang.toUpperCase()}`;
-            const date = document.createElement('span');
-            date.className = 'badge-date';
-            date.textContent = formatOwnDate(a.date);
-            meta.append(source, date);
-            card.append(meta);
-
-            if (a.image) {
-                const img = document.createElement('img');
-                img.className = 'card-image';
-                img.src = a.image;
-                img.alt = '';
-                img.loading = 'lazy';
-                img.onerror = () => img.remove();
-                card.append(img);
-            }
-
-            const wrap = document.createElement('div');
-            wrap.className = 'gdelt-text-wrapper';
-            const title = document.createElement('h3');
-            title.className = 'own-title';
-            const link = document.createElement('a');
-            link.href = `blog/${a.slug}.html`;
-            link.textContent = a.title;
-            link.lang = a.lang;
-            title.append(link);
-            const summary = document.createElement('p');
-            summary.className = 'news-snippet';
-            summary.textContent = a.summary || '';
-            const details = document.createElement('details');
-            details.className = 'own-body';
-            const toggle = document.createElement('summary');
-            toggle.textContent = 'Read more';
-            details.append(toggle);
-            a.body.split(/\n\s*\n/).filter(Boolean).forEach(text => {
-                const p = document.createElement('p');
-                p.textContent = text.trim();
-                details.append(p);
+        document.getElementById('topicFilter').addEventListener('change', event => {
+            const topic = event.target.value;
+            document.querySelectorAll('#ownNews .news-card').forEach(card => {
+                card.hidden = topic !== 'all' && card.dataset.topic !== topic;
             });
-            wrap.append(title, summary, details);
-            card.append(wrap);
-            return card;
-        }
-
-        let ownArticles = [];
-
-        function renderOwnNews() {
-            const container = document.getElementById('ownNews');
-            const topic = document.getElementById('topicFilter').value;
-            container.innerHTML = '';
-            ownArticles
-                .filter(a => topic === 'all' || a.topicFilter === topic)
-                .forEach(article => container.appendChild(buildOwnCard(article)));
-        }
-
-        async function loadOwnNews() {
-            try {
-                const response = await fetch('data/news.json', { cache: 'no-store' });
-                if (!response.ok) return;
-                ownArticles = (await response.json())
-                    .sort((a, b) => b.date.localeCompare(a.date));
-                renderOwnNews();
-            } catch (error) {
-                console.error('Error loading own news:', error);
-            }
-        }
-
-        document.getElementById('topicFilter').addEventListener('change', renderOwnNews);
-
-        loadOwnNews();
+        });
     </script>
 </body>
 
