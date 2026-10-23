@@ -8,14 +8,29 @@
     <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
     <meta name="author" content="Roque Leal" />
     <meta name="copyright" content="https://oilmap.xyz" />
-    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+    <meta name="description" content="Oil and gas news and market analysis from World Oil Map: OPEC production, upstream exploration, downstream refining and crude oil prices.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://oilmap.xyz/blog.html">
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
-    <meta property="og:title" content="World Oil Map 2026" />
-    <meta property="og:url" content="https://oilmap.xyz" />
+    <meta property="og:title" content="Global Petroleum News | World Oil Map" />
+    <meta property="og:description" content="Oil and gas news and market analysis from World Oil Map." />
+    <meta property="og:url" content="https://oilmap.xyz/blog.html" />
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@roqueleal08">
-    <title>🥇 Blog · World Oil Map 2026</title>
+    <title>Global Petroleum News and Oil Market Analysis | World Oil Map</title>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Global Petroleum News",
+        "description": "Oil and gas news and market analysis published by World Oil Map.",
+        "url": "https://oilmap.xyz/blog.html",
+        "inLanguage": "en",
+        "isPartOf": { "@type": "WebSite", "name": "World Oil Map", "url": "https://oilmap.xyz/" },
+        "about": ["Oil market", "OPEC", "Upstream exploration", "Downstream refining", "Crude oil prices"]
+    }
+    </script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -46,61 +61,117 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        header {
-            background-color: var(--bg-header);
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 20px;
+        header.top-bar {
+            position: sticky;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            z-index: 100;
+            width: calc(100% - 28px);
+            max-width: 1380px;
+            margin: 14px auto 0;
+            padding: 8px 14px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background: rgba(2, 6, 23, 0.9);
+            gap: 12px;
+            background: rgba(13, 18, 30, .84);
+            border: 1px solid rgba(255, 255, 255, .1);
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
-        
+
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-        
-        .brand h1 {
-            font-size: 1rem;
-            margin: 0;
-            color: var(--primary-gold);
-            letter-spacing: 1px;
-        }
-        
-        .brand h1 a {
-            color: var(--primary-gold);
+            flex-shrink: 0;
             text-decoration: none;
+            color: #f8fafc;
         }
-        
+
         .brand img {
-            height: 28px;
-            width: auto;
+            height: 30px;
+            width: 30px;
+            object-fit: contain;
         }
-        
-        .nav-links a {
-            color: #aaa;
+
+        .brand-title {
+            font-size: .92rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            white-space: nowrap;
+        }
+
+        .brand-title span {
+            color: #f0b823;
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: #f8fafc;
+            font-size: .76rem;
+            font-weight: 500;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            transition: color 0.2s;
-            margin-left: 15px;
+            white-space: nowrap;
+            transition: all .18s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link[aria-current="page"] {
+            background: rgba(240, 184, 35, .14);
+            border-color: rgba(240, 184, 35, .35);
+            color: #f0b823;
+        }
+
+        @media (max-width: 600px) {
+            header.top-bar {
+                width: calc(100% - 20px);
+                padding: 6px 10px;
+            }
+
+            .brand-title {
+                font-size: .8rem;
+            }
+
+            .nav-link {
+                padding: 6px 9px;
+                font-size: .72rem;
+            }
         }
         
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: white;
-        }
+
+        
+
+        
+
+        
+
+        
+
+        
+
         
         .blog-container {
-            max-width: 1400px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 36px 20px 20px;
         }
         
         select {
@@ -259,38 +330,47 @@
             color: var(--accent);
         }
 
-        .own-body {
-            margin-top: 12px;
-            font-size: 0.9rem;
+        .news-card[hidden] {
+            display: none;
+        }
+
+        .news-empty {
             color: var(--text-muted);
-            line-height: 1.6;
         }
 
-        .own-body summary {
+        footer {
+            max-width: 1100px;
+            margin: 40px auto 0;
+            padding: 24px 20px 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
             color: var(--accent);
-            cursor: pointer;
-            font-weight: 600;
+            text-decoration: none;
         }
 
-        .own-body p {
-            margin: 10px 0 0;
+        footer a:hover {
+            color: var(--accent-hover);
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="brand">
-            <img src="./img/oilmap.png" alt="Icon" onerror="this.style.display='none'">
-            <h1>
-                <a href="index.html">WORLD OIL MAP 2026</a>
-            </h1>
-        </div>
-        <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="blog.html" class="active">Blog</a>
-            <a href="contact.html">Contact</a>
+    <header class="top-bar">
+        <a class="brand" href="/">
+            <img src="/img/oilmap.png" width="30" height="30" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+        <nav class="toolbar" aria-label="Main">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog.html" aria-current="page">Blog</a>
+            <a class="nav-link" href="/cited-by.html">Cited by</a>
+            <a class="nav-link" href="/data_lineage.html">Data lineage</a>
+            <a class="nav-link" href="/contact.html">Contact</a>
         </nav>
     </header>
 
@@ -311,94 +391,25 @@
             </select>
         </div>
 
-        <section id="ownNews" class="news-grid"></section>
+        <section id="ownNews" class="news-grid">
+            <!-- news:start -->
+            <p class="news-empty">No articles have been published yet.</p>
+            <!-- news:end -->
+        </section>
 
     </div>
 
+    <footer>
+        © 2026 World Oil Map · Open Data · Open Source · <a href="/">Open the interactive map</a>
+    </footer>
+
     <script>
-        function formatOwnDate(iso) {
-            const d = new Date(iso + 'T00:00:00');
-            return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-
-        function buildOwnCard(a) {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-
-            const meta = document.createElement('div');
-            meta.className = 'card-meta';
-            const source = document.createElement('span');
-            source.className = 'badge-source';
-            source.textContent = `World Oil Map · ${a.lang.toUpperCase()}`;
-            const date = document.createElement('span');
-            date.className = 'badge-date';
-            date.textContent = formatOwnDate(a.date);
-            meta.append(source, date);
-            card.append(meta);
-
-            if (a.image) {
-                const img = document.createElement('img');
-                img.className = 'card-image';
-                img.src = a.image;
-                img.alt = '';
-                img.loading = 'lazy';
-                img.onerror = () => img.remove();
-                card.append(img);
-            }
-
-            const wrap = document.createElement('div');
-            wrap.className = 'gdelt-text-wrapper';
-            const title = document.createElement('h3');
-            title.className = 'own-title';
-            const link = document.createElement('a');
-            link.href = `blog/${a.slug}.html`;
-            link.textContent = a.title;
-            link.lang = a.lang;
-            title.append(link);
-            const summary = document.createElement('p');
-            summary.className = 'news-snippet';
-            summary.textContent = a.summary || '';
-            const details = document.createElement('details');
-            details.className = 'own-body';
-            const toggle = document.createElement('summary');
-            toggle.textContent = 'Read more';
-            details.append(toggle);
-            a.body.split(/\n\s*\n/).filter(Boolean).forEach(text => {
-                const p = document.createElement('p');
-                p.textContent = text.trim();
-                details.append(p);
+        document.getElementById('topicFilter').addEventListener('change', event => {
+            const topic = event.target.value;
+            document.querySelectorAll('#ownNews .news-card').forEach(card => {
+                card.hidden = topic !== 'all' && card.dataset.topic !== topic;
             });
-            wrap.append(title, summary, details);
-            card.append(wrap);
-            return card;
-        }
-
-        let ownArticles = [];
-
-        function renderOwnNews() {
-            const container = document.getElementById('ownNews');
-            const topic = document.getElementById('topicFilter').value;
-            container.innerHTML = '';
-            ownArticles
-                .filter(a => topic === 'all' || a.topicFilter === topic)
-                .forEach(article => container.appendChild(buildOwnCard(article)));
-        }
-
-        async function loadOwnNews() {
-            try {
-                const response = await fetch('data/news.json', { cache: 'no-store' });
-                if (!response.ok) return;
-                ownArticles = (await response.json())
-                    .sort((a, b) => b.date.localeCompare(a.date));
-                renderOwnNews();
-            } catch (error) {
-                console.error('Error loading own news:', error);
-            }
-        }
-
-        document.getElementById('topicFilter').addEventListener('change', renderOwnNews);
-
-        loadOwnNews();
+        });
     </script>
 </body>
 

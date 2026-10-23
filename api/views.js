@@ -3,7 +3,7 @@
 // Si algo falla, responde {"error":"<CODIGO>"} para saber qué corregir (nunca muestra secretos).
 
 const SITE = (process.env.SITE_URL || 'https://oilmap.xyz').replace(/\/$/, '');
-const ALLOWED = (process.env.ALLOWED_ORIGINS || 'https://oilmap.xyz,https://www.oilmap.xyz').split(',');
+const ALLOWED = (process.env.ALLOWED_ORIGINS || 'https://oilmap.xyz').split(',');
 const SLUG = /^[a-z0-9-]{1,80}$/;
 const BOTS = /bot|crawl|spider|slurp|preview|facebookexternalhit|headless/i;
 

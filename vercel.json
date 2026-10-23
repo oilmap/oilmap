@@ -1,4 +1,18 @@
 {
-  "buildCommand": "node scripts/build-seo.js",
-  "outputDirectory": "."
+  "buildCommand": "node scripts/build-seo.js && node scripts/build-blog.js && node scripts/build-i18n.js",
+  "outputDirectory": ".",
+  "headers": [
+    {
+      "source": "/old/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/blog-entry(.html)?",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    }
+  ]
 }

@@ -6,150 +6,557 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/img/oilmap.png" sizes="16x16">
     <meta name="author" content="Roque Leal" />
     <meta name="copyright" content="https://oilmap.xyz" />
-    <meta name="description" content="🛢️ Discover World Oil Map 2026, information & knowledge about Upstream and Downstream activities for Oil and Gas.">
+    <meta name="description" content="Contact World Oil Map for data corrections, research collaboration, data sharing proposals and feedback on the oil and gas infrastructure map.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://oilmap.xyz/contact.html">
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg" />
-    <meta property="og:title" content="Contact" />
-    <meta property="og:url" content="https://oilmap.xyz" />
+    <meta property="og:title" content="Contact | World Oil Map" />
+    <meta property="og:description" content="Contact World Oil Map for data corrections, research collaboration and data sharing." />
+    <meta property="og:url" content="https://oilmap.xyz/contact.html" />
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@roqueleal08">
-    <title>Contact</title>
+    <title>Contact | World Oil Map</title>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contact World Oil Map",
+        "url": "https://oilmap.xyz/contact.html",
+        "inLanguage": "en",
+        "about": { "@type": "WebApplication", "name": "World Oil Map", "url": "https://oilmap.xyz/" },
+        "author": { "@type": "Person", "name": "Roque Leal", "url": "https://www.roqueleal.me" }
+    }
+    </script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-header: #020617;
+            --border: #334155;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --accent: #10b981;
+            --accent-hover: #34d399;
+            --gold: #f0b823;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #0f172a;
-            color: #e5e7eb;
             margin: 0;
-            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-body);
+            color: var(--text);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
         }
-        
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 40px 20px;
-        }
-        
+
         a {
-            color: #38bdf8;
-            text-decoration: none;
+            color: var(--accent);
         }
-        
+
         a:hover {
-            text-decoration: underline;
+            color: var(--accent-hover);
         }
-        
-        h1,
-        h2 {
+
+        header.top-bar {
+            position: sticky;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            z-index: 100;
+            width: calc(100% - 28px);
+            max-width: 1380px;
+            margin: 14px auto 0;
+            padding: 8px 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: rgba(13, 18, 30, .84);
+            border: 1px solid rgba(255, 255, 255, .1);
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            text-decoration: none;
             color: #f8fafc;
         }
-        
-        .logo {
-            display: block;
-            margin-bottom: 20px;
+
+        .brand img {
+            height: 30px;
+            width: 30px;
+            object-fit: contain;
         }
-        
-        .section {
-            margin-bottom: 30px;
+
+        .brand-title {
+            font-size: .92rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            white-space: nowrap;
         }
-        
+
+        .brand-title span {
+            color: #f0b823;
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: #f8fafc;
+            font-size: .76rem;
+            font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all .18s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link[aria-current="page"] {
+            background: rgba(240, 184, 35, .14);
+            border-color: rgba(240, 184, 35, .35);
+            color: #f0b823;
+        }
+
+        @media (max-width: 600px) {
+            header.top-bar {
+                width: calc(100% - 20px);
+                padding: 6px 10px;
+            }
+
+            .brand-title {
+                font-size: .8rem;
+            }
+
+            .nav-link {
+                padding: 6px 9px;
+                font-size: .72rem;
+            }
+        }
+
+
+
+
+
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 36px 20px 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            line-height: 1.25;
+            margin: 0 0 12px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            color: var(--muted);
+            max-width: 780px;
+            margin: 0 0 24px;
+        }
+
+        section.block {
+            margin: 48px 0 0;
+        }
+
+        section.block h2 {
+            font-size: 1.3rem;
+            margin: 0 0 10px;
+        }
+
+        h2 {
+            color: var(--text);
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .panel p {
+            margin: 0 0 12px;
+            color: #cbd5e1;
+        }
+
+        .panel p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-topics {
+            margin: 0;
+            padding-left: 20px;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .contact-card:hover {
+            border-color: var(--accent);
+        }
+
+        .contact-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+        }
+
+        .contact-email {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .contact-note {
+            font-size: 0.9em;
+            color: var(--muted);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            font: inherit;
+            color: var(--text);
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row label {
+            min-width: 0;
+        }
+
+        .hp-field {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        #contactSubmit {
+            font: inherit;
+            font-weight: 600;
+            color: var(--bg-header);
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 10px 22px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        #contactSubmit:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        #contactSubmit:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        #contactStatus {
+            margin: 0;
+            font-size: 0.95em;
+            color: var(--muted);
+        }
+
+        #contactStatus.ok {
+            color: #4ade80;
+        }
+
+        #contactStatus.error {
+            color: #f87171;
+        }
+
         .badges img {
+            display: block;
             margin-top: 15px;
         }
-        
+
         footer {
-            margin-top: 50px;
-            font-size: 0.9em;
-            color: #94a3b8;
+            max-width: 1100px;
+            margin: 40px auto 0;
+            padding: 24px 20px 40px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+
+            .form-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
+    <header class="top-bar">
+        <a class="brand" href="/">
+            <img src="/img/oilmap.png" width="30" height="30" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+        <nav class="toolbar" aria-label="Main">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/blog.html">Blog</a>
+            <a class="nav-link" href="/cited-by.html">Cited by</a>
+            <a class="nav-link" href="/data_lineage.html">Data lineage</a>
+            <a class="nav-link" href="/contact.html" aria-current="page">Contact</a>
+        </nav>
+    </header>
 
-        <img class="logo" src="./img/oilmap.png" alt="World Oil Map Logo" style="width:50%;max-width:70px">
+    <main>
 
-        <h1>
-            <a href="index.html" target="_blank">World Oil Map 2026</a>
-        </h1>
+        <h1>Contact</h1>
+        <p class="lead">
+            World Oil Map is a web-based Location Intelligence application supported and continuously updated using official country spatial database services and other authoritative sources related to the Oil &amp; Gas sector.
+            This project is designed to support academic research, education, and the general public by providing interactive and dynamic access to global oil-related data.
+        </p>
 
-        <div class="section">
-            🌎🛢️
-            <p>
-                World Oil Map is a web-based Location Intelligence application supported and continuously updated using official country spatial database services and other authoritative sources related to the Oil & Gas sector.
-            </p>
-            <p>
-                This project is designed to support academic research, education, and the general public by providing interactive and dynamic access to global oil-related data.
-            </p>
-        </div>
+        <section class="block contact-section">
+            <h2>Contact &amp; Collaboration</h2>
+            <div class="panel">
+                <p>
+                    World Oil Map is developed and maintained by <a href="https://www.roqueleal.me" target="_blank" rel="noopener">Roque Leal</a>. Questions, corrections, partnership proposals, and data contributions are welcome.
+                </p>
 
+                <ul class="contact-topics">
+                    <li>Data corrections and updates for oil and gas assets</li>
+                    <li>Research and academic collaboration</li>
+                    <li>Data sharing and integration proposals</li>
+                    <li>Feedback on features and platform use</li>
+                </ul>
+            </div>
 
-        <div class="section">
-            <h2>Contact & Collaboration</h2>
-            <p>
-                I'm <a href="https://www.roqueleal.me" target="_blank">Roque Leal</a>, and I invite you to collaborate in updating and sharing oil and gas information.
-            </p>
-            <p>
-                By contributing your data and insights, we can improve accuracy and keep this platform up to date.
-            </p>
-            <p>
-                📩 Feel free to contact me at:
-                <a href="mailto:roqueleal@gmail.com">roqueleal@gmail.com</a>
-            </p>
-        </div>
+            <div class="contact-card" style="margin-top: 16px;">
+                <span class="contact-label">Email</span>
+                <a class="contact-email" id="contactEmail" href="#" rel="nofollow">Mostrar correo</a>
+                <span class="contact-note">Please include a clear subject line and a short description of your request.</span>
+            </div>
+        </section>
 
-        <div class="section">
+        <section class="block">
+            <h2>Send a message</h2>
+            <div class="panel">
+                <form id="contactForm" class="contact-form" novalidate>
+                    <div class="form-row">
+                        <label>
+                            <span>Name</span>
+                            <input type="text" name="name" maxlength="100" required autocomplete="name">
+                        </label>
+                        <label>
+                            <span>Email</span>
+                            <input type="email" name="email" maxlength="150" required autocomplete="email">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Subject</span>
+                        <input type="text" name="subject" maxlength="150" required>
+                    </label>
+                    <label>
+                        <span>Message</span>
+                        <textarea name="message" rows="6" maxlength="3000" required></textarea>
+                    </label>
+                    <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp-field" aria-hidden="true">
+                    <div class="form-footer">
+                        <button type="submit" id="contactSubmit">Send message</button>
+                        <p id="contactStatus" role="status"></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="block">
             <h2>Acknowledgments</h2>
-            <p>
-                Special thanks to <a href="https://blog.mapbox.com/bringing-data-to-life-with-powerbi-ccaf214eaf16" target="_blank">Mapbox</a> for sharing inspiration and technology for deep and dynamic data visualization.
-            </p>
-        </div>
-
-        <div class="section">
-            <h2>Open Source & Data</h2>
-            <p>
-                This project is distributed under the GPL Open Source License.
-            </p>
-            <p>
-                Visit the project repository on
-                <a href="https://github.com/roqueleal/oilmap" target="_blank">GitHub</a>.
-            </p>
-
-            <div class="badges">
-                <a href="https://github.com/roqueleal/oilmap" target="_blank">
-                    <img src="./img/git.png" alt="GitHub Repository" style="width:300%;max-width:200px">
-                </a>
+            <div class="panel">
+                <p>
+                    Special thanks to <a href="https://blog.mapbox.com/bringing-data-to-life-with-powerbi-ccaf214eaf16" target="_blank">Mapbox</a> for sharing inspiration and technology for deep and dynamic data visualization.
+                </p>
             </div>
+        </section>
 
-            <p>
-                Open Data Certificate™ available at
-                <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">ODI</a>.
-            </p>
+        <section class="block">
+            <h2>Open Source &amp; Data</h2>
+            <div class="panel">
+                <p>
+                    This project is distributed under the GPL Open Source License.
+                </p>
+                <p>
+                    Review the <a href="/data_lineage.html">data sources and lineage</a> behind the platform.
+                </p>
+                <p>
+                    Visit the project repository on
+                    <a href="https://github.com/roqueleal/oilmap" target="_blank">GitHub</a>.
+                </p>
 
-            <div class="badges">
-                <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">
-                    <img src="./img/odi.png" alt="ODI Certificate" style="width:150%;max-width:150px">
-                </a>
+                <div class="badges">
+                    <a href="https://github.com/roqueleal/oilmap" target="_blank">
+                        <img src="/img/git.png" alt="GitHub Repository" style="width:300%;max-width:200px">
+                    </a>
+                </div>
+
+                <p>
+                    Open Data Certificate™ available at
+                    <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">ODI</a>.
+                </p>
+
+                <div class="badges">
+                    <a href="https://certificates.theodi.org/en/datasets/220195/certificate" target="_blank">
+                        <img src="/img/odi.png" alt="ODI Certificate" style="width:150%;max-width:150px">
+                    </a>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <footer>
-            © 2026 World Oil Map · Open Data · Open Source
-        </footer>
+    </main>
 
-    </div>
+    <footer>
+        © 2026 World Oil Map · Open Data · Open Source · <a href="/">Open the interactive map</a>
+    </footer>
+
+    <script>
+        (function () {
+            const user = ['roqueleal'].join('');
+            const domain = ['gmail', 'com'].join('.');
+            const email = user + '@' + domain;
+            const link = document.getElementById('contactEmail');
+            link.href = 'mailto:' + email;
+            link.textContent = email;
+        })();
+
+        (function () {
+            const form = document.getElementById('contactForm');
+            const button = document.getElementById('contactSubmit');
+            const status = document.getElementById('contactStatus');
+            const messages = {
+                INVALID_EMAIL: 'Please enter a valid email address.',
+                default: 'Something went wrong. Please try again or use the email above.'
+            };
+
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                if (!form.reportValidity()) return;
+
+                button.disabled = true;
+                status.className = '';
+                status.textContent = 'Sending…';
+
+                try {
+                    const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) throw new Error(data.error);
+                    status.className = 'ok';
+                    status.textContent = 'Thank you. Your message has been sent.';
+                    form.reset();
+                } catch (err) {
+                    status.className = 'error';
+                    status.textContent = messages[err.message] || messages.default;
+                } finally {
+                    button.disabled = false;
+                }
+            });
+        })();
+    </script>
 
 </body>
 
