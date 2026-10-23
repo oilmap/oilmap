@@ -67,6 +67,39 @@
             margin-top: 15px;
         }
         
+        .contact-topics {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 20px;
+            padding: 20px 24px;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+        }
+
+        .contact-label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+        }
+
+        .contact-email {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .contact-note {
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
         footer {
             margin-top: 50px;
             font-size: 0.9em;
@@ -96,18 +129,24 @@
         </div>
 
 
-        <div class="section">
+        <div class="section contact-section">
             <h2>Contact & Collaboration</h2>
             <p>
-                I'm <a href="https://www.roqueleal.me" target="_blank">Roque Leal</a>, and I invite you to collaborate in updating and sharing oil and gas information.
+                World Oil Map is developed and maintained by <a href="https://www.roqueleal.me" target="_blank" rel="noopener">Roque Leal</a>. Questions, corrections, partnership proposals, and data contributions are welcome.
             </p>
-            <p>
-                By contributing your data and insights, we can improve accuracy and keep this platform up to date.
-            </p>
-            <p>
-                📩 Feel free to contact me at:
-                <a href="mailto:roqueleal@gmail.com">roqueleal@gmail.com</a>
-            </p>
+
+            <ul class="contact-topics">
+                <li>Data corrections and updates for oil and gas assets</li>
+                <li>Research and academic collaboration</li>
+                <li>Data sharing and integration proposals</li>
+                <li>Feedback on features and platform use</li>
+            </ul>
+
+            <div class="contact-card">
+                <span class="contact-label">Email</span>
+                <a class="contact-email" href="mailto:roqueleal@gmail.com">roqueleal@gmail.com</a>
+                <span class="contact-note">Please include a clear subject line and a short description of your request.</span>
+            </div>
         </div>
 
         <div class="section">
