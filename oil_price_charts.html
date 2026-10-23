@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>Crude Oil Price Charts and Rankings | World Oil Map</title>
+    <meta name="description" content="Crude oil price charts and market rankings: top gainers, top losers, highest and lowest prices across global crude benchmarks, from the World Oil Map price dataset.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#090d16">
+    <link rel="canonical" href="https://oilmap.xyz/oil_price_charts.html">
+    <link rel="icon" type="image/png" href="./img/oilmap.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="./img/oilmap.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oilmap.xyz/oil_price_charts.html">
+    <meta property="og:site_name" content="World Oil Map 2026">
+    <meta property="og:title" content="Crude Oil Price Charts and Rankings | World Oil Map">
+    <meta property="og:description" content="Crude oil price chart and market rankings: gainers, losers, highest and lowest benchmark prices.">
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Crude Oil Price Charts and Rankings | World Oil Map">
+    <meta name="twitter:description" content="Crude oil price chart and market rankings from the World Oil Map dataset.">
+    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Crude Oil Price Charts and Rankings",
+            "url": "https://oilmap.xyz/oil_price_charts.html",
+            "description": "Crude oil price charts and market rankings with top gainers, top losers, highest and lowest benchmark prices.",
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "World Oil Map 2026",
+                "url": "https://oilmap.xyz/"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Roque Leal",
+                "url": "https://roqueleal.me/"
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --accent: #f0b823;
+            --accent-soft: rgba(240, 184, 35, .14);
+            --surface: rgba(13, 18, 30, .84);
+            --surface-elevated: rgba(20, 27, 45, .94);
+            --border: rgba(255, 255, 255, .1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --up: #10b981;
+            --down: #ef4444;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #060911;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            font-variant-numeric: tabular-nums;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        header.top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            margin: 14px auto 0;
+            width: calc(100% - 28px);
+            max-width: 1380px;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .brand img {
+            height: 30px;
+            width: 30px;
+            object-fit: contain;
+        }
+
+        .brand-title {
+            font-size: .92rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+            white-space: nowrap;
+        }
+
+        .brand-title span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            padding: 7px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: .76rem;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all .18s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link[aria-current="page"] {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent);
+        }
+
+        main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 20px 32px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.15;
+            font-weight: 700;
+            letter-spacing: -.02em;
+            margin: 0 0 12px;
+        }
+
+        .lead {
+            color: var(--text-secondary);
+            max-width: 72ch;
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .capture {
+            color: var(--text-secondary);
+            font-size: .8rem;
+            margin: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .panel-header h2 {
+            color: var(--accent);
+            margin: 0;
+            font-size: .95rem;
+            font-weight: 700;
+        }
+
+        .glass-card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            margin-top: 28px;
+        }
+
+        .stats-box {
+            background: rgba(0, 0, 0, .3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px;
+        }
+
+        .stats-box h2 {
+            font-size: .78rem;
+            color: var(--accent);
+            margin: 0 0 8px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stats-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            font-size: .76rem;
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .item-date {
+            font-size: .65rem;
+            color: var(--text-secondary);
+        }
+
+        .positive {
+            color: var(--up);
+            background: rgba(16, 185, 129, .14);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .negative {
+            color: var(--down);
+            background: rgba(239, 68, 68, .14);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .chart-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .cta {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+            font-size: .82rem;
+            text-decoration: none;
+        }
+
+        .meta-footer {
+            font-size: .75rem;
+            color: var(--text-secondary);
+            margin-top: 14px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        footer {
+            max-width: 1280px;
+            margin: 40px auto 0;
+            padding: 24px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: .82rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            header.top-bar {
+                flex-wrap: wrap;
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .toolbar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-bar">
+        <a class="brand" href="/">
+            <img src="/img/oilmap.png" width="30" height="30" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+        <nav class="toolbar" aria-label="Main">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/oil_price_charts.html" aria-current="page">Oil charts</a>
+            <a class="nav-link" href="/oil_market.html">Oil market</a>
+            <a class="nav-link" href="/blog.html">Blog</a>
+            <a class="nav-link" href="/cited-by.html">Cited by</a>
+            <a class="nav-link" href="/data_lineage.html">Data lineage</a>
+            <a class="nav-link" href="/contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Crude oil price charts and rankings</h1>
+        <p class="lead">Compare global crude benchmarks by price, daily change and extremes, using the same price dataset that drives the World Oil Map.</p>
+        <p class="capture" id="capture">Loading the latest capture…</p>
+
+        <section class="glass-card" aria-labelledby="h-chart">
+            <div class="panel-header">
+                <h2 id="h-chart">Crude prices overview by location</h2>
+            </div>
+            <p class="capture" style="margin-top:10px">Top 10 blends by price, in USD per barrel. Chart updates with each capture.</p>
+            <div class="chart-wrap" id="priceChart"></div>
+        </section>
+
+        <section class="glass-card" aria-labelledby="h-rankings">
+            <div class="panel-header">
+                <h2 id="h-rankings">Market rankings and fluctuations</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-box">
+                    <h3>Top gainers</h3>
+                    <ol class="stats-list" id="topGainers"></ol>
+                </div>
+                <div class="stats-box">
+                    <h3>Top losers</h3>
+                    <ol class="stats-list" id="topLosers"></ol>
+                </div>
+                <div class="stats-box">
+                    <h3>Highest prices</h3>
+                    <ol class="stats-list" id="topHighest"></ol>
+                </div>
+                <div class="stats-box">
+                    <h3>Lowest prices</h3>
+                    <ol class="stats-list" id="topLowest"></ol>
+                </div>
+            </div>
+            <div class="meta-footer">
+                <span><strong>Source:</strong> EIA &amp; Official Price Feeds</span>
+            </div>
+            <a class="cta" href="/">Open the interactive map →</a>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
+        <span>Open Data · Crude Price Charts</span>
+    </footer>
+
+    <script>
+        (function() {
+            var CSV = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+            var $ = function(id) {
+                return document.getElementById(id);
+            };
+            var esc = function(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[c];
+                });
+            };
+            var parseCoord = function(v) {
+                return (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
+            };
+            var parseNumeric = function(v) {
+                return v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
+            };
+            var f2 = function(x) {
+                return x.toFixed(2);
+            };
+
+            var blends = [];
+
+            function parse(text) {
+                var captured = '';
+                blends = [];
+                Papa.parse(text, {
+                    header: true,
+                    skipEmptyLines: true
+                }).data.forEach(function(row) {
+                    var n = {};
+                    Object.keys(row).forEach(function(k) {
+                        n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = row[k];
+                    });
+                    var name = n['blend'] || '',
+                        lat = parseCoord(n['lat']),
+                        lon = parseCoord(n['lon']);
+                    var update = (n['captura'] || '').trim();
+                    if (update && !captured) captured = update;
+                    if (!name || isNaN(lat) || isNaN(lon)) return;
+                    var price = n['precio'] || '0',
+                        change = n['cambio'] || '0',
+                        pct = n['cambio %'] || '0%';
+                    blends.push({
+                        name: name,
+                        price: price,
+                        numericPrice: parseNumeric(price),
+                        change: change,
+                        numericChange: parseNumeric(change),
+                        changePct: pct,
+                        updateDate: update || 'Live'
+                    });
+                });
+                if (captured) $('capture').textContent = 'Last capture: ' + captured;
+                else $('capture').textContent = 'Latest available capture';
+                render();
+            }
+
+            function render() {
+                var top = function(arr, fn) {
+                    return arr.slice(0, 5).map(fn).join('');
+                };
+                var by = function(f) {
+                    return blends.slice().sort(f);
+                };
+                var item = function(b, right) {
+                    return '<li class="stats-item"><div><span>' + esc(b.name) + '</span><div class="item-date">' + esc(b.updateDate) + '</div></div>' + right + '</li>';
+                };
+
+                $('topGainers').innerHTML = top(by(function(a, b) {
+                    return b.numericChange - a.numericChange;
+                }), function(b) {
+                    return item(b, '<span class="positive">▲ ' + (b.numericChange > 0 ? '+' : '') + esc(b.change) + ' (' + esc(b.changePct) + ')</span>');
+                });
+                $('topLosers').innerHTML = top(by(function(a, b) {
+                    return a.numericChange - b.numericChange;
+                }), function(b) {
+                    return item(b, '<span class="negative">▼ ' + esc(b.change) + ' (' + esc(b.changePct) + ')</span>');
+                });
+                $('topHighest').innerHTML = top(by(function(a, b) {
+                    return b.numericPrice - a.numericPrice;
+                }), function(b) {
+                    return item(b, '<strong style="color:var(--up)">$' + esc(b.price) + '</strong>');
+                });
+                $('topLowest').innerHTML = top(by(function(a, b) {
+                    return a.numericPrice - b.numericPrice;
+                }), function(b) {
+                    return item(b, '<strong style="color:var(--accent)">$' + esc(b.price) + '</strong>');
+                });
+
+                renderChart();
+            }
+
+            function renderChart() {
+                var s = blends.slice().sort(function(a, b) {
+                    return b.numericPrice - a.numericPrice;
+                }).slice(0, 10);
+                if (!s.length) return;
+                var max = Math.max.apply(null, s.map(function(b) {
+                    return b.numericPrice;
+                })) || 100;
+                var W = Math.max(620, 40 + s.length * 60 + 25);
+                var g = '<svg width="100%" viewBox="0 0 ' + W + ' 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top 10 crude blends by price">';
+                [
+                    [20, .06],
+                    [68, .06],
+                    [116, .14]
+                ].forEach(function(p) {
+                    g += '<line x1="40" y1="' + p[0] + '" x2="' + (W - 25) + '" y2="' + p[0] + '" stroke="rgba(255,255,255,' + p[1] + ')"' + (p[1] < .1 ? ' stroke-dasharray="3,3"' : '') + '/>';
+                });
+                s.forEach(function(it, i) {
+                    var h = it.numericPrice / max * 96,
+                        x = 40 + i * 60 + 12,
+                        y = 116 - h,
+                        n = esc(it.name);
+                    g += '<rect x="' + x + '" y="' + y + '" width="28" height="' + h + '" rx="4" fill="#f0b823" opacity=".88"><title>' + n + ': $' + esc(it.price) + ' (' + esc(it.updateDate) + ')</title></rect>' +
+                        '<text x="' + (x + 14) + '" y="' + (y - 5) + '" fill="#fff" font-size="9" font-weight="600" text-anchor="middle">$' + it.numericPrice.toFixed(0) + '</text>' +
+                        '<text x="' + (x + 14) + '" y="128" fill="#94a3b8" font-size="8.5" text-anchor="end" transform="rotate(-35,' + (x + 14) + ',128)">' + n + '</text>';
+                });
+                $('priceChart').innerHTML = g + '</svg>';
+            }
+
+            function load() {
+                if (typeof Papa === 'undefined') {
+                    setTimeout(load, 100);
+                    return;
+                }
+                fetch(CSV)
+                    .then(function(r) {
+                        if (!r.ok) throw new Error(r.status);
+                        return r.text();
+                    })
+                    .then(parse)
+                    .catch(function() {
+                        $('capture').textContent = 'Could not load the price feed. Try again later.';
+                    });
+            }
+
+            load();
+        })();
+    </script>
+</body>
+
+</html>
