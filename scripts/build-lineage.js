@@ -298,6 +298,10 @@ const html = `<!DOCTYPE html>
         <h2>How to cite</h2>
         <div class="cite">
             <p><strong>OGIM database:</strong> O’Brien, M.A., Omara, M., Himmelberger, A., Gautam, R. Oil and Gas Infrastructure Mapping (OGIM) Database. <a href="${OGIM_DOI}" target="_blank" rel="noopener">${OGIM_DOI}</a></p>
+            <p><strong>OGIM database License:</strong> These datasets are provided under a Creative Commons Attribution 4.0 International Public License, unless otherwise noted.</p>
+            <p><strong>Created by:</strong> Omara et al</p>
+            <p><strong>Curated in GEE by:</strong> Samapriya Roy</p>
+            <p><strong>Keywords:</strong> OGIM dataset, Methane emissions, Environmental Defense Fund (EDF), MethaneSAT, infrastructure types, oil and gas wells, offshore platforms, Compressor stations, Liquefied natural gas facilities, Crude oil refineries</p>
             <p><strong>OGIM data description paper:</strong> Omara, M., Gautam, R., O'Brien, M., Himmelberger, A., Franco, A., Meisenhelder, K., Hauser, G., Lyon, D., Chulakadabba, A., Miller, C., Franklin, J., Wofsy, S., and Hamburg, S.: Developing a spatially explicit global oil and gas infrastructure database for characterizing methane emission sources at high resolution, <em>Earth System Science Data Discussions</em>, <a href="${ESSD_DOI}" target="_blank" rel="noopener">${ESSD_DOI}</a>, 2023.</p>
         </div>
 
