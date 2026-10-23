@@ -949,7 +949,7 @@
     </aside>
 
     <div id="regions-menu" class="dropdown-panel glass" role="menu">
-        <button class="shortcut-item" role="menuitem" data-region="Venezuela" data-lng="-65.2311" data-lat="9.4529" data-zoom="7.02">🇻🇪 Venezuela</button>
+        <a class="shortcut-item" role="menuitem" href="venezuela_petroleum_market.html">🇻🇪 Venezuela</a>
         <button class="shortcut-item" role="menuitem" data-region="UAE" data-lng="53.8478" data-lat="23.4241" data-zoom="6.2">🇦🇪 UAE</button>
         <button class="shortcut-item" role="menuitem" data-region="Nigeria" data-lng="8.6753" data-lat="9.0820" data-zoom="5.8">🇳🇬 Nigeria</button>
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3">🌎 Global View</button>
@@ -1570,7 +1570,7 @@
                 trend: [1300, 1350, 1390, 1420]
             }
         };
-        document.querySelectorAll('.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('button.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
             const name = btn.dataset.region;
             map.flyTo({
                 center: [+btn.dataset.lng, +btn.dataset.lat],

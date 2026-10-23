@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>Venezuela Oil & Gas Map: Orinoco Belt, Pipelines, Refineries & Merey Price | World Oil Map</title>
+    <meta name="description" content="Interactive Venezuela oil and gas intelligence dashboard: explore Orinoco Belt blocks, Maracaibo fields, pipelines, refineries, EIA proven reserves (303.8B bbl), and live Merey 16 crude prices.">
+    <meta name="keywords" content="Venezuela oil map, Orinoco Oil Belt map, Lake Maracaibo oil fields, Merey 16 crude price, PDVSA blocks, Venezuela oil pipelines, Paraguana refinery, Venezuela proven oil reserves">
+    <meta name="author" content="Roque Leal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#0b1120">
+    <link rel="canonical" href="https://oilmap.xyz/venezuela_petroleum_market.html">
+    <link rel="icon" type="image/png" href="./img/oilmap.png">
+    <link rel="apple-touch-icon" href="./img/oilmap.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="World Oil Map">
+    <meta property="og:title" content="Venezuela Oil & Gas Map: Blocks, Pipelines, Refineries & Merey Crude">
+    <meta property="og:description" content="Live spatial intelligence on Venezuela's upstream blocks, Orinoco Heavy Oil Belt, pipelines, refineries, EIA production trends, and Merey 16 benchmark pricing.">
+    <meta property="og:url" content="https://oilmap.xyz/venezuela_petroleum_market.html">
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@roqueleal08">
+    <meta name="twitter:title" content="Venezuela Oil & Gas Intelligence Dashboard | World Oil Map">
+    <meta name="twitter:description" content="Explore Venezuela's oil blocks, pipelines, refineries, EIA reserves, and live Merey 16 prices.">
+    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js" defer></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
+
+    <!-- Structured Data (WebPage + Dataset + BreadcrumbList) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                "@type": "WebPage",
+                "@id": "https://oilmap.xyz/venezuela_petroleum_market.html#webpage",
+                "url": "https://oilmap.xyz/venezuela_petroleum_market.html",
+                "name": "Venezuela Oil & Gas Map: Orinoco Belt, Pipelines, Refineries & Merey Price",
+                "description": "Interactive spatial dashboard of Venezuela's petroleum sector featuring upstream concession blocks, oil and gas pipelines, refineries, wells, EIA reserves, and live Merey 16 prices.",
+                "inLanguage": "en",
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "World Oil Map",
+                    "url": "https://oilmap.xyz/"
+                },
+                "about": {
+                    "@type": "Place",
+                    "name": "Venezuela",
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": 8.65,
+                        "longitude": -65.23
+                    }
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "Dataset",
+                "name": "Venezuela Upstream & Downstream Oil and Gas Infrastructure Dataset",
+                "description": "Geospatial dataset mapping Venezuela's oil production blocks, exploration areas, refineries, oil and gas pipelines, wells, and Merey 16 benchmark pricing.",
+                "url": "https://oilmap.xyz/venezuela_petroleum_market.html",
+                "license": "https://creativecommons.org/licenses/by/4.0/",
+                "isAccessibleForFree": true,
+                "spatialCoverage": {
+                    "@type": "Place",
+                    "name": "Venezuela"
+                },
+                "creator": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "World Oil Map",
+                    "item": "https://oilmap.xyz/"
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Oil Market",
+                    "item": "https://oilmap.xyz/oil_market.html"
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Venezuela Oil & Gas Profile",
+                    "item": "https://oilmap.xyz/venezuela_petroleum_market.html"
+                }]
+            }]
+        }
+    </script>
+
+    <style>
+         :root {
+            color-scheme: dark;
+            --bg: #0b1120;
+            --surface: rgba(20, 29, 49, 0.55);
+            --surface-strong: #131c31;
+            --ink: #e8edf6;
+            --mute: #8794ab;
+            --line: rgba(255, 255, 255, .09);
+            --gold: #f0b823;
+            --gold-soft: rgba(240, 184, 35, .12);
+            --up: #10b981;
+            --dn: #ef4444;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --dot: #4b5870;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-padding-top: 76px;
+        }
+        
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 15px/1.6 'Inter', system-ui, sans-serif;
+            font-variant-numeric: tabular-nums;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        a {
+            color: var(--gold);
+        }
+        
+         :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(11, 17, 32, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-decoration: none;
+            font-size: .95rem;
+        }
+        
+        .brand img {
+            height: 26px;
+            width: 26px;
+            object-fit: contain;
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            overflow-x: auto;
+        }
+        
+        nav a {
+            color: var(--mute);
+            text-decoration: none;
+            font-size: .85rem;
+            white-space: nowrap;
+            transition: color .15s;
+        }
+        
+        nav a:hover,
+        nav a[aria-current] {
+            color: var(--ink);
+        }
+        
+        main {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 32px 24px 36px;
+        }
+        
+        .breadcrumbs {
+            font-size: .76rem;
+            color: var(--mute);
+            margin-bottom: 14px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        
+        .breadcrumbs a {
+            color: var(--mute);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            color: var(--gold);
+        }
+        
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .74rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--gold);
+            background: var(--gold-soft);
+            border: 1px solid rgba(240, 184, 35, .3);
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+        
+        h1 {
+            font-size: clamp(1.95rem, 4.2vw, 2.85rem);
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: -.025em;
+            margin: 0 0 12px;
+        }
+        
+        .lead {
+            font-size: 1.08rem;
+            color: var(--ink);
+            max-width: 75ch;
+            margin: 0 0 16px;
+        }
+        
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--mute);
+            font-size: .82rem;
+            margin: 0;
+        }
+        
+        .status i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dot);
+            display: inline-block;
+        }
+        
+        .status.ok i {
+            background: var(--up);
+            box-shadow: 0 0 8px var(--up);
+        }
+        
+        .status.busy i {
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+        
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+        
+        .link-btn {
+            color: var(--gold);
+            font-size: .82rem;
+            padding: 2px 0;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        
+        section {
+            margin-top: 48px;
+        }
+        
+        .sec-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        h2 {
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+            letter-spacing: -.01em;
+        }
+        
+        .sub {
+            color: var(--mute);
+            font-size: .84rem;
+            margin: 0;
+            max-width: 72ch;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .tile {
+            padding: 18px 16px 16px 18px;
+            border-left: 1px solid var(--line);
+            transition: background .15s;
+        }
+        
+        .tile:first-child {
+            border-left: 0;
+            padding-left: 0;
+        }
+        
+        .tile h3 {
+            margin: 0;
+            font-size: .76rem;
+            font-weight: 500;
+            color: var(--mute);
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+        
+        .px {
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: -.02em;
+            margin: 4px 0 2px;
+            line-height: 1.15;
+        }
+        
+        .px small {
+            font-size: .74rem;
+            color: var(--mute);
+            font-weight: 400;
+            margin-left: 4px;
+            letter-spacing: 0;
+        }
+        
+        .d {
+            margin: 0 0 8px;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--mute);
+        }
+        
+        .up {
+            color: var(--up);
+        }
+        
+        .dn {
+            color: var(--dn);
+        }
+        
+        .gold {
+            color: var(--gold);
+        }
+        
+        .gauge {
+            position: relative;
+            height: 2px;
+            background: var(--line);
+            margin: 8px 0 6px;
+        }
+        
+        .gauge i {
+            position: absolute;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: var(--gold);
+            transition: left .5s ease;
+        }
+        
+        .lh {
+            display: flex;
+            justify-content: space-between;
+            color: var(--mute);
+            font-size: .7rem;
+            margin: 0;
+        }
+        
+        .pill-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .pill {
+            padding: 5px 11px;
+            border-radius: 99px;
+            border: 1px solid var(--line);
+            font-size: .75rem;
+            color: var(--mute);
+            background: rgba(255, 255, 255, .02);
+            transition: all .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .pill:hover,
+        .pill.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-soft);
+        }
+        
+        .pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dot);
+        }
+        
+        .pill.active .dot {
+            background: var(--gold);
+            box-shadow: 0 0 6px var(--gold);
+        }
+        
+        .workspace {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .map-shell {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #060911;
+        }
+        
+        .map-toolbar {
+            padding: 10px 14px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .map-toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .toolbar-label {
+            font-size: .72rem;
+            color: var(--mute);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+        
+        #venMap {
+            width: 100%;
+            height: 530px;
+            position: relative;
+        }
+        
+        .map-footer {
+            padding: 8px 14px;
+            font-size: .75rem;
+            color: var(--mute);
+            border-top: 1px solid var(--line);
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .analytics-col {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+            padding: 16px 18px;
+        }
+        
+        .card h3 {
+            margin: 0 0 4px;
+            font-size: .92rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card .sub {
+            font-size: .76rem;
+            margin-bottom: 12px;
+        }
+        
+        .chart {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+        
+        .chart text {
+            fill: var(--mute);
+            font: 500 11px 'Inter', sans-serif;
+        }
+        
+        .chart .lab {
+            fill: var(--ink);
+        }
+        
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .stat-row {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background .12s;
+        }
+        
+        .stat-row:hover {
+            background: rgba(255, 255, 255, .04);
+        }
+        
+        .stat-row-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: .78rem;
+            margin-bottom: 3px;
+            gap: 8px;
+        }
+        
+        .stat-track {
+            height: 5px;
+            background: var(--line);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 99px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: .68rem;
+            font-weight: 600;
+            background: var(--gold-soft);
+            color: var(--gold);
+        }
+        
+        .mapboxgl-popup-content {
+            background: #141b2d !important;
+            border: 1px solid var(--line) !important;
+            border-radius: 8px !important;
+            color: var(--ink) !important;
+            padding: 12px 14px !important;
+            font: 400 13px/1.45 'Inter', sans-serif !important;
+            max-width: 280px;
+        }
+        
+        .mapboxgl-popup-close-button {
+            color: var(--mute) !important;
+        }
+        
+        .popup-title {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: .88rem;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        
+        .about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            border-top: 1px solid var(--line);
+            padding-top: 36px;
+        }
+        
+        .about p,
+        .about dd {
+            color: var(--mute);
+            margin: 0 0 12px;
+            font-size: .88rem;
+        }
+        
+        .about dt {
+            font-weight: 600;
+            font-size: .9rem;
+            color: var(--ink);
+        }
+        
+        .about dd {
+            margin-bottom: 14px;
+            margin-left: 0;
+        }
+        
+        footer {
+            max-width: 1220px;
+            margin: 56px auto 0;
+            padding: 24px;
+            border-top: 1px solid var(--line);
+            color: var(--mute);
+            font-size: .82rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        @media (max-width: 960px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            #venMap {
+                height: 420px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            main {
+                padding-top: 24px;
+            }
+            .tile {
+                border-left: 0;
+                padding-left: 0;
+                border-top: 1px solid var(--line);
+            }
+            .tile:first-child {
+                border-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a class="brand" href="./index.html"><img src="./img/oilmap.png" alt="World Oil Map logo" width="26" height="26" onerror="this.style.display='none'">WORLD OIL MAP</a>
+        <nav aria-label="Primary Navigation">
+            <a href="./index.html">Map</a>
+            <a href="./oil_market.html">Oil market</a>
+            <a href="./venezuela_petroleum_market.html" aria-current="page">🇻🇪 Venezuela</a>
+            <a href="./blog.html">Blog</a>
+            <a href="./contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="./index.html">World Oil Map</a> <span>/</span>
+            <a href="./oil_market.html">Country Profiles</a> <span>/</span>
+            <span aria-current="page" style="color:var(--ink)">Venezuela</span>
+        </nav>
+
+        <div class="eyebrow">🇻🇪 Country Spatial Intelligence · SmartView Engine</div>
+        <h1>Venezuela Oil &amp; Gas Map &amp; Market Profile</h1>
+        <p class="lead">
+            Live geospatial intelligence covering Venezuela's upstream production and exploration blocks, the Orinoco Heavy Oil Belt, Lake Maracaibo fields, refining complexes, pipeline networks, and Merey 16 benchmark pricing.
+        </p>
+
+        <div class="status-bar">
+            <p class="status busy" id="statusBox" aria-live="polite">
+                <i></i>
+                <span id="statusText">Initializing Mapbox spatial engine and querying Venezuela vector layers…</span>
+                <button id="btnRescan" class="link-btn" type="button">Rescan current view</button>
+            </p>
+            <div class="pill-group" id="basinPills" role="group" aria-label="Venezuela Petroleum Basins">
+                <span class="toolbar-label" style="margin-right:4px">Basins:</span>
+                <button type="button" class="pill active" data-lng="-65.23" data-lat="8.65" data-z="5.65">🇻🇪 National View</button>
+                <button type="button" class="pill" data-lng="-64.15" data-lat="8.55" data-z="7.7">🛢️ Orinoco Oil Belt</button>
+                <button type="button" class="pill" data-lng="-71.55" data-lat="9.95" data-z="8.0">🌊 Lake Maracaibo</button>
+                <button type="button" class="pill" data-lng="-63.25" data-lat="9.65" data-z="7.8">🔥 Eastern Basin (Maturín)</button>
+                <button type="button" class="pill" data-lng="-70.18" data-lat="11.75" data-z="8.8">🏭 Paraguaná (CRP)</button>
+                <button type="button" class="pill" data-lng="-62.10" data-lat="10.95" data-z="7.8">⚓ Offshore Gas</button>
+            </div>
+        </div>
+
+        <!-- 1. KPI Executive Board -->
+        <section aria-labelledby="h-kpis" style="margin-top:28px">
+            <h2 id="h-kpis" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Key Country Benchmarks</h2>
+            <div class="board">
+                <article class="tile">
+                    <h3>Proven Reserves (EIA)</h3>
+                    <p class="px">303.8<small>B bbl</small></p>
+                    <p class="d gold">#1 Global Ranking · OPEC</p>
+                    <p class="lh"><span>Extra-heavy &amp; light sweet</span><span>850 kbbl/d (2026)</span></p>
+                </article>
+
+                <article class="tile" id="mereyTile">
+                    <h3>Merey 16 Crude (Live)</h3>
+                    <p class="px" id="kpiMereyPx">--<small>/bbl</small></p>
+                    <p class="d" id="kpiMereyChg">Loading price feed…</p>
+                    <div id="kpiMereyGauge"></div>
+                    <p class="lh" id="kpiMereySpread"><span>Spread vs Brent: --</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Mapped Blocks</h3>
+                    <p class="px" id="kpiBlocksCount">0<small>blocks</small></p>
+                    <p class="d" id="kpiBlocksArea">Total area: 0 km²</p>
+                    <p class="lh"><span>Production, Exploration &amp; Bids</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Wells &amp; Platforms</h3>
+                    <p class="px" id="kpiWellsCount">0<small>assets</small></p>
+                    <p class="d" id="kpiWellsSub">In current map viewport</p>
+                    <p class="lh"><span>Zoom into a basin for full density</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Pipeline Network</h3>
+                    <p class="px" id="kpiPipesCount">0<small>segments</small></p>
+                    <p class="d" id="kpiPipesSub">0 Oil · 0 Gas pipelines</p>
+                    <p class="lh"><span>Midstream trunklines</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Refineries &amp; Fields</h3>
+                    <p class="px" id="kpiRefCount">0<small>facilities</small></p>
+                    <p class="d" id="kpiRefSub">0 Refineries · 0 Deposits</p>
+                    <p class="lh"><span>Downstream &amp; giant fields</span></p>
+                </article>
+            </div>
+        </section>
+
+        <!-- 2. Interactive Map + SmartView Live Extraction -->
+        <section aria-labelledby="h-spatial">
+            <div class="sec-head">
+                <div>
+                    <h2 id="h-spatial">Interactive Spatial Explorer &amp; Basin Analytics</h2>
+                    <p class="sub">Charts and counters dynamically aggregate Venezuela vector features rendered inside the map viewport. Select a basin preset above or pan/zoom to inspect local wells, blocks, and trunklines.</p>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <!-- Mapbox Container -->
+                <div class="map-shell">
+                    <div class="map-toolbar">
+                        <div class="map-toolbar-row">
+                            <span class="toolbar-label">Active Map Layers (Click to toggle):</span>
+                            <div class="pill-group" id="layerToggles"></div>
+                        </div>
+                    </div>
+                    <div id="venMap" role="application" aria-label="Interactive Venezuela Oil and Gas Map"></div>
+                    <div class="map-footer">
+                        <span id="mapViewSummary">Querying Venezuelan vector geometries…</span>
+                        <button type="button" class="link-btn" id="btnResetVen">Reset national view</button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Dynamic SmartView Charts -->
+                <div class="analytics-col">
+                    <div class="card">
+                        <h3>
+                            <span>📐 Largest Blocks by Area</span>
+                            <small style="color:var(--gold);font-size:.74rem;font-weight:500">km²</small>
+                        </h3>
+                        <p class="sub">Top production and exploration blocks in the current viewport (click any bar to zoom).</p>
+                        <div id="topBlocksChart" class="stat-bars">
+                            <div style="color:var(--mute);font-size:.8rem;padding:12px 0">Loading map blocks…</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            <span>⚡ Infrastructure Breakdown</span>
+                            <small id="totalAssetsBadge" style="color:var(--mute);font-size:.74rem">0 assets</small>
+                        </h3>
+                        <p class="sub">Distribution by facility class and commodity in the active view.</p>
+                        <svg class="chart" id="infraSvgChart" viewBox="0 0 420 175" role="img" aria-label="Venezuela oil and gas infrastructure distribution chart"></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Operators, EIA Production Trend & Venezuelan Crude Spreads -->
+        <section aria-labelledby="h-macro">
+            <div class="grid-3col">
+                <!-- Operators -->
+                <div class="card">
+                    <h3>🏢 Key Operators in View</h3>
+                    <p class="sub">Leading operating companies extracted from active blocks and facilities (click to locate on map).</p>
+                    <div id="operatorsChart" class="stat-bars"></div>
+                </div>
+
+                <!-- EIA Production Trend -->
+                <div class="card">
+                    <h3>📊 Crude Oil Production (EIA)</h3>
+                    <p class="sub">Annual output trend (kbbl/d) · Key operators: PDVSA, Chevron, Eni, Repsol.</p>
+                    <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="EIA Venezuela crude oil production trend 2023 to 2026"></svg>
+                </div>
+
+                <!-- Benchmark Comparison -->
+                <div class="card">
+                    <h3>🛢️ Merey 16 vs. Global Benchmarks</h3>
+                    <p class="sub">Live spot comparison (USD/bbl) reflecting heavy sour quality differentials.</p>
+                    <div id="venPricesBox" class="stat-bars"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SEO & Crawl-Friendly Reference Guide -->
+        <section class="about" aria-labelledby="h-about">
+            <div>
+                <h2 id="h-about">Venezuela's Major Petroleum Basins</h2>
+                <dl>
+                    <dt>Orinoco Heavy Oil Belt (Faja Petrolífera del Orinoco)</dt>
+                    <dd>Stretching across the southern Eastern Venezuela Basin (Boyacá, Junín, Ayacucho, and Carabobo blocks), the Orinoco Belt holds the world's largest accumulation of extra-heavy crude oil and bitumen (typically 8° to 10° API), upgraded
+                        or blended at the José Antonio Anzoátegui Industrial Complex.</dd>
+                    <dt>Maracaibo Basin (Lago de Maracaibo)</dt>
+                    <dd>Located in Zulia State in western Venezuela, this historic basin produces medium and light sweet-to-sour crudes alongside associated natural gas through extensive offshore lake platforms and coastal fields.</dd>
+                    <dt>Eastern Basin &amp; Offshore Gas (Maturín &amp; Mariscal Sucre)</dt>
+                    <dd>Encompassing Monagas and Anzoátegui states as well as offshore Caribbean and Atlantic blocks (including the giant Perla gas field in the Gulf of Venezuela and Dragon/Patao fields off the Paria Peninsula).</dd>
+                    <dt>Paraguaná Refining Complex (CRP)</dt>
+                    <dd>Situated on the Paraguaná Peninsula (Amuay and Cardón refineries) and complemented by El Palito and Puerto La Cruz, forming one of the largest installed refining hubs in the Western Hemisphere.</dd>
+                </dl>
+            </div>
+            <div>
+                <h2>Merey 16 Benchmark &amp; Market Dynamics</h2>
+                <p><strong>Merey 16</strong> (~16° API, ~2.5% sulfur) is Venezuela's flagship export crude blend, produced by blending extra-heavy Orinoco crude with lighter domestic crudes or imported diluents/naphtha. Because it requires complex coking
+                    and hydrotreating units, Merey trades at a structural discount to light sweet benchmarks such as <strong>Brent</strong> and <strong>WTI</strong>.</p>
+                <h2>Data Sources &amp; Open License</h2>
+                <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official ministry concession delineations and the <strong>OGIM (Oil and Gas Infrastructure Mapping) Database</strong>                    licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>, filtered and visualized by World Oil Map.</p>
+                <p>Macroeconomic reserves and production series are sourced from the U.S. Energy Information Administration (EIA), while crude benchmark prices update every five minutes from the World Oil Map live market feed.</p>
+                <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_market.html">View all global crude oil prices →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
+        <span>Data: OGIM (CC BY 4.0) · EIA · Live Price Feed</span>
+    </footer>
+
+    <script>
+        (function() {
+            var MAPBOX_TOKEN = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+            var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
+            var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+
+            var $ = function(id) {
+                return document.getElementById(id);
+            };
+            var esc = function(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[c];
+                });
+            };
+            var num = function(v) {
+                var x = parseFloat(String(v == null ? '' : v).replace(/["$%+\s]/g, '').replace(',', '.'));
+                return isNaN(x) ? null : x;
+            };
+            var range = function(v) {
+                var m = String(v || '').match(/\d+(?:[.,]\d+)?/g);
+                if (!m || m.length < 2) return null;
+                var a = m.slice(0, 2).map(function(x) {
+                    return parseFloat(x.replace(',', '.'));
+                });
+                return [Math.min(a[0], a[1]), Math.max(a[0], a[1])];
+            };
+            var f2 = function(x) {
+                return Number(x || 0).toFixed(2);
+            };
+            var sg = function(x) {
+                return (x > 0 ? '+' : '') + f2(x);
+            };
+
+            var LAYER_DEFS = [{
+                id: 'PRODUCTION',
+                label: 'Production',
+                cat: 'Block',
+                sub: 'Production Block',
+                active: true
+            }, {
+                id: 'EXPLORATION',
+                label: 'Exploration',
+                cat: 'Block',
+                sub: 'Exploration Block',
+                active: true
+            }, {
+                id: 'BID-ROUNDS',
+                label: 'Bid Rounds',
+                cat: 'Block',
+                sub: 'Bid Round Block',
+                active: true,
+                extra: ['bid-6mpdnh']
+            }, {
+                id: 'REFINERIES',
+                label: 'Refineries',
+                cat: 'Refinery',
+                sub: 'Refinery',
+                active: true
+            }, {
+                id: 'OIL-PIPELINE',
+                label: 'Oil Pipelines',
+                cat: 'OilPipeline',
+                sub: 'Oil Pipeline',
+                active: true
+            }, {
+                id: 'GAS-PIPELINE',
+                label: 'Gas Pipelines',
+                cat: 'GasPipeline',
+                sub: 'Gas Pipeline',
+                active: true
+            }, {
+                id: 'DEPOSITS',
+                label: 'Deposits',
+                cat: 'Deposit',
+                sub: 'Oil & Gas Field',
+                active: true
+            }, {
+                id: 'offshore-platforms',
+                label: 'Platforms',
+                cat: 'Well',
+                sub: 'Offshore Platform',
+                active: true
+            }, {
+                id: 'oil-and-gas-wells',
+                label: 'Wells',
+                cat: 'Well',
+                sub: 'Oil & Gas Well',
+                active: true
+            }];
+
+            var VEN_POLYGON = [
+                [-73.38, 9.05],
+                [-72.50, 11.10],
+                [-71.95, 12.25],
+                [-69.85, 12.35],
+                [-68.10, 11.15],
+                [-66.00, 11.95],
+                [-61.80, 11.45],
+                [-60.05, 9.95],
+                [-59.75, 8.25],
+                [-60.65, 6.00],
+                [-60.05, 3.85],
+                [-63.35, 0.65],
+                [-67.15, 1.15],
+                [-67.85, 2.85],
+                [-70.15, 6.95],
+                [-72.25, 7.05],
+                [-73.38, 9.05]
+            ];
+
+            function pointInVenPolygon(lng, lat) {
+                var inside = false;
+                for (var i = 0, j = VEN_POLYGON.length - 1; i < VEN_POLYGON.length; j = i++) {
+                    var xi = VEN_POLYGON[i][0],
+                        yi = VEN_POLYGON[i][1];
+                    var xj = VEN_POLYGON[j][0],
+                        yj = VEN_POLYGON[j][1];
+                    var intersect = ((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / ((yj - yi) || 1e-9) + xi);
+                    if (intersect) inside = !inside;
+                }
+                return inside;
+            }
+
+            function isVenezuelaFeature(props, coords) {
+                var cStr = String(props.Country || props.COUNTRY || props.country || '').trim();
+                if (cStr && cStr !== '---' && cStr !== '-9999') {
+                    if (/venezuela|\bven\b/i.test(cStr)) return true;
+                    if (/colombia|trinidad|tobago|guyana|brazil|brasil|aruba|cura|bonaire|grenada|usa|united states/i.test(cStr)) return false;
+                }
+                var opStr = String(props.Company || props.OPERATOR || props.Source || props.source || '').trim();
+                if (/pdvsa|petroleos de venezuela|cvp|menpet/i.test(opStr)) return true;
+                if (!coords || isNaN(coords[0]) || isNaN(coords[1])) return false;
+                return pointInVenPolygon(coords[0], coords[1]);
+            }
+
+            function extractRepresentativeCoords(geom) {
+                if (!geom) return null;
+                if (geom.type === 'Point') return geom.coordinates;
+                if (geom.type === 'Polygon' && geom.coordinates[0]) return geom.coordinates[0][0];
+                if (geom.type === 'MultiPolygon' && geom.coordinates[0] && geom.coordinates[0][0]) return geom.coordinates[0][0][0];
+                if (geom.type === 'LineString' && geom.coordinates.length) return geom.coordinates[Math.floor(geom.coordinates.length / 2)];
+                if (geom.type === 'MultiLineString' && geom.coordinates[0] && geom.coordinates[0].length) {
+                    return geom.coordinates[0][Math.floor(geom.coordinates[0].length / 2)];
+                }
+                return null;
+            }
+
+            var map = null,
+                activePopup = null;
+            var extractedAssets = [];
+
+            function initLayerToggles() {
+                var container = $('layerToggles');
+                container.innerHTML = LAYER_DEFS.map(function(ld) {
+                    return '<button type="button" class="pill' + (ld.active ? ' active' : '') + '" data-lid="' + ld.id + '">' +
+                        '<span class="dot"></span>' + esc(ld.label) + '</button>';
+                }).join('');
+
+                container.addEventListener('click', function(e) {
+                    var btn = e.target.closest('button[data-lid]');
+                    if (!btn || !map) return;
+                    var lid = btn.dataset.lid;
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid;
+                    });
+                    if (!def) return;
+                    def.active = !def.active;
+                    btn.classList.toggle('active', def.active);
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) map.setLayoutProperty(def.id, 'visibility', vis);
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                    setTimeout(scanVenezuelaMapFeatures, 220);
+                });
+            }
+
+            function enableAllVenezuelaLayers() {
+                LAYER_DEFS.forEach(function(def) {
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) map.setLayoutProperty(def.id, 'visibility', vis);
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                });
+                if (map.getLayer('2027-blocks')) {
+                    map.setLayoutProperty('2027-blocks', 'visibility', 'visible');
+                }
+            }
+
+            function scanVenezuelaMapFeatures() {
+                if (!map || !map.isStyleLoaded()) return;
+                $('statusBox').className = 'status busy';
+                $('statusText').textContent = 'Querying Venezuelan vector layers and attributes…';
+
+                var activeLayerIds = [];
+                LAYER_DEFS.forEach(function(d) {
+                    if (d.active && map.getLayer(d.id)) activeLayerIds.push(d.id);
+                    (d.extra || []).forEach(function(ex) {
+                        if (d.active && map.getLayer(ex)) activeLayerIds.push(ex);
+                    });
+                });
+
+                var rendered = [];
+                try {
+                    rendered = map.queryRenderedFeatures({
+                        layers: activeLayerIds
+                    });
+                } catch (err) {}
+
+                var unique = new Map();
+                rendered.forEach(function(f) {
+                    var p = f.properties || {};
+                    var coords = extractRepresentativeCoords(f.geometry);
+                    if (!isVenezuelaFeature(p, coords)) return;
+
+                    var lid = f.layer.id;
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid || (d.extra && d.extra.indexOf(lid) >= 0);
+                    }) || LAYER_DEFS[0];
+
+                    var rawName = p.FAC_NAME || p.Name || p.NAME || p.title || p.TITLE || p.field_name || '';
+                    var name = String(rawName).trim();
+                    if (!name || name === '---' || name === '-9999') name = 'Unnamed ' + def.sub;
+
+                    var commodity = String(p.COMMODITY || p.commodity || p.RESINFO || (lid === 'OIL-PIPELINE' ? 'Oil' : lid === 'GAS-PIPELINE' ? 'Gas' : p.Type || 'Oil & Gas')).trim();
+                    if (commodity === '-9999' || commodity === '---') commodity = 'Oil & Gas';
+
+                    var operator = String(p.Company || p.OPERATOR || p.source || p.Source || 'PDVSA / JV').trim();
+                    if (!operator || operator === '-9999' || operator === '---') operator = 'PDVSA / National';
+
+                    var area = parseFloat(p.Area_km2) || 0;
+                    if (!area && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon') && typeof turf !== 'undefined') {
+                        try {
+                            area = turf.area(f) / 1e6;
+                        } catch (e) {}
+                    }
+
+                    var key = def.cat + '_' + name + '_' + (coords ? coords[0].toFixed(2) + '_' + coords[1].toFixed(2) : '');
+                    if (!unique.has(key)) {
+                        unique.set(key, {
+                            key: key,
+                            name: name,
+                            category: def.cat,
+                            subType: def.sub,
+                            commodity: commodity,
+                            operator: operator,
+                            area: area,
+                            coords: coords
+                        });
+                    }
+                });
+
+                extractedAssets = Array.from(unique.values());
+                updateDashboardMetrics();
+                renderTopBlocksChart();
+                renderInfraSvgChart();
+                renderOperatorsChart();
+
+                $('statusBox').className = 'status ok';
+                var now = new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                $('statusText').textContent = extractedAssets.length + ' Venezuelan spatial assets analyzed in view · Updated ' + now;
+                $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length + ' Venezuelan facilities in current viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
+            }
+
+            function updateDashboardMetrics() {
+                var blocks = extractedAssets.filter(function(a) {
+                    return a.category === 'Block';
+                });
+                var totalArea = blocks.reduce(function(s, b) {
+                    return s + (b.area || 0);
+                }, 0);
+                var wells = extractedAssets.filter(function(a) {
+                    return a.category === 'Well';
+                });
+                var oilPipes = extractedAssets.filter(function(a) {
+                    return a.category === 'OilPipeline';
+                });
+                var gasPipes = extractedAssets.filter(function(a) {
+                    return a.category === 'GasPipeline';
+                });
+                var refs = extractedAssets.filter(function(a) {
+                    return a.category === 'Refinery';
+                });
+                var deps = extractedAssets.filter(function(a) {
+                    return a.category === 'Deposit';
+                });
+
+                $('kpiBlocksCount').innerHTML = blocks.length + '<small>blocks</small>';
+                $('kpiBlocksArea').textContent = 'Mapped area: ' + Math.round(totalArea).toLocaleString() + ' km²';
+
+                $('kpiWellsCount').innerHTML = wells.length + '<small>assets</small>';
+                $('kpiWellsSub').textContent = wells.length ? wells.length + ' wells & platforms in view' : 'Select a basin preset to load wells';
+
+                $('kpiPipesCount').innerHTML = (oilPipes.length + gasPipes.length) + '<small>segments</small>';
+                $('kpiPipesSub').textContent = oilPipes.length + ' Oil · ' + gasPipes.length + ' Gas pipelines';
+
+                $('kpiRefCount').innerHTML = (refs.length + deps.length) + '<small>assets</small>';
+                $('kpiRefSub').textContent = refs.length + ' Refineries · ' + deps.length + ' Fields';
+
+                $('totalAssetsBadge').textContent = extractedAssets.length + ' assets in view';
+            }
+
+            function renderTopBlocksChart() {
+                var box = $('topBlocksChart');
+                var blocks = extractedAssets
+                    .filter(function(a) {
+                        return a.category === 'Block' && a.area > 0;
+                    })
+                    .sort(function(a, b) {
+                        return b.area - a.area;
+                    })
+                    .slice(0, 6);
+
+                if (!blocks.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem;padding:8px 0">No blocks with recorded area in this viewport.</div>';
+                    return;
+                }
+                var maxA = blocks[0].area || 1;
+                box.innerHTML = blocks.map(function(b) {
+                    var pct = Math.max(4, (b.area / maxA) * 100);
+                    return '<div class="stat-row" data-key="' + esc(b.key) + '">' +
+                        '<div class="stat-row-top">' +
+                        '<span><strong>' + esc(b.name) + '</strong> <small style="color:var(--mute)">(' + esc(b.subType) + ')</small></span>' +
+                        '<span style="color:var(--gold);font-weight:600">' + Math.round(b.area).toLocaleString() + ' km²</span>' +
+                        '</div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderInfraSvgChart() {
+                var svg = $('infraSvgChart');
+                var groups = [{
+                    label: 'Blocks (Prod/Exp)',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Block';
+                    }).length,
+                    color: '#f0b823'
+                }, {
+                    label: 'Oil Pipelines',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'OilPipeline';
+                    }).length,
+                    color: '#10b981'
+                }, {
+                    label: 'Gas Pipelines',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'GasPipeline';
+                    }).length,
+                    color: '#3b82f6'
+                }, {
+                    label: 'Refineries',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Refinery';
+                    }).length,
+                    color: '#ef4444'
+                }, {
+                    label: 'Wells & Platforms',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Well';
+                    }).length,
+                    color: '#8b5cf6'
+                }, {
+                    label: 'Deposits & Fields',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Deposit';
+                    }).length,
+                    color: '#f59e0b'
+                }];
+                var max = Math.max.apply(null, groups.map(function(g) {
+                    return g.count;
+                })) || 1;
+                var out = '';
+                groups.forEach(function(g, i) {
+                    var y = i * 27 + 8;
+                    var w = (g.count / max) * 210;
+                    out += '<text x="0" y="' + (y + 13) + '">' + esc(g.label) + '</text>' +
+                        '<rect x="135" y="' + y + '" width="' + Math.max(w, 3) + '" height="16" rx="3" fill="' + g.color + '"/>' +
+                        '<text class="lab" x="' + (143 + Math.max(w, 3)) + '" y="' + (y + 13) + '">' + g.count + '</text>';
+                });
+                svg.innerHTML = out;
+            }
+
+            function renderOperatorsChart() {
+                var counts = {};
+                extractedAssets.forEach(function(a) {
+                    var op = a.operator;
+                    if (!op || op === 'Venezuela') op = 'PDVSA / JV';
+                    counts[op] = (counts[op] || 0) + 1;
+                });
+                var list = Object.keys(counts).map(function(k) {
+                        return {
+                            name: k,
+                            count: counts[k]
+                        };
+                    })
+                    .sort(function(a, b) {
+                        return b.count - a.count;
+                    })
+                    .slice(0, 5);
+
+                var box = $('operatorsChart');
+                if (!list.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem">No operator data in current view.</div>';
+                    return;
+                }
+                var max = list[0].count || 1;
+                box.innerHTML = list.map(function(it) {
+                    var pct = Math.max(5, (it.count / max) * 100);
+                    return '<div class="stat-row" data-op="' + esc(it.name) + '">' +
+                        '<div class="stat-row-top"><span>' + esc(it.name) + '</span><strong>' + it.count + ' assets</strong></div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%;background:#10b981"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderEiaTrend() {
+                var data = [{
+                    yr: '2023',
+                    val: 750
+                }, {
+                    yr: '2024',
+                    val: 780
+                }, {
+                    yr: '2025',
+                    val: 810
+                }, {
+                    yr: '2026',
+                    val: 850
+                }];
+                var max = 1000;
+                var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
+                data.forEach(function(d, i) {
+                    var h = (d.val / max) * 95;
+                    var x = 52 + i * 74;
+                    var y = 130 - h;
+                    out += '<rect x="' + x + '" y="' + y + '" width="38" height="' + h + '" rx="4" fill="#f0b823" opacity="' + (0.65 + i * 0.1) + '"/>' +
+                        '<text class="lab" x="' + (x + 19) + '" y="' + (y - 6) + '" text-anchor="middle">' + d.val + '</text>' +
+                        '<text x="' + (x + 19) + '" y="148" text-anchor="middle">' + d.yr + '</text>';
+                });
+                $('eiaTrendSvg').innerHTML = out;
+            }
+
+            function focusOnAsset(key) {
+                var item = extractedAssets.find(function(a) {
+                    return a.key === key;
+                });
+                if (!item || !item.coords) return;
+                map.flyTo({
+                    center: item.coords,
+                    zoom: Math.max(map.getZoom(), 8.8),
+                    essential: true
+                });
+                if (activePopup) activePopup.remove();
+                activePopup = new mapboxgl.Popup({
+                        offset: 12
+                    })
+                    .setLngLat(item.coords)
+                    .setHTML(
+                        '<div class="popup-title">🇻🇪 ' + esc(item.name) + '</div>' +
+                        '<div><strong>Category:</strong> ' + esc(item.subType) + '</div>' +
+                        '<div><strong>Commodity:</strong> ' + esc(item.commodity) + '</div>' +
+                        '<div><strong>Operator:</strong> ' + esc(item.operator) + '</div>' +
+                        (item.area > 0 ? '<div><strong>Area:</strong> ' + Math.round(item.area).toLocaleString() + ' km²</div>' : '')
+                    )
+                    .addTo(map);
+            }
+
+            function loadLivePrices() {
+                if (typeof Papa === 'undefined') {
+                    setTimeout(loadLivePrices, 120);
+                    return;
+                }
+                fetch(CSV_PRICES + '?t=' + Math.floor(Date.now() / 3e5), {
+                        cache: 'no-store'
+                    })
+                    .then(function(r) {
+                        return r.text();
+                    })
+                    .then(function(csv) {
+                        var blends = [];
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true
+                        }).data.forEach(function(raw) {
+                            var n = {};
+                            Object.keys(raw).forEach(function(k) {
+                                n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = raw[k];
+                            });
+                            var name = (n['blend'] || '').trim(),
+                                price = num(n['precio']);
+                            if (!name || price == null) return;
+                            blends.push({
+                                name: name,
+                                price: price,
+                                chg: num(n['cambio']) || 0,
+                                pct: num(n['cambio %']) || 0,
+                                wk: range(n['rango sem.']),
+                                lat: num(n['lat']),
+                                lon: num(n['lon'])
+                            });
+                        });
+
+                        var merey = blends.find(function(b) {
+                            return /merey/i.test(b.name);
+                        });
+                        var brent = blends.find(function(b) {
+                            return /brent/i.test(b.name);
+                        });
+                        var wti = blends.find(function(b) {
+                            return /wti|west texas/i.test(b.name);
+                        });
+
+                        if (merey) {
+                            $('kpiMereyPx').innerHTML = '$' + f2(merey.price) + '<small>/bbl</small>';
+                            var cCls = merey.chg > 0 ? 'up' : merey.chg < 0 ? 'dn' : '';
+                            var arr = merey.chg > 0 ? '▲ ' : merey.chg < 0 ? '▼ ' : '';
+                            $('kpiMereyChg').className = 'd ' + cCls;
+                            $('kpiMereyChg').textContent = arr + sg(merey.chg) + ' (' + sg(merey.pct) + '%)';
+
+                            if (merey.wk) {
+                                var pos = merey.wk[1] === merey.wk[0] ? 0.5 : Math.min(1, Math.max(0, (merey.price - merey.wk[0]) / (merey.wk[1] - merey.wk[0])));
+                                $('kpiMereyGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
+                            }
+                            if (brent) {
+                                var sp = merey.price - brent.price;
+                                $('kpiMereySpread').innerHTML = '<span>vs Brent: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (merey.wk ? f2(merey.wk[0]) + '–$' + f2(merey.wk[1]) : '--') + '</span>';
+                            }
+                        }
+
+                        var peers = [merey, brent, wti].filter(Boolean);
+                        var maxP = Math.max.apply(null, peers.map(function(p) {
+                            return p.price;
+                        })) || 100;
+                        $('venPricesBox').innerHTML = peers.map(function(p) {
+                            var isVen = /merey/i.test(p.name);
+                            var w = (p.price / maxP) * 100;
+                            var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
+                            return '<div class="stat-row">' +
+                                '<div class="stat-row-top">' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (isVen ? '<span class="badge">Venezuela</span>' : '') + '</span>' +
+                                '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
+                                '</div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (isVen ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '</div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+            }
+
+            function initMap() {
+                if (typeof mapboxgl === 'undefined') {
+                    setTimeout(initMap, 100);
+                    return;
+                }
+                mapboxgl.accessToken = MAPBOX_TOKEN;
+                map = new mapboxgl.Map({
+                    container: 'venMap',
+                    style: MAPBOX_STYLE,
+                    projection: 'mercator',
+                    center: [-65.23, 8.65],
+                    zoom: 5.65,
+                    pitch: 0,
+                    antialias: true
+                });
+
+                map.addControl(new mapboxgl.NavigationControl({
+                    showCompass: true
+                }), 'bottom-right');
+                map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+
+                map.on('load', function() {
+                    enableAllVenezuelaLayers();
+                    setTimeout(scanVenezuelaMapFeatures, 450);
+                });
+
+                var debounceTimer = null;
+                map.on('moveend', function() {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(scanVenezuelaMapFeatures, 280);
+                });
+
+                LAYER_DEFS.forEach(function(ld) {
+                    map.on('click', ld.id, function(e) {
+                        if (!e.features || !e.features.length) return;
+                        var p = e.features[0].properties || {};
+                        var name = p.FAC_NAME || p.Name || p.NAME || p.title || ld.sub;
+                        var comm = p.COMMODITY || p.commodity || (ld.id === 'OIL-PIPELINE' ? 'Oil' : ld.id === 'GAS-PIPELINE' ? 'Gas' : 'Oil & Gas');
+                        var op = p.Company || p.OPERATOR || p.source || 'PDVSA / JV';
+                        var area = p.Area_km2 ? Number(p.Area_km2).toLocaleString(undefined, {
+                            maximumFractionDigits: 1
+                        }) + ' km²' : null;
+                        if (activePopup) activePopup.remove();
+                        activePopup = new mapboxgl.Popup({
+                                offset: 12
+                            })
+                            .setLngLat(e.lngLat)
+                            .setHTML(
+                                '<div class="popup-title">🛢️ ' + esc(name) + '</div>' +
+                                '<div><strong>Type:</strong> ' + esc(ld.sub) + '</div>' +
+                                '<div><strong>Commodity:</strong> ' + esc(comm) + '</div>' +
+                                '<div><strong>Operator:</strong> ' + esc(op) + '</div>' +
+                                (area ? '<div><strong>Area:</strong> ' + esc(area) + '</div>' : '')
+                            )
+                            .addTo(map);
+                    });
+                    map.on('mouseenter', ld.id, function() {
+                        map.getCanvas().style.cursor = 'pointer';
+                    });
+                    map.on('mouseleave', ld.id, function() {
+                        map.getCanvas().style.cursor = '';
+                    });
+                });
+            }
+
+            $('basinPills').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-lng]');
+                if (!btn || !map) return;
+                document.querySelectorAll('#basinPills .pill').forEach(function(p) {
+                    p.classList.toggle('active', p === btn);
+                });
+                map.flyTo({
+                    center: [parseFloat(btn.dataset.lng), parseFloat(btn.dataset.lat)],
+                    zoom: parseFloat(btn.dataset.z),
+                    essential: true
+                });
+            });
+
+            $('btnResetVen').addEventListener('click', function() {
+                if (!map) return;
+                map.flyTo({
+                    center: [-65.23, 8.65],
+                    zoom: 5.65,
+                    essential: true
+                });
+            });
+
+            $('btnRescan').addEventListener('click', scanVenezuelaMapFeatures);
+
+            $('topBlocksChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-key]');
+                if (row) focusOnAsset(row.dataset.key);
+            });
+
+            $('operatorsChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-op]');
+                if (!row) return;
+                var opName = row.dataset.op;
+                var match = extractedAssets
+                    .filter(function(a) {
+                        return a.operator === opName && a.coords;
+                    })
+                    .sort(function(a, b) {
+                        return (b.area || 0) - (a.area || 0);
+                    })[0];
+                if (match) {
+                    $('venMap').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    focusOnAsset(match.key);
+                }
+            });
+
+            initLayerToggles();
+            renderEiaTrend();
+            loadLivePrices();
+            initMap();
+        })();
+    </script>
+</body>
+
+</html>
