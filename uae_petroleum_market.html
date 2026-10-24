@@ -100,7 +100,7 @@
               "@type": "ListItem",
               "position": 2,
               "name": "Oil Market",
-              "item": "https://oilmap.xyz/oil_market.html"
+              "item": "https://oilmap.xyz/oil_price_charts.html"
             },
             {
               "@type": "ListItem",
@@ -158,34 +158,245 @@
             outline-offset: 2px;
         }
         
-        header {
+        header.top-bar {
+            --accent: #f0b823;
+            --accent-soft: rgba(240, 184, 35, .14);
+            --surface: rgba(13, 18, 30, .86);
+            --border: rgba(255, 255, 255, .1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
             position: sticky;
-            top: 0;
+            top: calc(12px + env(safe-area-inset-top, 0px));
             z-index: 40;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background: rgba(11, 17, 32, .92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--line);
-        }
-        
-        .brand {
+            margin: 12px auto 0;
+            width: calc(100% - 24px);
+            max-width: 1420px;
+            padding: 6px 10px;
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--gold);
-            font-weight: 700;
-            letter-spacing: .04em;
-            text-decoration: none;
-            font-size: .95rem;
+            user-select: none;
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
-        
-        .brand img {
+
+        header.top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 2px 4px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: opacity .15s ease;
+        }
+
+        header.top-bar .brand:hover {
+            opacity: .9;
+        }
+
+        header.top-bar .brand img {
             height: 26px;
             width: 26px;
             object-fit: contain;
+        }
+
+        header.top-bar .brand-title {
+            font-size: .86rem;
+            letter-spacing: .5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        header.top-bar .brand-title span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        header.top-bar .nav-scroll-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        header.top-bar .nav-scroll-track {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            width: 100%;
+            cursor: grab;
+        }
+
+        header.top-bar .nav-scroll-track.grabbing {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+
+        header.top-bar .nav-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        header.top-bar .scroll-arrow-btn {
+            background: rgba(13, 18, 30, .9);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            position: absolute;
+            font-size: .85rem;
+            transition: all .15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+        }
+
+        header.top-bar .scroll-arrow-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        header.top-bar .scroll-arrow-btn.left {
+            left: -4px;
+        }
+
+        header.top-bar .scroll-arrow-btn.right {
+            right: -4px;
+        }
+
+        header.top-bar .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui,
+        header.top-bar .nav-link {
+            padding: 6px 11px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-weight: 500;
+            font-size: .75rem;
+            cursor: pointer;
+            transition: all .18s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            outline: none;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui:hover,
+        header.top-bar .nav-link:hover,
+        header.top-bar .btn-ui:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent);
+        }
+
+        header.top-bar .lang-select {
+            padding: 6px 10px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: .74rem;
+            cursor: pointer;
+            outline: none;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .lang-select:hover,
+        header.top-bar .lang-select:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent);
+        }
+
+        header.top-bar .lang-select option {
+            background: #0d121e;
+            color: var(--text-primary);
+        }
+
+        header.top-bar .search-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .search-input {
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, .35);
+            color: var(--text-primary);
+            width: 175px;
+            font-size: .75rem;
+            font-family: inherit;
+            transition: width .25s ease, border-color .2s, background .2s;
+            outline: none;
+        }
+
+        header.top-bar .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, .7);
+            width: 215px;
+        }
+
+        @media (max-width: 820px) {
+            header.top-bar {
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                width: calc(100% - 16px);
+                padding: 5px 8px;
+                gap: 8px;
+            }
+            header.top-bar .search-input {
+                width: 135px;
+            }
+            header.top-bar .search-input:focus {
+                width: 175px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header.top-bar .brand-title {
+                display: none;
+            }
+            header.top-bar .brand {
+                padding: 0 2px;
+            }
+            header.top-bar .scroll-arrow-btn {
+                display: none !important;
+            }
         }
         
         nav {
@@ -716,21 +927,42 @@
 
 <body>
 
-    <header>
-        <a class="brand" href="./index.html"><img src="./img/oilmap.png" alt="World Oil Map logo" width="26" height="26" onerror="this.style.display='none'">WORLD OIL MAP</a>
-        <nav aria-label="Primary Navigation">
-            <a href="./index.html">Map</a>
-            <a href="./oil_market.html">Oil market</a>
-            <a href="./uae_petroleum_market.html" aria-current="page">🇦🇪 UAE</a>
-            <a href="./blog.html">Blog</a>
-            <a href="./contact.html">Contact</a>
-        </nav>
+    <header class="glass top-bar" role="banner">
+        <a class="brand" href="./index.html" aria-label="World Oil Map">
+            <img src="./img/oilmap.png" width="26" height="26" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+
+        <div class="nav-scroll-wrapper" id="navScrollWrapper">
+            <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
+
+            <div class="nav-scroll-track" id="navScrollTrack">
+                <div class="search-wrap">
+                    <input type="search" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+                </div>
+
+                <nav class="toolbar" aria-label="Map Controls">
+                    <a href="./index.html" class="nav-link"><span>Home</span></a>
+                    <a href="./blog.html" class="nav-link"><span>Blog</span></a>
+                    <a href="./contact.html" class="nav-link"><span>Contact</span></a>
+                    <a class="btn-ui" href="./data_lineage.html"><span>Sources ▾</span></a>
+                </nav>
+
+                <select id="langSelector" class="lang-select" aria-label="Select Language">
+                    <option value="/">🌐 EN</option>
+                    <option value="/es/">🌐 ES</option>
+                    <option value="/fr/">🌐 FR</option>
+                </select>
+            </div>
+
+            <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
+        </div>
     </header>
 
     <main>
         <nav class="breadcrumbs" aria-label="Breadcrumb">
             <a href="./index.html">World Oil Map</a> <span>/</span>
-            <a href="./oil_market.html">Country Profiles</a> <span>/</span>
+            <a href="./oil_price_charts.html">Country Profiles</a> <span>/</span>
             <span aria-current="page" style="color:var(--ink)">United Arab Emirates</span>
         </nav>
 
@@ -903,7 +1135,7 @@
                 <h2>Data Sources &amp; Open License</h2>
                 <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official concession delineations and the <strong>OGIM (Oil and Gas Infrastructure Mapping) Database</strong> licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>, filtered and visualized by World Oil Map.</p>
                 <p>Reserves and production statistics reflect data from OPEC and the U.S. Energy Information Administration (EIA), while crude benchmark spot prices update every five minutes from the live market feed.</p>
-                <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_market.html">View all global crude oil prices →</a></p>
+                <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_price_charts.html">View all global crude oil prices →</a></p>
             </div>
         </section>
     </main>
@@ -1388,6 +1620,59 @@
             renderEiaTrend();
             loadLivePrices();
             initMap();
+        })();
+    </script>
+    <script>
+        (() => {
+            const track = document.getElementById('navScrollTrack');
+            const leftBtn = document.getElementById('scrollLeftBtn');
+            const rightBtn = document.getElementById('scrollRightBtn');
+
+            const updateArrows = () => {
+                const max = track.scrollWidth - track.clientWidth;
+                const display = max <= 4 ? 'none' : 'flex';
+                leftBtn.style.display = display;
+                rightBtn.style.display = display;
+                leftBtn.style.opacity = track.scrollLeft > 8 ? '1' : '0.2';
+                leftBtn.style.pointerEvents = track.scrollLeft > 8 ? 'auto' : 'none';
+                rightBtn.style.opacity = max - track.scrollLeft > 8 ? '1' : '0.2';
+                rightBtn.style.pointerEvents = max - track.scrollLeft > 8 ? 'auto' : 'none';
+            };
+
+            track.addEventListener('wheel', e => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    track.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+            track.addEventListener('scroll', updateArrows, { passive: true });
+            window.addEventListener('resize', updateArrows);
+            leftBtn.addEventListener('click', () => track.scrollBy({ left: -220, behavior: 'smooth' }));
+            rightBtn.addEventListener('click', () => track.scrollBy({ left: 220, behavior: 'smooth' }));
+
+            let isDown = false, startX = 0, startScroll = 0;
+            track.addEventListener('mousedown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                isDown = true;
+                track.classList.add('grabbing');
+                startX = e.pageX;
+                startScroll = track.scrollLeft;
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                track.classList.remove('grabbing');
+            });
+            window.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                track.scrollLeft = startScroll - (e.pageX - startX);
+            });
+
+            document.getElementById('langSelector').addEventListener('change', e => {
+                location.href = e.target.value;
+            });
+
+            updateArrows();
         })();
     </script>
 </body>

@@ -3,28 +3,59 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
-const STATIC = [
-    { path: '/', priority: '1.0' },
+const HOME_ALTERNATES = [
+    { lang: 'en', href: `${BASE}/` },
+    { lang: 'es', href: `${BASE}/es/` },
+    { lang: 'fr', href: `${BASE}/fr/` },
+    { lang: 'x-default', href: `${BASE}/` },
+];
+
+const PAGES = [
+    { path: '/', priority: '1.0', alternates: HOME_ALTERNATES },
+    { path: '/es/', priority: '0.9', alternates: HOME_ALTERNATES },
+    { path: '/fr/', priority: '0.9', alternates: HOME_ALTERNATES },
     { path: '/blog.html', priority: '0.9' },
-    { path: '/es/', priority: '0.9' },
-    { path: '/fr/', priority: '0.9' },
+    { path: '/venezuela_petroleum_market.html', priority: '0.8' },
+    { path: '/uae_petroleum_market.html', priority: '0.8' },
+    { path: '/nigeria_petroleum_market.html', priority: '0.8' },
+    { path: '/argentina_petroleum_market.html', priority: '0.8' },
+    { path: '/iran_petroleum_market.html', priority: '0.8' },
     { path: '/data_lineage.html', priority: '0.8' },
     { path: '/cited-by.html', priority: '0.8' },
+    { path: '/contact.html', priority: '0.5' },
 ];
 
 const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
     .sort((a, b) => b.date.localeCompare(a.date));
 
-const urls = [
-    ...STATIC.map(s => `<url><loc>${BASE}${s.path}</loc><priority>${s.priority}</priority></url>`),
-    ...articles.map(a => `<url><loc>${BASE}/blog/${a.slug}.html</loc><lastmod>${a.updated || a.date}</lastmod><priority>0.7</priority></url>`),
-];
+const pageUrl = p => {
+    const alternates = (p.alternates || []).map(a =>
+        `<xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}"/>`).join('');
+    return `<url><loc>${BASE}${p.path}</loc>${alternates}<priority>${p.priority}</priority></url>`;
+};
+
+const postUrl = a =>
+    `<url><loc>${BASE}/blog/${a.slug}.html</loc><lastmod>${a.updated || a.date}</lastmod><priority>0.7</priority></url>`;
+
+const urlset = (urls, withAlternates) =>
+`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${withAlternates ? ' xmlns:xhtml="http://www.w3.org/1999/xhtml"' : ''}>
+${urls.join('\n')}
+</urlset>
+`;
+
+fs.writeFileSync(path.join(root, 'sitemap-pages.xml'),
+    urlset(PAGES.map(pageUrl), true));
+
+fs.writeFileSync(path.join(root, 'sitemap-posts.xml'),
+    urlset(articles.map(postUrl), false));
 
 fs.writeFileSync(path.join(root, 'sitemap.xml'),
 `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('\n')}
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>${BASE}/sitemap-pages.xml</loc></sitemap>
+  <sitemap><loc>${BASE}/sitemap-posts.xml</loc></sitemap>
+</sitemapindex>
 `);
 
 const news = articles.map(a =>
