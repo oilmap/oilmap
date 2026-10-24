@@ -17,6 +17,8 @@ const PAGES = [
     { path: '/blog.html', priority: '0.9' },
     { path: '/venezuela_petroleum_market.html', priority: '0.8' },
     { path: '/colombia_petroleum_market.html', priority: '0.8' },
+    { path: '/ecuador_petroleum_market.html', priority: '0.8' },
+    { path: '/norway_petroleum_market.html', priority: '0.8' },
     { path: '/uae_petroleum_market.html', priority: '0.8' },
     { path: '/nigeria_petroleum_market.html', priority: '0.8' },
     { path: '/argentina_petroleum_market.html', priority: '0.8' },
