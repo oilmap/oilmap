@@ -822,8 +822,8 @@
             font-family: inherit !important;
             font-size: .8rem !important;
             box-shadow: var(--shadow) !important;
-            max-width: 290px;
-            max-height: 310px;
+            max-width: 310px;
+            max-height: 330px;
             overflow-y: auto
         }
         
@@ -833,7 +833,8 @@
             font-size: .9rem;
             margin-bottom: 6px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 5px
+            padding-bottom: 5px;
+            padding-right: 16px
         }
         
         .popup-price-row {
@@ -897,6 +898,84 @@
             color: var(--text-secondary) !important;
             font-size: 16px !important;
             padding: 4px 8px !important
+        }
+        /* ---------- TABLA UNIFICADA MODERNA PARA POPUPS GIS / REFINERÍAS ---------- */
+        
+        .popup-modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 8px;
+            background: rgba(0, 0, 0, .32);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: .74rem;
+        }
+        
+        .popup-modern-table tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+        }
+        
+        .popup-modern-table tr:nth-child(even) td:not(.popup-table-banner) {
+            background: rgba(255, 255, 255, .015);
+        }
+        
+        .popup-modern-table td {
+            padding: 7px 10px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            vertical-align: middle;
+            word-break: break-word;
+        }
+        
+        .popup-modern-table td.prop-key {
+            color: var(--text-secondary);
+            font-weight: 600;
+            width: 40%;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            border-right: 1px solid rgba(255, 255, 255, .06);
+        }
+        
+        .popup-modern-table td.prop-val {
+            color: var(--text-primary);
+            font-weight: 500;
+            width: 60%;
+        }
+        /* Fila destacada superior (ej. Capacidad bpd de refinerías) */
+        
+        .popup-modern-table td.popup-table-banner {
+            background: rgba(240, 184, 35, .12);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: .78rem;
+            text-align: left;
+        }
+        /* Enlaces convertidos en botones tipo píldora (pills) */
+        
+        .popup-modern-table a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            margin: 2px 4px 2px 0;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: .7rem;
+            transition: all .15s ease;
+        }
+        
+        .popup-modern-table a:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            font-weight: 600;
         }
         
         .custom-map-pin {
@@ -1064,7 +1143,6 @@
     <div id="source-menu" class="dropdown-panel glass" role="menu">
         <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
         <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
-        <a class="shortcut-item" role="menuitem" href="privacy-policy.html">Privacy Policy</a>
     </div>
 
     <!-- SmartView Live Analytics Sidebar -->
@@ -1508,13 +1586,11 @@
         });
 
         /* ---------- ACCIONES DENTRO DE LOS NUEVOS MENÚS ---------- */
-        // Menú Intelligence: Disparo del modal de Estadísticas
         $('menu-item-stats').addEventListener('click', () => {
             closeAllDropdowns();
             statsModal.style.display = 'flex';
         });
 
-        // Menú Tools: Disparo de Pines, Polígonos y KML
         $('menu-tool-pin').addEventListener('click', () => {
             closeAllDropdowns();
             showTab('pin');
@@ -1533,7 +1609,6 @@
             addPinModal.style.display = 'flex';
         });
 
-        // Menú Tools: Activación / Desactivación de Medición
         $('menu-tool-measure').addEventListener('click', () => {
             closeAllDropdowns();
             toggleMeasureTool();
@@ -1704,8 +1779,12 @@
             });
             showPopup([lng, lat], `
                 <div class="popup-blend">⚡ ${esc(type || 'SmartView Item')}</div>
-                <div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(name)}</div>
-                <div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity || 'N/A')}</div>
+                <table class="popup-modern-table">
+                    <tbody>
+                        <tr><td class="prop-key">FAC_NAME</td><td class="prop-val">${esc(name)}</td></tr>
+                        <tr><td class="prop-key">COMMODITY</td><td class="prop-val">${esc(commodity || 'N/A')}</td></tr>
+                    </tbody>
+                </table>
             `);
         };
 
@@ -1967,7 +2046,15 @@
                 const p = e.features[0].properties;
                 new mapboxgl.Popup({
                     offset: 10
-                }).setLngLat(e.lngLat).setHTML(`<div class="popup-blend">📐 ${esc(p.title)}</div><div><strong>Area:</strong> ${esc(p.areaKm2)} km² (${esc(p.areaHa)} ha)</div>`).addTo(map);
+                }).setLngLat(e.lngLat).setHTML(`
+                    <div class="popup-blend">📐 ${esc(p.title)}</div>
+                    <table class="popup-modern-table">
+                        <tbody>
+                            <tr><td class="prop-key">Area (km²)</td><td class="prop-val">${esc(p.areaKm2)} km²</td></tr>
+                            <tr><td class="prop-key">Area (ha)</td><td class="prop-val">${esc(p.areaHa)} ha</td></tr>
+                        </tbody>
+                    </table>
+                `).addTo(map);
             });
 
             fetch('https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv')
@@ -2127,7 +2214,7 @@
             });
         }
 
-        /* ---------- INTERACTIVIDAD DE CAPAS GIS ---------- */
+        /* ---------- INTERACTIVIDAD DE CAPAS GIS Y MOTOR DE TABLA UNIFICADA ---------- */
         const interactiveLayers = ['PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'REFINERIES', 'offshore-platforms', 'oil-and-gas-wells', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
 
         const fieldLabels = {
@@ -2162,6 +2249,156 @@
         const orderedDisplayFields = ['FAC_NAME', 'COMMODITY', 'Type', 'Company', 'OPERATOR', 'RESINFO', 'FAC_TYPE', 'DRILL_TYPE', 'FAC_STATUS', 'OGIM_STATUS', 'CATEGORY', 'ON_OFFSHORE', 'Country', 'COUNTRY', 'REGION', 'STATE_PROV', 'Area_km2', 'INSTALL_DATE', 'SPUD_DATE', 'DISC', 'PROD', 'source', 'Source', 'SOURCEINFO', 'LOCSOURCE', 'OTHERINFO'];
         const ignoredInternalKeys = new Set(['Name', 'NAME', 'title', 'TITLE', 'field_name', 'description', 'Description', 'Descriptio', 'DESCRIPTIO', 'DESC', 'desc', 'popupContent', 'fid', 'OGIM_ID', 'FAC_ID', 'SRC_REF_ID', 'LATITUDE', 'LONGITUDE', 'LAT', 'LONG', 'bbox', 'PRIMKEY', 'FIPSCODE', 'COWCODE', 'CONTCODE', 'SITENUM', 'VERSION', 'RES', 'DISCPRES', 'PRODPRES', 'FIELDINFO']);
 
+        /* Limpia nodos HTML (elimina etiquetas cortadas como "<im" y estiliza enlaces/imágenes) */
+        function sanitizeHtmlFragment(rawStr) {
+            if (!rawStr) return '';
+            let str = String(rawStr).trim();
+            if (!/<[a-zA-Z][^>]*>/.test(str)) return esc(str);
+
+            // Remueve etiquetas incompletas al final producto del límite de 254 caracteres en Shapefiles
+            str = str.replace(/<[^>]*$/, '');
+            const doc = new DOMParser().parseFromString(str, 'text/html');
+
+            doc.querySelectorAll('img').forEach(img => {
+                const src = img.getAttribute('src');
+                if (!src || src.trim() === '') {
+                    img.remove();
+                } else {
+                    img.style.cssText = 'max-width:100%;height:auto;border-radius:6px;margin-top:4px;display:block;';
+                    img.loading = 'lazy';
+                    img.setAttribute('onerror', 'this.style.display="none"');
+                }
+            });
+
+            doc.querySelectorAll('a').forEach(a => {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+                const label = a.textContent.trim();
+                if (label && !label.startsWith('↗')) a.textContent = `↗ ${label}`;
+            });
+
+            return doc.body.innerHTML;
+        }
+
+        /* Convierte la descripción HTML (ej. tabla truncada de refinerías) en filas <tr> para la tabla unificada */
+        function extractDescriptionRows(rawDesc) {
+            if (!rawDesc || String(rawDesc).trim() === '') return '';
+            let str = String(rawDesc).trim();
+
+            if (!/<[a-zA-Z][^>]*>/.test(str)) {
+                return `<tr><td colspan="2" class="popup-table-banner">${esc(str)}</td></tr>`;
+            }
+
+            // Elimina etiqueta cortada al final (ej. "<im")
+            str = str.replace(/<[^>]*$/, '');
+            const doc = new DOMParser().parseFromString(str, 'text/html');
+
+            doc.querySelectorAll('img').forEach(img => {
+                const src = img.getAttribute('src');
+                if (!src || src.trim() === '') {
+                    img.remove();
+                } else {
+                    img.style.cssText = 'max-width:100%;height:auto;border-radius:6px;margin-top:4px;display:block;';
+                    img.loading = 'lazy';
+                    img.setAttribute('onerror', 'this.style.display="none"');
+                }
+            });
+
+            doc.querySelectorAll('a').forEach(a => {
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+                const label = a.textContent.trim();
+                if (label && !label.startsWith('↗')) a.textContent = `↗ ${label}`;
+            });
+
+            const trs = Array.from(doc.querySelectorAll('tr'));
+            if (trs.length > 0) {
+                let rowsHtml = '';
+                let isFirstValidRow = true;
+
+                trs.forEach(tr => {
+                    const cells = Array.from(tr.querySelectorAll('td, th'));
+                    cells.forEach(td => {
+                        ['width', 'bgcolor', 'align', 'valign', 'colspan'].forEach(attr => td.removeAttribute(attr));
+                        if (td.querySelector('a')) {
+                            td.childNodes.forEach(node => {
+                                if (node.nodeType === Node.TEXT_NODE) {
+                                    node.textContent = node.textContent.replace(/Links:\s*/i, '').replace(/\s*-\s*/g, ' ');
+                                }
+                            });
+                        }
+                    });
+
+                    // Descarta filas vacías (como la que contenía "<im")
+                    if (!tr.textContent.trim() && !tr.querySelector('img')) return;
+
+                    if (cells.length === 1) {
+                        const cellContent = cells[0].innerHTML.trim();
+                        const hasLinks = Boolean(cells[0].querySelector('a'));
+                        if (isFirstValidRow && !hasLinks) {
+                            rowsHtml += `<tr><td colspan="2" class="popup-table-banner">${cellContent}</td></tr>`;
+                        } else if (hasLinks) {
+                            rowsHtml += `<tr><td class="prop-key">Links</td><td class="prop-val">${cellContent}</td></tr>`;
+                        } else {
+                            rowsHtml += `<tr><td colspan="2">${cellContent}</td></tr>`;
+                        }
+                        isFirstValidRow = false;
+                    } else if (cells.length >= 2) {
+                        const k = cells[0].innerHTML.trim();
+                        const v = cells.slice(1).map(c => c.innerHTML.trim()).join(' ');
+                        rowsHtml += `<tr><td class="prop-key">${k}</td><td class="prop-val">${v}</td></tr>`;
+                        isFirstValidRow = false;
+                    }
+                });
+                return rowsHtml;
+            }
+
+            const cleanedBody = doc.body.innerHTML.trim();
+            return cleanedBody ? `<tr><td colspan="2" class="popup-table-banner">${cleanedBody}</td></tr>` : '';
+        }
+
+        /* Construye el popup completo unificando descripción y propiedades dentro de una sola tabla moderna */
+        function buildUnifiedPopupHtml(title, props) {
+            let htmlContent = `<div class="popup-blend">🛢️ ${esc(title)}</div>`;
+            let tableRows = '';
+
+            // 1. Filas provenientes de description (ej. Capacidad bpd y Links de refinerías)
+            const rawDesc = props.description || props.Descriptio || props.Description || props.DESC || props.desc;
+            if (rawDesc && String(rawDesc).trim() !== '') {
+                tableRows += extractDescriptionRows(rawDesc);
+            }
+
+            // 2. Filas de campos principales ordenados
+            const renderedKeys = new Set();
+            orderedDisplayFields.forEach(key => {
+                if (!(key in props)) return;
+                const val = props[key];
+                if (val === null || val === undefined || val === '' || val === '---' || val === -9999 || val === '-9999') return;
+                renderedKeys.add(key);
+
+                let formattedVal = val;
+                if (key === 'Area_km2' && !isNaN(parseFloat(val))) {
+                    formattedVal = `${Number(val).toLocaleString(undefined, { maximumFractionDigits: 2 })} km²`;
+                }
+                const label = fieldLabels[key] || key;
+                tableRows += `<tr><td class="prop-key">${esc(label)}</td><td class="prop-val">${esc(formattedVal)}</td></tr>`;
+            });
+
+            // 3. Cualquier otro atributo adicional de la capa
+            for (const [key, value] of Object.entries(props)) {
+                if (renderedKeys.has(key) || ignoredInternalKeys.has(key)) continue;
+                if (value !== null && value !== undefined && value !== '' && value !== '---' && value !== -9999 && value !== '-9999') {
+                    const label = fieldLabels[key] || key;
+                    tableRows += `<tr><td class="prop-key">${esc(label)}</td><td class="prop-val">${sanitizeHtmlFragment(value)}</td></tr>`;
+                }
+            }
+
+            if (tableRows) {
+                htmlContent += `<table class="popup-modern-table"><tbody>${tableRows}</tbody></table>`;
+            }
+            return htmlContent;
+        }
+
         interactiveLayers.forEach(layerId => {
             map.on('click', layerId, e => {
                 if (isDrawingPolygon || measureEnabled) return;
@@ -2174,42 +2411,21 @@
                 if (layerId === 'OIL-PIPELINE' || layerId === 'GAS-PIPELINE') {
                     const facName = props.FAC_NAME || props.Name || props.NAME || 'N/A';
                     const commodity = props.COMMODITY || props.commodity || (layerId === 'OIL-PIPELINE' ? 'Oil' : 'Gas');
-                    let pipeHtml = `<div class="popup-blend">🛢️ ${esc(layerId)}</div>`;
-                    pipeHtml += `<div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(facName)}</div>`;
-                    pipeHtml += `<div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity)}</div>`;
+                    const pipeHtml = `
+                        <div class="popup-blend">🛢️ ${esc(layerId)}</div>
+                        <table class="popup-modern-table">
+                            <tbody>
+                                <tr><td class="prop-key">FAC_NAME</td><td class="prop-val">${esc(facName)}</td></tr>
+                                <tr><td class="prop-key">COMMODITY</td><td class="prop-val">${esc(commodity)}</td></tr>
+                            </tbody>
+                        </table>
+                    `;
                     showPopup(e.lngLat, pipeHtml);
                     return;
                 }
 
                 const title = props.Name || props.FAC_NAME || props.title || props.NAME || props.TITLE || props.field_name || layerId;
-                let htmlContent = `<div class="popup-blend">🛢️ ${esc(title)}</div>`;
-                const rawDesc = props.description || props.Descriptio || props.Description || props.DESC || props.desc;
-                if (rawDesc && String(rawDesc).trim() !== '') {
-                    const strDesc = String(rawDesc).trim();
-                    const isHtml = strDesc.startsWith('<') && strDesc.endsWith('>');
-                    htmlContent += `<div style="margin-top:6px;">${isHtml ? strDesc : esc(strDesc)}</div>`;
-                }
-                const renderedKeys = new Set();
-                orderedDisplayFields.forEach(key => {
-                    if (!(key in props)) return;
-                    const val = props[key];
-                    if (val === null || val === undefined || val === '' || val === '---' || val === -9999 || val === '-9999') return;
-                    renderedKeys.add(key);
-                    let formattedVal = val;
-                    if (key === 'Area_km2' && !isNaN(parseFloat(val))) {
-                        formattedVal = `${Number(val).toLocaleString(undefined, { maximumFractionDigits: 2 })} km²`;
-                    }
-                    const label = fieldLabels[key] || key;
-                    htmlContent += `<div style="margin-top:4px;"><strong>${esc(label)}:</strong> ${esc(formattedVal)}</div>`;
-                });
-                for (const [key, value] of Object.entries(props)) {
-                    if (renderedKeys.has(key) || ignoredInternalKeys.has(key)) continue;
-                    if (value !== null && value !== undefined && value !== '' && value !== -9999 && value !== '-9999') {
-                        const isValueHtml = typeof value === 'string' && value.trim().startsWith('<') && value.trim().endsWith('>');
-                        const label = fieldLabels[key] || key;
-                        htmlContent += `<div style="margin-top:4px;"><strong>${esc(label)}:</strong> ${isValueHtml ? value : esc(value)}</div>`;
-                    }
-                }
+                const htmlContent = buildUnifiedPopupHtml(title, props);
                 showPopup(e.lngLat, htmlContent);
             });
             map.on('mouseenter', layerId, () => {
@@ -2337,7 +2553,15 @@
             el.className = 'custom-map-pin';
             const popup = new mapboxgl.Popup({
                 offset: 12
-            }).setHTML(`<div class="popup-blend">📍 Custom Pin</div><p style="margin:6px 0;color:#fff">${esc(description)}</p><div class="popup-update">${lat.toFixed(4)}, ${lng.toFixed(4)}</div>`);
+            }).setHTML(`
+                <div class="popup-blend">📍 Custom Pin</div>
+                <table class="popup-modern-table">
+                    <tbody>
+                        <tr><td colspan="2" class="popup-table-banner">${esc(description)}</td></tr>
+                        <tr><td class="prop-key">Coords</td><td class="prop-val">${lat.toFixed(4)}, ${lng.toFixed(4)}</td></tr>
+                    </tbody>
+                </table>
+            `);
             new mapboxgl.Marker(el).setLngLat([lng, lat]).setPopup(popup).addTo(map);
             map.flyTo({
                 center: [lng, lat],
@@ -2411,11 +2635,7 @@
                     if (isDrawingPolygon || measureEnabled || !e.features || !e.features.length) return;
                     const p = e.features[0].properties || {};
                     const facName = p.FAC_NAME || p.Name || 'Custom KML';
-                    const commodity = p.COMMODITY || 'Custom KML';
-                    let html = `<div class="popup-blend">📂 ${esc(facName)}</div>`;
-                    html += `<div style="margin-top:6px;"><strong>FAC_NAME:</strong> ${esc(facName)}</div>`;
-                    html += `<div style="margin-top:4px;"><strong>COMMODITY:</strong> ${esc(commodity)}</div>`;
-                    if (p.description) html += `<div style="margin-top:4px;">${esc(p.description)}</div>`;
+                    const html = buildUnifiedPopupHtml(facName, p);
                     showPopup(e.lngLat, html);
                 });
                 map.on('mouseenter', lid, () => {
@@ -2661,12 +2881,21 @@
                 else if (f.geometry.type === 'Polygon') k += `  <Placemark>\n    <name>${nm}</name>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${f.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`;
             });
             k += '</Document>\n</kml>';
-            const url = URL.createObjectURL(new Blob([k], { type: 'application/vnd.google-earth.kml+xml' })), a = document.createElement('a');
-            a.href = url; a.download = 'oilmap_export.kml'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            const url = URL.createObjectURL(new Blob([k], {
+                    type: 'application/vnd.google-earth.kml+xml'
+                })),
+                a = document.createElement('a');
+            a.href = url;
+            a.download = 'oilmap_export.kml';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
         };
 
         /* ---------- BÚSQUEDA FLOTANTE ---------- */
-        const searchInput = $('countrySearch'), suggestionsDiv = $('suggestions');
+        const searchInput = $('countrySearch'),
+            suggestionsDiv = $('suggestions');
         let debounce;
 
         function updateSuggestionsPosition() {
@@ -2687,19 +2916,29 @@
         searchInput.addEventListener('input', () => {
             clearTimeout(debounce);
             const q = searchInput.value.trim().toLowerCase();
-            if (!q) { suggestionsDiv.style.display = 'none'; return; }
+            if (!q) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
             debounce = setTimeout(async () => {
-                const results = []; const seen = new Set();
+                const results = [];
+                const seen = new Set();
                 allBlends.forEach(b => {
                     if (b.name.toLowerCase().includes(q)) {
                         seen.add(b.name.toLowerCase());
-                        results.push({ name: '🛢️ ' + b.name, coordinates: b.coordinates, popupContent: b.popupContent });
+                        results.push({
+                            name: '🛢️ ' + b.name,
+                            coordinates: b.coordinates,
+                            popupContent: b.popupContent
+                        });
                     }
                 });
                 try {
                     const activeSearchLayers = interactiveLayers.filter(l => map.getLayer(l));
                     if (activeSearchLayers.length) {
-                        const rendered = map.queryRenderedFeatures({ layers: activeSearchLayers });
+                        const rendered = map.queryRenderedFeatures({
+                            layers: activeSearchLayers
+                        });
                         rendered.forEach(f => {
                             const p = f.properties || {};
                             const label = p.Name || p.FAC_NAME || p.title || p.NAME;
@@ -2711,26 +2950,44 @@
                             else if (f.geometry.type === 'LineString') coords = f.geometry.coordinates[0];
                             if (coords) {
                                 seen.add(String(label).toLowerCase());
-                                results.push({ name: '🗺️ ' + label, coordinates: coords, popupContent: `<div class="popup-blend">🛢️ ${esc(label)}</div>` });
+                                results.push({
+                                    name: '🗺️ ' + label,
+                                    coordinates: coords,
+                                    popupContent: buildUnifiedPopupHtml(label, p)
+                                });
                             }
                         });
                     }
                 } catch (e) {}
                 try {
                     const d = await (await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?limit=5&access_token=${mapboxgl.accessToken}`)).json();
-                    (d.features || []).forEach(f => results.push({ name: '📍 ' + f.place_name, coordinates: f.center, popupContent: `<strong>${esc(f.place_name)}</strong>` }));
+                    (d.features || []).forEach(f => results.push({
+                        name: '📍 ' + f.place_name,
+                        coordinates: f.center,
+                        popupContent: `<div class="popup-blend">📍 ${esc(f.place_name)}</div>`
+                    }));
                 } catch (e) {}
                 if (searchInput.value.trim().toLowerCase() !== q) return;
                 suggestionsDiv.innerHTML = '';
                 const slice = results.slice(0, 8);
-                if (!slice.length) { suggestionsDiv.style.display = 'none'; return; }
+                if (!slice.length) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
                 slice.forEach(item => {
                     const div = document.createElement('div');
-                    div.className = 'suggestion-item'; div.setAttribute('role', 'option'); div.textContent = item.name;
+                    div.className = 'suggestion-item';
+                    div.setAttribute('role', 'option');
+                    div.textContent = item.name;
                     div.onclick = () => {
-                        map.flyTo({ center: item.coordinates, zoom: 8, essential: true });
+                        map.flyTo({
+                            center: item.coordinates,
+                            zoom: 8,
+                            essential: true
+                        });
                         showPopup(item.coordinates, item.popupContent);
-                        suggestionsDiv.style.display = 'none'; searchInput.value = item.name;
+                        suggestionsDiv.style.display = 'none';
+                        searchInput.value = item.name;
                     };
                     suggestionsDiv.appendChild(div);
                 });
@@ -2740,10 +2997,22 @@
         });
 
         /* ---------- HERRAMIENTA DE MEDICIÓN ---------- */
-        const distanceContainer = $('distanceContainer'), measureOutput = $('measureOutput'), btnMD = $('btnMeasureDist'), btnMA = $('btnMeasureArea');
-        let measureEnabled = false, measureMode = 'distance', measurePoints = [];
-        const emptyFC = () => ({ type: 'FeatureCollection', features: [] });
-        const clearMeasure = () => { measurePoints = []; const s = map.getSource('measure-source'); if (s) s.setData(emptyFC()); };
+        const distanceContainer = $('distanceContainer'),
+            measureOutput = $('measureOutput'),
+            btnMD = $('btnMeasureDist'),
+            btnMA = $('btnMeasureArea');
+        let measureEnabled = false,
+            measureMode = 'distance',
+            measurePoints = [];
+        const emptyFC = () => ({
+            type: 'FeatureCollection',
+            features: []
+        });
+        const clearMeasure = () => {
+            measurePoints = [];
+            const s = map.getSource('measure-source');
+            if (s) s.setData(emptyFC());
+        };
 
         function toggleMeasureTool() {
             measureEnabled = !measureEnabled;
@@ -2762,48 +3031,159 @@
         }
 
         function setMode(m) {
-            measureMode = m; btnMD.classList.toggle('active-tool', m === 'distance'); btnMA.classList.toggle('active-tool', m === 'area');
-            updateMeasureGraphics(); updateMeasureText();
+            measureMode = m;
+            btnMD.classList.toggle('active-tool', m === 'distance');
+            btnMA.classList.toggle('active-tool', m === 'area');
+            updateMeasureGraphics();
+            updateMeasureText();
         }
-        btnMD.onclick = () => setMode('distance'); btnMA.onclick = () => setMode('area');
-        $('btnMeasureClear').onclick = () => { clearMeasure(); updateMeasureText(); };
+        btnMD.onclick = () => setMode('distance');
+        btnMA.onclick = () => setMode('area');
+        $('btnMeasureClear').onclick = () => {
+            clearMeasure();
+            updateMeasureText();
+        };
 
         function initMeasureSources() {
             if (map.getSource('measure-source')) return;
-            map.addSource('measure-source', { type: 'geojson', data: emptyFC() });
-            map.addLayer({ id: 'measure-polygon-fill', type: 'fill', source: 'measure-source', paint: { 'fill-color': '#f0b823', 'fill-opacity': .22 }, filter: ['==', '$type', 'Polygon'] });
-            map.addLayer({ id: 'measure-line-stroke', type: 'line', source: 'measure-source', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#f0b823', 'line-width': 2.2, 'line-dasharray': [2, 1] }, filter: ['in', '$type', 'LineString', 'Polygon'] });
-            map.addLayer({ id: 'measure-points-circle', type: 'circle', source: 'measure-source', paint: { 'circle-radius': 4.5, 'circle-color': '#ef4444', 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' }, filter: ['==', '$type', 'Point'] });
+            map.addSource('measure-source', {
+                type: 'geojson',
+                data: emptyFC()
+            });
+            map.addLayer({
+                id: 'measure-polygon-fill',
+                type: 'fill',
+                source: 'measure-source',
+                paint: {
+                    'fill-color': '#f0b823',
+                    'fill-opacity': .22
+                },
+                filter: ['==', '$type', 'Polygon']
+            });
+            map.addLayer({
+                id: 'measure-line-stroke',
+                type: 'line',
+                source: 'measure-source',
+                layout: {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                paint: {
+                    'line-color': '#f0b823',
+                    'line-width': 2.2,
+                    'line-dasharray': [2, 1]
+                },
+                filter: ['in', '$type', 'LineString', 'Polygon']
+            });
+            map.addLayer({
+                id: 'measure-points-circle',
+                type: 'circle',
+                source: 'measure-source',
+                paint: {
+                    'circle-radius': 4.5,
+                    'circle-color': '#ef4444',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#fff'
+                },
+                filter: ['==', '$type', 'Point']
+            });
         }
-        function measureClickHandler(e) { if (!measureEnabled) return; measurePoints.push([e.lngLat.lng, e.lngLat.lat]); updateMeasureGraphics(); updateMeasureText(); }
+
+        function measureClickHandler(e) {
+            if (!measureEnabled) return;
+            measurePoints.push([e.lngLat.lng, e.lngLat.lat]);
+            updateMeasureGraphics();
+            updateMeasureText();
+        }
+
         function updateMeasureGraphics() {
-            const src = map.getSource('measure-source'); if (!src) return;
-            const f = measurePoints.map((pt, i) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: pt }, properties: { id: i } }));
-            if (measureMode === 'distance' && measurePoints.length >= 2) f.push({ type: 'Feature', geometry: { type: 'LineString', coordinates: measurePoints }, properties: {} });
-            else if (measureMode === 'area' && measurePoints.length >= 3) f.push({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[...measurePoints, measurePoints[0]]] }, properties: {} });
-            src.setData({ type: 'FeatureCollection', features: f });
+            const src = map.getSource('measure-source');
+            if (!src) return;
+            const f = measurePoints.map((pt, i) => ({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: pt
+                },
+                properties: {
+                    id: i
+                }
+            }));
+            if (measureMode === 'distance' && measurePoints.length >= 2) f.push({
+                type: 'Feature',
+                geometry: {
+                    type: 'LineString',
+                    coordinates: measurePoints
+                },
+                properties: {}
+            });
+            else if (measureMode === 'area' && measurePoints.length >= 3) f.push({
+                type: 'Feature',
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [...measurePoints, measurePoints[0]]
+                    ]
+                },
+                properties: {}
+            });
+            src.setData({
+                type: 'FeatureCollection',
+                features: f
+            });
         }
+
         function updateMeasureText() {
             const n = measurePoints.length;
             if (measureMode === 'distance') {
-                if (n < 2) { measureOutput.textContent = "Click on map to start measuring."; return; }
-                const km = turf.lineDistance({ type: 'Feature', geometry: { type: 'LineString', coordinates: measurePoints } }, 'kilometers');
+                if (n < 2) {
+                    measureOutput.textContent = "Click on map to start measuring.";
+                    return;
+                }
+                const km = turf.lineDistance({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: measurePoints
+                    }
+                }, 'kilometers');
                 measureOutput.innerHTML = km < 1 ? `<strong>${(km*1000).toFixed(0)} m</strong>` : `<strong>${km.toLocaleString(undefined,{maximumFractionDigits:2})} km</strong>`;
             } else {
-                if (n < 3) { measureOutput.textContent = n ? `${n}/3 · ${"Click at least 3 points to measure area."}` : "Click at least 3 points to measure area."; return; }
-                const m2 = turf.area({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[...measurePoints, measurePoints[0]]] } });
+                if (n < 3) {
+                    measureOutput.textContent = n ? `${n}/3 · ${"Click at least 3 points to measure area."}` : "Click at least 3 points to measure area.";
+                    return;
+                }
+                const m2 = turf.area({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: [
+                            [...measurePoints, measurePoints[0]]
+                        ]
+                    }
+                });
                 measureOutput.innerHTML = `<strong>${(m2/1e6).toLocaleString(undefined,{maximumFractionDigits:2})} km²</strong> (${(m2/1e4).toLocaleString(undefined,{maximumFractionDigits:1})} ha)`;
             }
         }
 
         /* ---------- MODALES Y GOOGLE CMP ---------- */
-        const aboutModal = $('aboutModal'), statsModal = $('statsModal');
+        const aboutModal = $('aboutModal'),
+            statsModal = $('statsModal');
         $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
         $('langSelector').addEventListener('change', e => location.href = e.target.value);
-        $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
+        $('brandLogo').addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                aboutModal.style.display = 'flex';
+            }
+        });
         $('closeModal').onclick = () => aboutModal.style.display = 'none';
         $('closeStatsModal').onclick = () => statsModal.style.display = 'none';
-        addEventListener('click', e => { [aboutModal, statsModal, addPinModal].forEach(m => { if (e.target === m) m.style.display = 'none'; }); });
+        addEventListener('click', e => {
+            [aboutModal, statsModal, addPinModal].forEach(m => {
+                if (e.target === m) m.style.display = 'none';
+            });
+        });
 
         $('openCookieSettings').addEventListener('click', e => {
             if (window.googlefc && typeof window.googlefc.showRevocationMessage === 'function') {
@@ -2815,9 +3195,15 @@
 
         /* ---------- ADSENSE ---------- */
         addEventListener('load', () => setTimeout(() => {
-            const s = document.createElement('script'); s.async = true; s.crossOrigin = 'anonymous';
+            const s = document.createElement('script');
+            s.async = true;
+            s.crossOrigin = 'anonymous';
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801';
-            s.onload = () => { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {} };
+            s.onload = () => {
+                try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {}
+            };
             document.head.appendChild(s);
         }, 1500));
     </script>
