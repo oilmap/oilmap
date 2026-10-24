@@ -1025,7 +1025,7 @@
                 <button type="button" class="pill" data-lng="-80.7" data-lat="-2.2" data-z="7.6">🌊 Santa Elena</button>
                 <button type="button" class="pill" data-lng="-79.7" data-lat="0.9" data-z="7.8">🏭 Esmeraldas Coast</button>
                 <button type="button" class="pill" data-lng="-77.9" data-lat="-3.9" data-z="7.0">🌳 Marañón Frontier</button>
-            
+            </div>
         </div>
 
         <!-- 1. KPI Executive Board -->
@@ -1039,12 +1039,12 @@
                     <p class="lh"><span>Heavy crude (Oriente)</span><span>~470 kbbl/d (2025)</span></p>
                 </article>
 
-                <article class="tile" id="brentTile">
-                    <h3>Brent Crude (Live)</h3>
-                    <p class="px" id="kpiBrentPx">--<small>/bbl</small></p>
-                    <p class="d" id="kpiBrentChg">Loading price feed…</p>
-                    <div id="kpiBrentGauge"></div>
-                    <p class="lh" id="kpiBrentSpread"><span>Brent vs WTI: --</span></p>
+                <article class="tile" id="orienteTile">
+                    <h3>Oriente Crude (Live)</h3>
+                    <p class="px" id="kpiOrientePx">--<small>/bbl</small></p>
+                    <p class="d" id="kpiOrienteChg">Loading price feed…</p>
+                    <div id="kpiOrienteGauge"></div>
+                    <p class="lh" id="kpiOrienteSpread"><span>Spread vs Brent: --</span></p>
                 </article>
 
                 <article class="tile">
@@ -1098,7 +1098,7 @@
                     <div id="ecuMap" role="application" aria-label="Interactive Ecuador Oil and Gas Map"></div>
                     <div class="map-footer">
                         <span id="mapViewSummary">Querying Ecuadorian vector geometries…</span>
-                        <button type="button" class="link-btn" id="btnResetCol">Reset national view</button>
+                        <button type="button" class="link-btn" id="btnResetEcu">Reset national view</button>
                     </div>
                 </div>
 
@@ -1147,8 +1147,8 @@
 
                 <!-- Benchmark Comparison -->
                 <div class="card">
-                    <h3>🛢️ Brent &amp; WTI Benchmarks</h3>
-                    <p class="sub">Live spot comparison (USD/bbl). Ecuadorian grades such as Oriente and Napo are not yet in the live price feed.</p>
+                    <h3>🛢️ Oriente &amp; Napo vs. Global Benchmarks</h3>
+                    <p class="sub">Live spot comparison (USD/bbl) of Ecuadorian crudes against Brent and WTI.</p>
                     <div id="pricesBox" class="stat-bars"></div>
                 </div>
             </div>
@@ -2062,6 +2062,12 @@
                             });
                         });
 
+                        var oriente = blends.find(function(b) {
+                            return /oriente crude/i.test(b.name);
+                        });
+                        var napo = blends.find(function(b) {
+                            return /napo crude/i.test(b.name);
+                        });
                         var brent = blends.find(function(b) {
                             return /brent crude/i.test(b.name);
                         });
@@ -2069,24 +2075,24 @@
                             return /wti crude/i.test(b.name);
                         });
 
-                        if (brent) {
-                            $('kpiBrentPx').innerHTML = '$' + f2(brent.price) + '<small>/bbl</small>';
-                            var cCls = brent.chg > 0 ? 'up' : brent.chg < 0 ? 'dn' : '';
-                            var arr = brent.chg > 0 ? '▲ ' : brent.chg < 0 ? '▼ ' : '';
-                            $('kpiBrentChg').className = 'd ' + cCls;
-                            $('kpiBrentChg').textContent = arr + sg(brent.chg) + ' (' + sg(brent.pct) + '%)';
+                        if (oriente) {
+                            $('kpiOrientePx').innerHTML = '$' + f2(oriente.price) + '<small>/bbl</small>';
+                            var cCls = oriente.chg > 0 ? 'up' : oriente.chg < 0 ? 'dn' : '';
+                            var arr = oriente.chg > 0 ? '▲ ' : oriente.chg < 0 ? '▼ ' : '';
+                            $('kpiOrienteChg').className = 'd ' + cCls;
+                            $('kpiOrienteChg').textContent = arr + sg(oriente.chg) + ' (' + sg(oriente.pct) + '%)';
 
-                            if (brent.wk) {
-                                var pos = brent.wk[1] === brent.wk[0] ? 0.5 : Math.min(1, Math.max(0, (brent.price - brent.wk[0]) / (brent.wk[1] - brent.wk[0])));
-                                $('kpiBrentGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
+                            if (oriente.wk) {
+                                var pos = oriente.wk[1] === oriente.wk[0] ? 0.5 : Math.min(1, Math.max(0, (oriente.price - oriente.wk[0]) / (oriente.wk[1] - oriente.wk[0])));
+                                $('kpiOrienteGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
                             }
-                            if (wti) {
-                                var sp = brent.price - wti.price;
-                                $('kpiBrentSpread').innerHTML = '<span>Brent vs WTI: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (brent.wk ? f2(brent.wk[0]) + '–$' + f2(brent.wk[1]) : '--') + '</span>';
+                            if (brent) {
+                                var sp = oriente.price - brent.price;
+                                $('kpiOrienteSpread').innerHTML = '<span>vs Brent: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (oriente.wk ? f2(oriente.wk[0]) + '–$' + f2(oriente.wk[1]) : '--') + '</span>';
                             }
                         }
 
-                        var peers = [brent, wti].filter(Boolean);
+                        var peers = [oriente, napo, brent, wti].filter(Boolean);
                         var maxP = Math.max.apply(null, peers.map(function(p) {
                             return p.price;
                         })) || 100;
@@ -2095,10 +2101,10 @@
                             var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
                             return '<div class="stat-row">' +
                                 '<div class="stat-row-top">' +
-                                '<span><strong>' + esc(p.name) + '</strong></span>' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (/oriente|napo/i.test(p.name) ? '<span class="badge">Ecuador</span>' : '') + '</span>' +
                                 '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
                                 '</div>' +
-                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (/brent/i.test(p.name) ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (/oriente|napo/i.test(p.name) ? '#f0b823' : '#4b5870') + '"></div></div>' +
                                 '</div>';
                         }).join('');
                     })
@@ -2191,7 +2197,7 @@
                 });
             });
 
-            $('btnResetCol').addEventListener('click', function() {
+            $('btnResetEcu').addEventListener('click', function() {
                 if (!map) return;
                 map.flyTo({
                     center: [-78.2, -1.5],
