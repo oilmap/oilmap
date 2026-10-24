@@ -1025,7 +1025,7 @@
                 <button type="button" class="pill" data-lng="2.8" data-lat="59.0" data-z="6.8">🛢️ North Sea</button>
                 <button type="button" class="pill" data-lng="22.0" data-lat="72.0" data-z="5.6">❄️ Barents Sea</button>
                 <button type="button" class="pill" data-lng="5.7" data-lat="58.9" data-z="8.0">🏙️ Stavanger Hub</button>
-            
+            </div>
         </div>
 
         <!-- 1. KPI Executive Board -->
@@ -1098,7 +1098,7 @@
                     <div id="norMap" role="application" aria-label="Interactive Norway Oil and Gas Map"></div>
                     <div class="map-footer">
                         <span id="mapViewSummary">Querying Norwegian vector geometries…</span>
-                        <button type="button" class="link-btn" id="btnResetCol">Reset national view</button>
+                        <button type="button" class="link-btn" id="btnResetNor">Reset national view</button>
                     </div>
                 </div>
 
@@ -2005,7 +2005,9 @@
 
             function renderEiaTrend() {
                 var data = [{ yr: '2023', val: 2010 }, { yr: '2024', val: 1990 }, { yr: '2025', val: 2000 }, { yr: '2026', val: 1950 }];
-                var max = 1000;
+                var max = Math.max.apply(null, data.map(function(d) {
+                    return d.val;
+                }));
                 var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
                 data.forEach(function(d, i) {
                     var h = (d.val / max) * 95;
@@ -2208,7 +2210,7 @@
                 });
             });
 
-            $('btnResetCol').addEventListener('click', function() {
+            $('btnResetNor').addEventListener('click', function() {
                 if (!map) return;
                 map.flyTo({
                     center: [9.0, 63.5],
