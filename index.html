@@ -78,11 +78,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
     <script src="data/geocoder.js" defer></script>
     <style>
-        :root {
+         :root {
             --accent: #f0b823;
             --accent-soft: rgba(240, 184, 35, .14);
-            --surface: rgba(13, 18, 30, .84);
-            --surface-elevated: rgba(20, 27, 45, .94);
+            --surface: rgba(13, 18, 30, .86);
+            --surface-elevated: rgba(20, 27, 45, .96);
             --border: rgba(255, 255, 255, .1);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
@@ -137,40 +137,47 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow)
         }
+        /* ---------- HEADER COMPACTO Y PISTA DE SCROLL ---------- */
         
         header.top-bar {
             position: absolute;
-            top: calc(14px + env(safe-area-inset-top, 0px));
+            top: calc(12px + env(safe-area-inset-top, 0px));
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 28px);
-            max-width: 1380px;
+            width: calc(100% - 24px);
+            max-width: 1420px;
             z-index: 20;
-            padding: 8px 14px;
+            padding: 6px 10px;
             border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px
+            gap: 10px;
+            user-select: none;
         }
         
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
             flex-shrink: 0;
-            user-select: none
+            padding: 2px 4px;
+            border-radius: 8px;
+            transition: opacity .15s ease;
+        }
+        
+        .brand:hover {
+            opacity: .9;
         }
         
         .brand img {
-            height: 30px;
-            width: 30px;
+            height: 26px;
+            width: 26px;
             object-fit: contain
         }
         
         .brand h1 {
-            font-size: .92rem;
+            font-size: .86rem;
             margin: 0;
             letter-spacing: .5px;
             font-weight: 700;
@@ -182,31 +189,87 @@
             font-weight: 500
         }
         
-        .toolbar {
+        .nav-scroll-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-scroll-track {
             display: flex;
             align-items: center;
             gap: 6px;
             overflow-x: auto;
+            overflow-y: hidden;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            flex: 1;
-            min-width: 0;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            width: 100%;
+            cursor: grab;
         }
         
-        .toolbar::-webkit-scrollbar {
-            display: none
+        .nav-scroll-track.grabbing {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+        
+        .nav-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .scroll-arrow-btn {
+            background: rgba(13, 18, 30, .9);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            position: absolute;
+            font-size: .85rem;
+            transition: all .15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+        }
+        
+        .scroll-arrow-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        
+        .scroll-arrow-btn.left {
+            left: -4px;
+        }
+        
+        .scroll-arrow-btn.right {
+            right: -4px;
+        }
+        
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
         }
         
         .btn-ui,
         .nav-link {
-            padding: 7px 12px;
+            padding: 6px 11px;
             border-radius: var(--radius-pill);
             border: 1px solid transparent;
             background: rgba(255, 255, 255, .05);
             color: var(--text-primary);
             font-family: inherit;
             font-weight: 500;
-            font-size: .76rem;
+            font-size: .75rem;
             cursor: pointer;
             transition: all .18s ease;
             text-decoration: none;
@@ -214,7 +277,8 @@
             align-items: center;
             gap: 5px;
             white-space: nowrap;
-            outline: none
+            outline: none;
+            flex-shrink: 0;
         }
         
         .btn-ui:hover,
@@ -224,51 +288,51 @@
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-
+        
+        .btn-ui.active-tool {
+            background: var(--accent) !important;
+            color: #000 !important;
+            font-weight: 600
+        }
+        
         .lang-select {
-            padding: 7px 12px;
+            padding: 6px 10px;
             border-radius: var(--radius-pill);
             border: 1px solid rgba(255, 255, 255, .08);
             background: rgba(255, 255, 255, .05);
             color: var(--text-primary);
             font-family: inherit;
-            font-size: .76rem;
+            font-size: .74rem;
             cursor: pointer;
             outline: none;
             flex-shrink: 0;
         }
-
+        
         .lang-select:hover,
         .lang-select:focus-visible {
             background: var(--accent-soft);
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-
+        
         .lang-select option {
             background: #0d121e;
             color: var(--text-primary)
         }
-
-        .btn-ui.active-tool {
-            background: var(--accent)!important;
-            color: #000!important;
-            font-weight: 600
-        }
         
         .search-wrap {
             position: relative;
-            flex-shrink: 0
+            flex-shrink: 0;
         }
         
         .search-input {
-            padding: 7px 14px;
+            padding: 6px 12px;
             border-radius: var(--radius-pill);
             border: 1px solid var(--border);
-            background: rgba(0, 0, 0, .3);
+            background: rgba(0, 0, 0, .35);
             color: var(--text-primary);
-            width: 190px;
-            font-size: .76rem;
+            width: 175px;
+            font-size: .75rem;
             font-family: inherit;
             transition: width .25s ease, border-color .2s, background .2s;
             outline: none
@@ -276,28 +340,26 @@
         
         .search-input:focus {
             border-color: var(--accent);
-            background: rgba(0, 0, 0, .65);
-            width: 235px
+            background: rgba(0, 0, 0, .7);
+            width: 215px
         }
         
         #suggestions {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 260px;
-            z-index: 40;
-            max-height: 240px;
+            position: fixed;
+            z-index: 50;
+            max-height: 250px;
             overflow-y: auto;
             display: none;
             padding: 6px;
-            border-radius: var(--radius-md)
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
         }
         
         .suggestion-item {
             padding: 8px 10px;
             cursor: pointer;
             border-radius: 6px;
-            font-size: .76rem;
+            font-size: .75rem;
             transition: background .15s
         }
         
@@ -306,24 +368,40 @@
             color: #000;
             font-weight: 600
         }
+        /* ---------- PANELES DESPLEGABLES ---------- */
         
         .dropdown-panel {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 35;
+            z-index: 45;
             padding: 6px;
             border-radius: var(--radius-md);
             display: none;
             flex-direction: column;
             gap: 2px;
-            max-height: 70vh;
-            max-height: 70dvh;
-            overflow-y: auto
+            max-height: 72vh;
+            max-height: 72dvh;
+            overflow-y: auto;
         }
         
         .dropdown-panel.show {
             display: flex
+        }
+        
+        .menu-group-header {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: var(--accent);
+            padding: 6px 10px 2px;
+            font-weight: 700;
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 6px;
         }
         
         .layer-item,
@@ -348,7 +426,7 @@
         a.shortcut-item {
             text-decoration: none
         }
-
+        
         .layer-item:hover,
         .shortcut-item:hover {
             background: rgba(255, 255, 255, .08);
@@ -373,14 +451,15 @@
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent)
         }
+        /* ---------- SIDEBARS Y MODALES ---------- */
         
         #smartViewSidebar {
             position: absolute;
-            top: calc(74px + env(safe-area-inset-top, 0px));
+            top: calc(68px + env(safe-area-inset-top, 0px));
             left: 14px;
             width: 380px;
-            max-height: calc(100vh - 94px);
-            max-height: calc(100dvh - 94px);
+            max-height: calc(100vh - 84px);
+            max-height: calc(100dvh - 84px);
             z-index: 26;
             padding: 16px;
             border-radius: var(--radius-lg);
@@ -457,11 +536,11 @@
         
         #regionSidebar {
             position: absolute;
-            top: calc(74px + env(safe-area-inset-top, 0px));
+            top: calc(68px + env(safe-area-inset-top, 0px));
             right: 14px;
             width: 350px;
-            max-height: calc(100vh - 94px);
-            max-height: calc(100dvh - 94px);
+            max-height: calc(100vh - 84px);
+            max-height: calc(100dvh - 84px);
             z-index: 25;
             padding: 18px;
             border-radius: var(--radius-lg);
@@ -536,7 +615,7 @@
         
         .floating-tool {
             position: absolute;
-            top: calc(74px + env(safe-area-inset-top, 0px));
+            top: calc(68px + env(safe-area-inset-top, 0px));
             left: 14px;
             z-index: 25;
             display: none;
@@ -573,7 +652,7 @@
         
         #polyDrawHud {
             position: absolute;
-            top: calc(74px + env(safe-area-inset-top, 0px));
+            top: calc(68px + env(safe-area-inset-top, 0px));
             left: 50%;
             transform: translateX(-50%);
             z-index: 30;
@@ -735,14 +814,14 @@
         }
         
         .mapboxgl-popup-content {
-            background: var(--surface-elevated)!important;
-            border: 1px solid var(--border)!important;
-            border-radius: var(--radius-md)!important;
-            color: var(--text-primary)!important;
-            padding: 14px!important;
-            font-family: inherit!important;
-            font-size: .8rem!important;
-            box-shadow: var(--shadow)!important;
+            background: var(--surface-elevated) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius-md) !important;
+            color: var(--text-primary) !important;
+            padding: 14px !important;
+            font-family: inherit !important;
+            font-size: .8rem !important;
+            box-shadow: var(--shadow) !important;
             max-width: 290px;
             max-height: 310px;
             overflow-y: auto
@@ -815,9 +894,9 @@
         }
         
         .mapboxgl-popup-close-button {
-            color: var(--text-secondary)!important;
-            font-size: 16px!important;
-            padding: 4px 8px!important
+            color: var(--text-secondary) !important;
+            font-size: 16px !important;
+            padding: 4px 8px !important
         }
         
         .custom-map-pin {
@@ -842,39 +921,37 @@
             justify-content: center
         }
         
-        @media (max-width:768px) {
+        @media (max-width: 820px) {
             header.top-bar {
-                top: calc(10px + env(safe-area-inset-top, 0px));
-                width: calc(100% - 20px);
-                padding: 8px 10px;
-                flex-wrap: wrap;
-                gap: 8px
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                width: calc(100% - 16px);
+                padding: 5px 8px;
+                gap: 8px;
             }
-            .search-wrap {
-                order: 3;
-                width: 100%
+            .search-input {
+                width: 135px;
             }
-            .search-input,
             .search-input:focus {
-                width: 100%
+                width: 175px;
             }
-            .toolbar {
-                width: calc(100% - 60px);
-                order: 2;
-                padding-bottom: 2px
+        }
+        
+        @media (max-width: 520px) {
+            .brand h1 {
+                display: none;
             }
-            .lang-select {
-                order: 2;
+            .brand {
+                padding: 0 2px;
             }
-            #suggestions {
-                width: 100%
+            .scroll-arrow-btn {
+                display: none !important;
             }
             #smartViewSidebar,
             #regionSidebar {
                 top: auto;
                 bottom: 0;
-                left: 0!important;
-                right: 0!important;
+                left: 0 !important;
+                right: 0 !important;
                 width: 100%;
                 max-height: 62vh;
                 max-height: 62dvh;
@@ -898,33 +975,96 @@
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
     </div>
 
+    <!-- HEADER ERGONÓMICO CON DESPLAZAMIENTO INTEGRAL -->
     <header class="glass top-bar" role="banner">
+        <!-- Brand / Logo -->
         <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="About World Oil Map">
-            <img src="./img/oilmap.png" width="30" height="30" fetchpriority="high" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'30\' height=\'30\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
+            <img src="./img/oilmap.png" width="26" height="26" fetchpriority="high" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'26\' height=\'26\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
             <h1>WORLD OIL MAP <span>2026</span></h1>
         </div>
-        <div class="search-wrap">
-            <input type="search" id="countrySearch" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
-            <div id="suggestions" class="glass" role="listbox"></div>
+
+        <!-- Pista de desplazamiento continuo -->
+        <div class="nav-scroll-wrapper" id="navScrollWrapper">
+            <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
+
+            <div class="nav-scroll-track" id="navScrollTrack">
+                <!-- Buscador de bloques y países -->
+                <div class="search-wrap">
+                    <input type="search" id="countrySearch" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+                </div>
+
+                <!-- Barra de herramientas en el orden estricto solicitado -->
+                <nav class="toolbar" aria-label="Map Controls">
+                    <!-- 1. Layers -->
+                    <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
+
+                    <!-- 2. SmartView -->
+                    <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
+
+                    <!-- 3. Intelligence (fusiona Intelligence, Regions y Stats) -->
+                    <button id="btn-intelligence" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>📊 Intelligence ▾</span></button>
+
+                    <!-- 4. Tools (fusiona Pin y Measure) -->
+                    <button id="btn-tools" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🛠️ Tools ▾</span></button>
+
+                    <!-- 5. Blog -->
+                    <a href="blog.html" class="nav-link"><span>Blog</span></a>
+
+                    <!-- 6. Contact -->
+                    <a href="contact.html" class="nav-link"><span>Contact</span></a>
+
+                    <!-- 7. Sources -->
+                    <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
+                </nav>
+
+                <!-- 8. Selector de idioma -->
+                <select id="langSelector" class="lang-select" aria-label="Select Language">
+                    <option value="/">🌐 EN</option>
+                    <option value="/es/">🌐 ES</option>
+                    <option value="/fr/">🌐 FR</option>
+                </select>
+            </div>
+
+            <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
         </div>
-        <nav class="toolbar" aria-label="Map Controls">
-            <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
-            <a href="oil_price_charts.html" class="nav-link"><span>Intelligence</span></a>
-            <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>📍 Regions ▾</span></button>
-            <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
-            <button id="btn-stats" class="btn-ui" type="button"><span>📊 Stats</span></button>
-            <button id="btnAddPin" class="btn-ui" type="button"><span>📍 + Pin</span></button>
-            <button id="btn-measure" class="btn-ui" type="button"><span>📏 Measure</span></button>
-            <a href="blog.html" class="nav-link"><span>Blog</span></a>
-            <a href="contact.html" class="nav-link"><span>Contact</span></a>
-            <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
-        </nav>
-        <select id="langSelector" class="lang-select" aria-label="Select Language">
-            <option value="/">🌐 EN</option>
-            <option value="/es/">🌐 ES</option>
-            <option value="/fr/">🌐 FR</option>
-        </select>
     </header>
+
+    <!-- Caja de sugerencias fija -->
+    <div id="suggestions" class="glass" role="listbox"></div>
+
+    <!-- Menú Desplegable: Layers -->
+    <div id="menu" class="dropdown-panel glass" role="menu"></div>
+
+    <!-- Menú Desplegable: Intelligence (Price Charts, Market Stats & Regional Profiles) -->
+    <div id="intelligence-menu" class="dropdown-panel glass" role="menu">
+        <div class="menu-group-header">Market Analysis</div>
+        <a class="shortcut-item" role="menuitem" href="oil_price_charts.html">📈 Price Intelligence Charts</a>
+        <button class="shortcut-item" id="menu-item-stats" role="menuitem" type="button">📊 Market Rankings & Stats</button>
+        <div class="menu-divider"></div>
+        <div class="menu-group-header">Country Profiles (EIA)</div>
+        <a class="shortcut-item" role="menuitem" href="venezuela_petroleum_market.html">🇻🇪 Venezuela</a>
+        <a class="shortcut-item" role="menuitem" href="uae_petroleum_market.html">🇦🇪 UAE</a>
+        <a class="shortcut-item" role="menuitem" href="nigeria_petroleum_market.html">🇳🇬 Nigeria</a>
+        <a class="shortcut-item" role="menuitem" href="argentina_petroleum_market.html">🇦🇷 Argentina</a>
+        <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" type="button">🌎 Global View</button>
+    </div>
+
+    <!-- Menú Desplegable: Tools (Custom Pins, Polygon Draw, KML Import & Measure) -->
+    <div id="tools-menu" class="dropdown-panel glass" role="menu">
+        <div class="menu-group-header">Spatial Tools</div>
+        <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
+        <button class="shortcut-item" id="menu-tool-poly" role="menuitem" type="button">📐 Polygon Block Drawer</button>
+        <button class="shortcut-item" id="menu-tool-kml" role="menuitem" type="button">📂 Import KML / GIS</button>
+        <div class="menu-divider"></div>
+        <div class="menu-group-header">Measurement</div>
+        <button class="shortcut-item" id="menu-tool-measure" role="menuitem" type="button">📏 Measure Distance & Area</button>
+    </div>
+
+    <!-- Menú Desplegable: Sources -->
+    <div id="source-menu" class="dropdown-panel glass" role="menu">
+        <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
+        <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
+    </div>
 
     <!-- SmartView Live Analytics Sidebar -->
     <aside id="smartViewSidebar" class="glass" aria-label="SmartView Dashboard">
@@ -953,19 +1093,7 @@
         </div>
     </aside>
 
-    <div id="regions-menu" class="dropdown-panel glass" role="menu">
-        <a class="shortcut-item" role="menuitem" href="venezuela_petroleum_market.html">🇻🇪 Venezuela</a>
-        <a class="shortcut-item" role="menuitem" href="uae_petroleum_market.html">🇦🇪 UAE</a>
-        <a class="shortcut-item" role="menuitem" href="nigeria_petroleum_market.html">🇳🇬 Nigeria</a>
-        <a class="shortcut-item" role="menuitem" href="argentina_petroleum_market.html">🇦🇷 Argentina</a>
-        <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3">🌎 Global View</button>
-    </div>
-    <div id="source-menu" class="dropdown-panel glass" role="menu">
-        <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
-        <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
-    </div>
-    <div id="menu" class="dropdown-panel glass" role="menu"></div>
-
+    <!-- Floating Measurement Control -->
     <div id="distanceContainer" class="floating-tool glass" aria-live="polite">
         <div class="measure-modes">
             <button id="btnMeasureDist" class="btn-ui active-tool">📏 Distance</button>
@@ -975,12 +1103,14 @@
         <div id="measureOutput" class="measure-readout">Click on map to start measuring.</div>
     </div>
 
+    <!-- HUD del dibujo de polígonos -->
     <div id="polyDrawHud" class="glass">
         <span id="polyVertexCounter" style="font-size:.78rem;font-weight:600;color:var(--accent)">📐 0 vertices</span>
         <button id="btnFinishPoly" class="btn-ui active-tool">✅ Save</button>
         <button id="btnCancelPoly" class="btn-ui" aria-label="Cancel">❌</button>
     </div>
 
+    <!-- Country Profile Sidebar -->
     <aside id="regionSidebar" class="glass" aria-label="Country Intelligence">
         <div class="panel-header">
             <h2 id="sidebarTitle">Country Profile</h2>
@@ -1012,6 +1142,7 @@
     <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
+    <!-- Modal de Spatial Tools (Pins, Polígonos, KML) -->
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card compact">
             <div class="panel-header">
@@ -1068,6 +1199,7 @@
         </div>
     </div>
 
+    <!-- Modal de Rankings y Fluctuaciones -->
     <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card">
             <div class="panel-header">
@@ -1103,6 +1235,7 @@
         </div>
     </div>
 
+    <!-- Modal About -->
     <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true">
         <div class="modal-card compact" style="text-align:center">
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
@@ -1131,9 +1264,92 @@
             "'": '&#39;'
         }[c]));
 
-        /* ---------- configuración de capas y menú ---------- */
-        const menuNav = $('menu'),
-            regionsMenu = $('regions-menu');
+        /* ---------- CONTROL DE SCROLL Y DESPLAZAMIENTO DEL HEADER ---------- */
+        const navTrack = $('navScrollTrack');
+        const scrollLeftBtn = $('scrollLeftBtn');
+        const scrollRightBtn = $('scrollRightBtn');
+
+        function updateScrollArrows() {
+            if (!navTrack) return;
+            const maxScroll = navTrack.scrollWidth - navTrack.clientWidth;
+            if (maxScroll <= 4) {
+                if (scrollLeftBtn) scrollLeftBtn.style.display = 'none';
+                if (scrollRightBtn) scrollRightBtn.style.display = 'none';
+                return;
+            }
+            if (scrollLeftBtn) {
+                scrollLeftBtn.style.display = 'flex';
+                scrollLeftBtn.style.opacity = navTrack.scrollLeft > 8 ? '1' : '0.2';
+                scrollLeftBtn.style.pointerEvents = navTrack.scrollLeft > 8 ? 'auto' : 'none';
+            }
+            if (scrollRightBtn) {
+                scrollRightBtn.style.display = 'flex';
+                scrollRightBtn.style.opacity = (maxScroll - navTrack.scrollLeft) > 8 ? '1' : '0.2';
+                scrollRightBtn.style.pointerEvents = (maxScroll - navTrack.scrollLeft) > 8 ? 'auto' : 'none';
+            }
+        }
+
+        if (navTrack) {
+            navTrack.addEventListener('wheel', e => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    navTrack.scrollLeft += e.deltaY;
+                }
+            }, {
+                passive: false
+            });
+
+            navTrack.addEventListener('scroll', () => {
+                closeAllDropdowns();
+                updateScrollArrows();
+            }, {
+                passive: true
+            });
+
+            if (scrollLeftBtn) {
+                scrollLeftBtn.addEventListener('click', () => {
+                    navTrack.scrollBy({
+                        left: -220,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            if (scrollRightBtn) {
+                scrollRightBtn.addEventListener('click', () => {
+                    navTrack.scrollBy({
+                        left: 220,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            let isDown = false,
+                startX, scrollLeftVal;
+            navTrack.addEventListener('mousedown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                isDown = true;
+                navTrack.classList.add('grabbing');
+                startX = e.pageX - navTrack.offsetLeft;
+                scrollLeftVal = navTrack.scrollLeft;
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                navTrack.classList.remove('grabbing');
+            });
+            navTrack.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - navTrack.offsetLeft;
+                const walk = (x - startX) * 1.4;
+                navTrack.scrollLeft = scrollLeftVal - walk;
+            });
+
+            window.addEventListener('resize', updateScrollArrows);
+            setTimeout(updateScrollArrows, 300);
+        }
+
+        /* ---------- CONFIGURACIÓN DE CAPAS (LAYERS) ---------- */
+        const menuNav = $('menu');
 
         const layerMenuConfig = [{
             label: 'PRODUCTION',
@@ -1233,32 +1449,38 @@
             });
         }
 
-        /* ---------- dropdowns ---------- */
+        /* ---------- PANELES DROPDOWN (LAYERS, INTELLIGENCE, TOOLS, SOURCES) ---------- */
         const panels = [
-            [$('btn-regions'), regionsMenu],
             [$('btn-toggle-menu'), menuNav],
+            [$('btn-intelligence'), $('intelligence-menu')],
+            [$('btn-tools'), $('tools-menu')],
             [$('btn-source'), $('source-menu')]
         ];
 
         function closeAllDropdowns() {
             panels.forEach(([b, p]) => {
-                p.classList.remove('show');
-                b.setAttribute('aria-expanded', 'false');
+                if (p) p.classList.remove('show');
+                if (b) b.setAttribute('aria-expanded', 'false');
             });
         }
 
         function placePanel(btn, panel) {
             const r = btn.getBoundingClientRect(),
-                w = Math.min(230, innerWidth - 16);
-            let left = r.right - w;
-            left = Math.max(8, Math.min(left, innerWidth - w - 8));
+                w = Math.min(250, window.innerWidth - 16);
+            let left = r.left;
+            if (left + w > window.innerWidth - 8) {
+                left = window.innerWidth - w - 8;
+            }
+            left = Math.max(8, left);
             Object.assign(panel.style, {
                 width: w + 'px',
                 left: left + 'px',
                 top: (r.bottom + 8) + 'px'
             });
         }
+
         panels.forEach(([btn, panel]) => {
+            if (!btn || !panel) return;
             btn.addEventListener('click', e => {
                 e.stopPropagation();
                 const was = panel.classList.contains('show');
@@ -1271,19 +1493,52 @@
             });
             panel.addEventListener('click', e => e.stopPropagation());
         });
+
         document.addEventListener('click', () => {
             closeAllDropdowns();
             $('suggestions').style.display = 'none';
         });
         addEventListener('resize', closeAllDropdowns);
         addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeAllDropdowns();
-        });
-        document.querySelector('.toolbar').addEventListener('scroll', closeAllDropdowns, {
-            passive: true
+            if (e.key === 'Escape') {
+                closeAllDropdowns();
+                $('suggestions').style.display = 'none';
+            }
         });
 
-        /* ---------- mapa mapbox ---------- */
+        /* ---------- ACCIONES DENTRO DE LOS NUEVOS MENÚS ---------- */
+        // Menú Intelligence: Disparo del modal de Estadísticas
+        $('menu-item-stats').addEventListener('click', () => {
+            closeAllDropdowns();
+            statsModal.style.display = 'flex';
+        });
+
+        // Menú Tools: Disparo de Pines, Polígonos y KML
+        $('menu-tool-pin').addEventListener('click', () => {
+            closeAllDropdowns();
+            showTab('pin');
+            addPinModal.style.display = 'flex';
+        });
+
+        $('menu-tool-poly').addEventListener('click', () => {
+            closeAllDropdowns();
+            showTab('poly');
+            addPinModal.style.display = 'flex';
+        });
+
+        $('menu-tool-kml').addEventListener('click', () => {
+            closeAllDropdowns();
+            showTab('kml');
+            addPinModal.style.display = 'flex';
+        });
+
+        // Menú Tools: Activación / Desactivación de Medición
+        $('menu-tool-measure').addEventListener('click', () => {
+            closeAllDropdowns();
+            toggleMeasureTool();
+        });
+
+        /* ---------- MAPA MAPBOX ---------- */
         mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -1307,7 +1562,7 @@
             trackUserLocation: true
         }), 'bottom-right');
 
-        /* ---------- SmartView Live Dashboard Logic ---------- */
+        /* ---------- SMARTVIEW LIVE ANALYTICS ---------- */
         let smartViewActive = false;
         let smartAreaChart = null,
             smartWellsChart = null;
@@ -1542,7 +1797,7 @@
             }).catch(() => {});
         }
 
-        /* ---------- region sidebar (Chart.js loaded on demand) ---------- */
+        /* ---------- SIDEBAR REGIONAL (EIA PROFILES) ---------- */
         let prodChart = null,
             chartPromise;
 
@@ -1576,7 +1831,8 @@
                 trend: [1300, 1350, 1390, 1420]
             }
         };
-        document.querySelectorAll('button.shortcut-item').forEach(btn => btn.addEventListener('click', () => {
+
+        document.querySelectorAll('button.shortcut-item[data-region]').forEach(btn => btn.addEventListener('click', () => {
             const name = btn.dataset.region;
             map.flyTo({
                 center: [+btn.dataset.lng, +btn.dataset.lat],
@@ -1647,7 +1903,7 @@
             }).catch(() => {});
         }
 
-        /* ---------- price data & layers initialization ---------- */
+        /* ---------- PRECIOS DEL PETRÓLEO Y FUENTES GEOJSON ---------- */
         const allBlends = [];
         let activePopup = null,
             globalGeojsonFeatures = [],
@@ -1870,7 +2126,7 @@
             });
         }
 
-        /* ---------- interactividad de capas ---------- */
+        /* ---------- INTERACTIVIDAD DE CAPAS GIS ---------- */
         const interactiveLayers = ['PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'REFINERIES', 'offshore-platforms', 'oil-and-gas-wells', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
 
         const fieldLabels = {
@@ -2007,7 +2263,7 @@
             showPopup(f.coordinates, f.popupContent);
         };
 
-        /* ---------- UTM & Spatial Tools ---------- */
+        /* ---------- UTM Y MODAL DE HERRAMIENTAS ESPACIALES ---------- */
         function utmToLatLng(zoneStr, E, N) {
             const m = String(zoneStr).trim().toUpperCase().match(/^(\d{1,2})\s*([C-X])?$/);
             if (!m || isNaN(E) || isNaN(N)) return [NaN, NaN];
@@ -2042,7 +2298,6 @@
             polygonSection = $('polygonSection'),
             kmlSection = $('kmlSection'),
             coordTypeSelect = $('coordType');
-        $('btnAddPin').onclick = () => addPinModal.style.display = 'flex';
         $('closeAddPinModal').onclick = () => addPinModal.style.display = 'none';
 
         function showTab(tabName) {
@@ -2104,7 +2359,7 @@
             if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
 
-        /* ---------- Importar KML propios en Spatial Tools ---------- */
+        /* ---------- IMPORTAR KML ---------- */
         function initKmlSources() {
             if (map.getSource('kml-custom-source')) return;
             map.addSource('kml-custom-source', {
@@ -2307,6 +2562,7 @@
             if (smartViewActive) refreshSmartViewData();
         };
 
+        /* ---------- DIBUJO DE POLÍGONOS ---------- */
         let isDrawingPolygon = false,
             polyCoordinates = [];
         const polyDrawHud = $('polyDrawHud'),
@@ -2390,13 +2646,13 @@
             '"': '&quot;'
         }[c]));
         $('btnExportKmlModal').onclick = () => {
-            if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
-                alert('No custom pins, polygons, or KML features added to export yet.');
-                return;
-            }
-            let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
-            customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
-            customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
+                if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
+                    alert('No custom pins, polygons, or KML features added to export yet.');
+                    return;
+                }
+                let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
+                customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
+                customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
             customKmlFeatures.forEach(f => {
                 const nm = escapeXml(f.properties.FAC_NAME || f.properties.Name || 'KML Item');
                 if (f.geometry.type === 'Point') k += `  <Placemark>\n    <name>${nm}</name>\n    <Point><coordinates>${f.geometry.coordinates[0]},${f.geometry.coordinates[1]},0</coordinates></Point>\n  </Placemark>\n`;
@@ -2408,9 +2664,23 @@
             a.href = url; a.download = 'oilmap_export.kml'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         };
 
-        /* ---------- search ---------- */
+        /* ---------- BÚSQUEDA FLOTANTE ---------- */
         const searchInput = $('countrySearch'), suggestionsDiv = $('suggestions');
         let debounce;
+
+        function updateSuggestionsPosition() {
+            const r = searchInput.getBoundingClientRect();
+            suggestionsDiv.style.top = (r.bottom + 8) + 'px';
+            const w = Math.min(280, window.innerWidth - 16);
+            let left = r.left;
+            if (left + w > window.innerWidth - 8) {
+                left = window.innerWidth - w - 8;
+            }
+            left = Math.max(8, left);
+            suggestionsDiv.style.left = left + 'px';
+            suggestionsDiv.style.width = w + 'px';
+        }
+
         searchInput.addEventListener('click', e => e.stopPropagation());
         suggestionsDiv.addEventListener('click', e => e.stopPropagation());
         searchInput.addEventListener('input', () => {
@@ -2463,28 +2733,40 @@
                     };
                     suggestionsDiv.appendChild(div);
                 });
+                updateSuggestionsPosition();
                 suggestionsDiv.style.display = 'block';
             }, 250);
         });
 
-        /* ---------- measure tool ---------- */
-        const distanceContainer = $('distanceContainer'), measureOutput = $('measureOutput'), btnMeasure = $('btn-measure'), btnMD = $('btnMeasureDist'), btnMA = $('btnMeasureArea');
+        /* ---------- HERRAMIENTA DE MEDICIÓN ---------- */
+        const distanceContainer = $('distanceContainer'), measureOutput = $('measureOutput'), btnMD = $('btnMeasureDist'), btnMA = $('btnMeasureArea');
         let measureEnabled = false, measureMode = 'distance', measurePoints = [];
         const emptyFC = () => ({ type: 'FeatureCollection', features: [] });
         const clearMeasure = () => { measurePoints = []; const s = map.getSource('measure-source'); if (s) s.setData(emptyFC()); };
-        btnMeasure.addEventListener('click', () => {
+
+        function toggleMeasureTool() {
             measureEnabled = !measureEnabled;
-            btnMeasure.classList.toggle('active-tool', measureEnabled);
+            $('btn-tools').classList.toggle('active-tool', measureEnabled);
             distanceContainer.classList.toggle('active', measureEnabled);
-            if (!measureEnabled) { clearMeasure(); map.off('click', measureClickHandler); map.getCanvas().style.cursor = ''; }
-            else { initMeasureSources(); map.on('click', measureClickHandler); map.getCanvas().style.cursor = 'crosshair'; updateMeasureText(); }
-        });
+            if (!measureEnabled) {
+                clearMeasure();
+                map.off('click', measureClickHandler);
+                map.getCanvas().style.cursor = '';
+            } else {
+                initMeasureSources();
+                map.on('click', measureClickHandler);
+                map.getCanvas().style.cursor = 'crosshair';
+                updateMeasureText();
+            }
+        }
+
         function setMode(m) {
             measureMode = m; btnMD.classList.toggle('active-tool', m === 'distance'); btnMA.classList.toggle('active-tool', m === 'area');
             updateMeasureGraphics(); updateMeasureText();
         }
         btnMD.onclick = () => setMode('distance'); btnMA.onclick = () => setMode('area');
         $('btnMeasureClear').onclick = () => { clearMeasure(); updateMeasureText(); };
+
         function initMeasureSources() {
             if (map.getSource('measure-source')) return;
             map.addSource('measure-source', { type: 'geojson', data: emptyFC() });
@@ -2513,13 +2795,12 @@
             }
         }
 
-        /* ---------- modals & Google CMP ---------- */
+        /* ---------- MODALES Y GOOGLE CMP ---------- */
         const aboutModal = $('aboutModal'), statsModal = $('statsModal');
         $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
         $('langSelector').addEventListener('change', e => location.href = e.target.value);
         $('brandLogo').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aboutModal.style.display = 'flex'; } });
         $('closeModal').onclick = () => aboutModal.style.display = 'none';
-        $('btn-stats').onclick = () => statsModal.style.display = 'flex';
         $('closeStatsModal').onclick = () => statsModal.style.display = 'none';
         addEventListener('click', e => { [aboutModal, statsModal, addPinModal].forEach(m => { if (e.target === m) m.style.display = 'none'; }); });
 
@@ -2531,7 +2812,7 @@
             }
         });
 
-        /* ---------- Google AdSense & Google CMP ---------- */
+        /* ---------- ADSENSE ---------- */
         addEventListener('load', () => setTimeout(() => {
             const s = document.createElement('script'); s.async = true; s.crossOrigin = 'anonymous';
             s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4035003913367801';
