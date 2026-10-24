@@ -23,6 +23,7 @@ const PAGES = [
     { path: '/data_lineage.html', priority: '0.8' },
     { path: '/cited-by.html', priority: '0.8' },
     { path: '/contact.html', priority: '0.5' },
+    { path: '/privacy-policy.html', priority: '0.3' },
 ];
 
 const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
