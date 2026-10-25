@@ -318,30 +318,6 @@
             color: var(--accent);
         }
 
-        header.top-bar .lang-select {
-            padding: 6px 10px;
-            border-radius: var(--radius-pill);
-            border: 1px solid rgba(255, 255, 255, .08);
-            background: rgba(255, 255, 255, .05);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: .74rem;
-            cursor: pointer;
-            outline: none;
-            flex-shrink: 0;
-        }
-
-        header.top-bar .lang-select:hover,
-        header.top-bar .lang-select:focus-visible {
-            background: var(--accent-soft);
-            border-color: rgba(240, 184, 35, .35);
-            color: var(--accent);
-        }
-
-        header.top-bar .lang-select option {
-            background: #0d121e;
-            color: var(--text-primary);
-        }
 
         header.top-bar .search-wrap {
             position: relative;
@@ -991,11 +967,6 @@
                     <a class="btn-ui" href="./data_lineage.html"><span>Sources ▾</span></a>
                 </nav>
 
-                <select id="langSelector" class="lang-select" aria-label="Select Language">
-                    <option value="/">🌐 EN</option>
-                    <option value="/es/">🌐 ES</option>
-                    <option value="/fr/">🌐 FR</option>
-                </select>
             </div>
 
             <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
@@ -2236,9 +2207,6 @@
                 track.scrollLeft = startScroll - (e.pageX - startX);
             });
 
-            document.getElementById('langSelector').addEventListener('change', e => {
-                location.href = e.target.value;
-            });
 
             updateArrows();
         })();
