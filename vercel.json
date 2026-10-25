@@ -1,6 +1,11 @@
 {
   "buildCommand": "node scripts/build-seo.js && node scripts/build-blog.js && node scripts/build-i18n.js",
   "outputDirectory": ".",
+  "redirects": [
+    { "source": "/es.html", "destination": "/es/", "statusCode": 301 },
+    { "source": "/fr.html", "destination": "/fr/", "statusCode": 301 },
+    { "source": "/ar.html", "destination": "/", "statusCode": 301 }
+  ],
   "headers": [
     {
       "source": "/old/(.*)",
