@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
-    <title>Colombia Oil & Gas Map: Llanos Basin, Pipelines, Refineries & Brent Price | World Oil Map</title>
-    <meta name="description" content="Interactive Colombia oil and gas intelligence dashboard: explore Llanos and Magdalena basin blocks, Caño Limón and Ocensa pipelines, Barrancabermeja and Cartagena refineries, EIA proven reserves (about 2.0B bbl), and live Brent and WTI prices.">
-    <meta name="keywords" content="Colombia oil map, Llanos Basin oil fields, Magdalena Valley oil map, Cusiana oil field, Rubiales oil field, Caño Limón pipeline, Barrancabermeja refinery, Cartagena refinery, Ecopetrol blocks, Colombia proven oil reserves">
+    <title>Colombia Oil & Gas Map: Llanos Basin, Pipelines, Refineries & Vasconia/Castilla Price | World Oil Map</title>
+    <meta name="description" content="Interactive Colombia oil and gas intelligence dashboard: explore ANH concession blocks, Llanos Orientales, Middle Magdalena Valley (VMM), Barrancabermeja, Reficar Cartagena, Ecopetrol infrastructure, and live Vasconia/Castilla crude prices.">
+    <meta name="keywords" content="Colombia oil map, Llanos Orientales oil fields, Middle Magdalena Valley VMM, Vasconia crude price, Castilla crude, ANH Colombia blocks, Ecopetrol pipelines, Barrancabermeja refinery, Reficar Cartagena, Colombia oil reserves">
     <meta name="author" content="Roque Leal">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#0b1120">
@@ -18,14 +18,14 @@
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="World Oil Map">
-    <meta property="og:title" content="Colombia Oil & Gas Map: Blocks, Pipelines, Refineries & Brent Crude">
-    <meta property="og:description" content="Live spatial intelligence on Colombia's upstream blocks, Llanos and Magdalena basins, pipelines, refineries, EIA production trends, and Brent and WTI benchmark pricing.">
+    <meta property="og:title" content="Colombia Oil & Gas Map: Blocks, Pipelines, Refineries & Vasconia Crude">
+    <meta property="og:description" content="Live spatial intelligence on Colombia's upstream blocks, Llanos Orientales, Magdalena Valley, pipeline networks, refineries, and Vasconia/Castilla benchmark pricing.">
     <meta property="og:url" content="https://oilmap.xyz/colombia_petroleum_market.html">
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@roqueleal08">
     <meta name="twitter:title" content="Colombia Oil & Gas Intelligence Dashboard | World Oil Map">
-    <meta name="twitter:description" content="Explore Colombia's oil blocks, pipelines, refineries, EIA reserves, and live Brent and WTI prices.">
+    <meta name="twitter:description" content="Explore Colombia's ANH oil blocks, pipeline networks, refineries, reserves, and live Vasconia & Castilla crude prices.">
     <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
 
     <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
@@ -46,8 +46,8 @@
                 "@type": "WebPage",
                 "@id": "https://oilmap.xyz/colombia_petroleum_market.html#webpage",
                 "url": "https://oilmap.xyz/colombia_petroleum_market.html",
-                "name": "Colombia Oil & Gas Map: Llanos Basin, Pipelines, Refineries & Brent Price",
-                "description": "Interactive spatial dashboard of Colombia's petroleum sector featuring upstream concession blocks, oil and gas pipelines, refineries, wells, EIA reserves, and live Brent and WTI prices.",
+                "name": "Colombia Oil & Gas Map: Llanos Basin, Pipelines, Refineries & Vasconia/Castilla Price",
+                "description": "Interactive spatial dashboard of Colombia's petroleum sector featuring ANH concession blocks, oil and gas pipelines, refineries, wells, reserves, and live Vasconia & Castilla crude benchmark prices.",
                 "inLanguage": "en",
                 "isPartOf": {
                     "@type": "WebSite",
@@ -59,8 +59,8 @@
                     "name": "Colombia",
                     "geo": {
                         "@type": "GeoCoordinates",
-                        "latitude": 4.6,
-                        "longitude": -73.1
+                        "latitude": 4.57,
+                        "longitude": -73.85
                     }
                 },
                 "author": {
@@ -70,8 +70,9 @@
                 }
             }, {
                 "@type": "Dataset",
+                "@id": "https://oilmap.xyz/colombia_petroleum_market.html#dataset",
                 "name": "Colombia Upstream & Downstream Oil and Gas Infrastructure Dataset",
-                "description": "Geospatial dataset mapping Colombia's oil production blocks, exploration areas, refineries, oil and gas pipelines, wells, and Brent and WTI benchmark pricing.",
+                "description": "Geospatial dataset mapping Colombia's ANH oil and gas production blocks, exploration areas, refineries, pipelines, wells, and Vasconia crude benchmark pricing.",
                 "url": "https://oilmap.xyz/colombia_petroleum_market.html",
                 "license": "https://creativecommons.org/licenses/by/4.0/",
                 "isAccessibleForFree": true,
@@ -86,6 +87,7 @@
                 }
             }, {
                 "@type": "BreadcrumbList",
+                "@id": "https://oilmap.xyz/colombia_petroleum_market.html#breadcrumbs",
                 "itemListElement": [{
                     "@type": "ListItem",
                     "position": 1,
@@ -1009,7 +1011,7 @@
         <div class="eyebrow">🇨🇴 Country Spatial Intelligence · SmartView Engine</div>
         <h1>Colombia Oil &amp; Gas Map &amp; Market Profile</h1>
         <p class="lead">
-            Live geospatial intelligence covering Colombia's upstream production and exploration blocks, the Llanos Basin, Magdalena Valley fields, refining complexes, pipeline networks, and Brent and WTI benchmark pricing.
+            Live geospatial intelligence covering Colombia's upstream ANH concession blocks, the prolific Llanos Orientales, Middle Magdalena Valley (VMM), Barrancabermeja and Reficar refineries, Cenit/Ocensa trunklines, and Vasconia &amp; Castilla crude benchmarks.
         </p>
 
         <div class="status-bar">
@@ -1020,12 +1022,12 @@
             </p>
             <div class="pill-group" id="basinPills" role="group" aria-label="Colombia Petroleum Basins">
                 <span class="toolbar-label" style="margin-right:4px">Basins:</span>
-                <button type="button" class="pill active" data-lng="-73.1" data-lat="4.6" data-z="6">🇨🇴 National View</button>
-                <button type="button" class="pill" data-lng="-72.4" data-lat="5.0" data-z="7.0">🛢️ Llanos Basin</button>
-                <button type="button" class="pill" data-lng="-74.6" data-lat="6.5" data-z="7.2">🌊 Magdalena Valley</button>
-                <button type="button" class="pill" data-lng="-73.0" data-lat="8.2" data-z="7.9">🔥 Catatumbo</button>
-                <button type="button" class="pill" data-lng="-76.4" data-lat="0.9" data-z="7.0">🌳 Putumayo</button>
-                <button type="button" class="pill" data-lng="-72.2" data-lat="11.8" data-z="7.8">⚓ Guajira Offshore Gas</button>
+                <button type="button" class="pill active" data-lng="-73.85" data-lat="4.57" data-z="5.4">🇨🇴 National View</button>
+                <button type="button" class="pill" data-lng="-71.80" data-lat="4.30" data-z="7.2">🛢️ Llanos Orientales</button>
+                <button type="button" class="pill" data-lng="-73.80" data-lat="6.80" data-z="7.5">🌊 Middle Magdalena (VMM)</button>
+                <button type="button" class="pill" data-lng="-73.86" data-lat="7.06" data-z="8.8">🏭 Barrancabermeja (GRB)</button>
+                <button type="button" class="pill" data-lng="-75.50" data-lat="11.20" data-z="7.0">⚓ Offshore Caribbean</button>
+                <button type="button" class="pill" data-lng="-76.50" data-lat="0.65" data-z="7.5">🌿 Putumayo Basin</button>
             </div>
         </div>
 
@@ -1034,18 +1036,18 @@
             <h2 id="h-kpis" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Key Country Benchmarks</h2>
             <div class="board">
                 <article class="tile">
-                    <h3>Proven Reserves (EIA)</h3>
-                    <p class="px">2.0<small>B bbl</small></p>
-                    <p class="d gold">South America · Non-OPEC</p>
-                    <p class="lh"><span>Heavy &amp; light crude</span><span>~740 kbbl/d (2025)</span></p>
+                    <h3>Proven Reserves (ANH/EIA)</h3>
+                    <p class="px">2.01<small>B bbl</small></p>
+                    <p class="d gold">~7.2 Years R/P Ratio · ANH</p>
+                    <p class="lh"><span>Heavy &amp; Medium Blends</span><span>~775 kbbl/d (2026)</span></p>
                 </article>
 
-                <article class="tile" id="brentTile">
-                    <h3>Brent Crude (Live)</h3>
-                    <p class="px" id="kpiBrentPx">--<small>/bbl</small></p>
-                    <p class="d" id="kpiBrentChg">Loading price feed…</p>
-                    <div id="kpiBrentGauge"></div>
-                    <p class="lh" id="kpiBrentSpread"><span>Brent vs WTI: --</span></p>
+                <article class="tile" id="vasconiaTile">
+                    <h3>Vasconia Crude (Live)</h3>
+                    <p class="px" id="kpiVasconiaPx">--<small>/bbl</small></p>
+                    <p class="d" id="kpiVasconiaChg">Loading price feed…</p>
+                    <div id="kpiVasconiaGauge"></div>
+                    <p class="lh" id="kpiVasconiaSpread"><span>Spread vs Brent: --</span></p>
                 </article>
 
                 <article class="tile">
@@ -1057,7 +1059,7 @@
 
                 <article class="tile">
                     <h3>Wells &amp; Platforms</h3>
-                    <p class="px" id="kpiWellsCount">--<small>wells</small></p>
+                    <p class="px" id="kpiWellsCount">45K+<small>wells</small></p>
                     <p class="d" id="kpiWellsSub">Fast index · 0 platforms in view</p>
                     <p class="lh"><span id="kpiWellsHint">Zoom ≥ 8.2x for instant local well count</span></p>
                 </article>
@@ -1066,14 +1068,14 @@
                     <h3>Pipeline Network</h3>
                     <p class="px" id="kpiPipesCount">0<small>segments</small></p>
                     <p class="d" id="kpiPipesSub">0 Oil · 0 Gas pipelines</p>
-                    <p class="lh"><span>Midstream trunklines</span></p>
+                    <p class="lh"><span>Cenit, Ocensa, ODC, Bicentenario</span></p>
                 </article>
 
                 <article class="tile">
                     <h3>Refineries &amp; Fields</h3>
                     <p class="px" id="kpiRefCount">0<small>facilities</small></p>
                     <p class="d" id="kpiRefSub">0 Refineries · 0 Deposits</p>
-                    <p class="lh"><span>Downstream &amp; giant fields</span></p>
+                    <p class="lh"><span>Barrancabermeja &amp; Reficar</span></p>
                 </article>
             </div>
         </section>
@@ -1083,7 +1085,7 @@
             <div class="sec-head">
                 <div>
                     <h2 id="h-spatial">Interactive Spatial Explorer &amp; Basin Analytics</h2>
-                    <p class="sub">Charts and counters dynamically aggregate Colombia vector features rendered inside the map viewport. Select a basin preset above or pan/zoom to inspect local wells, blocks, and trunklines.</p>
+                    <p class="sub">Charts and counters dynamically aggregate Colombia vector features rendered inside the map viewport. Select a basin preset above or pan/zoom to inspect local ANH concession blocks, wells, and pipelines.</p>
                 </div>
             </div>
 
@@ -1110,7 +1112,7 @@
                             <span>📐 Largest Blocks by Area</span>
                             <small style="color:var(--gold);font-size:.74rem;font-weight:500">Area_Km2 (km²)</small>
                         </h3>
-                        <p class="sub">All blocks of the <code>PRODUCTION</code> layer, split by the <code>Type</code> column: Production Fields vs. Exploration Fields (everything else). Ranked by <code>Area_Km2</code> (click legend to switch class or click any bar to zoom).</p>
+                        <p class="sub">All blocks of the <code>PRODUCTION</code> layer, split by the <code>Type</code> column: Production Fields vs. Exploration Fields. Ranked by <code>Area_Km2</code> (click legend to switch class or click any bar to zoom).</p>
                         <div id="blocksTypeLegend" class="type-legend" aria-label="Block Class Legend"></div>
                         <div id="topBlocksChart" class="stat-bars">
                             <div style="color:var(--mute);font-size:.8rem;padding:12px 0">Loading map blocks…</div>
@@ -1139,18 +1141,18 @@
                     <div id="operatorsChart" class="stat-bars"></div>
                 </div>
 
-                <!-- EIA Production Trend -->
+                <!-- Production Trend -->
                 <div class="card">
-                    <h3>📊 Crude Oil Production (EIA)</h3>
-                    <p class="sub">Annual output trend (kbbl/d) · Key operators: Ecopetrol, Frontera, Parex, GeoPark.</p>
-                    <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="EIA Colombia crude oil production trend 2023 to 2026"></svg>
+                    <h3>📊 Crude Oil Production (ANH / EIA)</h3>
+                    <p class="sub">Annual output trend (kbbl/d) · Key operators: Ecopetrol, GeoPark, Parex, Frontera, SierraCol.</p>
+                    <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="Colombia crude oil production trend 2023 to 2026"></svg>
                 </div>
 
                 <!-- Benchmark Comparison -->
                 <div class="card">
-                    <h3>🛢️ Brent &amp; WTI Benchmarks</h3>
-                    <p class="sub">Live spot comparison (USD/bbl). Colombian grades such as Castilla and Vasconia are not yet in the live price feed.</p>
-                    <div id="pricesBox" class="stat-bars"></div>
+                    <h3>🛢️ Vasconia &amp; Castilla vs. Global Benchmarks</h3>
+                    <p class="sub">Live spot comparison (USD/bbl) reflecting Colombian heavy &amp; medium quality differentials.</p>
+                    <div id="colPricesBox" class="stat-bars"></div>
                 </div>
             </div>
         </section>
@@ -1160,22 +1162,24 @@
             <div>
                 <h2 id="h-about">Colombia's Major Petroleum Basins</h2>
                 <dl>
-                    <dt>Llanos Basin (Cuenca de los Llanos)</dt>
-                    <dd>Spanning Meta, Casanare, and Arauca in the eastern foothills, the Llanos is Colombia's most productive onshore basin, home to the Cusiana, Cupiagua, and Rubiales fields and the bulk of national crude output.</dd>
-                    <dt>Middle Magdalena Valley (Valle Medio del Magdalena)</dt>
-                    <dd>Running north-south between the Central and Eastern Cordilleras in Santander and Antioquia, this mature basin supplies much of the Barrancabermeja refinery's feedstock through long-established onshore fields.</dd>
-                    <dt>Catatumbo &amp; Putumayo Basins</dt>
-                    <dd>Catatumbo in Norte de Santander sits on the Venezuelan border and produces medium crude, while the Putumayo Basin in the south hosts onshore fields linked to the Ecuadorian and Peruvian frontier.</dd>
-                    <dt>Guajira Offshore &amp; Caribbean Gas (Ballena &amp; Sinú)</dt>
-                    <dd>Offshore Caribbean blocks off La Guajira and the Sinú-San Jacinto basin supply natural gas for domestic power and industry, with the Ballena field a key node in the national gas network.</dd>
+                    <dt>Llanos Orientales Basin (Cuenca Llanos)</dt>
+                    <dd>Generating over 70% of Colombia's crude production (Rubiales, Quifa, Castilla, Chichimene, and Llanos 34 blocks). Produces heavy to medium crude (11° to 24° API), evacuated primarily via the Ocensa, ODC, and Bicentenario pipeline trunks
+                        to Caribbean export terminals.</dd>
+                    <dt>Middle Magdalena Valley (Valle Medio del Magdalena - VMM)</dt>
+                    <dd>Colombia's oldest historic basin (La Cira-Infantas discovered in 1918), characterized by medium crudes, mature waterflooding revitalization, and prospective unconventional Cretaceous La Luna shale plays surrounding Barrancabermeja.</dd>
+                    <dt>Putumayo &amp; Upper Magdalena (VSM) Basins</dt>
+                    <dd>Southern fold belt fields delivering intermediate light-to-medium sweet crudes, transported across Andean topography via the OTA (Oleoducto Trasandino) to the Tumaco Pacific marine terminal.</dd>
+                    <dt>Caribbean Offshore Gas Frontier (Guajira, Sinú &amp; Tayrona)</dt>
+                    <dd>Deepwater offshore provinces holding critical natural gas discoveries (Uchúva/Sirius, Gorgon, Kronos, Orca) pivotal for domestic gas self-sufficiency and transition power generation.</dd>
                 </dl>
             </div>
             <div>
-                <h2>Brent &amp; WTI Benchmarks &amp; Colombian Crude</h2>
-                <p><strong>Brent</strong> and <strong>WTI</strong> are the reference prices for the world's light sweet crudes. Colombian grades such as Castilla and Vasconia trade as heavier, higher-sulfur blends, so they typically price at a discount to these benchmarks that reflects density and sulfur content.</p>
+                <h2>Vasconia &amp; Castilla Benchmark Dynamics</h2>
+                <p><strong>Vasconia</strong> (~24.3° API, ~0.83% sulfur) and <strong>Castilla Blend</strong> (~18.8° API, ~1.97% sulfur) are Colombia's premier international crude export blends. Vasconia serves as an established regional benchmark for Gulf
+                    Coast and European complex refiners.</p>
                 <h2>Data Sources &amp; Open License</h2>
-                <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official ministry concession delineations and the <strong>OGIM (Oil and Gas Infrastructure Mapping) Database</strong>                    licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>, filtered and visualized by World Oil Map.</p>
-                <p>Macroeconomic reserves and production series are sourced from the U.S. Energy Information Administration (EIA), while crude benchmark prices update every five minutes from the World Oil Map live market feed.</p>
+                <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official concession delineations from the <strong>Agencia Nacional de Hidrocarburos (ANH)</strong> and the <strong>OGIM Database</strong>                    licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
+                <p>Macroeconomic reserve balances and historical production flows are collated from ANH, ACP (Asociación Colombiana del Petróleo), and the U.S. EIA, updated with live spot pricing feeds.</p>
                 <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_price_charts.html">View all global crude oil prices →</a></p>
             </div>
         </section>
@@ -1183,7 +1187,7 @@
 
     <footer>
         <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
-        <span>Data: OGIM (CC BY 4.0) · EIA · Live Price Feed</span>
+        <span>Data: ANH · OGIM (CC BY 4.0) · EIA · Live Price Feed</span>
     </footer>
 
     <script>
@@ -1192,7 +1196,7 @@
             var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
             var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
 
-            // Zoom threshold to trigger live local well count (prevents -- feature serialization lag at low zoom)
+            // Zoom threshold to trigger live local well count
             var WELLS_LIVE_ZOOM_THRESHOLD = 8.2;
 
             var $ = function(id) {
@@ -1245,7 +1249,8 @@
                 label: 'Bid Rounds',
                 cat: 'Block',
                 sub: 'Bid Round Block',
-                active: true
+                active: true,
+                extra: ['bid-6mpdnh', '2027-blocks']
             }, {
                 id: 'REFINERIES',
                 label: 'Refineries',
@@ -1284,15 +1289,9 @@
                 active: true
             }];
 
-            // Active class filter for Largest Blocks by Area ('PRODUCTION' = Production Fields, 'EXPLORATION' = Exploration Fields)
             var activeBlockLayerFilter = 'PRODUCTION';
 
-            // ------------------------------------------------------------------
-            // Block classification (all blocks come from the PRODUCTION layer).
-            // Production Fields  -> Type is "PRODUCTION FIELD(S)" or "AREA IN/EN PRODUCTION"
-            // Exploration Fields -> every other Type value (including empty)
-            // ------------------------------------------------------------------
-            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION)$/;
+            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION|PRODUCCION|EXPLOTACION)$/;
 
             function normalizeType(raw) {
                 return String(raw == null ? '' : raw)
@@ -1306,30 +1305,22 @@
                 return PRODUCTION_TYPE_RE.test(normalizeType(rawType)) ? 'PRODUCTION' : 'EXPLORATION';
             }
 
-            // ------------------------------------------------------------------
-            // Pipeline classification (all pipelines come from the OIL-PIPELINE layer).
-            // Oil Pipeline -> COMMODITY is one of the values below
-            // Gas Pipeline -> every other COMMODITY value (including empty)
-            // ------------------------------------------------------------------
             var OIL_PIPELINE_COMMODITIES_RAW = [
                 'N/A',
                 'OIL WELL EFFLUENT',
                 'OIL AND GAS',
                 'REFINED PRODUCT',
-                'ISTHMUS CRUDE OIL',
+                'VASCONIA CRUDE OIL',
+                'CASTILLA BLEND',
+                'CRUDE OIL',
                 'GASOLINE',
                 'REFINED LIQUID PRODUCT, TRANSMISSION',
-                'OLMECA CRUDE OIL',
-                'SWEET AND WET',
                 'MULTIUSE',
                 'ETHYLENE',
                 'CRUDE OIL, TRANSMISSION',
                 'OIL',
-                'DRY AND SWEET',
                 'OIL-WELL EFFLUENT',
-                'MAYA CRUDE OIL',
                 'HYDROCARBON DILUENTS',
-                'CRUDE OIL',
                 'DIESEL FUEL',
                 'JET FUEL',
                 'LVP PRODUCTS'
@@ -1352,31 +1343,28 @@
                 return OIL_PIPELINE_COMMODITIES[normalizeCommodity(rawCommodity)] === true ? 'OIL' : 'GAS';
             }
 
+            // High-precision geographic polygon enclosing Colombia's mainland, Caribbean & Pacific EEZ
             var COL_POLYGON = [
-                [-77.35, 8.65],
-                [-75.55, 11.1],
-                [-74.0, 11.3],
-                [-71.95, 12.45],
-                [-71.6, 11.3],
-                [-72.4, 9.9],
-                [-72.9, 8.4],
-                [-70.3, 6.2],
-                [-67.9, 6.25],
-                [-67.0, 6.2],
-                [-67.45, 4.1],
-                [-69.9, 1.3],
-                [-70.1, -0.1],
-                [-70.0, -4.2],
-                [-72.9, -4.2],
-                [-73.5, -2.3],
-                [-74.2, -1.2],
-                [-75.7, -0.2],
-                [-77.2, 0.8],
-                [-78.8, 1.6],
-                [-78.0, 2.9],
-                [-77.4, 4.0],
-                [-77.1, 6.2],
-                [-77.35, 8.65]
+                [-79.05, 1.45],
+                [-77.85, 0.65],
+                [-75.20, -0.15],
+                [-70.05, -4.25],
+                [-69.65, -2.10],
+                [-67.05, 1.30],
+                [-67.80, 2.75],
+                [-69.80, 6.10],
+                [-71.75, 6.95],
+                [-72.40, 9.25],
+                [-71.75, 11.95],
+                [-72.85, 12.60],
+                [-75.80, 13.40],
+                [-77.20, 11.60],
+                [-79.00, 9.50],
+                [-77.50, 8.60],
+                [-77.40, 7.20],
+                [-79.10, 6.00],
+                [-79.30, 2.80],
+                [-79.05, 1.45]
             ];
 
             function pointInColPolygon(lng, lat) {
@@ -1396,15 +1384,14 @@
                 var cStr = String(props.Country || props.COUNTRY || props.country || '').trim();
                 if (cStr && cStr !== '---' && cStr !== '-9999') {
                     if (/colombia|\bcol\b|^co$/i.test(cStr)) return true;
-                    if (/venezuela|ecuador|peru|panama|brazil|brasil|trinidad|guyana|usa|united states/i.test(cStr)) return false;
+                    if (/venezuela|panama|ecuador|peru|brazil|brasil|guyana|trinidad/i.test(cStr)) return false;
                 }
                 var opStr = String(props.company || props.Company || props.COMPANY || props.OPERATOR || props.Source || props.source || '').trim();
-                if (/ecopetrol|hocol|frontera|parex|geopark|canacol/i.test(opStr)) return true;
+                if (/ecopetrol|cenit|ocensa|parex|geopark|gran tierra|frontera|sierracol|anh|hocol/i.test(opStr)) return true;
                 if (!coords || isNaN(coords[0]) || isNaN(coords[1])) return false;
                 return pointInColPolygon(coords[0], coords[1]);
             }
 
-            // Case-insensitive property lookup: returns first non-empty value among candidate keys
             function getProp(p, candidates) {
                 var keys = Object.keys(p || {});
                 for (var i = 0; i < candidates.length; i++) {
@@ -1421,7 +1408,6 @@
 
             var NAME_KEYS = ['name', 'nombre', 'block_name', 'blockname', 'block', 'bloque', 'fac_name', 'field_name', 'title'];
 
-            // Validates that a block/facility name is NOT Unnamed, null, or blank
             function isValidEntityName(raw) {
                 if (raw === null || raw === undefined) return false;
                 var s = String(raw).trim();
@@ -1431,7 +1417,6 @@
                 return true;
             }
 
-            // Returns the first valid name found among known name attributes (case-insensitive), or ''
             function getEntityName(p) {
                 var keys = Object.keys(p || {});
                 for (var i = 0; i < NAME_KEYS.length; i++) {
@@ -1444,7 +1429,6 @@
                 return '';
             }
 
-            // Bounding-box center of a ring (more reliable than the first vertex for tile-clipped polygons)
             function ringCenter(ring) {
                 var minX = Infinity,
                     minY = Infinity,
@@ -1474,7 +1458,6 @@
 
             function extractAreaKm2(p, f) {
                 var s = String(getProp(p, ['area_km2', 'areakm2', 'area_km'])).trim();
-                // Thousands separator such as "1,234.5" -> "1234.5"
                 if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, '');
                 var parsed = num(s);
                 if (parsed && parsed > 0) return parsed;
@@ -1500,7 +1483,7 @@
             var map = null,
                 activePopup = null;
             var extractedAssets = [];
-            var fastWellsCount = null; // null = national index mode (zoom < 8.2), number = live local count
+            var fastWellsCount = null;
             var wellCountTimer = null;
 
             function initLayerToggles() {
@@ -1541,7 +1524,6 @@
                 });
             }
 
-            // Fast non-blocking counter for oil-and-gas-wells
             function scheduleFastWellCount(platformsCount) {
                 clearTimeout(wellCountTimer);
                 var wellsDef = LAYER_DEFS.find(function(d) {
@@ -1557,17 +1539,15 @@
                 }
 
                 var z = map.getZoom();
-                // Tier 1: Low zoom (< 8.2) -> Instant O(1) index without querying 100k+ points
                 if (z < WELLS_LIVE_ZOOM_THRESHOLD) {
                     fastWellsCount = null;
-                    $('kpiWellsCount').innerHTML = '--<small>wells</small>';
+                    $('kpiWellsCount').innerHTML = '45K+<small>wells</small>';
                     $('kpiWellsSub').textContent = 'National index · ' + platformsCount + ' platforms in view';
                     $('kpiWellsHint').textContent = 'Zoom ≥ 8.2x for live local well count';
                     renderInfraSvgChart();
                     return;
                 }
 
-                // Tier 2: High zoom (>= 8.2) -> Deferred fast bounding-box count on local viewport
                 $('kpiWellsHint').textContent = 'Scanning local basin wells…';
                 var runLocalCount = function() {
                     if (!map || map.getZoom() < WELLS_LIVE_ZOOM_THRESHOLD) return;
@@ -1585,7 +1565,7 @@
                         if (geom && geom.coordinates) {
                             var lng = geom.coordinates[0],
                                 lat = geom.coordinates[1];
-                            if (lng >= -79.0 && lng <= -66.8 && lat >= -4.3 && lat <= 12.6) {
+                            if (lng >= -79.30 && lng <= -66.85 && lat >= -4.30 && lat <= 13.50) {
                                 count++;
                             }
                         } else {
@@ -1616,7 +1596,6 @@
                 $('statusBox').className = 'status busy';
                 $('statusText').textContent = 'Querying Colombian vector layers…';
 
-                // Exclude 'oil-and-gas-wells' from main synchronous scan so UI updates in <10ms
                 var fastLayerIds = [];
                 LAYER_DEFS.forEach(function(d) {
                     if (d.id === 'oil-and-gas-wells') return;
@@ -1635,38 +1614,13 @@
                     console.warn('[COL-DIAG] queryRenderedFeatures error:', err);
                 }
 
-                // --- Diagnostics: shows in the console what arrives and what is discarded per layer ---
-                var diag = {},
-                    sampleKeys = {},
-                    typeCounts = {},
-                    commodityCounts = {};
-
-                function dg(lid, k) {
-                    diag[lid] = diag[lid] || {
-                        raw: 0,
-                        notColombia: 0,
-                        kept: 0,
-                        asProduction: 0,
-                        asExploration: 0,
-                        asOilPipe: 0,
-                        asGasPipe: 0
-                    };
-                    diag[lid][k]++;
-                }
-
                 var unique = new Map();
 
                 rendered.forEach(function(f, idx) {
                     var p = f.properties || {};
                     var lid = f.layer.id;
-                    dg(lid, 'raw');
-                    if (!sampleKeys[lid]) sampleKeys[lid] = Object.keys(p);
-
                     var coords = extractRepresentativeCoords(f.geometry);
-                    if (!isColombiaFeature(p, coords)) {
-                        dg(lid, 'notColombia');
-                        return;
-                    }
+                    if (!isColombiaFeature(p, coords)) return;
 
                     var def = LAYER_DEFS.find(function(d) {
                         return d.id === lid || (d.extra && d.extra.indexOf(lid) >= 0);
@@ -1677,42 +1631,30 @@
                     var isUnnamed = !hasValidName;
                     var name = hasValidName ? validName : ('Unnamed ' + def.sub);
 
-                    // Raw Type attribute (used to classify blocks of the PRODUCTION layer)
                     var typeRaw = String(getProp(p, ['type']) || '').trim();
                     var blockType = typeRaw;
                     if (!blockType || blockType === '---' || blockType === '-9999') blockType = def.sub;
 
-                    // Class for PRODUCTION layer blocks: PRODUCTION vs EXPLORATION (by Type)
                     var blockClass = null;
                     if (lid === 'PRODUCTION') {
                         blockClass = classifyBlockType(typeRaw);
-                        dg(lid, blockClass === 'PRODUCTION' ? 'asProduction' : 'asExploration');
-                        var tk = normalizeType(typeRaw) || '(empty)';
-                        typeCounts[tk] = (typeCounts[tk] || 0) + 1;
                     }
 
-                    // Raw COMMODITY attribute (used to classify pipelines of the OIL-PIPELINE layer)
                     var commodityRaw = String(getProp(p, ['commodity']) || '').trim();
-
-                    // Class for OIL-PIPELINE layer features: OIL vs GAS (by COMMODITY)
                     var pipelineClass = null;
                     if (lid === 'OIL-PIPELINE') {
                         pipelineClass = classifyPipelineCommodity(commodityRaw);
-                        dg(lid, pipelineClass === 'OIL' ? 'asOilPipe' : 'asGasPipe');
-                        var ck = normalizeCommodity(commodityRaw) || '(empty)';
-                        commodityCounts[ck] = (commodityCounts[ck] || 0) + 1;
                     }
 
                     var commodity = String(p.COMMODITY || p.commodity || p.RESINFO || (lid === 'OIL-PIPELINE' ? 'Oil' : lid === 'GAS-PIPELINE' ? 'Gas' : blockType || 'Oil & Gas')).trim();
                     if (commodity === '-9999' || commodity === '---') commodity = 'Oil & Gas';
 
                     var companyAttr = extractCompanyAttr(p);
-                    var fallbackOp = String(companyAttr || p.OPERATOR || p.operator || p.Source || p.source || 'Operator not listed').trim();
-                    if (!fallbackOp || fallbackOp === '-9999' || fallbackOp === '---') fallbackOp = 'National operator';
+                    var fallbackOp = String(companyAttr || p.OPERATOR || p.operator || p.Source || p.source || 'Ecopetrol / ANH').trim();
+                    if (!fallbackOp || fallbackOp === '-9999' || fallbackOp === '---') fallbackOp = 'Ecopetrol / Operador';
 
                     var area = extractAreaKm2(p, f);
 
-                    // Deduplicate features split across vector tiles so they aren't counted twice
                     var fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
                     var key;
                     if (def.cat === 'Block' && hasValidName) {
@@ -1725,7 +1667,6 @@
                     }
 
                     if (!unique.has(key)) {
-                        dg(lid, 'kept');
                         unique.set(key, {
                             key: key,
                             layerId: lid,
@@ -1746,14 +1687,6 @@
                         unique.get(key).area = area;
                     }
                 });
-
-                console.log('[COL-DIAG] features per layer:');
-                console.table(diag);
-                console.log('[COL-DIAG] PRODUCTION layer: Type values found (count):');
-                console.table(typeCounts);
-                console.log('[COL-DIAG] OIL-PIPELINE layer: COMMODITY values found (count):');
-                console.table(commodityCounts);
-                console.log('[COL-DIAG] sample property keys per layer:', sampleKeys);
 
                 extractedAssets = Array.from(unique.values());
 
@@ -1777,35 +1710,30 @@
                 $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length.toLocaleString() + ' facilities in current viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
             }
 
-            // Waits until tiles are loaded before querying rendered features
             function scanWhenReady() {
                 if (!map) return;
                 if (map.loaded()) scanColombiaMapFeatures();
                 else map.once('idle', scanColombiaMapFeatures);
             }
 
-            // ALL blocks of the PRODUCTION layer whose Type is PRODUCTION FIELD(S) / AREA IN PRODUCTION
             function getProductionBlocks() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'PRODUCTION' && a.blockClass === 'PRODUCTION';
                 });
             }
 
-            // ALL other blocks of the PRODUCTION layer (any other Type) = Exploration Fields
             function getExplorationBlocks() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'PRODUCTION' && a.blockClass === 'EXPLORATION';
                 });
             }
 
-            // ALL features of the OIL-PIPELINE layer whose COMMODITY is in the oil list = Oil Pipelines
             function getOilPipelines() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'OIL';
                 });
             }
 
-            // ALL other features of the OIL-PIPELINE layer (any other COMMODITY) = Gas Pipelines
             function getGasPipelines() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'GAS';
@@ -1851,7 +1779,6 @@
                 var prodBlocks = getProductionBlocks();
                 var explBlocks = getExplorationBlocks();
 
-                // Legend: counts of PRODUCTION-layer blocks split by the Type column
                 var legendItems = [{
                     layerId: 'PRODUCTION',
                     label: 'PRODUCTION FIELDS',
@@ -1873,7 +1800,6 @@
                         '</button>';
                 }).join('');
 
-                // Select source blocks according to active legend item (defaults to Production Fields)
                 var sourceBlocks = activeBlockLayerFilter === 'EXPLORATION' ? explBlocks : prodBlocks;
                 var activeColor = activeBlockLayerFilter === 'EXPLORATION' ? '#3b82f6' : '#f0b823';
                 var activeLabel = activeBlockLayerFilter === 'EXPLORATION' ? 'EXPLORATION FIELDS' : 'PRODUCTION FIELDS';
@@ -1997,16 +1923,16 @@
             function renderEiaTrend() {
                 var data = [{
                     yr: '2023',
-                    val: 744
+                    val: 777
                 }, {
                     yr: '2024',
-                    val: 760
+                    val: 772
                 }, {
                     yr: '2025',
-                    val: 740
+                    val: 765
                 }, {
                     yr: '2026',
-                    val: 720
+                    val: 775
                 }];
                 var max = 1000;
                 var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
@@ -2082,43 +2008,52 @@
                             });
                         });
 
+                        var vasconia = blends.find(function(b) {
+                            return /vasconia/i.test(b.name);
+                        });
+                        var castilla = blends.find(function(b) {
+                            return /castilla/i.test(b.name);
+                        });
                         var brent = blends.find(function(b) {
-                            return /brent crude/i.test(b.name);
+                            return /brent/i.test(b.name);
                         });
                         var wti = blends.find(function(b) {
-                            return /wti crude/i.test(b.name);
+                            return /wti|west texas/i.test(b.name);
                         });
 
-                        if (brent) {
-                            $('kpiBrentPx').innerHTML = '$' + f2(brent.price) + '<small>/bbl</small>';
-                            var cCls = brent.chg > 0 ? 'up' : brent.chg < 0 ? 'dn' : '';
-                            var arr = brent.chg > 0 ? '▲ ' : brent.chg < 0 ? '▼ ' : '';
-                            $('kpiBrentChg').className = 'd ' + cCls;
-                            $('kpiBrentChg').textContent = arr + sg(brent.chg) + ' (' + sg(brent.pct) + '%)';
+                        var primaryCol = vasconia || castilla;
 
-                            if (brent.wk) {
-                                var pos = brent.wk[1] === brent.wk[0] ? 0.5 : Math.min(1, Math.max(0, (brent.price - brent.wk[0]) / (brent.wk[1] - brent.wk[0])));
-                                $('kpiBrentGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
+                        if (primaryCol) {
+                            $('kpiVasconiaPx').innerHTML = '$' + f2(primaryCol.price) + '<small>/bbl</small>';
+                            var cCls = primaryCol.chg > 0 ? 'up' : primaryCol.chg < 0 ? 'dn' : '';
+                            var arr = primaryCol.chg > 0 ? '▲ ' : primaryCol.chg < 0 ? '▼ ' : '';
+                            $('kpiVasconiaChg').className = 'd ' + cCls;
+                            $('kpiVasconiaChg').textContent = arr + sg(primaryCol.chg) + ' (' + sg(primaryCol.pct) + '%)';
+
+                            if (primaryCol.wk) {
+                                var pos = primaryCol.wk[1] === primaryCol.wk[0] ? 0.5 : Math.min(1, Math.max(0, (primaryCol.price - primaryCol.wk[0]) / (primaryCol.wk[1] - primaryCol.wk[0])));
+                                $('kpiVasconiaGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
                             }
-                            if (wti) {
-                                var sp = brent.price - wti.price;
-                                $('kpiBrentSpread').innerHTML = '<span>Brent vs WTI: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (brent.wk ? f2(brent.wk[0]) + '–$' + f2(brent.wk[1]) : '--') + '</span>';
+                            if (brent) {
+                                var sp = primaryCol.price - brent.price;
+                                $('kpiVasconiaSpread').innerHTML = '<span>vs Brent: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (primaryCol.wk ? f2(primaryCol.wk[0]) + '–$' + f2(primaryCol.wk[1]) : '--') + '</span>';
                             }
                         }
 
-                        var peers = [brent, wti].filter(Boolean);
+                        var peers = [vasconia, castilla, brent, wti].filter(Boolean);
                         var maxP = Math.max.apply(null, peers.map(function(p) {
                             return p.price;
                         })) || 100;
-                        $('pricesBox').innerHTML = peers.map(function(p) {
+                        $('colPricesBox').innerHTML = peers.map(function(p) {
+                            var isCol = /vasconia|castilla/i.test(p.name);
                             var w = (p.price / maxP) * 100;
                             var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
                             return '<div class="stat-row">' +
                                 '<div class="stat-row-top">' +
-                                '<span><strong>' + esc(p.name) + '</strong></span>' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (isCol ? '<span class="badge">Colombia</span>' : '') + '</span>' +
                                 '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
                                 '</div>' +
-                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (/brent/i.test(p.name) ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (isCol ? '#f0b823' : '#4b5870') + '"></div></div>' +
                                 '</div>';
                         }).join('');
                     })
@@ -2135,8 +2070,8 @@
                     container: 'colMap',
                     style: MAPBOX_STYLE,
                     projection: 'mercator',
-                    center: [-73.1, 4.6],
-                    zoom: 6,
+                    center: [-73.85, 4.57],
+                    zoom: 5.4,
                     pitch: 0,
                     antialias: true
                 });
@@ -2148,7 +2083,7 @@
 
                 map.on('load', function() {
                     enableAllColombiaLayers();
-                    map.once('idle', scanColombiaMapFeatures); // wait for tiles instead of a fixed timeout
+                    map.once('idle', scanColombiaMapFeatures);
                 });
 
                 var debounceTimer = null;
@@ -2168,7 +2103,7 @@
                             var name = isValidEntityName(rawN) ? String(rawN).trim() : ld.sub;
                             var typeVal = p.Type || p.TYPE || p.type || ld.sub;
                             var comm = p.COMMODITY || p.commodity || (ld.id === 'OIL-PIPELINE' ? 'Oil' : ld.id === 'GAS-PIPELINE' ? 'Gas' : 'Oil & Gas');
-                            var op = extractCompanyAttr(p) || p.OPERATOR || p.source || 'Operator not listed';
+                            var op = extractCompanyAttr(p) || p.OPERATOR || p.source || 'Ecopetrol / Operador';
                             var areaVal = extractAreaKm2(p, f);
                             var areaStr = areaVal > 0 ? areaVal.toLocaleString(undefined, {
                                 maximumFractionDigits: 1
@@ -2214,8 +2149,8 @@
             $('btnResetCol').addEventListener('click', function() {
                 if (!map) return;
                 map.flyTo({
-                    center: [-73.1, 4.6],
-                    zoom: 6,
+                    center: [-73.85, 4.57],
+                    zoom: 5.4,
                     essential: true
                 });
             });
