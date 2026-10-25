@@ -16,9 +16,21 @@ function formatDate(iso) {
     return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+function cardImage(a) {
+    const attrs = [
+        'class="card-image"',
+        `src="${esc(a.image)}"`,
+        a.imageSrcset && `srcset="${esc(a.imageSrcset)}" sizes="(max-width: 900px) 100vw, 400px"`,
+        a.imageWidth && `width="${esc(a.imageWidth)}" height="${esc(a.imageHeight)}"`,
+        `alt="${esc(a.imageAlt || a.title)}"`,
+        'loading="lazy" decoding="async"'
+    ];
+    return `<img ${attrs.filter(Boolean).join(' ')}>`;
+}
+
 function card(a) {
     const url = `/blog/${a.slug}.html`;
-    const image = a.image ? `<img class="card-image" src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy">` : '';
+    const image = a.image ? cardImage(a) : '';
     return `<article class="news-card" data-topic="${esc(a.topicFilter)}">
                 <div class="card-meta">
                     <span class="badge-source">World Oil Map · ${esc(a.lang.toUpperCase())}</span>
