@@ -653,6 +653,7 @@
                 ['Palabra clave en la URL', !!primary && slug.includes(slugify(primary))],
                 ['Palabra clave en el primer párrafo', !!primary && first.toLowerCase().includes(primary)],
                 ['Contenido de 300 palabras o más', wordCount(d.body) >= 300],
+                ['Idioma del artículo declarado', Object.hasOwn(LABELS, d.lang)],
                 ['Autor indicado (E-E-A-T)', d.author.length >= 2],
                 ['Al menos una fuente con enlace https', sources.length > 0],
                 ['3 a 5 puntos clave para respuestas de IA', points.length >= 3 && points.length <= 5],
