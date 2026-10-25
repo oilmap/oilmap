@@ -32,18 +32,24 @@ const PAGES = [
 const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
     .sort((a, b) => b.date.localeCompare(a.date));
 
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
 const pageUrl = p => {
     const alternates = (p.alternates || []).map(a =>
         `<xhtml:link rel="alternate" hreflang="${a.lang}" href="${a.href}"/>`).join('');
     return `<url><loc>${BASE}${p.path}</loc>${alternates}<priority>${p.priority}</priority></url>`;
 };
 
+const imageEntry = a => a.image
+    ? `<image:image><image:loc>${esc(a.image)}</image:loc>${a.imageCaption ? `<image:caption>${esc(a.imageCaption)}</image:caption>` : ''}</image:image>`
+    : '';
+
 const postUrl = a =>
-    `<url><loc>${BASE}/blog/${a.slug}.html</loc><lastmod>${a.updated || a.date}</lastmod><priority>0.7</priority></url>`;
+    `<url><loc>${BASE}/blog/${a.slug}.html</loc><lastmod>${a.updated || a.date}</lastmod><priority>0.7</priority>${imageEntry(a)}</url>`;
 
 const urlset = (urls, withAlternates) =>
 `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"${withAlternates ? ' xmlns:xhtml="http://www.w3.org/1999/xhtml"' : ''}>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"${withAlternates ? ' xmlns:xhtml="http://www.w3.org/1999/xhtml"' : ''}>
 ${urls.join('\n')}
 </urlset>
 `;
