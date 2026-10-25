@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
-    <title>Ecuador Oil & Gas Map: Oriente Basin, Pipelines, Refineries & Brent Price | World Oil Map</title>
-    <meta name="description" content="Interactive Ecuador oil and gas intelligence dashboard: explore Oriente and Santa Elena blocks, the SOTE and OCP pipelines, the Esmeraldas refinery, EIA reserves and production, and live Brent and WTI prices.">
-    <meta name="keywords" content="Ecuador oil map, Oriente Basin oil fields, Santa Elena oil map, SOTE pipeline, OCP pipeline, Esmeraldas refinery, Petroecuador blocks, Ecuador proven oil reserves">
+    <title>Ecuador Oil & Gas Map: Oriente Basin, SOTE, OCP, Refineries & Oriente / Napo Prices | World Oil Map</title>
+    <meta name="description" content="Interactive Ecuador oil and gas intelligence dashboard: explore Oriente Basin blocks, ITT (Ishpingo-Tambococha-Tiputini), SOTE and OCP export pipelines, Esmeraldas and La Libertad refineries, and live Oriente and Napo crude prices.">
+    <meta name="keywords" content="Ecuador oil map, Oriente Basin oil fields, ITT block 43 Ecuador, Petroecuador blocks, SOTE pipeline, OCP pipeline, Esmeraldas refinery, Oriente crude price, Napo crude price, Ecuador oil reserves">
     <meta name="author" content="Roque Leal">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#0b1120">
@@ -18,14 +18,14 @@
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="World Oil Map">
-    <meta property="og:title" content="Ecuador Oil & Gas Map: Blocks, Pipelines, Refineries & Brent Crude">
-    <meta property="og:description" content="Live spatial intelligence on Ecuador's upstream blocks, the Oriente Basin, pipelines, refineries, EIA production trends, and Brent and WTI benchmark pricing.">
+    <meta property="og:title" content="Ecuador Oil & Gas Map: Blocks, Pipelines, Refineries & Oriente/Napo Crudes">
+    <meta property="og:description" content="Live spatial intelligence on Ecuador's upstream blocks, Oriente Basin, SOTE and OCP trunklines, coastal refining hubs, and Oriente/Napo crude benchmarks.">
     <meta property="og:url" content="https://oilmap.xyz/ecuador_petroleum_market.html">
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@roqueleal08">
     <meta name="twitter:title" content="Ecuador Oil & Gas Intelligence Dashboard | World Oil Map">
-    <meta name="twitter:description" content="Explore Ecuador's oil blocks, pipelines, refineries, EIA reserves, and live Brent and WTI prices.">
+    <meta name="twitter:description" content="Explore Ecuador's upstream blocks, Oriente Basin, SOTE/OCP pipelines, refineries, and live crude benchmark pricing.">
     <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
 
     <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
@@ -46,8 +46,8 @@
                 "@type": "WebPage",
                 "@id": "https://oilmap.xyz/ecuador_petroleum_market.html#webpage",
                 "url": "https://oilmap.xyz/ecuador_petroleum_market.html",
-                "name": "Ecuador Oil & Gas Map: Oriente Basin, Pipelines, Refineries & Brent Price",
-                "description": "Interactive spatial dashboard of Ecuador's petroleum sector featuring upstream concession blocks, oil and gas pipelines, refineries, wells, EIA reserves, and live Brent and WTI prices.",
+                "name": "Ecuador Oil & Gas Map: Oriente Basin, SOTE, OCP, Refineries & Crude Prices",
+                "description": "Interactive spatial dashboard of Ecuador's petroleum sector featuring Oriente Basin concession blocks, SOTE & OCP pipelines, Esmeraldas refinery, upstream wells, and live Oriente and Napo prices.",
                 "inLanguage": "en",
                 "isPartOf": {
                     "@type": "WebSite",
@@ -59,8 +59,8 @@
                     "name": "Ecuador",
                     "geo": {
                         "@type": "GeoCoordinates",
-                        "latitude": 4.6,
-                        "longitude": -73.1
+                        "latitude": -1.45,
+                        "longitude": -78.40
                     }
                 },
                 "author": {
@@ -70,8 +70,9 @@
                 }
             }, {
                 "@type": "Dataset",
+                "@id": "https://oilmap.xyz/ecuador_petroleum_market.html#dataset",
                 "name": "Ecuador Upstream & Downstream Oil and Gas Infrastructure Dataset",
-                "description": "Geospatial dataset mapping Ecuador's oil production blocks, exploration areas, refineries, oil and gas pipelines, wells, and Brent and WTI benchmark pricing.",
+                "description": "Geospatial dataset mapping Ecuador's oil production blocks, exploration areas, refineries, SOTE & OCP pipeline trunklines, wells, and Oriente / Napo benchmark pricing.",
                 "url": "https://oilmap.xyz/ecuador_petroleum_market.html",
                 "license": "https://creativecommons.org/licenses/by/4.0/",
                 "isAccessibleForFree": true,
@@ -107,7 +108,7 @@
     </script>
 
     <style>
-         :root {
+        :root {
             color-scheme: dark;
             --bg: #0b1120;
             --surface: rgba(20, 29, 49, 0.55);
@@ -123,15 +124,15 @@
             --purple: #8b5cf6;
             --dot: #4b5870;
         }
-        
+
         * {
             box-sizing: border-box;
         }
-        
+
         html {
             scroll-padding-top: 76px;
         }
-        
+
         body {
             margin: 0;
             background: var(--bg);
@@ -140,16 +141,16 @@
             font-variant-numeric: tabular-nums;
             -webkit-font-smoothing: antialiased;
         }
-        
+
         a {
             color: var(--gold);
         }
-        
-         :focus-visible {
+
+        :focus-visible {
             outline: 2px solid var(--gold);
             outline-offset: 2px;
         }
-        
+
         header.top-bar {
             --accent: #f0b823;
             --accent-soft: rgba(240, 184, 35, .14);
@@ -179,7 +180,7 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
         }
-        
+
         header.top-bar .brand {
             display: flex;
             align-items: center;
@@ -192,29 +193,29 @@
             text-decoration: none;
             transition: opacity .15s ease;
         }
-        
+
         header.top-bar .brand:hover {
             opacity: .9;
         }
-        
+
         header.top-bar .brand img {
             height: 26px;
             width: 26px;
             object-fit: contain;
         }
-        
+
         header.top-bar .brand-title {
             font-size: .86rem;
             letter-spacing: .5px;
             font-weight: 700;
             white-space: nowrap;
         }
-        
+
         header.top-bar .brand-title span {
             color: var(--accent);
             font-weight: 500;
         }
-        
+
         header.top-bar .nav-scroll-wrapper {
             position: relative;
             flex: 1;
@@ -222,7 +223,7 @@
             display: flex;
             align-items: center;
         }
-        
+
         header.top-bar .nav-scroll-track {
             display: flex;
             align-items: center;
@@ -237,16 +238,16 @@
             width: 100%;
             cursor: grab;
         }
-        
+
         header.top-bar .nav-scroll-track.grabbing {
             cursor: grabbing;
             scroll-behavior: auto;
         }
-        
+
         header.top-bar .nav-scroll-track::-webkit-scrollbar {
             display: none;
         }
-        
+
         header.top-bar .scroll-arrow-btn {
             background: rgba(13, 18, 30, .9);
             border: 1px solid var(--border);
@@ -264,28 +265,28 @@
             transition: all .15s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
         }
-        
+
         header.top-bar .scroll-arrow-btn:hover {
             background: var(--accent);
             color: #000;
             border-color: var(--accent);
         }
-        
+
         header.top-bar .scroll-arrow-btn.left {
             left: -4px;
         }
-        
+
         header.top-bar .scroll-arrow-btn.right {
             right: -4px;
         }
-        
+
         header.top-bar .toolbar {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-shrink: 0;
         }
-        
+
         header.top-bar .btn-ui,
         header.top-bar .nav-link {
             padding: 6px 11px;
@@ -306,7 +307,7 @@
             outline: none;
             flex-shrink: 0;
         }
-        
+
         header.top-bar .btn-ui:hover,
         header.top-bar .nav-link:hover,
         header.top-bar .btn-ui:focus-visible {
@@ -314,7 +315,7 @@
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent);
         }
-        
+
         header.top-bar .lang-select {
             padding: 6px 10px;
             border-radius: var(--radius-pill);
@@ -327,24 +328,24 @@
             outline: none;
             flex-shrink: 0;
         }
-        
+
         header.top-bar .lang-select:hover,
         header.top-bar .lang-select:focus-visible {
             background: var(--accent-soft);
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent);
         }
-        
+
         header.top-bar .lang-select option {
             background: #0d121e;
             color: var(--text-primary);
         }
-        
+
         header.top-bar .search-wrap {
             position: relative;
             flex-shrink: 0;
         }
-        
+
         header.top-bar .search-input {
             padding: 6px 12px;
             border-radius: var(--radius-pill);
@@ -357,13 +358,13 @@
             transition: width .25s ease, border-color .2s, background .2s;
             outline: none;
         }
-        
+
         header.top-bar .search-input:focus {
             border-color: var(--accent);
             background: rgba(0, 0, 0, .7);
             width: 215px;
         }
-        
+
         @media (max-width: 820px) {
             header.top-bar {
                 top: calc(8px + env(safe-area-inset-top, 0px));
@@ -378,7 +379,7 @@
                 width: 175px;
             }
         }
-        
+
         @media (max-width: 520px) {
             header.top-bar .brand-title {
                 display: none;
@@ -390,14 +391,14 @@
                 display: none !important;
             }
         }
-        
+
         nav {
             display: flex;
             align-items: center;
             gap: 18px;
             overflow-x: auto;
         }
-        
+
         nav a {
             color: var(--mute);
             text-decoration: none;
@@ -405,18 +406,18 @@
             white-space: nowrap;
             transition: color .15s;
         }
-        
+
         nav a:hover,
         nav a[aria-current] {
             color: var(--ink);
         }
-        
+
         main {
             max-width: 1220px;
             margin: 0 auto;
             padding: 32px 24px 36px;
         }
-        
+
         .breadcrumbs {
             font-size: .76rem;
             color: var(--mute);
@@ -425,16 +426,16 @@
             gap: 6px;
             align-items: center;
         }
-        
+
         .breadcrumbs a {
             color: var(--mute);
             text-decoration: none;
         }
-        
+
         .breadcrumbs a:hover {
             color: var(--gold);
         }
-        
+
         .eyebrow {
             display: inline-flex;
             align-items: center;
@@ -450,7 +451,7 @@
             border-radius: 99px;
             margin-bottom: 12px;
         }
-        
+
         h1 {
             font-size: clamp(1.95rem, 4.2vw, 2.85rem);
             line-height: 1.1;
@@ -458,14 +459,14 @@
             letter-spacing: -.025em;
             margin: 0 0 12px;
         }
-        
+
         .lead {
             font-size: 1.08rem;
             color: var(--ink);
             max-width: 75ch;
             margin: 0 0 16px;
         }
-        
+
         .status-bar {
             display: flex;
             align-items: center;
@@ -475,7 +476,7 @@
             padding-bottom: 18px;
             border-bottom: 1px solid var(--line);
         }
-        
+
         .status {
             display: flex;
             align-items: center;
@@ -485,7 +486,7 @@
             font-size: .82rem;
             margin: 0;
         }
-        
+
         .status i {
             width: 8px;
             height: 8px;
@@ -493,17 +494,17 @@
             background: var(--dot);
             display: inline-block;
         }
-        
+
         .status.ok i {
             background: var(--up);
             box-shadow: 0 0 8px var(--up);
         }
-        
+
         .status.busy i {
             background: var(--gold);
             box-shadow: 0 0 8px var(--gold);
         }
-        
+
         button {
             font: inherit;
             color: inherit;
@@ -511,7 +512,7 @@
             border: 0;
             cursor: pointer;
         }
-        
+
         .link-btn {
             color: var(--gold);
             font-size: .82rem;
@@ -519,11 +520,11 @@
             text-decoration: underline;
             text-underline-offset: 3px;
         }
-        
+
         section {
             margin-top: 48px;
         }
-        
+
         .sec-head {
             display: flex;
             justify-content: space-between;
@@ -532,39 +533,39 @@
             gap: 12px;
             margin-bottom: 16px;
         }
-        
+
         h2 {
             font-size: 1.08rem;
             font-weight: 600;
             margin: 0 0 4px;
             letter-spacing: -.01em;
         }
-        
+
         .sub {
             color: var(--mute);
             font-size: .84rem;
             margin: 0;
             max-width: 72ch;
         }
-        
+
         .board {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
         }
-        
+
         .tile {
             padding: 18px 16px 16px 18px;
             border-left: 1px solid var(--line);
             transition: background .15s;
         }
-        
+
         .tile:first-child {
             border-left: 0;
             padding-left: 0;
         }
-        
+
         .tile h3 {
             margin: 0;
             font-size: .76rem;
@@ -573,7 +574,7 @@
             text-transform: uppercase;
             letter-spacing: .03em;
         }
-        
+
         .px {
             font-size: 1.85rem;
             font-weight: 600;
@@ -581,7 +582,7 @@
             margin: 4px 0 2px;
             line-height: 1.15;
         }
-        
+
         .px small {
             font-size: .74rem;
             color: var(--mute);
@@ -589,33 +590,33 @@
             margin-left: 4px;
             letter-spacing: 0;
         }
-        
+
         .d {
             margin: 0 0 8px;
             font-size: .8rem;
             font-weight: 500;
             color: var(--mute);
         }
-        
+
         .up {
             color: var(--up);
         }
-        
+
         .dn {
             color: var(--dn);
         }
-        
+
         .gold {
             color: var(--gold);
         }
-        
+
         .gauge {
             position: relative;
             height: 2px;
             background: var(--line);
             margin: 8px 0 6px;
         }
-        
+
         .gauge i {
             position: absolute;
             top: -4px;
@@ -626,7 +627,7 @@
             background: var(--gold);
             transition: left .5s ease;
         }
-        
+
         .lh {
             display: flex;
             justify-content: space-between;
@@ -634,14 +635,14 @@
             font-size: .7rem;
             margin: 0;
         }
-        
+
         .pill-group {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
             align-items: center;
         }
-        
+
         .pill {
             padding: 5px 11px;
             border-radius: 99px;
@@ -654,40 +655,40 @@
             align-items: center;
             gap: 5px;
         }
-        
+
         .pill:hover,
         .pill.active {
             border-color: var(--gold);
             color: var(--gold);
             background: var(--gold-soft);
         }
-        
+
         .pill .dot {
             width: 7px;
             height: 7px;
             border-radius: 50%;
             background: var(--dot);
         }
-        
+
         .pill.active .dot {
             background: var(--gold);
             box-shadow: 0 0 6px var(--gold);
         }
-        
+
         .workspace {
             display: grid;
             grid-template-columns: 1.35fr 0.85fr;
             gap: 24px;
             align-items: start;
         }
-        
+
         .map-shell {
             border: 1px solid var(--line);
             border-radius: 10px;
             overflow: hidden;
             background: #060911;
         }
-        
+
         .map-toolbar {
             padding: 10px 14px;
             background: var(--surface);
@@ -696,7 +697,7 @@
             flex-direction: column;
             gap: 8px;
         }
-        
+
         .map-toolbar-row {
             display: flex;
             justify-content: space-between;
@@ -704,7 +705,7 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-        
+
         .toolbar-label {
             font-size: .72rem;
             color: var(--mute);
@@ -712,13 +713,13 @@
             text-transform: uppercase;
             letter-spacing: .04em;
         }
-        
+
         #ecuMap {
             width: 100%;
             height: 530px;
             position: relative;
         }
-        
+
         .map-footer {
             padding: 8px 14px;
             font-size: .75rem;
@@ -731,20 +732,20 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-        
+
         .analytics-col {
             display: flex;
             flex-direction: column;
             gap: 18px;
         }
-        
+
         .card {
             border: 1px solid var(--line);
             border-radius: 10px;
             background: var(--surface);
             padding: 16px 18px;
         }
-        
+
         .card h3 {
             margin: 0 0 4px;
             font-size: .92rem;
@@ -753,52 +754,52 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .card .sub {
             font-size: .76rem;
             margin-bottom: 12px;
         }
-        
+
         .chart {
             width: 100%;
             height: auto;
             display: block;
             overflow: visible;
         }
-        
+
         .chart text {
             fill: var(--mute);
             font: 500 11px 'Inter', sans-serif;
         }
-        
+
         .chart .lab {
             fill: var(--ink);
         }
-        
+
         .grid-3col {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-        
+
         .stat-bars {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-top: 8px;
         }
-        
+
         .stat-row {
             cursor: pointer;
             padding: 4px 6px;
             border-radius: 6px;
             transition: background .12s;
         }
-        
+
         .stat-row:hover {
             background: rgba(255, 255, 255, .04);
         }
-        
+
         .stat-row-top {
             display: flex;
             justify-content: space-between;
@@ -806,20 +807,20 @@
             margin-bottom: 3px;
             gap: 8px;
         }
-        
+
         .stat-track {
             height: 5px;
             background: var(--line);
             border-radius: 99px;
             overflow: hidden;
         }
-        
+
         .stat-fill {
             height: 100%;
             background: var(--gold);
             border-radius: 99px;
         }
-        
+
         .badge {
             display: inline-block;
             padding: 1px 6px;
@@ -829,8 +830,7 @@
             background: var(--gold-soft);
             color: var(--gold);
         }
-        /* Block Type Legend Styles */
-        
+
         .type-legend {
             display: flex;
             flex-wrap: wrap;
@@ -839,7 +839,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid var(--line);
         }
-        
+
         .type-legend-item {
             display: inline-flex;
             align-items: center;
@@ -853,31 +853,31 @@
             cursor: pointer;
             transition: all .15s ease;
         }
-        
+
         .type-legend-item:hover {
             border-color: rgba(240, 184, 35, .45);
         }
-        
+
         .type-legend-item.active {
             border-color: var(--gold);
             background: var(--gold-soft);
             color: var(--gold);
             font-weight: 600;
         }
-        
+
         .type-swatch {
             width: 8px;
             height: 8px;
             border-radius: 2px;
             flex-shrink: 0;
         }
-        
+
         .type-count {
             color: var(--mute);
             font-size: .68rem;
             font-weight: 400;
         }
-        
+
         .mapboxgl-popup-content {
             background: #141b2d !important;
             border: 1px solid var(--line) !important;
@@ -887,11 +887,11 @@
             font: 400 13px/1.45 'Inter', sans-serif !important;
             max-width: 280px;
         }
-        
+
         .mapboxgl-popup-close-button {
             color: var(--mute) !important;
         }
-        
+
         .popup-title {
             color: var(--gold);
             font-weight: 700;
@@ -900,7 +900,7 @@
             padding-bottom: 4px;
             margin-bottom: 6px;
         }
-        
+
         .about {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -908,25 +908,25 @@
             border-top: 1px solid var(--line);
             padding-top: 36px;
         }
-        
+
         .about p,
         .about dd {
             color: var(--mute);
             margin: 0 0 12px;
             font-size: .88rem;
         }
-        
+
         .about dt {
             font-weight: 600;
             font-size: .9rem;
             color: var(--ink);
         }
-        
+
         .about dd {
             margin-bottom: 14px;
             margin-left: 0;
         }
-        
+
         footer {
             max-width: 1220px;
             margin: 56px auto 0;
@@ -939,7 +939,7 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-        
+
         @media (max-width: 960px) {
             .workspace {
                 grid-template-columns: 1fr;
@@ -948,7 +948,7 @@
                 height: 420px;
             }
         }
-        
+
         @media (max-width: 640px) {
             main {
                 padding-top: 24px;
@@ -1009,7 +1009,7 @@
         <div class="eyebrow">🇪🇨 Country Spatial Intelligence · SmartView Engine</div>
         <h1>Ecuador Oil &amp; Gas Map &amp; Market Profile</h1>
         <p class="lead">
-            Live geospatial intelligence covering Ecuador's upstream production and exploration blocks, the Oriente Basin, the Santa Elena coast, the SOTE and OCP pipeline corridors, the Esmeraldas refinery, and Brent and WTI benchmark pricing.
+            Live geospatial intelligence covering Ecuador's upstream blocks across the Oriente Basin, Shushufindi and Sacha fields, ITT Block 43, SOTE and OCP trans-Andean trunklines, coastal refining hubs, and Oriente/Napo crude export pricing.
         </p>
 
         <div class="status-bar">
@@ -1019,12 +1019,13 @@
                 <button id="btnRescan" class="link-btn" type="button">Rescan current view</button>
             </p>
             <div class="pill-group" id="basinPills" role="group" aria-label="Ecuador Petroleum Basins">
-                
-                <button type="button" class="pill active" data-lng="-78.2" data-lat="-1.5" data-z="6">🇪🇨 National View</button>
-                <button type="button" class="pill" data-lng="-76.6" data-lat="-0.6" data-z="7.3">🛢️ Oriente Basin</button>
-                <button type="button" class="pill" data-lng="-80.7" data-lat="-2.2" data-z="7.6">🌊 Santa Elena</button>
-                <button type="button" class="pill" data-lng="-79.7" data-lat="0.9" data-z="7.8">🏭 Esmeraldas Coast</button>
-                <button type="button" class="pill" data-lng="-77.9" data-lat="-3.9" data-z="7.0">🌳 Marañón Frontier</button>
+                <span class="toolbar-label" style="margin-right:4px">Basins:</span>
+                <button type="button" class="pill active" data-lng="-78.40" data-lat="-1.45" data-z="6.5">🇪🇨 National View</button>
+                <button type="button" class="pill" data-lng="-76.85" data-lat="-0.40" data-z="7.8">🛢️ Oriente Basin (North)</button>
+                <button type="button" class="pill" data-lng="-75.50" data-lat="-0.90" data-z="8.4">🌳 ITT Block 43 (Yasuní)</button>
+                <button type="button" class="pill" data-lng="-77.10" data-lat="-1.50" data-z="7.5">🌿 Oriente South (Ronda Sur)</button>
+                <button type="button" class="pill" data-lng="-79.65" data-lat="0.95" data-z="8.6">🏭 Esmeraldas &amp; SOTE/OCP Port</button>
+                <button type="button" class="pill" data-lng="-80.50" data-lat="-2.25" data-z="8.0">⚓ Gulf of Guayaquil &amp; Gas</button>
             </div>
         </div>
 
@@ -1034,9 +1035,9 @@
             <div class="board">
                 <article class="tile">
                     <h3>Proven Reserves (EIA)</h3>
-                    <p class="px">8.0<small>B bbl</small></p>
-                    <p class="d gold">South America · Non-OPEC</p>
-                    <p class="lh"><span>Heavy crude (Oriente)</span><span>~470 kbbl/d (2025)</span></p>
+                    <p class="px">8.3<small>B bbl</small></p>
+                    <p class="d gold">#3 South America · Oriente Basin</p>
+                    <p class="lh"><span>Medium &amp; heavy sour crudes</span><span>~485 kbbl/d (2026)</span></p>
                 </article>
 
                 <article class="tile" id="orienteTile">
@@ -1056,8 +1057,8 @@
 
                 <article class="tile">
                     <h3>Wells &amp; Platforms</h3>
-                    <p class="px" id="kpiWellsCount">--<small>wells</small></p>
-                    <p class="d" id="kpiWellsSub">Fast index · 0 platforms in view</p>
+                    <p class="px" id="kpiWellsCount">10K+<small>wells</small></p>
+                    <p class="d" id="kpiWellsSub">Fast index · 0 facilities in view</p>
                     <p class="lh"><span id="kpiWellsHint">Zoom ≥ 8.2x for instant local well count</span></p>
                 </article>
 
@@ -1065,14 +1066,14 @@
                     <h3>Pipeline Network</h3>
                     <p class="px" id="kpiPipesCount">0<small>segments</small></p>
                     <p class="d" id="kpiPipesSub">0 Oil · 0 Gas pipelines</p>
-                    <p class="lh"><span>Midstream trunklines</span></p>
+                    <p class="lh"><span>SOTE &amp; OCP trans-Andean</span></p>
                 </article>
 
                 <article class="tile">
                     <h3>Refineries &amp; Fields</h3>
                     <p class="px" id="kpiRefCount">0<small>facilities</small></p>
                     <p class="d" id="kpiRefSub">0 Refineries · 0 Deposits</p>
-                    <p class="lh"><span>Downstream &amp; giant fields</span></p>
+                    <p class="lh"><span>Esmeraldas, La Libertad, Shushufindi</span></p>
                 </article>
             </div>
         </section>
@@ -1082,7 +1083,7 @@
             <div class="sec-head">
                 <div>
                     <h2 id="h-spatial">Interactive Spatial Explorer &amp; Basin Analytics</h2>
-                    <p class="sub">Charts and counters dynamically aggregate Ecuador vector features rendered inside the map viewport. Select a basin preset above or pan/zoom to inspect local wells, blocks, and trunklines.</p>
+                    <p class="sub">Charts and counters dynamically aggregate Ecuador vector features rendered inside the active map viewport. Unnamed/blank blocks are strictly filtered out.</p>
                 </div>
             </div>
 
@@ -1106,10 +1107,10 @@
                 <div class="analytics-col">
                     <div class="card">
                         <h3>
-                            <span>📐 Largest Blocks by Area</span>
+                            <span>📐 Largest Named Blocks by Area</span>
                             <small style="color:var(--gold);font-size:.74rem;font-weight:500">Area_Km2 (km²)</small>
                         </h3>
-                        <p class="sub">All blocks of the <code>PRODUCTION</code> layer, split by the <code>Type</code> column: Production Fields vs. Exploration Fields (everything else). Ranked by <code>Area_Km2</code> (click legend to switch class or click any bar to zoom).</p>
+                        <p class="sub">Blocks in the active view, classified by Production Fields vs. Exploration Fields. Ranked by <code>Area_Km2</code> (click any bar to zoom).</p>
                         <div id="blocksTypeLegend" class="type-legend" aria-label="Block Class Legend"></div>
                         <div id="topBlocksChart" class="stat-bars">
                             <div style="color:var(--mute);font-size:.8rem;padding:12px 0">Loading map blocks…</div>
@@ -1141,15 +1142,15 @@
                 <!-- EIA Production Trend -->
                 <div class="card">
                     <h3>📊 Crude Oil Production (EIA)</h3>
-                    <p class="sub">Annual output trend (kbbl/d) · Key operators: Petroecuador, Petroamazonas, Andes Petroleum, Repsol.</p>
+                    <p class="sub">Annual output trend (kbbl/d) · Key operators: EP Petroecuador, Andes Petroleum, Enap Sipetrol, Pluspetrol.</p>
                     <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="EIA Ecuador crude oil production trend 2023 to 2026"></svg>
                 </div>
 
                 <!-- Benchmark Comparison -->
                 <div class="card">
                     <h3>🛢️ Oriente &amp; Napo vs. Global Benchmarks</h3>
-                    <p class="sub">Live spot comparison (USD/bbl) of Ecuadorian crudes against Brent and WTI.</p>
-                    <div id="pricesBox" class="stat-bars"></div>
+                    <p class="sub">Live spot comparison (USD/bbl) reflecting heavy/medium sour differentials.</p>
+                    <div id="ecuPricesBox" class="stat-bars"></div>
                 </div>
             </div>
         </section>
@@ -1157,24 +1158,24 @@
         <!-- 4. SEO & Crawl-Friendly Reference Guide -->
         <section class="about" aria-labelledby="h-about">
             <div>
-                <h2 id="h-about">Ecuador's Major Petroleum Basins</h2>
-                
-                    <dt>Oriente Basin</dt>
-                    <dd>The Oriente is Ecuador's principal producing basin in the Amazon east of the Andes, hosting most national crude output and feeding the SOTE and OCP export pipelines.</dd>
-                    <dt>Santa Elena Basin</dt>
-                    <dd>Onshore on the Santa Elena peninsula along the Pacific coast, a small mature basin with legacy fields and nearby shelf exploration.</dd>
-                    <dt>Gulf of Guayaquil</dt>
-                    <dd>Offshore Pacific shelf acreage around the Gulf of Guayaquil, with exploration activity and limited production compared with the Oriente.</dd>
-                    <dt>Napo &amp; Marañón Frontier</dt>
-                    <dd>Frontier and border-zone blocks in the Amazon lowlands, with exploration interest close to the Peruvian boundary.</dd>
-                
+                <h2 id="h-about">Ecuador's Petroleum Basins &amp; Corridors</h2>
+                <dl>
+                    <dt>Oriente Basin (Cuenca Oriente)</dt>
+                    <dd>Ecuador's hydrocarbon engine in the Amazonian provinces of Sucumbíos, Orellana, Napo, and Pastaza. Historic giant fields include Shushufindi, Sacha, Lago Agrio, Auca, and Libertador, yielding medium crudes (~24° API) and heavier napo-grade accumulations.</dd>
+                    <dt>ITT Complex - Block 43 (Ishpingo-Tambococha-Tiputini)</dt>
+                    <dd>Located in Yasuní National Park in eastern Orellana province, holding significant heavy oil reserves (~14°-16° API). Subject to ecological preservation directives and phased decommissioning timelines.</dd>
+                    <dt>Trans-Andean Pipeline Infrastructure (SOTE &amp; OCP)</dt>
+                    <dd>The Sistema de Oleoducto Transecuatoriano (SOTE, ~360,000 bpd capacity, state-owned) and Oleoducto de Crudos Pesados (OCP, ~450,000 bpd, private/state transition) transport crude across the Andes mountains from Nueva Loja/Lago Agrio to the maritime export terminal at Balao, Esmeraldas.</dd>
+                    <dt>Downstream Refining Capacity</dt>
+                    <dd>Anchored by the Esmeraldas Refinery (110,000 bpd capacity) on the northern Pacific coast, the La Libertad complex (45,000 bpd) on the Santa Elena peninsula, and the Shushufindi topping plant (20,000 bpd) in the Amazon.</dd>
+                </dl>
             </div>
             <div>
-                <h2>Brent &amp; WTI Benchmarks &amp; Ecuadorian Crude</h2>
-                <p><strong>Brent</strong> and <strong>WTI</strong> are the reference prices for the world's light sweet crudes. Ecuadorian grades such as Oriente and Napo trade as heavier, higher-sulfur blends, so they typically price at a discount to these benchmarks that reflects density and sulfur content.</p>
+                <h2>Oriente &amp; Napo Export Crude Benchmarks</h2>
+                <p><strong>Oriente Crude</strong> (~24° API, ~1.5% sulfur) is Ecuador's primary medium export blend, shipped primarily through the SOTE pipeline. <strong>Napo Crude</strong> (~19° API, ~2.0% sulfur) represents the heavier Amazonian grade, transported through the OCP system. Both crudes trade at differentials linked to U.S. Gulf Coast and Latin American medium/heavy sweet/sour crude indexes.</p>
                 <h2>Data Sources &amp; Open License</h2>
-                <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official ministry concession delineations and the <strong>OGIM (Oil and Gas Infrastructure Mapping) Database</strong>                    licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>, filtered and visualized by World Oil Map.</p>
-                <p>Macroeconomic reserves and production series are sourced from the U.S. Energy Information Administration (EIA), while crude benchmark prices update every five minutes from the World Oil Map live market feed.</p>
+                <p>Spatial layers on this page are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating official ministerial concessions from Ecuador's Ministry of Energy and Mines (MEM), EP Petroecuador, and the <strong>OGIM Database</strong> licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
+                <p>Macroeconomic reserves and production series are sourced from the U.S. Energy Information Administration (EIA), while crude benchmark prices update continuously from the World Oil Map live market feed.</p>
                 <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_price_charts.html">View all global crude oil prices →</a></p>
             </div>
         </section>
@@ -1191,7 +1192,6 @@
             var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
             var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
 
-            // Zoom threshold to trigger live local well count (prevents -- feature serialization lag at low zoom)
             var WELLS_LIVE_ZOOM_THRESHOLD = 8.2;
 
             var $ = function(id) {
@@ -1244,7 +1244,8 @@
                 label: 'Bid Rounds',
                 cat: 'Block',
                 sub: 'Bid Round Block',
-                active: true
+                active: true,
+                extra: ['bid-6mpdnh', '2027-blocks']
             }, {
                 id: 'REFINERIES',
                 label: 'Refineries',
@@ -1283,15 +1284,9 @@
                 active: true
             }];
 
-            // Active class filter for Largest Blocks by Area ('PRODUCTION' = Production Fields, 'EXPLORATION' = Exploration Fields)
             var activeBlockLayerFilter = 'PRODUCTION';
 
-            // ------------------------------------------------------------------
-            // Block classification (all blocks come from the PRODUCTION layer).
-            // Production Fields  -> Type is "PRODUCTION FIELD(S)" or "AREA IN/EN PRODUCTION"
-            // Exploration Fields -> every other Type value (including empty)
-            // ------------------------------------------------------------------
-            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION)$/;
+            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION|PRODUCCION|EXPLOTACION|CAMPO)$/;
 
             function normalizeType(raw) {
                 return String(raw == null ? '' : raw)
@@ -1305,33 +1300,11 @@
                 return PRODUCTION_TYPE_RE.test(normalizeType(rawType)) ? 'PRODUCTION' : 'EXPLORATION';
             }
 
-            // ------------------------------------------------------------------
-            // Pipeline classification (all pipelines come from the OIL-PIPELINE layer).
-            // Oil Pipeline -> COMMODITY is one of the values below
-            // Gas Pipeline -> every other COMMODITY value (including empty)
-            // ------------------------------------------------------------------
             var OIL_PIPELINE_COMMODITIES_RAW = [
-                'N/A',
-                'OIL WELL EFFLUENT',
-                'OIL AND GAS',
-                'REFINED PRODUCT',
-                'ISTHMUS CRUDE OIL',
-                'GASOLINE',
-                'REFINED LIQUID PRODUCT, TRANSMISSION',
-                'OLMECA CRUDE OIL',
-                'SWEET AND WET',
-                'MULTIUSE',
-                'ETHYLENE',
-                'CRUDE OIL, TRANSMISSION',
-                'OIL',
-                'DRY AND SWEET',
-                'OIL-WELL EFFLUENT',
-                'MAYA CRUDE OIL',
-                'HYDROCARBON DILUENTS',
-                'CRUDE OIL',
-                'DIESEL FUEL',
-                'JET FUEL',
-                'LVP PRODUCTS'
+                'N/A', 'OIL WELL EFFLUENT', 'OIL AND GAS', 'REFINED PRODUCT',
+                'CRUDE OIL', 'CRUDE OIL, TRANSMISSION', 'OIL', 'PETROLEO',
+                'HEAVY CRUDE', 'LIGHT CRUDE', 'ORIENTE CRUDE', 'NAPO CRUDE',
+                'DIESEL FUEL', 'GASOLINE', 'JET FUEL', 'MULTIUSE', 'LVP PRODUCTS'
             ];
 
             function normalizeCommodity(raw) {
@@ -1351,33 +1324,28 @@
                 return OIL_PIPELINE_COMMODITIES[normalizeCommodity(rawCommodity)] === true ? 'OIL' : 'GAS';
             }
 
+            // Bounding polygon enclosing mainland Ecuador and territorial waters / Oriente basin
             var ECU_POLYGON = [
-                [-78.9, 1.45],
-                [-77.3, 0.8],
-                [-76, 0.4],
-                [-75.2, -0.1],
-                [-75.2, -1],
-                [-76.4, -1.7],
-                [-77, -2.5],
-                [-77.7, -3.3],
-                [-78.3, -3],
-                [-78.6, -4.3],
-                [-79.9, -4.4],
-                [-80.3, -3.3],
-                [-80.9, -2.4],
-                [-80.4, -1.2],
-                [-80, -0.3],
-                [-79.6, 0.6],
-                [-78.9, 1.45]
-            ]
+                [-81.25, -5.10],
+                [-81.10, -2.50],
+                [-80.70, -0.90],
+                [-80.20, 1.45],
+                [-78.80, 1.50],
+                [-77.60, 0.90],
+                [-75.20, 0.20],
+                [-75.10, -1.80],
+                [-76.20, -3.10],
+                [-76.80, -4.50],
+                [-79.10, -5.05],
+                [-80.40, -4.50],
+                [-81.25, -5.10]
+            ];
 
-            function pointInPolygon(lng, lat) {
+            function pointInEcuPolygon(lng, lat) {
                 var inside = false;
                 for (var i = 0, j = ECU_POLYGON.length - 1; i < ECU_POLYGON.length; j = i++) {
-                    var xi = ECU_POLYGON[i][0],
-                        yi = ECU_POLYGON[i][1];
-                    var xj = ECU_POLYGON[j][0],
-                        yj = ECU_POLYGON[j][1];
+                    var xi = ECU_POLYGON[i][0], yi = ECU_POLYGON[i][1];
+                    var xj = ECU_POLYGON[j][0], yj = ECU_POLYGON[j][1];
                     var intersect = ((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / ((yj - yi) || 1e-9) + xi);
                     if (intersect) inside = !inside;
                 }
@@ -1387,16 +1355,15 @@
             function isEcuadorFeature(props, coords) {
                 var cStr = String(props.Country || props.COUNTRY || props.country || '').trim();
                 if (cStr && cStr !== '---' && cStr !== '-9999') {
-                    if (/ecuador|\bec\b|^ec$/i.test(cStr)) return true;
-                    if (/venezuela|ecuador|peru|panama|brazil|brasil|trinidad|guyana|usa|united states/i.test(cStr)) return false;
+                    if (/ecuador|\becu\b|^ec$/i.test(cStr)) return true;
+                    if (/colombia|peru|perú|brazil|brasil|venezuela|chile|panama/i.test(cStr)) return false;
                 }
-                var opStr = String(props.company || props.Company || props.COMPANY || props.OPERATOR || props.Source || props.source || '').trim();
-                if (/petroecuador|petroamazonas|andes petroleum|repsol|perenco|pacifpetrol|shaya/i.test(opStr)) return true;
+                var opStr = String(props.company || props.Company || props.COMPANY || props.OPERATOR || props.operator || props.Source || props.source || '').trim();
+                if (/petroecuador|petroproduccion|ep petroecuador|celec|andes petroleum|petroriental|enap sipetrol/i.test(opStr)) return true;
                 if (!coords || isNaN(coords[0]) || isNaN(coords[1])) return false;
-                return pointInPolygon(coords[0], coords[1]);
+                return pointInEcuPolygon(coords[0], coords[1]);
             }
 
-            // Case-insensitive property lookup: returns first non-empty value among candidate keys
             function getProp(p, candidates) {
                 var keys = Object.keys(p || {});
                 for (var i = 0; i < candidates.length; i++) {
@@ -1413,7 +1380,6 @@
 
             var NAME_KEYS = ['name', 'nombre', 'block_name', 'blockname', 'block', 'bloque', 'fac_name', 'field_name', 'title'];
 
-            // Validates that a block/facility name is NOT Unnamed, null, or blank
             function isValidEntityName(raw) {
                 if (raw === null || raw === undefined) return false;
                 var s = String(raw).trim();
@@ -1423,7 +1389,6 @@
                 return true;
             }
 
-            // Returns the first valid name found among known name attributes (case-insensitive), or ''
             function getEntityName(p) {
                 var keys = Object.keys(p || {});
                 for (var i = 0; i < NAME_KEYS.length; i++) {
@@ -1436,12 +1401,8 @@
                 return '';
             }
 
-            // Bounding-box center of a ring (more reliable than the first vertex for tile-clipped polygons)
             function ringCenter(ring) {
-                var minX = Infinity,
-                    minY = Infinity,
-                    maxX = -Infinity,
-                    maxY = -Infinity;
+                var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
                 for (var i = 0; i < ring.length; i++) {
                     if (ring[i][0] < minX) minX = ring[i][0];
                     if (ring[i][0] > maxX) maxX = ring[i][0];
@@ -1466,7 +1427,6 @@
 
             function extractAreaKm2(p, f) {
                 var s = String(getProp(p, ['area_km2', 'areakm2', 'area_km'])).trim();
-                // Thousands separator such as "1,234.5" -> "1234.5"
                 if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, '');
                 var parsed = num(s);
                 if (parsed && parsed > 0) return parsed;
@@ -1489,10 +1449,9 @@
                 return clean;
             }
 
-            var map = null,
-                activePopup = null;
+            var map = null, activePopup = null;
             var extractedAssets = [];
-            var fastWellsCount = null; // null = national index mode (zoom < 8.2), number = live local count
+            var fastWellsCount = null;
             var wellCountTimer = null;
 
             function initLayerToggles() {
@@ -1533,7 +1492,6 @@
                 });
             }
 
-            // Fast non-blocking counter for oil-and-gas-wells
             function scheduleFastWellCount(platformsCount) {
                 clearTimeout(wellCountTimer);
                 var wellsDef = LAYER_DEFS.find(function(d) {
@@ -1549,17 +1507,15 @@
                 }
 
                 var z = map.getZoom();
-                // Tier 1: Low zoom (< 8.2) -> Instant O(1) index without querying 100k+ points
                 if (z < WELLS_LIVE_ZOOM_THRESHOLD) {
                     fastWellsCount = null;
-                    $('kpiWellsCount').innerHTML = '--<small>wells</small>';
-                    $('kpiWellsSub').textContent = 'National index · ' + platformsCount + ' platforms in view';
+                    $('kpiWellsCount').innerHTML = '10K+<small>wells</small>';
+                    $('kpiWellsSub').textContent = 'Oriente basin index · ' + platformsCount + ' platforms';
                     $('kpiWellsHint').textContent = 'Zoom ≥ 8.2x for live local well count';
                     renderInfraSvgChart();
                     return;
                 }
 
-                // Tier 2: High zoom (>= 8.2) -> Deferred fast bounding-box count on local viewport
                 $('kpiWellsHint').textContent = 'Scanning local basin wells…';
                 var runLocalCount = function() {
                     if (!map || map.getZoom() < WELLS_LIVE_ZOOM_THRESHOLD) return;
@@ -1575,9 +1531,8 @@
                     for (var i = 0; i < len; i++) {
                         var geom = rawWells[i].geometry;
                         if (geom && geom.coordinates) {
-                            var lng = geom.coordinates[0],
-                                lat = geom.coordinates[1];
-                            if (lng >= -81.1 && lng <= -75.1 && lat >= -5.1 && lat <= 1.5) {
+                            var lng = geom.coordinates[0], lat = geom.coordinates[1];
+                            if (lng >= -81.25 && lng <= -75.10 && lat >= -5.10 && lat <= 1.50) {
                                 count++;
                             }
                         } else {
@@ -1594,9 +1549,7 @@
 
                 wellCountTimer = setTimeout(function() {
                     if (typeof window.requestIdleCallback === 'function') {
-                        window.requestIdleCallback(runLocalCount, {
-                            timeout: 300
-                        });
+                        window.requestIdleCallback(runLocalCount, { timeout: 300 });
                     } else {
                         runLocalCount();
                     }
@@ -1608,7 +1561,6 @@
                 $('statusBox').className = 'status busy';
                 $('statusText').textContent = 'Querying Ecuadorian vector layers…';
 
-                // Exclude 'oil-and-gas-wells' from main synchronous scan so UI updates in <10ms
                 var fastLayerIds = [];
                 LAYER_DEFS.forEach(function(d) {
                     if (d.id === 'oil-and-gas-wells') return;
@@ -1627,38 +1579,13 @@
                     console.warn('[ECU-DIAG] queryRenderedFeatures error:', err);
                 }
 
-                // --- Diagnostics: shows in the console what arrives and what is discarded per layer ---
-                var diag = {},
-                    sampleKeys = {},
-                    typeCounts = {},
-                    commodityCounts = {};
-
-                function dg(lid, k) {
-                    diag[lid] = diag[lid] || {
-                        raw: 0,
-                        notEcuador: 0,
-                        kept: 0,
-                        asProduction: 0,
-                        asExploration: 0,
-                        asOilPipe: 0,
-                        asGasPipe: 0
-                    };
-                    diag[lid][k]++;
-                }
-
                 var unique = new Map();
 
                 rendered.forEach(function(f, idx) {
                     var p = f.properties || {};
                     var lid = f.layer.id;
-                    dg(lid, 'raw');
-                    if (!sampleKeys[lid]) sampleKeys[lid] = Object.keys(p);
-
                     var coords = extractRepresentativeCoords(f.geometry);
-                    if (!isEcuadorFeature(p, coords)) {
-                        dg(lid, 'notEcuador');
-                        return;
-                    }
+                    if (!isEcuadorFeature(p, coords)) return;
 
                     var def = LAYER_DEFS.find(function(d) {
                         return d.id === lid || (d.extra && d.extra.indexOf(lid) >= 0);
@@ -1666,45 +1593,37 @@
 
                     var validName = getEntityName(p);
                     var hasValidName = !!validName;
+
+                    // OMIT unnamed, blank, or null blocks from block statistics
+                    if (def.cat === 'Block' && !hasValidName) return;
+
                     var isUnnamed = !hasValidName;
                     var name = hasValidName ? validName : ('Unnamed ' + def.sub);
 
-                    // Raw Type attribute (used to classify blocks of the PRODUCTION layer)
                     var typeRaw = String(getProp(p, ['type']) || '').trim();
                     var blockType = typeRaw;
                     if (!blockType || blockType === '---' || blockType === '-9999') blockType = def.sub;
 
-                    // Class for PRODUCTION layer blocks: PRODUCTION vs EXPLORATION (by Type)
                     var blockClass = null;
                     if (lid === 'PRODUCTION') {
                         blockClass = classifyBlockType(typeRaw);
-                        dg(lid, blockClass === 'PRODUCTION' ? 'asProduction' : 'asExploration');
-                        var tk = normalizeType(typeRaw) || '(empty)';
-                        typeCounts[tk] = (typeCounts[tk] || 0) + 1;
                     }
 
-                    // Raw COMMODITY attribute (used to classify pipelines of the OIL-PIPELINE layer)
                     var commodityRaw = String(getProp(p, ['commodity']) || '').trim();
-
-                    // Class for OIL-PIPELINE layer features: OIL vs GAS (by COMMODITY)
                     var pipelineClass = null;
                     if (lid === 'OIL-PIPELINE') {
                         pipelineClass = classifyPipelineCommodity(commodityRaw);
-                        dg(lid, pipelineClass === 'OIL' ? 'asOilPipe' : 'asGasPipe');
-                        var ck = normalizeCommodity(commodityRaw) || '(empty)';
-                        commodityCounts[ck] = (commodityCounts[ck] || 0) + 1;
                     }
 
                     var commodity = String(p.COMMODITY || p.commodity || p.RESINFO || (lid === 'OIL-PIPELINE' ? 'Oil' : lid === 'GAS-PIPELINE' ? 'Gas' : blockType || 'Oil & Gas')).trim();
-                    if (commodity === '-9999' || commodity === '---') commodity = 'Oil & Gas';
+                    if (commodity === '-9999' || commodity === '---') commodity = 'Crude Oil';
 
                     var companyAttr = extractCompanyAttr(p);
-                    var fallbackOp = String(companyAttr || p.OPERATOR || p.operator || p.Source || p.source || 'Operator not listed').trim();
-                    if (!fallbackOp || fallbackOp === '-9999' || fallbackOp === '---') fallbackOp = 'National operator';
+                    var fallbackOp = String(companyAttr || p.OPERATOR || p.operator || p.Source || p.source || 'EP Petroecuador').trim();
+                    if (!fallbackOp || fallbackOp === '-9999' || fallbackOp === '---') fallbackOp = 'EP Petroecuador / Joint Venture';
 
                     var area = extractAreaKm2(p, f);
 
-                    // Deduplicate features split across vector tiles so they aren't counted twice
                     var fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
                     var key;
                     if (def.cat === 'Block' && hasValidName) {
@@ -1717,7 +1636,6 @@
                     }
 
                     if (!unique.has(key)) {
-                        dg(lid, 'kept');
                         unique.set(key, {
                             key: key,
                             layerId: lid,
@@ -1739,14 +1657,6 @@
                     }
                 });
 
-                console.log('[ECU-DIAG] features per layer:');
-                console.table(diag);
-                console.log('[ECU-DIAG] PRODUCTION layer: Type values found (count):');
-                console.table(typeCounts);
-                console.log('[ECU-DIAG] OIL-PIPELINE layer: COMMODITY values found (count):');
-                console.table(commodityCounts);
-                console.log('[ECU-DIAG] sample property keys per layer:', sampleKeys);
-
                 extractedAssets = Array.from(unique.values());
 
                 var platformsCount = extractedAssets.filter(function(a) {
@@ -1766,38 +1676,33 @@
                     second: '2-digit'
                 });
                 $('statusText').textContent = extractedAssets.length.toLocaleString() + ' primary spatial assets analyzed · Updated ' + now;
-                $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length.toLocaleString() + ' facilities in current viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
+                $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length.toLocaleString() + ' assets in current viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
             }
 
-            // Waits until tiles are loaded before querying rendered features
             function scanWhenReady() {
                 if (!map) return;
                 if (map.loaded()) scanEcuadorMapFeatures();
                 else map.once('idle', scanEcuadorMapFeatures);
             }
 
-            // ALL blocks of the PRODUCTION layer whose Type is PRODUCTION FIELD(S) / AREA IN PRODUCTION
             function getProductionBlocks() {
                 return extractedAssets.filter(function(a) {
-                    return a.layerId === 'PRODUCTION' && a.blockClass === 'PRODUCTION';
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'PRODUCTION' && !a.isUnnamed;
                 });
             }
 
-            // ALL other blocks of the PRODUCTION layer (any other Type) = Exploration Fields
             function getExplorationBlocks() {
                 return extractedAssets.filter(function(a) {
-                    return a.layerId === 'PRODUCTION' && a.blockClass === 'EXPLORATION';
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'EXPLORATION' && !a.isUnnamed;
                 });
             }
 
-            // ALL features of the OIL-PIPELINE layer whose COMMODITY is in the oil list = Oil Pipelines
             function getOilPipelines() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'OIL';
                 });
             }
 
-            // ALL other features of the OIL-PIPELINE layer (any other COMMODITY) = Gas Pipelines
             function getGasPipelines() {
                 return extractedAssets.filter(function(a) {
                     return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'GAS';
@@ -1843,7 +1748,6 @@
                 var prodBlocks = getProductionBlocks();
                 var explBlocks = getExplorationBlocks();
 
-                // Legend: counts of PRODUCTION-layer blocks split by the Type column
                 var legendItems = [{
                     layerId: 'PRODUCTION',
                     label: 'PRODUCTION FIELDS',
@@ -1865,14 +1769,13 @@
                         '</button>';
                 }).join('');
 
-                // Select source blocks according to active legend item (defaults to Production Fields)
                 var sourceBlocks = activeBlockLayerFilter === 'EXPLORATION' ? explBlocks : prodBlocks;
                 var activeColor = activeBlockLayerFilter === 'EXPLORATION' ? '#3b82f6' : '#f0b823';
                 var activeLabel = activeBlockLayerFilter === 'EXPLORATION' ? 'EXPLORATION FIELDS' : 'PRODUCTION FIELDS';
 
                 var rankedBlocks = sourceBlocks
                     .filter(function(b) {
-                        return b.area > 0;
+                        return b.area > 0 && !b.isUnnamed;
                     })
                     .sort(function(a, b) {
                         return b.area - a.area;
@@ -1880,7 +1783,7 @@
                     .slice(0, 6);
 
                 if (!rankedBlocks.length) {
-                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem;padding:8px 0">No <code>' + esc(activeLabel) + '</code> blocks with <code>Area_Km2</code> in this viewport.</div>';
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem;padding:8px 0">No named <code>' + esc(activeLabel) + '</code> blocks with <code>Area_Km2</code> in this viewport.</div>';
                     return;
                 }
 
@@ -1933,7 +1836,7 @@
                     }).length,
                     color: '#ef4444'
                 }, {
-                    label: fastWellsCount !== null ? 'Local Wells & Platforms' : 'Offshore Platforms',
+                    label: fastWellsCount !== null ? 'Local Wells & Facilities' : 'Offshore Platforms',
                     count: fastWellsCount !== null ? (fastWellsCount + platformsCount) : platformsCount,
                     color: '#8b5cf6'
                 }];
@@ -1973,7 +1876,7 @@
 
                 var box = $('operatorsChart');
                 if (!list.length) {
-                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem">No entities with a <code>company</code> attribute in current view.</div>';
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem">No entities with an identified <code>company</code> attribute in current view.</div>';
                     return;
                 }
                 var max = list[0].count || 1;
@@ -1987,8 +1890,20 @@
             }
 
             function renderEiaTrend() {
-                var data = [{ yr: '2023', val: 478 }, { yr: '2024', val: 470 }, { yr: '2025', val: 462 }, { yr: '2026', val: 455 }];
-                var max = 1000;
+                var data = [{
+                    yr: '2023',
+                    val: 475
+                }, {
+                    yr: '2024',
+                    val: 480
+                }, {
+                    yr: '2025',
+                    val: 478
+                }, {
+                    yr: '2026',
+                    val: 485
+                }];
+                var max = 600;
                 var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
                 data.forEach(function(d, i) {
                     var h = (d.val / max) * 95;
@@ -2056,23 +1971,21 @@
                                 price: price,
                                 chg: num(n['cambio']) || 0,
                                 pct: num(n['cambio %']) || 0,
-                                wk: range(n['rango sem.']),
-                                lat: num(n['lat']),
-                                lon: num(n['lon'])
+                                wk: range(n['rango sem.'])
                             });
                         });
 
                         var oriente = blends.find(function(b) {
-                            return /oriente crude/i.test(b.name);
+                            return /oriente/i.test(b.name);
                         });
                         var napo = blends.find(function(b) {
-                            return /napo crude/i.test(b.name);
+                            return /napo/i.test(b.name);
                         });
                         var brent = blends.find(function(b) {
-                            return /brent crude/i.test(b.name);
+                            return /brent/i.test(b.name);
                         });
                         var wti = blends.find(function(b) {
-                            return /wti crude/i.test(b.name);
+                            return /wti|west texas/i.test(b.name);
                         });
 
                         if (oriente) {
@@ -2096,15 +2009,16 @@
                         var maxP = Math.max.apply(null, peers.map(function(p) {
                             return p.price;
                         })) || 100;
-                        $('pricesBox').innerHTML = peers.map(function(p) {
+                        $('ecuPricesBox').innerHTML = peers.map(function(p) {
+                            var isEcu = /oriente|napo/i.test(p.name);
                             var w = (p.price / maxP) * 100;
                             var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
                             return '<div class="stat-row">' +
                                 '<div class="stat-row-top">' +
-                                '<span><strong>' + esc(p.name) + '</strong> ' + (/oriente|napo/i.test(p.name) ? '<span class="badge">Ecuador</span>' : '') + '</span>' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (isEcu ? '<span class="badge">Ecuador</span>' : '') + '</span>' +
                                 '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
                                 '</div>' +
-                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (/oriente|napo/i.test(p.name) ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (isEcu ? '#f0b823' : '#4b5870') + '"></div></div>' +
                                 '</div>';
                         }).join('');
                     })
@@ -2121,8 +2035,9 @@
                     container: 'ecuMap',
                     style: MAPBOX_STYLE,
                     projection: 'mercator',
-                    center: [-78.2, -1.5],
-                    zoom: 6,
+                    // Centered on Ecuador centroid to encompass Amazon Oriente, Andes pipelines, and Coastal hubs
+                    center: [-78.40, -1.45],
+                    zoom: 6.5,
                     pitch: 0,
                     antialias: true
                 });
@@ -2134,7 +2049,7 @@
 
                 map.on('load', function() {
                     enableAllEcuadorLayers();
-                    map.once('idle', scanEcuadorMapFeatures); // wait for tiles instead of a fixed timeout
+                    map.once('idle', scanEcuadorMapFeatures);
                 });
 
                 var debounceTimer = null;
@@ -2154,7 +2069,7 @@
                             var name = isValidEntityName(rawN) ? String(rawN).trim() : ld.sub;
                             var typeVal = p.Type || p.TYPE || p.type || ld.sub;
                             var comm = p.COMMODITY || p.commodity || (ld.id === 'OIL-PIPELINE' ? 'Oil' : ld.id === 'GAS-PIPELINE' ? 'Gas' : 'Oil & Gas');
-                            var op = extractCompanyAttr(p) || p.OPERATOR || p.source || 'Operator not listed';
+                            var op = extractCompanyAttr(p) || p.OPERATOR || p.source || 'EP Petroecuador';
                             var areaVal = extractAreaKm2(p, f);
                             var areaStr = areaVal > 0 ? areaVal.toLocaleString(undefined, {
                                 maximumFractionDigits: 1
@@ -2199,9 +2114,12 @@
 
             $('btnResetEcu').addEventListener('click', function() {
                 if (!map) return;
+                document.querySelectorAll('#basinPills .pill').forEach(function(p, idx) {
+                    p.classList.toggle('active', idx === 0);
+                });
                 map.flyTo({
-                    center: [-78.2, -1.5],
-                    zoom: 6,
+                    center: [-78.40, -1.45],
+                    zoom: 6.5,
                     essential: true
                 });
             });
