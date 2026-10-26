@@ -1,6 +1,5 @@
 import { put } from '@vercel/blob';
 
-// Desactivar el body parser automático de Vercel para leer archivos KML/XML en crudo
 export const config = {
   api: {
     bodyParser: false,
@@ -19,19 +18,16 @@ export default async function handler(req, res) {
     const consentParam = url.searchParams.get('consent');
     const consentHeader = req.headers['x-user-consent'];
 
-    // 1. Verificación de consentimiento RGPD / ToS
     if (consentParam !== 'true' || consentHeader !== 'accepted-tos-and-privacy') {
       return res.status(403).json({ error: 'Explicit user consent is required.' });
     }
 
-    // 2. Sanitizar nombre de archivo
     const rawName = url.searchParams.get('filename') || 'uploaded_map.kml';
     const safeFilename = rawName.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 90);
     if (!/\.(kml|xml)$/i.test(safeFilename)) {
       return res.status(400).json({ error: 'Only .kml or .xml files are allowed.' });
     }
 
-    // 3. Leer el stream de la petición de forma robusta
     const chunks = [];
     for await (const chunk of req) {
       chunks.push(chunk);
@@ -43,13 +39,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid KML structure.' });
     }
 
-    // 4. Saneamiento contra XXE y scripts maliciosos
     const sanitizedKml = rawBody
       .replace(/<!DOCTYPE[^>]*>/gi, '')
       .replace(/<!ENTITY[^>]*>/gi, '')
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
-    // 5. Guardar el archivo en Vercel Blob
+    // Subir a Vercel Blob
     const blob = await put(`kml-uploads/${Date.now()}_${safeFilename}`, sanitizedKml, {
       access: 'public',
       contentType: 'application/vnd.google-earth.kml+xml',
@@ -58,7 +53,11 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ ok: true, url: blob.url });
   } catch (err) {
-    console.error('KML upload error:', err);
-    return res.status(500).json({ error: 'Failed to store KML file.' });
+    console.error('KML upload error details:', err);
+    // Devuelve el mensaje exacto del error para verlo en la respuesta de la red
+    return res.status(500).json({ 
+      error: 'Failed to store KML file.', 
+      details: err.message || String(err) 
+    });
   }
 }
