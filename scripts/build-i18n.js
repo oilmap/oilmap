@@ -1,7 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const root = path.join(__dirname, '..');
+const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = 'https://oilmap.xyz';
 const indexPath = path.join(root, 'index.html');
 
@@ -27,6 +28,32 @@ const SEO = {
     },
 };
 
+const HEADER_I18N = {
+    es: [
+        ['aria-label="Scroll left"', 'aria-label="Desplazar a la izquierda"'],
+        ['aria-label="Scroll right"', 'aria-label="Desplazar a la derecha"'],
+        ['placeholder="🔍 Search Block or Country..."', 'placeholder="🔍 Buscar bloque o país..."'],
+        ['aria-label="Search"', 'aria-label="Buscar"'],
+        ['aria-label="Map Controls"', 'aria-label="Controles del mapa"'],
+        ['<span>🗂️ Layers ▾</span>', '<span>🗂️ Capas ▾</span>'],
+        ['<span>📊 Intelligence ▾</span>', '<span>📊 Inteligencia ▾</span>'],
+        ['<span>🛠️ Tools ▾</span>', '<span>🛠️ Herramientas ▾</span>'],
+        ['<span>Contact</span>', '<span>Contacto</span>'],
+        ['<span>Sources ▾</span>', '<span>Fuentes ▾</span>'],
+        ['aria-label="Select Language"', 'aria-label="Seleccionar idioma"'],
+    ],
+    fr: [
+        ['aria-label="Scroll left"', 'aria-label="Défiler vers la gauche"'],
+        ['aria-label="Scroll right"', 'aria-label="Défiler vers la droite"'],
+        ['placeholder="🔍 Search Block or Country..."', 'placeholder="🔍 Rechercher un bloc ou un pays..."'],
+        ['aria-label="Search"', 'aria-label="Rechercher"'],
+        ['aria-label="Map Controls"', 'aria-label="Contrôles de la carte"'],
+        ['<span>🗂️ Layers ▾</span>', '<span>🗂️ Couches ▾</span>'],
+        ['<span>🛠️ Tools ▾</span>', '<span>🛠️ Outils ▾</span>'],
+        ['aria-label="Select Language"', 'aria-label="Sélectionner la langue"'],
+    ],
+};
+
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const setMeta = (html, key, value) => {
@@ -34,6 +61,25 @@ const setMeta = (html, key, value) => {
     if (!re.test(html)) return html;
     return html.replace(re, (_, p) => `${p}${esc(value)}"`);
 };
+
+const translateHeader = (html, lang) => {
+    const headerRe = /<header[\s\S]*?<\/header>/;
+    const header = html.match(headerRe)[0];
+    let translated = header;
+    for (const [from, to] of HEADER_I18N[lang]) {
+        if (!translated.includes(from)) {
+            console.warn(`[${lang}] header string not found: ${from}`);
+            continue;
+        }
+        translated = translated.split(from).join(to);
+    }
+    return html.replace(header, translated);
+};
+
+const toRootRelative = html => html
+    .replace(/(\s(?:href|src)=")\.\//g, '$1/')
+    .replace(/(\s(?:href|src)=")(?!https?:|mailto:|#|\/|data:|javascript:)([^"]*)"/g, '$1/$2"')
+    .replace("s.src = 'data/geocoder.js';", "s.src = '/data/geocoder.js';");
 
 for (const lang of Object.keys(SEO)) {
     const seo = SEO[lang];
@@ -49,6 +95,8 @@ for (const lang of Object.keys(SEO)) {
     html = setMeta(html, 'og:url', `${BASE}${pagePath}`);
     html = setMeta(html, 'twitter:title', seo.ogTitle);
     html = setMeta(html, 'twitter:description', seo.ogDescription);
+    html = translateHeader(html, lang);
+    html = toRootRelative(html);
 
     fs.mkdirSync(path.join(root, lang), { recursive: true });
     fs.writeFileSync(path.join(root, lang, 'index.html'), html);

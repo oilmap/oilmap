@@ -4,7 +4,14 @@
   "redirects": [
     { "source": "/es.html", "destination": "/es/", "statusCode": 301 },
     { "source": "/fr.html", "destination": "/fr/", "statusCode": 301 },
-    { "source": "/ar.html", "destination": "/", "statusCode": 301 }
+    { "source": "/ar.html", "destination": "/", "statusCode": 301 },
+    { "source": "/([a-z]+_petroleum_market)\\.html", "destination": "/country_profiles/$1", "statusCode": 301 },
+    { "source": "/country_profiles/([a-z_]+)\\.html", "destination": "/country_profiles/$1", "statusCode": 301 },
+    { "source": "/oil_price/oil_price_charts.html", "destination": "/oil_price/oil_price_charts", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/country_profiles/([a-z_]+)", "destination": "/country_profiles/$1.html" },
+    { "source": "/oil_price/oil_price_charts", "destination": "/oil_price/oil_price_charts.html" }
   ],
   "headers": [
     {
