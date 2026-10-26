@@ -178,6 +178,11 @@
             background: var(--accent-hover);
         }
 
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         button.secondary {
             background: transparent;
             color: var(--text-main);
@@ -275,6 +280,16 @@
             font-size: 0.9rem;
         }
 
+        .topic-create {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .topic-create input {
+            flex: 1;
+        }
+
         .image-tools {
             background: var(--bg-body);
             border: 1px dashed var(--border-color);
@@ -340,14 +355,12 @@
                     </select>
 
                     <label for="topicFilter">Tema del blog <small>Se usa como filtro en la página del blog</small></label>
-                    <select id="topicFilter" required>
-                        <option value="">Selecciona un tema</option>
-                        <option value="market">Global Petroleum &amp; Oil Market</option>
-                        <option value="opec">OPEC &amp; Production</option>
-                        <option value="upstream">Upstream &amp; Exploration</option>
-                        <option value="downstream">Downstream &amp; Refineries</option>
-                        <option value="prices">Crude Oil Prices</option>
-                    </select>
+                    <select id="topicFilter" required></select>
+                    <div class="topic-create">
+                        <input id="newTopicName" maxlength="60" placeholder="Nombre de un tema nuevo">
+                        <button type="button" class="secondary" id="addTopic">Crear tema</button>
+                    </div>
+                    <p class="hint" id="topicStatus"></p>
 
                     <label for="author">Autor <small>Nombre visible y en los datos estructurados</small></label>
                     <input id="author" required placeholder="Roque Leal">
@@ -410,10 +423,11 @@
                 <h2 class="panel-title">Noticias publicadas (<span id="count">0</span>)</h2>
                 <div id="list"></div>
                 <div class="actions">
-                    <button type="button" id="download">Descargar archivos para publicar</button>
+                    <button type="button" id="download" disabled>Descargar news.json</button>
+                    <button type="button" class="secondary" id="downloadTopics" hidden>Descargar topics.json</button>
                 </div>
                 <p class="hint">
-                    Se descarga <code>data.json</code>. Súbelo a la raíz del repositorio: las páginas <code>blog/&lt;slug&gt;.html</code>, el blog, el sitemap.xml y llms.txt se generan solos en cada despliegue.
+                    Se descarga <code>news.json</code>. Reemplaza <code>data/news.json</code> en el repositorio (y <code>data/topics.json</code> si creaste temas): las páginas <code>blog/&lt;slug&gt;.html</code>, el blog, el sitemap.xml y llms.txt se generan solos en cada despliegue.
                 </p>
                 <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
             </div>
@@ -490,6 +504,13 @@
             $('count').textContent = articles.length;
             const list = $('list');
             list.innerHTML = '';
+            if (loadError) {
+                const msg = document.createElement('p');
+                msg.className = 'empty';
+                msg.textContent = loadError;
+                list.append(msg);
+                return;
+            }
             if (articles.length === 0) {
                 list.innerHTML = '<p class="empty">Todavía no hay noticias.</p>';
             }
@@ -638,6 +659,7 @@
 
         $('form').addEventListener('submit', e => {
             e.preventDefault();
+            if (!loaded) return alert(loadError || 'Espera a que cargue data/news.json.');
             const d = readForm();
             if (d.image && !d.imageAlt) {
                 alert('Escribe el texto alternativo de la imagen.');
@@ -669,14 +691,75 @@
         });
 
         $('download').addEventListener('click', () => {
-            download('data.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
+            download('news.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
         });
 
-        fetch('data.json', { cache: 'no-store' })
-            .then(r => r.ok ? r.json() : [])
-            .then(data => { articles = data; sortArticles(); })
-            .catch(() => { articles = []; })
+        let loaded = false;
+        let loadError = '';
+        let topics = [];
+
+        function renderTopicOptions(selected = '') {
+            const select = $('topicFilter');
+            select.innerHTML = '';
+            select.append(new Option('Selecciona un tema', ''));
+            topics.forEach(t => select.append(new Option(t.label, t.value)));
+            select.value = selected;
+        }
+
+        function setTopicStatus(msg, isError = false) {
+            const el = $('topicStatus');
+            el.textContent = msg;
+            el.style.color = isError ? '#f87171' : '';
+        }
+
+        function addTopic() {
+            const label = $('newTopicName').value.trim();
+            if (label.length < 3) return setTopicStatus('El nombre del tema debe tener al menos 3 caracteres.', true);
+            const value = label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+            if (!value) return setTopicStatus('El nombre del tema debe tener letras o números.', true);
+            if (topics.some(t => t.value === value)) return setTopicStatus('Ya existe un tema con ese nombre.', true);
+            topics.push({ value, label });
+            renderTopicOptions(value);
+            $('newTopicName').value = '';
+            $('downloadTopics').hidden = false;
+            setTopicStatus(`Tema "${label}" creado. Descarga topics.json y reemplázalo en data/topics.json antes de publicar.`);
+            renderPreview();
+        }
+
+        $('addTopic').addEventListener('click', addTopic);
+        $('newTopicName').addEventListener('keydown', e => {
+            if (e.key !== 'Enter') return;
+            e.preventDefault();
+            addTopic();
+        });
+
+        $('downloadTopics').addEventListener('click', () => {
+            download('topics.json', JSON.stringify(topics, null, 2) + '\n', 'application/json');
+        });
+
+        function getJson(name) {
+            return fetch(`data/${name}`, { cache: 'no-store' }).then(r => {
+                if (!r.ok) throw new Error(`${name}: HTTP ${r.status}`);
+                return r.json();
+            });
+        }
+
+        Promise.all([getJson('news.json'), getJson('topics.json')])
+            .then(([news, catalog]) => {
+                if (!Array.isArray(news)) throw new Error('news.json no contiene una lista');
+                if (!Array.isArray(catalog)) throw new Error('topics.json no contiene una lista');
+                articles = news;
+                topics = catalog;
+                sortArticles();
+                loaded = true;
+                $('download').disabled = false;
+            })
+            .catch(err => {
+                loadError = `No se pudieron cargar los datos del blog (${err.message}). No publiques hasta resolverlo, para no sobrescribir el histórico.`;
+            })
             .finally(() => {
+                renderTopicOptions();
                 renderList();
                 renderPreview();
             });
