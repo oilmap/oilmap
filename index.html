@@ -76,7 +76,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
-    <!-- data/geocoder.js se ha movido al final del ciclo de vida del mapa (map.once('idle')) para optimizar la velocidad de carga inicial -->
+    <!-- data/geocoder.js is deferred to the end of the map lifecycle (map.once('idle')) to optimize initial load speed -->
     <style>
         :root {
             --accent: #f0b823;
@@ -141,7 +141,7 @@
             box-shadow: var(--shadow)
         }
 
-        /* ---------- HEADER COMPACTO Y PISTA DE SCROLL ---------- */
+        /* ---------- COMPACT HEADER & SCROLL TRACK ---------- */
         header.top-bar {
             position: absolute;
             top: calc(12px + env(safe-area-inset-top, 0px));
@@ -372,7 +372,7 @@
             font-weight: 600
         }
 
-        /* ---------- PANELES DESPLEGABLES ---------- */
+        /* ---------- DROPDOWN PANELS ---------- */
         .dropdown-panel {
             position: fixed;
             top: 0;
@@ -538,7 +538,6 @@
             background: rgba(255, 255, 255, .045);
         }
 
-        /* Corregido: h3 en lugar de h4 para mantener orden jerárquico secuencial (h1 -> h2 -> h3) */
         .sv-tile h3 {
             margin: 0;
             font-size: .66rem;
@@ -746,7 +745,7 @@
             color: var(--accent)
         }
 
-        /* ---------- SIDEBAR REGIONAL Y HERRAMIENTAS ---------- */
+        /* ---------- REGIONAL SIDEBAR & TOOLS ---------- */
         #regionSidebar {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -795,7 +794,6 @@
             padding: 10px 12px
         }
 
-        /* Corregido: h3 en lugar de h4 para mantener orden jerárquico secuencial (h1 -> h2 -> h3) */
         .metric-card h3 {
             margin: 0 0 4px;
             font-size: .7rem;
@@ -988,7 +986,7 @@
             border-color: var(--accent)
         }
 
-        /* Estilos del bloque de Consentimiento Legal KML */
+        /* KML Legal Consent Box Styles */
         .kml-consent-box {
             background: rgba(255, 255, 255, .03);
             border: 1px solid var(--border);
@@ -1162,7 +1160,7 @@
             padding: 4px 8px !important
         }
 
-        /* ---------- TABLA UNIFICADA MODERNA PARA POPUPS GIS / REFINERÍAS ---------- */
+        /* ---------- MODERN UNIFIED TABLE FOR GIS / REFINERY POPUPS ---------- */
         .popup-modern-table {
             width: 100%;
             border-collapse: separate;
@@ -1310,12 +1308,11 @@
 </head>
 
 <body>
-    <!-- Corregido: se añadió role="region" para que aria-label sea válido según ARIA -->
     <div class="ad-container" role="region" aria-label="Advertisement">
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
     </div>
 
-    <!-- HEADER ERGONÓMICO CON DESPLAZAMIENTO INTEGRAL -->
+    <!-- ERGONOMIC HEADER WITH CONTINUOUS SCROLL TRACK -->
     <header class="glass top-bar" role="banner">
         <!-- Brand / Logo -->
         <div class="brand" id="brandLogo" role="button" tabindex="0" aria-label="About World Oil Map">
@@ -1323,17 +1320,17 @@
             <h1>WORLD OIL MAP <span>2026</span></h1>
         </div>
 
-        <!-- Pista de desplazamiento continuo -->
+        <!-- Continuous Scroll Track -->
         <div class="nav-scroll-wrapper" id="navScrollWrapper">
             <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
 
             <div class="nav-scroll-track" id="navScrollTrack">
-                <!-- Buscador de bloques y países -->
+                <!-- Block & Country Search -->
                 <div class="search-wrap">
                     <input type="search" id="countrySearch" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
                 </div>
 
-                <!-- Barra de herramientas en el orden estricto solicitado -->
+                <!-- Map Controls Toolbar -->
                 <nav class="toolbar" aria-label="Map Controls">
                     <!-- 1. Layers -->
                     <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
@@ -1357,7 +1354,7 @@
                     <button id="btn-source" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>Sources ▾</span></button>
                 </nav>
 
-                <!-- 8. Selector de idioma -->
+                <!-- 8. Language Selector -->
                 <select id="langSelector" class="lang-select" aria-label="Select Language">
                     <option value="/">🌐 EN</option>
                     <option value="/es/">🌐 ES</option>
@@ -1369,13 +1366,13 @@
         </div>
     </header>
 
-    <!-- Caja de sugerencias fija -->
+    <!-- Fixed Search Suggestions Box -->
     <div id="suggestions" class="glass" role="listbox" aria-label="Search suggestions"></div>
 
-    <!-- Menú Desplegable: Layers -->
+    <!-- Dropdown Menu: Layers -->
     <div id="menu" class="dropdown-panel glass" role="menu"></div>
 
-    <!-- Menú Desplegable: Intelligence -->
+    <!-- Dropdown Menu: Intelligence -->
     <div id="intelligence-menu" class="dropdown-panel glass" role="menu">
         <div class="menu-group-header">Market Analysis</div>
         <a class="shortcut-item" role="menuitem" href="oil_price/oil_price_charts">📈 Price Intelligence Charts</a>
@@ -1395,7 +1392,7 @@
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" type="button">🌎 Global View</button>
     </div>
 
-    <!-- Menú Desplegable: Tools -->
+    <!-- Dropdown Menu: Tools -->
     <div id="tools-menu" class="dropdown-panel glass" role="menu">
         <div class="menu-group-header">Spatial Tools</div>
         <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
@@ -1406,7 +1403,7 @@
         <button class="shortcut-item" id="menu-tool-measure" role="menuitem" type="button">📏 Measure Distance & Area</button>
     </div>
 
-    <!-- Menú Desplegable: Sources -->
+    <!-- Dropdown Menu: Sources -->
     <div id="source-menu" class="dropdown-panel glass" role="menu">
         <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
         <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
@@ -1427,7 +1424,7 @@
             <button type="button" class="sv-link-btn" id="btnSvRescan">Rescan view</button>
         </div>
 
-        <!-- 1. KPI Executive Board (h3 secuencial debajo de h2) -->
+        <!-- 1. KPI Executive Board -->
         <div class="sv-kpi-grid">
             <div class="sv-tile">
                 <h3>Mapped Blocks</h3>
@@ -1451,11 +1448,11 @@
                 <h3>Refineries &amp; Fields</h3>
                 <p class="sv-px" id="svKpiRefCount">0<small>assets</small></p>
                 <p class="sv-sub" id="svKpiRefSub">0 Refineries · 0 Deposits</p>
-                <p class="sv-sub">Downstream &amp; fields</p>
+                <p class="sv-sub" id="svKpiRefCap" style="color:var(--accent)">Capacity: 0 bbl/d</p>
             </div>
         </div>
 
-        <!-- 2. Largest Blocks by Area (Corregido: role="group" en #svBlocksTypeLegend para permitir aria-label) -->
+        <!-- 2. Largest Blocks by Area -->
         <div class="sv-card">
             <h3>
                 <span>📐 Largest Blocks by Area</span>
@@ -1465,6 +1462,18 @@
             <div id="svBlocksTypeLegend" class="type-legend" role="group" aria-label="Block Class Legend"></div>
             <div id="svTopBlocksChart" class="stat-bars">
                 <div style="color:var(--text-secondary);font-size:.72rem;padding:6px 0">Pan or zoom map to analyze blocks…</div>
+            </div>
+        </div>
+
+        <!-- 2.5 Top 3 Refineries by Capacity -->
+        <div class="sv-card">
+            <h3>
+                <span>🏭 Top 3 Refineries by Capacity</span>
+                <small style="color:var(--accent);font-size:.68rem;font-weight:500">Descriptio</small>
+            </h3>
+            <p class="sv-card-sub">Leading refineries by storage &amp; processing capacity in current viewport (click bar to locate).</p>
+            <div id="svTopRefineriesChart" class="stat-bars">
+                <div style="color:var(--text-secondary);font-size:.72rem;padding:6px 0">Pan or zoom map to analyze refineries…</div>
             </div>
         </div>
 
@@ -1500,7 +1509,7 @@
             </div>
         </div>
 
-        <!-- 5. Buscador / Slicer de Entidades Verificadas en Vista -->
+        <!-- 5. Verified Entities Explorer -->
         <div class="sv-card">
             <h3>
                 <span>🔍 Verified Entities Explorer</span>
@@ -1523,14 +1532,14 @@
         <div id="measureOutput" class="measure-readout">Click on map to start measuring.</div>
     </div>
 
-    <!-- HUD del dibujo de polígonos -->
+    <!-- Polygon Drawing HUD -->
     <div id="polyDrawHud" class="glass">
         <span id="polyVertexCounter" style="font-size:.78rem;font-weight:600;color:var(--accent)">📐 0 vertices</span>
         <button id="btnFinishPoly" class="btn-ui active-tool">✅ Save</button>
         <button id="btnCancelPoly" class="btn-ui" aria-label="Cancel">❌</button>
     </div>
 
-    <!-- Country Profile Sidebar (h3 secuencial debajo de h2) -->
+    <!-- Country Profile Sidebar -->
     <aside id="regionSidebar" class="glass" aria-label="Country Intelligence">
         <div class="panel-header">
             <h2 id="sidebarTitle">Country Profile</h2>
@@ -1562,7 +1571,7 @@
     <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
-    <!-- Modal de Spatial Tools (Pins, Polígonos, KML con Consentimiento Legal y Almacenamiento en Vercel Blob) -->
+    <!-- Spatial Tools Modal (Pins, Polygons, KML with Legal Consent & Vercel Blob Storage) -->
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="spatialToolsModalTitle">
         <div class="modal-card compact">
             <div class="panel-header">
@@ -1606,7 +1615,6 @@
                 <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center">🖌️ Draw Polygon on Map</button>
             </div>
             <div id="kmlSection" style="display:none">
-                <!-- Consentimiento explícito, Términos, Política de Privacidad y Seguridad -->
                 <div class="kml-consent-box">
                     <label class="kml-consent-label" for="kmlConsentCheckbox">
                         <input type="checkbox" id="kmlConsentCheckbox">
@@ -1632,7 +1640,7 @@
         </div>
     </div>
 
-    <!-- Modal de Rankings y Fluctuaciones -->
+    <!-- Market Rankings & Fluctuations Modal -->
     <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="statsModalTitle">
         <div class="modal-card">
             <div class="panel-header">
@@ -1668,7 +1676,7 @@
         </div>
     </div>
 
-    <!-- Modal About -->
+    <!-- About Modal -->
     <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
         <div class="modal-card compact" style="text-align:center">
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
@@ -1701,7 +1709,7 @@
             return isNaN(x) ? null : x;
         };
 
-        /* ---------- VALIDACIÓN ESTRICTA (OMITE NULL, BLANK, UNKNOWN, UNNAMED) ---------- */
+        /* ---------- STRICT VALIDATION (OMITS NULL, BLANK, UNKNOWN, UNNAMED) ---------- */
         function isValidValue(raw) {
             if (raw === null || raw === undefined) return false;
             const s = String(raw).trim();
@@ -1735,7 +1743,7 @@
             return getProp(p, ['company', 'operator', 'empresa', 'operador', 'concessionaire']);
         }
 
-        /* ---------- CONTROL DE SCROLL Y DESPLAZAMIENTO DEL HEADER ---------- */
+        /* ---------- HEADER SCROLL CONTROL ---------- */
         const navTrack = $('navScrollTrack');
         const scrollLeftBtn = $('scrollLeftBtn');
         const scrollRightBtn = $('scrollRightBtn');
@@ -1808,7 +1816,7 @@
             setTimeout(updateScrollArrows, 300);
         }
 
-        /* ---------- CONFIGURACIÓN DE CAPAS (LAYERS) ---------- */
+        /* ---------- LAYERS CONFIGURATION ---------- */
         const menuNav = $('menu');
 
         const layerMenuConfig = [{
@@ -1910,7 +1918,7 @@
             });
         }
 
-        /* ---------- PANELES DROPDOWN ---------- */
+        /* ---------- DROPDOWN PANELS ---------- */
         const panels = [
             [$('btn-toggle-menu'), menuNav],
             [$('btn-intelligence'), $('intelligence-menu')],
@@ -1967,7 +1975,7 @@
             }
         });
 
-        /* ---------- ACCIONES DENTRO DE LOS MENÚS ---------- */
+        /* ---------- MENU ACTIONS ---------- */
         $('menu-item-stats').addEventListener('click', () => {
             closeAllDropdowns();
             statsModal.style.display = 'flex';
@@ -1996,7 +2004,7 @@
             toggleMeasureTool();
         });
 
-        /* ---------- MAPA MAPBOX ---------- */
+        /* ---------- MAPBOX MAP ---------- */
         mapboxgl.accessToken = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
         const map = new mapboxgl.Map({
             container: 'map',
@@ -2016,7 +2024,7 @@
             trackUserLocation: true
         }), 'bottom-right');
 
-        /* ---------- CARGA DIFERIDA DE GEOCODER.JS AL FINAL DE TODO ---------- */
+        /* ---------- DEFERRED LOADING OF GEOCODER.JS ---------- */
         let geocoderScriptLoaded = false;
         function loadGeocoderScriptLast() {
             if (geocoderScriptLoaded) return;
@@ -2117,6 +2125,69 @@
                 } catch (e) {}
             }
             return 0;
+        }
+
+        /* ---------- EXTRACT REFINERY CAPACITY FROM DESCRIPTIO COLSPAN ---------- */
+        function extractRefineryCapacity(p) {
+            if (!p) return { value: 0, unit: '' };
+            // 1. Check direct capacity properties first
+            const direct = getProp(p, ['capacity', 'cap_bpd', 'capacity_bpd', 'storage', 'storage_capacity', 'capacidad']);
+            if (direct) {
+                const cleaned = direct.replace(/,/g, '');
+                const m = cleaned.match(/(\d+(?:\.\d+)?)/);
+                if (m) return { value: parseFloat(m[1]), unit: direct.replace(/[\d.,\s]+/g, '').trim() || 'bbl/d' };
+            }
+
+            // 2. Parse HTML table inside Descriptio (specifically the first colspan cell used as popup banner)
+            const rawDesc = p.Descriptio || p.description || p.Description || p.DESCRIPTIO || p.DESC || p.desc;
+            if (!isValidValue(rawDesc)) return { value: 0, unit: '' };
+
+            let str = String(rawDesc).trim();
+            let bannerText = '';
+
+            if (/<[a-zA-Z][^>]*>/.test(str)) {
+                const doc = new DOMParser().parseFromString(str, 'text/html');
+                const trs = Array.from(doc.querySelectorAll('tr'));
+                for (let i = 0; i < trs.length; i++) {
+                    const cells = Array.from(trs[i].querySelectorAll('td, th'));
+                    if (!trs[i].textContent.trim()) continue;
+                    // First 1-cell row (colspan="2") without links is the capacity banner
+                    if (cells.length === 1 && !cells[0].querySelector('a')) {
+                        bannerText = cells[0].textContent.trim();
+                        break;
+                    }
+                    // Fallback if structured as 2 cells (Key | Value)
+                    if (cells.length >= 2 && /cap|stor|almac|bpd|bbl|barrel/i.test(cells[0].textContent)) {
+                        bannerText = cells.slice(1).map(c => c.textContent.trim()).join(' ');
+                        break;
+                    }
+                }
+                if (!bannerText) bannerText = doc.body.textContent.trim();
+            } else {
+                bannerText = str;
+            }
+
+            if (!bannerText) return { value: 0, unit: '' };
+
+            // Normalize thousand separators (e.g., "540,000" or "540.000" -> "540000")
+            const normalized = bannerText
+                .replace(/(\d)[,\.](\d{3})(?=(?:[,\.]\d{3})*(?!\d))/g, '$1$2');
+
+            // Match number accompanied by capacity/storage unit
+            const unitMatch = normalized.match(/(\d+(?:\.\d+)?)\s*(kbpd|mbpd|bpd|bbl\/d|bbl|barrels?(?:\/d(?:ay)?)?|m3|m³|mt(?:\/y)?|t\/d)/i);
+            if (unitMatch) {
+                return { value: parseFloat(unitMatch[1]), unit: unitMatch[2] };
+            }
+
+            // Fallback: extract main numeric value if present (excluding 4-digit years like 1998, 2024)
+            const numMatch = normalized.match(/(\d+(?:\.\d+)?)/);
+            if (numMatch) {
+                const val = parseFloat(numMatch[1]);
+                if (val > 0 && !(val >= 1900 && val <= 2035 && normalized.length > 6)) {
+                    return { value: val, unit: 'bbl/d' };
+                }
+            }
+            return { value: 0, unit: '' };
         }
 
         const fastSmartLayers = [
@@ -2335,6 +2406,7 @@
                     }
 
                     const area = extractAreaKm2(p, f);
+                    const refCapObj = category === 'Refinery' ? extractRefineryCapacity(p) : { value: 0, unit: '' };
                     const fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
 
                     let key;
@@ -2363,11 +2435,18 @@
                             commodity: verifiedCommodity || (pipelineClass === 'OIL' ? 'Crude Oil' : pipelineClass === 'GAS' ? 'Natural Gas' : ''),
                             company: verifiedCompany,
                             area,
+                            refCap: refCapObj.value,
+                            refUnit: refCapObj.unit,
                             coords,
                             rawProps: p
                         });
-                    } else if (area > (unique.get(key).area || 0)) {
-                        unique.get(key).area = area;
+                    } else {
+                        const existing = unique.get(key);
+                        if (area > (existing.area || 0)) existing.area = area;
+                        if (refCapObj.value > (existing.refCap || 0)) {
+                            existing.refCap = refCapObj.value;
+                            existing.refUnit = refCapObj.unit;
+                        }
                     }
                 });
 
@@ -2377,6 +2456,7 @@
 
                 updateSvKpiMetrics();
                 renderSvTopBlocksChart();
+                renderSvTopRefineriesChart();
                 renderSvInfraSvgChart();
                 renderSvOperatorsChart();
                 scheduleFastWellCount(platformsCount);
@@ -2403,6 +2483,9 @@
             const refs = smartExtractedAssets.filter(a => a.category === 'Refinery' && a.hasValidName);
             const deps = smartExtractedAssets.filter(a => a.category === 'Deposit' && a.hasValidName);
 
+            const totalRefCap = refs.reduce((s, r) => s + (r.refCap || 0), 0);
+            const sampleUnit = (refs.find(r => r.refUnit) || {}).refUnit || 'bbl/d';
+
             $('svKpiBlocksCount').innerHTML = validBlocks.length.toLocaleString() + '<small>blocks</small>';
             $('svKpiBlocksArea').textContent = 'Area: ' + Math.round(totalArea).toLocaleString() + ' km²';
             $('svKpiBlocksSub').textContent = `${prodBlocks.length} Production · ${explBlocks.length} Exploration`;
@@ -2412,6 +2495,12 @@
 
             $('svKpiRefCount').innerHTML = (refs.length + deps.length).toLocaleString() + '<small>assets</small>';
             $('svKpiRefSub').textContent = `${refs.length} Refineries · ${deps.length} Deposits`;
+
+            if ($('svKpiRefCap')) {
+                $('svKpiRefCap').textContent = totalRefCap > 0
+                    ? `Capacity: ${Math.round(totalRefCap).toLocaleString()} ${sampleUnit}`
+                    : 'Capacity: 0 bbl/d';
+            }
 
             const primaryTotal = validBlocks.length + oilPipes.length + gasPipes.length + refs.length + deps.length;
             $('svTotalAssetsBadge').textContent = primaryTotal.toLocaleString() + ' primary assets';
@@ -2473,6 +2562,40 @@
                         <span style="color:var(--accent);font-weight:600;flex-shrink:0">${Math.round(b.area).toLocaleString()} km²</span>
                     </div>
                     <div class="stat-track"><div class="stat-fill" style="width:${pct.toFixed(1)}%;background:${activeColor}"></div></div>
+                </div>`;
+            }).join('');
+        }
+
+        /* ---------- TOP 3 REFINERIES BY CAPACITY CHART ---------- */
+        function renderSvTopRefineriesChart() {
+            const box = $('svTopRefineriesChart');
+            if (!box) return;
+
+            const topRefs = smartExtractedAssets
+                .filter(a => a.category === 'Refinery' && a.hasValidName && a.refCap > 0)
+                .sort((a, b) => b.refCap - a.refCap)
+                .slice(0, 3);
+
+            if (!topRefs.length) {
+                box.innerHTML = `<div style="color:var(--text-secondary);font-size:.72rem;padding:6px 0">No verified refineries with capacity data in this viewport.</div>`;
+                return;
+            }
+
+            const maxCap = topRefs[0].refCap || 1;
+            box.innerHTML = topRefs.map((r, i) => {
+                const pct = Math.max(6, (r.refCap / maxCap) * 100);
+                const unit = r.refUnit || 'bbl/d';
+                const subTag = isValidValue(r.company) ? r.company : getProp(r.rawProps, ['country', 'region', 'state_prov']);
+                return `<div class="stat-row" data-sv-key="${esc(r.key)}">
+                    <div class="stat-row-top">
+                        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                            <span class="type-swatch" style="display:inline-block;margin-right:5px;background:#ef4444"></span>
+                            <strong>#${i + 1} ${esc(r.name)}</strong>
+                            ${isValidValue(subTag) ? `<small style="color:var(--text-secondary)"> · ${esc(subTag)}</small>` : ''}
+                        </span>
+                        <span style="color:var(--accent);font-weight:600;flex-shrink:0">${Math.round(r.refCap).toLocaleString()} ${esc(unit)}</span>
+                    </div>
+                    <div class="stat-track"><div class="stat-fill" style="width:${pct.toFixed(1)}%;background:#ef4444"></div></div>
                 </div>`;
             }).join('');
         }
@@ -2580,6 +2703,7 @@
                 if (isValidValue(it.company)) metaParts.push(esc(it.company));
                 if (isValidValue(it.commodity)) metaParts.push(esc(it.commodity));
                 if (it.area > 0) metaParts.push(`${Math.round(it.area).toLocaleString()} km²`);
+                if (it.refCap > 0) metaParts.push(`${Math.round(it.refCap).toLocaleString()} ${esc(it.refUnit || 'bbl/d')}`);
                 return `<div class="smart-list-item" onclick="flyToSmartIdx(${idx})">
                     <div style="min-width:0;padding-right:8px">
                         <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
@@ -2603,6 +2727,11 @@
         });
 
         $('svTopBlocksChart').addEventListener('click', e => {
+            const row = e.target.closest('.stat-row[data-sv-key]');
+            if (row) focusOnSmartAsset(row.dataset.svKey);
+        });
+
+        $('svTopRefineriesChart').addEventListener('click', e => {
             const row = e.target.closest('.stat-row[data-sv-key]');
             if (row) focusOnSmartAsset(row.dataset.svKey);
         });
@@ -2635,7 +2764,7 @@
             focusOnSmartAsset(it.key);
         };
 
-        /* ---------- SIDEBAR REGIONAL (EIA PROFILES) ---------- */
+        /* ---------- REGIONAL SIDEBAR (EIA PROFILES) ---------- */
         let prodChart = null, chartPromise;
 
         function loadChart() {
@@ -2722,7 +2851,7 @@
             }).catch(() => {});
         }
 
-        /* ---------- PRECIOS DEL PETRÓLEO Y FUENTES GEOJSON ---------- */
+        /* ---------- OIL PRICES & GEOJSON SOURCES ---------- */
         const allBlends = [];
         let activePopup = null,
             globalGeojsonFeatures = [],
@@ -2743,7 +2872,7 @@
         map.on('load', () => {
             syncLayerMenuWithMap();
 
-            // Ejecutar geocoder.js de último cuando el mapa ya haya terminado de renderizar todas sus capas base
+            // Load geocoder.js last once the map has finished rendering base layers
             map.once('idle', loadGeocoderScriptLast);
 
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 508" width="60" height="60"><circle cx="254" cy="254" r="254" fill="#FFD05B"/><rect x="154" y="100.5" width="200" height="306.9" rx="16" fill="#2B3B4E"/><g><path fill="#324A5E" d="M364,110.7H144c-5.6,0-10.2-4.5-10.2-10.2l0,0c0-5.6,4.5-10.2,10.2-10.2h220c5.6,0,10.2,4.5,10.2,10.2l0,0C374.2,106.1,369.6,110.7,364,110.7z"/><path fill="#324A5E" d="M372,213H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,211.9,373.4,213,372,213z"/><path fill="#324A5E" d="M372,315.3H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,314.2,373.4,315.3,372,315.3z"/><path fill="#324A5E" d="M372,417.6H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6V415C374.6,416.5,373.4,417.6,372,417.6z"/></g><path fill="#131b2a" d="M254,145c-35,0-63.5,49.2-63.5,109s28.5,109,63.5,109s63.5-49.2,63.5-109S289,145,254,145z"/><text x="254" y="292" fill="#FFFFFF" font-size="140" font-family="Inter, Arial, sans-serif" font-weight="bold" text-anchor="middle">$</text></svg>`;
@@ -2925,7 +3054,7 @@
             });
         }
 
-        /* ---------- INTERACTIVIDAD DE CAPAS GIS Y MOTOR DE TABLA UNIFICADA ---------- */
+        /* ---------- GIS LAYER INTERACTIVITY & UNIFIED TABLE ENGINE ---------- */
         const interactiveLayers = ['PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'REFINERIES', 'offshore-platforms', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
 
         const fieldLabels = {
@@ -3172,7 +3301,7 @@
             showPopup(f.coordinates, f.popupContent);
         };
 
-        /* ---------- UTM Y MODAL DE HERRAMIENTAS ESPACIALES ---------- */
+        /* ---------- UTM & SPATIAL TOOLS MODAL ---------- */
         function utmToLatLng(zoneStr, E, N) {
             const m = String(zoneStr).trim().toUpperCase().match(/^(\d{1,2})\s*([C-X])?$/);
             if (!m || isNaN(E) || isNaN(N)) return [NaN, NaN];
@@ -3253,13 +3382,12 @@
             if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
 
-        /* ---------- IMPORTAR Y ALMACENAR KML CON CONSENTIMIENTO Y SANEAMIENTO ---------- */
+        /* ---------- KML IMPORT & CLOUD STORAGE WITH CONSENT & SANITIZATION ---------- */
         const kmlConsentCheckbox = $('kmlConsentCheckbox');
         const kmlFileInput = $('kmlFileInput');
         const kmlStatusMsg = $('kmlStatusMsg');
-        const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB límite seguro para Vercel Serverless
+        const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB safe limit for Vercel Serverless
 
-        // Bloquea o habilita el input de archivos según el checkbox de consentimiento
         kmlConsentCheckbox.addEventListener('change', () => {
             const consented = kmlConsentCheckbox.checked;
             kmlFileInput.disabled = !consented;
@@ -3271,7 +3399,7 @@
             }
         });
 
-        // Saneamiento estricto contra ataques XML External Entity (XXE) y scripts embebidos
+        // Strict sanitization against XML External Entity (XXE) & embedded scripts
         function sanitizeKmlString(rawXml) {
             return String(rawXml || '')
                 .replace(/<!DOCTYPE[^>]*>/gi, '')
@@ -3279,8 +3407,7 @@
                 .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
         }
 
-        // Sube el KML sanitizado a tu Serverless Function en Vercel (/api/upload-kml)
-async function uploadKmlToCloud(sanitizedXml, originalFileName) {
+        async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             const safeName = String(originalFileName || 'layer.kml')
                 .replace(/[^a-zA-Z0-9._-]/g, '_')
                 .slice(0, 90);
@@ -3293,17 +3420,17 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
                     },
                     body: sanitizedXml
                 });
-                
+
                 const responseText = await res.text();
                 if (!res.ok) {
-                    console.error('Error del servidor KML:', res.status, responseText);
+                    console.error('KML Server Error:', res.status, responseText);
                     document.getElementById('kmlStatusMsg').textContent = `⚠️ Cloud Error (${res.status}): Check console`;
                     document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
                     return null;
                 }
                 return JSON.parse(responseText);
             } catch (e) {
-                console.error('Excepción de red al subir KML:', e);
+                console.error('Network exception uploading KML:', e);
                 document.getElementById('kmlStatusMsg').textContent = `⚠️ Network Error: Check console`;
                 document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
                 return null;
@@ -3476,7 +3603,7 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
                     customKmlFeatures.push(...feats);
                     addedFeatures.push(...feats);
 
-                    // Almacenar en Vercel Blob en segundo plano con consentimiento verificado
+                    // Archive in Vercel Blob in the background with verified consent
                     await uploadKmlToCloud(sanitizedXml, file.name);
 
                     loaded++;
@@ -3514,7 +3641,7 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             if (smartViewActive) refreshSmartViewData();
         };
 
-        /* ---------- DIBUJO DE POLÍGONOS ---------- */
+        /* ---------- POLYGON DRAWING ---------- */
         let isDrawingPolygon = false, polyCoordinates = [];
         const polyDrawHud = $('polyDrawHud'), polyVertexCounter = $('polyVertexCounter');
         const polySrcSet = extra => {
@@ -3600,7 +3727,7 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             URL.revokeObjectURL(url);
         };
 
-        /* ---------- BÚSQUEDA FLOTANTE ---------- */
+        /* ---------- FLOATING SEARCH ---------- */
         const searchInput = $('countrySearch'), suggestionsDiv = $('suggestions');
         let debounce;
 
@@ -3690,7 +3817,7 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             }, 250);
         });
 
-        /* ---------- HERRAMIENTA DE MEDICIÓN ---------- */
+        /* ---------- MEASUREMENT TOOL ---------- */
         const distanceContainer = $('distanceContainer'),
             measureOutput = $('measureOutput'),
             btnMD = $('btnMeasureDist'),
@@ -3813,7 +3940,7 @@ async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             }
         }
 
-        /* ---------- MODALES Y GOOGLE CMP ---------- */
+        /* ---------- MODALS & GOOGLE CMP ---------- */
         const aboutModal = $('aboutModal'), statsModal = $('statsModal');
         $('brandLogo').onclick = () => aboutModal.style.display = 'flex';
         $('langSelector').addEventListener('change', e => location.href = e.target.value);
