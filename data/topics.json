@@ -1,7 +1,26 @@
 [
-  { "value": "market", "label": "Global Petroleum & Oil Market" },
-  { "value": "opec", "label": "OPEC & Production" },
-  { "value": "upstream", "label": "Upstream & Exploration" },
-  { "value": "downstream", "label": "Downstream & Refineries" },
-  { "value": "prices", "label": "Crude Oil Prices" }
+  {
+    "value": "market",
+    "label": "Global Petroleum & Oil Market"
+  },
+  {
+    "value": "opec",
+    "label": "OPEC & Production"
+  },
+  {
+    "value": "upstream",
+    "label": "Upstream & Exploration"
+  },
+  {
+    "value": "downstream",
+    "label": "Downstream & Refineries"
+  },
+  {
+    "value": "prices",
+    "label": "Crude Oil Prices"
+  },
+  {
+    "value": "release",
+    "label": "Release"
+  }
 ]
