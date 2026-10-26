@@ -1392,6 +1392,10 @@
                         return r.text();
                     })
                     .then(function(text) {
+                        var captureSortKey = function(s) {
+                            var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s || '');
+                            return m ? m[3] + m[2].padStart(2, '0') + m[1].padStart(2, '0') : '';
+                        };
                         var data = [],
                             cap = '';
                         Papa.parse(text, {
@@ -1406,7 +1410,7 @@
                                 price = num(n['precio']);
                             if (!name || price == null) return;
                             var c = (n['captura'] || '').trim();
-                            if (c && !cap) cap = c;
+                            if (captureSortKey(c) > captureSortKey(cap)) cap = c;
                             data.push({
                                 name: name,
                                 price: price,

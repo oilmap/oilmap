@@ -2732,6 +2732,7 @@
             latestCaptureDate = 'Live';
         const parseCoord = v => (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
         const parseNumeric = v => v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
+        const captureSortKey = s => { const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s || ''); return m ? m[3] + m[2].padStart(2, '0') + m[1].padStart(2, '0') : ''; };
         const updateCaptureDateNodes = s => document.querySelectorAll('.dynamic-capture-date').forEach(n => n.textContent = s);
 
         function showPopup(lngLat, html) {
@@ -2809,7 +2810,7 @@
                                         WEEK = n['rango sem.'] || '-',
                                         MONTH = n['rango mes'] || '-',
                                         UPDATE = (n['captura'] || '').trim();
-                                    if (UPDATE && !captured) captured = UPDATE;
+                                    if (captureSortKey(UPDATE) > captureSortKey(captured)) captured = UPDATE;
                                     if (!AREA || isNaN(Y) || isNaN(X)) return;
                                     const numericPrice = parseNumeric(PRICE),
                                         numericChange = parseNumeric(CHANGE),
