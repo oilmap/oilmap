@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
   if (buf.length > MAX_BYTES) return res.status(413).json({ error: 'TOO_LARGE' });
 
   try {
-    const branch = process.env.GITHUB_BRANCH || 'main';
+    const branch = process.env.GITHUB_BRANCH || 'master';
     let finalName = name;
     if (await exists(`${FOLDER}/${finalName}`, branch)) {
       finalName = name.replace(/\.webp$/, `-${crypto.randomBytes(3).toString('hex')}.webp`);

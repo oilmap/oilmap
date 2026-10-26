@@ -20,6 +20,27 @@ function paragraphs(body) {
     return body.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
 }
 
+function renderBody(text) {
+    const out = [];
+    let items = [];
+    const flush = () => {
+        if (items.length) out.push(`<ul>${items.join('')}</ul>`);
+        items = [];
+    };
+    for (const line of text.split('\n').map(l => l.trim()).filter(Boolean)) {
+        const bullet = line.match(/^(?:•|- )\s*(.*)$/);
+        if (bullet) {
+            items.push(`<li>${esc(bullet[1])}</li>`);
+            continue;
+        }
+        flush();
+        const isHeading = line.length <= 80 && !/[.!?:]$/.test(line);
+        out.push(isHeading ? `<h2>${esc(line)}</h2>` : `<p>${esc(line)}</p>`);
+    }
+    flush();
+    return out.join('\n        ');
+}
+
 function parseLines(text) {
     return text.split('\n').map(l => l.trim()).filter(Boolean);
 }
@@ -58,7 +79,6 @@ function buildArticlePage(a) {
     const updated = a.updated || a.date;
     const sources = parseSources(a.sources);
     const points = parseLines(a.keyPoints);
-    const paras = paragraphs(a.body);
     const ld = {
         '@context': 'https://schema.org',
         '@type': 'NewsArticle',
@@ -88,7 +108,7 @@ function buildArticlePage(a) {
             { '@type': 'ListItem', position: 3, name: a.title, item: url }
         ]
     };
-    const body = paras.map(p => `<p>${esc(p)}</p>`).join('\n        ');
+    const body = renderBody(a.body);
     const pointsHtml = points.map(p => `<li>${esc(p)}</li>`).join('');
     const sourcesHtml = sources.map(s => `<li><a href="${esc(s.url)}" rel="noopener">${esc(s.name)}</a></li>`).join('');
     return `<!DOCTYPE html>
