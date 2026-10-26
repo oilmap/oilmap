@@ -1,6 +1,8 @@
 import { put } from '@vercel/blob';
 
 export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -10,7 +12,7 @@ export default async function handler(req, res) {
     const consentParam = url.searchParams.get('consent');
     const consentHeader = req.headers['x-user-consent'];
 
-    // 1. Verificación estricta de consentimiento RGPD / ToS
+    // 1. Verificación de consentimiento RGPD / ToS
     if (consentParam !== 'true' || consentHeader !== 'accepted-tos-and-privacy') {
       return res.status(403).json({ error: 'Explicit user consent is required.' });
     }
@@ -22,21 +24,30 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Only .kml or .xml files are allowed.' });
     }
 
-    // 3. Leer y validar el cuerpo del KML
-    const rawBody = typeof req.body === 'string' ? req.body : Buffer.from(req.body || '').toString('utf-8');
-    if (!rawBody || !rawBody.includes('<kml')) {
+    // 3. Lectura robusta del cuerpo (maneja Buffers, strings u objetos)
+    let rawBody = '';
+    if (Buffer.isBuffer(req.body)) {
+      rawBody = req.body.toString('utf8');
+    } else if (typeof req.body === 'string') {
+      rawBody = req.body;
+    } else if (req.body && typeof req.body === 'object') {
+      rawBody = JSON.stringify(req.body);
+    }
+
+    // Validación flexible de estructura XML/KML
+    if (!rawBody || (!rawBody.toLowerCase().includes('<kml') && !rawBody.toLowerCase().includes('xml'))) {
       return res.status(400).json({ error: 'Invalid KML structure.' });
     }
 
-    // 4. Saneamiento de seguridad en servidor contra XXE y scripts
+    // 4. Saneamiento de seguridad contra XXE y scripts
     const sanitizedKml = rawBody
       .replace(/<!DOCTYPE[^>]*>/gi, '')
       .replace(/<!ENTITY[^>]*>/gi, '')
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
-    // 5. Guardar en Vercel Blob (carpeta kml-uploads/)
+    // 5. Guardar en Vercel Blob
     const blob = await put(`kml-uploads/${Date.now()}_${safeFilename}`, sanitizedKml, {
-      access: 'public', // o 'private' si solo los revisarás desde tu dashboard de Vercel
+      access: 'public',
       contentType: 'application/vnd.google-earth.kml+xml',
       addRandomSuffix: true
     });
