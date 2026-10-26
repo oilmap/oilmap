@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>Norway Oil & Gas Map: NCS Blocks, North Sea, Barents Sea, Mongstad & Johan Sverdrup / Brent Prices | World Oil Map</title>
+    <meta name="description" content="Interactive Norway oil and gas intelligence dashboard: explore Norwegian Continental Shelf (NCS) blocks, Johan Sverdrup, Troll gas field, Ekofisk, Snøhvit, Gassco trunklines, Mongstad refinery, and live Brent, Johan Sverdrup & Ekofisk crude prices.">
+    <meta name="keywords" content="Norway oil map, Norwegian Continental Shelf map, NCS blocks, Johan Sverdrup, Troll field, Ekofisk, Equinor blocks, Mongstad refinery, Kårstø gas plant, Brent crude price, Johan Sverdrup crude, Gassco pipelines, Barents Sea oil">
+    <meta name="author" content="Roque Leal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#0b1120">
+    <link rel="canonical" href="https://oilmap.xyz/norway_petroleum_market.html">
+    <link rel="icon" type="image/png" href="./img/oilmap.png">
+    <link rel="apple-touch-icon" href="./img/oilmap.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="World Oil Map">
+    <meta property="og:title" content="Norway Oil & Gas Map: NCS Blocks, Pipelines, Mongstad & Johan Sverdrup Crude">
+    <meta property="og:description" content="Live spatial intelligence on Norway's upstream blocks, North Sea, Norwegian Sea, Barents Sea, Gassco subsea trunklines, coastal terminals, and Brent/Johan Sverdrup benchmark pricing.">
+    <meta property="og:url" content="https://oilmap.xyz/norway_petroleum_market.html">
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@roqueleal08">
+    <meta name="twitter:title" content="Norway Oil & Gas Intelligence Dashboard | World Oil Map">
+    <meta name="twitter:description" content="Explore Norway's NCS oil & gas blocks, subsea pipeline networks, terminals, and live crude benchmark pricing.">
+    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js" defer></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
+
+    <!-- Structured Data (WebPage + Dataset + BreadcrumbList) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                "@type": "WebPage",
+                "@id": "https://oilmap.xyz/norway_petroleum_market.html#webpage",
+                "url": "https://oilmap.xyz/norway_petroleum_market.html",
+                "name": "Norway Oil & Gas Map: NCS Blocks, North Sea, Barents Sea & Johan Sverdrup Price",
+                "description": "Interactive spatial dashboard of Norway's petroleum sector featuring Norwegian Continental Shelf concession blocks, subsea pipelines, Mongstad refinery, offshore platforms, and live Brent and Johan Sverdrup prices.",
+                "inLanguage": "en",
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "World Oil Map",
+                    "url": "https://oilmap.xyz/"
+                },
+                "about": {
+                    "@type": "Place",
+                    "name": "Norway",
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": 64.20,
+                        "longitude": 4.80
+                    }
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "Dataset",
+                "@id": "https://oilmap.xyz/norway_petroleum_market.html#dataset",
+                "name": "Norway Upstream & Downstream Oil and Gas Infrastructure Dataset",
+                "description": "Geospatial dataset mapping Norway's offshore production licenses, exploration areas, subsea export pipelines, offshore facilities, and North Sea benchmark pricing.",
+                "url": "https://oilmap.xyz/norway_petroleum_market.html",
+                "license": "https://creativecommons.org/licenses/by/4.0/",
+                "isAccessibleForFree": true,
+                "spatialCoverage": {
+                    "@type": "Place",
+                    "name": "Norway"
+                },
+                "creator": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "BreadcrumbList",
+                "@id": "https://oilmap.xyz/norway_petroleum_market.html#breadcrumbs",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "World Oil Map",
+                    "item": "https://oilmap.xyz/"
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Oil Market",
+                    "item": "https://oilmap.xyz/oil_price_charts.html"
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Norway Oil & Gas Profile",
+                    "item": "https://oilmap.xyz/norway_petroleum_market.html"
+                }]
+            }]
+        }
+    </script>
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b1120;
+            --surface: rgba(20, 29, 49, 0.55);
+            --surface-strong: #131c31;
+            --ink: #e8edf6;
+            --mute: #8794ab;
+            --line: rgba(255, 255, 255, .09);
+            --gold: #f0b823;
+            --gold-soft: rgba(240, 184, 35, .12);
+            --up: #10b981;
+            --dn: #ef4444;
+            --blue: #3b82f6;
+            --cyan: #06b6d4;
+            --purple: #8b5cf6;
+            --dot: #4b5870;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-padding-top: 76px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 15px/1.6 'Inter', system-ui, sans-serif;
+            font-variant-numeric: tabular-nums;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--gold);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        header.top-bar {
+            --accent: #f0b823;
+            --accent-soft: rgba(240, 184, 35, .14);
+            --surface: rgba(13, 18, 30, .86);
+            --border: rgba(255, 255, 255, .1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            position: sticky;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            z-index: 40;
+            margin: 12px auto 0;
+            width: calc(100% - 24px);
+            max-width: 1420px;
+            padding: 6px 10px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        header.top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 2px 4px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: opacity .15s ease;
+        }
+
+        header.top-bar .brand:hover {
+            opacity: .9;
+        }
+
+        header.top-bar .brand img {
+            height: 26px;
+            width: 26px;
+            object-fit: contain;
+        }
+
+        header.top-bar .brand-title {
+            font-size: .86rem;
+            letter-spacing: .5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        header.top-bar .brand-title span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        header.top-bar .nav-scroll-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        header.top-bar .nav-scroll-track {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            width: 100%;
+            cursor: grab;
+        }
+
+        header.top-bar .nav-scroll-track.grabbing {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+
+        header.top-bar .nav-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        header.top-bar .scroll-arrow-btn {
+            background: rgba(13, 18, 30, .9);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            position: absolute;
+            font-size: .85rem;
+            transition: all .15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+        }
+
+        header.top-bar .scroll-arrow-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        header.top-bar .scroll-arrow-btn.left {
+            left: -4px;
+        }
+
+        header.top-bar .scroll-arrow-btn.right {
+            right: -4px;
+        }
+
+        header.top-bar .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui,
+        header.top-bar .nav-link {
+            padding: 6px 11px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-weight: 500;
+            font-size: .75rem;
+            cursor: pointer;
+            transition: all .18s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            outline: none;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui:hover,
+        header.top-bar .nav-link:hover,
+        header.top-bar .btn-ui:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent);
+        }
+
+
+        header.top-bar .search-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .search-input {
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, .35);
+            color: var(--text-primary);
+            width: 175px;
+            font-size: .75rem;
+            font-family: inherit;
+            transition: width .25s ease, border-color .2s, background .2s;
+            outline: none;
+        }
+
+        header.top-bar .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, .7);
+            width: 215px;
+        }
+
+        @media (max-width: 820px) {
+            header.top-bar {
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                width: calc(100% - 16px);
+                padding: 5px 8px;
+                gap: 8px;
+            }
+            header.top-bar .search-input {
+                width: 135px;
+            }
+            header.top-bar .search-input:focus {
+                width: 175px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header.top-bar .brand-title {
+                display: none;
+            }
+            header.top-bar .brand {
+                padding: 0 2px;
+            }
+            header.top-bar .scroll-arrow-btn {
+                display: none !important;
+            }
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            overflow-x: auto;
+        }
+
+        nav a {
+            color: var(--mute);
+            text-decoration: none;
+            font-size: .85rem;
+            white-space: nowrap;
+            transition: color .15s;
+        }
+
+        nav a:hover,
+        nav a[aria-current] {
+            color: var(--ink);
+        }
+
+        main {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 32px 24px 36px;
+        }
+
+        .breadcrumbs {
+            font-size: .76rem;
+            color: var(--mute);
+            margin-bottom: 14px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .breadcrumbs a {
+            color: var(--mute);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--gold);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .74rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--gold);
+            background: var(--gold-soft);
+            border: 1px solid rgba(240, 184, 35, .3);
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: clamp(1.95rem, 4.2vw, 2.85rem);
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: -.025em;
+            margin: 0 0 12px;
+        }
+
+        .lead {
+            font-size: 1.08rem;
+            color: var(--ink);
+            max-width: 75ch;
+            margin: 0 0 16px;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--mute);
+            font-size: .82rem;
+            margin: 0;
+        }
+
+        .status i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dot);
+            display: inline-block;
+        }
+
+        .status.ok i {
+            background: var(--up);
+            box-shadow: 0 0 8px var(--up);
+        }
+
+        .status.busy i {
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .link-btn {
+            color: var(--gold);
+            font-size: .82rem;
+            padding: 2px 0;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        section {
+            margin-top: 48px;
+        }
+
+        .sec-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+            letter-spacing: -.01em;
+        }
+
+        .sub {
+            color: var(--mute);
+            font-size: .84rem;
+            margin: 0;
+            max-width: 72ch;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .tile {
+            padding: 18px 16px 16px 18px;
+            border-left: 1px solid var(--line);
+            transition: background .15s;
+        }
+
+        .tile:first-child {
+            border-left: 0;
+            padding-left: 0;
+        }
+
+        .tile h3 {
+            margin: 0;
+            font-size: .76rem;
+            font-weight: 500;
+            color: var(--mute);
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .px {
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: -.02em;
+            margin: 4px 0 2px;
+            line-height: 1.15;
+        }
+
+        .px small {
+            font-size: .74rem;
+            color: var(--mute);
+            font-weight: 400;
+            margin-left: 4px;
+            letter-spacing: 0;
+        }
+
+        .d {
+            margin: 0 0 8px;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--mute);
+        }
+
+        .up {
+            color: var(--up);
+        }
+
+        .dn {
+            color: var(--dn);
+        }
+
+        .gold {
+            color: var(--gold);
+        }
+
+        .gauge {
+            position: relative;
+            height: 2px;
+            background: var(--line);
+            margin: 8px 0 6px;
+        }
+
+        .gauge i {
+            position: absolute;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: var(--gold);
+            transition: left .5s ease;
+        }
+
+        .lh {
+            display: flex;
+            justify-content: space-between;
+            color: var(--mute);
+            font-size: .7rem;
+            margin: 0;
+        }
+
+        .pill-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .pill {
+            padding: 5px 11px;
+            border-radius: 99px;
+            border: 1px solid var(--line);
+            font-size: .75rem;
+            color: var(--mute);
+            background: rgba(255, 255, 255, .02);
+            transition: all .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pill:hover,
+        .pill.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-soft);
+        }
+
+        .pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dot);
+        }
+
+        .pill.active .dot {
+            background: var(--gold);
+            box-shadow: 0 0 6px var(--gold);
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .map-shell {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #060911;
+        }
+
+        .map-toolbar {
+            padding: 10px 14px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .toolbar-label {
+            font-size: .72rem;
+            color: var(--mute);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        #norMap {
+            width: 100%;
+            height: 530px;
+            position: relative;
+        }
+
+        .map-footer {
+            padding: 8px 14px;
+            font-size: .75rem;
+            color: var(--mute);
+            border-top: 1px solid var(--line);
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .analytics-col {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+            padding: 16px 18px;
+        }
+
+        .card h3 {
+            margin: 0 0 4px;
+            font-size: .92rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card .sub {
+            font-size: .76rem;
+            margin-bottom: 12px;
+        }
+
+        .chart {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        .chart text {
+            fill: var(--mute);
+            font: 500 11px 'Inter', sans-serif;
+        }
+
+        .chart .lab {
+            fill: var(--ink);
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .stat-row {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background .12s;
+        }
+
+        .stat-row:hover {
+            background: rgba(255, 255, 255, .04);
+        }
+
+        .stat-row-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: .78rem;
+            margin-bottom: 3px;
+            gap: 8px;
+        }
+
+        .stat-track {
+            height: 5px;
+            background: var(--line);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 99px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: .68rem;
+            font-weight: 600;
+            background: var(--gold-soft);
+            color: var(--gold);
+        }
+
+        /* Block Type Legend Styles */
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .type-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: .72rem;
+            color: var(--ink);
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .type-legend-item:hover {
+            border-color: rgba(240, 184, 35, .45);
+        }
+
+        .type-legend-item.active {
+            border-color: var(--gold);
+            background: var(--gold-soft);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .type-swatch {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .type-count {
+            color: var(--mute);
+            font-size: .68rem;
+            font-weight: 400;
+        }
+
+        .mapboxgl-popup-content {
+            background: #141b2d !important;
+            border: 1px solid var(--line) !important;
+            border-radius: 8px !important;
+            color: var(--ink) !important;
+            padding: 12px 14px !important;
+            font: 400 13px/1.45 'Inter', sans-serif !important;
+            max-width: 280px;
+        }
+
+        .mapboxgl-popup-close-button {
+            color: var(--mute) !important;
+        }
+
+        .popup-title {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: .88rem;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            border-top: 1px solid var(--line);
+            padding-top: 36px;
+        }
+
+        .about p,
+        .about dd {
+            color: var(--mute);
+            margin: 0 0 12px;
+            font-size: .88rem;
+        }
+
+        .about dt {
+            font-weight: 600;
+            font-size: .9rem;
+            color: var(--ink);
+        }
+
+        .about dd {
+            margin-bottom: 14px;
+            margin-left: 0;
+        }
+
+        footer {
+            max-width: 1220px;
+            margin: 56px auto 0;
+            padding: 24px;
+            border-top: 1px solid var(--line);
+            color: var(--mute);
+            font-size: .82rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media (max-width: 960px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            #norMap {
+                height: 420px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding-top: 24px;
+            }
+            .tile {
+                border-left: 0;
+                padding-left: 0;
+                border-top: 1px solid var(--line);
+            }
+            .tile:first-child {
+                border-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="glass top-bar" role="banner">
+        <a class="brand" href="./index.html" aria-label="World Oil Map">
+            <img src="./img/oilmap.png" width="26" height="26" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+
+        <div class="nav-scroll-wrapper" id="navScrollWrapper">
+            <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
+
+            <div class="nav-scroll-track" id="navScrollTrack">
+                <div class="search-wrap">
+                    <input type="search" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+                </div>
+
+                <nav class="toolbar" aria-label="Map Controls">
+                    <a href="./index.html" class="nav-link"><span>Home</span></a>
+                    <a href="./blog.html" class="nav-link"><span>Blog</span></a>
+                    <a href="./contact.html" class="nav-link"><span>Contact</span></a>
+                    <a class="btn-ui" href="./data_lineage.html"><span>Sources ▾</span></a>
+                </nav>
+
+            </div>
+
+            <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
+        </div>
+    </header>
+
+    <main>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="./index.html">World Oil Map</a> <span>/</span>
+            <a href="./oil_price_charts.html">Country Profiles</a> <span>/</span>
+            <span aria-current="page" style="color:var(--ink)">Norway</span>
+        </nav>
+
+        <div class="eyebrow">🇳🇴 Country Spatial Intelligence · SmartView Engine</div>
+        <h1>Norway Oil &amp; Gas Map &amp; Market Profile</h1>
+        <p class="lead">
+            Live geospatial intelligence covering the Norwegian Continental Shelf (NCS): explore North Sea giants Johan Sverdrup and Ekofisk, Haltenbanken in the Norwegian Sea, Barents Sea frontier hubs (Snøhvit, Johan Castberg), Gassco subsea trunklines, Mongstad/Kårstø processing hubs, and live North Sea crude benchmarks.
+        </p>
+
+        <div class="status-bar">
+            <p class="status busy" id="statusBox" aria-live="polite">
+                <i></i>
+                <span id="statusText">Initializing Mapbox spatial engine and querying Norway vector layers…</span>
+                <button id="btnRescan" class="link-btn" type="button">Rescan current view</button>
+            </p>
+            <div class="pill-group" id="basinPills" role="group" aria-label="Norway Petroleum Basins">
+                <span class="toolbar-label" style="margin-right:4px">Basins:</span>
+                <button type="button" class="pill active" data-lng="4.80" data-lat="64.20" data-z="4.8">🇳🇴 National View</button>
+                <button type="button" class="pill" data-lng="2.85" data-lat="58.85" data-z="6.8">🛢️ North Sea (Johan Sverdrup)</button>
+                <button type="button" class="pill" data-lng="7.20" data-lat="65.10" data-z="6.8">🌊 Norwegian Sea (Haltenbanken)</button>
+                <button type="button" class="pill" data-lng="22.50" data-lat="71.80" data-z="6.2">❄️ Barents Sea (Castberg / Snøhvit)</button>
+                <button type="button" class="pill" data-lng="5.03" data-lat="60.81" data-z="8.5">🏭 Refining &amp; Terminals (Mongstad)</button>
+                <button type="button" class="pill" data-lng="3.65" data-lat="60.65" data-z="7.4">⚓ Troll &amp; Giant Gas Hubs</button>
+            </div>
+        </div>
+
+        <!-- 1. KPI Executive Board -->
+        <section aria-labelledby="h-kpis" style="margin-top:28px">
+            <h2 id="h-kpis" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Key Country Benchmarks</h2>
+            <div class="board">
+                <article class="tile">
+                    <h3>Proven Reserves (NOD/EIA)</h3>
+                    <p class="px">7.5<small>B bbl o.e.</small></p>
+                    <p class="d gold">#1 Western Europe · NCS Shelf</p>
+                    <p class="lh"><span>Light sweet &amp; rich gas</span><span>~2,050 kbbl/d (2026)</span></p>
+                </article>
+
+                <article class="tile" id="johanTile">
+                    <h3>Johan Sverdrup / Brent</h3>
+                    <p class="px" id="kpiJohanPx">--<small>/bbl</small></p>
+                    <p class="d" id="kpiJohanChg">Loading price feed…</p>
+                    <div id="kpiJohanGauge"></div>
+                    <p class="lh" id="kpiJohanSpread"><span>Spread vs WTI: --</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Mapped Blocks</h3>
+                    <p class="px" id="kpiBlocksCount">0<small>blocks</small></p>
+                    <p class="d" id="kpiBlocksArea">Total area: 0 km²</p>
+                    <p class="lh"><span id="kpiProdFieldsSub">0 Production · 0 Exploration</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Wells &amp; Platforms</h3>
+                    <p class="px" id="kpiWellsCount">15K+<small>wells</small></p>
+                    <p class="d" id="kpiWellsSub">Fast index · 0 offshore in view</p>
+                    <p class="lh"><span id="kpiWellsHint">Zoom ≥ 8.2x for instant local well count</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Pipeline Network</h3>
+                    <p class="px" id="kpiPipesCount">0<small>segments</small></p>
+                    <p class="d" id="kpiPipesSub">0 Oil · 0 Gas pipelines</p>
+                    <p class="lh"><span>Gassled, Statpipe, Europipe, Langeled</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Refineries &amp; Terminals</h3>
+                    <p class="px" id="kpiRefCount">0<small>facilities</small></p>
+                    <p class="d" id="kpiRefSub">0 Terminals · 0 Fields</p>
+                    <p class="lh"><span>Mongstad, Kårstø, Melkøya, Kollsnes</span></p>
+                </article>
+            </div>
+        </section>
+
+        <!-- 2. Interactive Map + SmartView Live Extraction -->
+        <section aria-labelledby="h-spatial">
+            <div class="sec-head">
+                <div>
+                    <h2 id="h-spatial">Interactive Spatial Explorer &amp; NCS Shelf Analytics</h2>
+                    <p class="sub">Dynamic telemetry extracting Norwegian Offshore Directorate (NOD) licenses, subsea Gassco trunklines, gravity-base platforms, and export terminals inside the active viewport. Unnamed or null records are strictly excluded.</p>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <!-- Mapbox Container -->
+                <div class="map-shell">
+                    <div class="map-toolbar">
+                        <div class="map-toolbar-row">
+                            <span class="toolbar-label">Active Map Layers (Click to toggle):</span>
+                            <div class="pill-group" id="layerToggles"></div>
+                        </div>
+                    </div>
+                    <div id="norMap" role="application" aria-label="Interactive Norway Oil and Gas Map"></div>
+                    <div class="map-footer">
+                        <span id="mapViewSummary">Querying Norwegian vector geometries…</span>
+                        <button type="button" class="link-btn" id="btnResetNor">Reset national view</button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Dynamic SmartView Charts -->
+                <div class="analytics-col">
+                    <div class="card">
+                        <h3>
+                            <span>📐 Largest Production &amp; Exploration Blocks</span>
+                            <small style="color:var(--gold);font-size:.74rem;font-weight:500">Area_Km2 (km²)</small>
+                        </h3>
+                        <p class="sub">Production Licenses vs. Exploration Areas on the NCS. Ranked by <code>Area_Km2</code> (click legend to switch or click any bar to zoom).</p>
+                        <div id="blocksTypeLegend" class="type-legend" aria-label="Block Class Legend"></div>
+                        <div id="topBlocksChart" class="stat-bars">
+                            <div style="color:var(--mute);font-size:.8rem;padding:12px 0">Loading map blocks…</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            <span>⚡ Infrastructure Breakdown</span>
+                            <small id="totalAssetsBadge" style="color:var(--mute);font-size:.74rem">0 assets</small>
+                        </h3>
+                        <p class="sub">Distribution of offshore platforms, subsea gas/oil lines, and coastal process terminals in view.</p>
+                        <svg class="chart" id="infraSvgChart" viewBox="0 0 420 175" role="img" aria-label="Norway oil and gas infrastructure distribution chart"></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Operators, Production Trend & Benchmark Pricing -->
+        <section aria-labelledby="h-macro">
+            <div class="grid-3col">
+                <!-- Operators -->
+                <div class="card">
+                    <h3>🏢 Key Operators in View</h3>
+                    <p class="sub">Leading offshore license operators parsed from the <code>company</code> attribute (click to locate on map).</p>
+                    <div id="operatorsChart" class="stat-bars"></div>
+                </div>
+
+                <!-- Production Trend -->
+                <div class="card">
+                    <h3>📊 Liquids Production (NOD / EIA)</h3>
+                    <p class="sub">Annual oil &amp; NGL output trend (kbbl/d) · Driven by Johan Sverdrup Phase 1 &amp; 2, Johan Castberg, and Troll revitalization.</p>
+                    <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="Norway crude oil and liquids production trend 2023 to 2026"></svg>
+                </div>
+
+                <!-- Benchmark Comparison -->
+                <div class="card">
+                    <h3>🛢️ North Sea vs. Global Benchmarks</h3>
+                    <p class="sub">Live spot pricing (USD/bbl) reflecting Johan Sverdrup (medium sweet), Brent, and Ekofisk quality spreads.</p>
+                    <div id="norPricesBox" class="stat-bars"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SEO & Crawl-Friendly Reference Guide -->
+        <section class="about" aria-labelledby="h-about">
+            <div>
+                <h2 id="h-about">Norway's Hydrocarbon Basins &amp; Export Architecture</h2>
+                <dl>
+                    <dt>North Sea (Nordsjøen - Southern &amp; Central NCS)</dt>
+                    <dd>The historic and economic backbone of Norway's petroleum era, discovered in 1969 with Ekofisk. Anchored today by <strong>Johan Sverdrup</strong> (the largest North Sea oil discovery in three decades, yielding over 700,000 bpd of ~28° API medium sweet crude) and the giant <strong>Troll</strong> field, Europe's foremost primary gas foundation.</dd>
+                    <dt>Norwegian Sea (Norskehavet - Haltenbanken &amp; Ormen Lange)</dt>
+                    <dd>Pivotal intermediate deepwater basin holding world-class gas condensate and oil accumulations including Åsgard, Heidrun, Norne, and Ormen Lange, linked via the Polarled and Åsgard Transport subsea networks.</dd>
+                    <dt>Barents Sea (Barentshavet - Arctic Frontier)</dt>
+                    <dd>A strategic growth theater situated north of the Arctic Circle, featuring <strong>Snøhvit</strong> (feeding Europe's only baseload LNG export plant at Melkøya, Hammerfest), <strong>Johan Castberg</strong> (FPSO development), and Goliat.</dd>
+                    <dt>Subsea Pipeline Grid &amp; Downstream Terminals (Gassco &amp; Mongstad)</dt>
+                    <dd>Equinor operates the Mongstad refinery (approx. 240,000 bpd capacity), while state-owned <strong>Gassco</strong> oversees the world's most sophisticated integrated offshore natural gas pipeline network (over 8,800 km) connecting the NCS to Britain, Germany, Belgium, France, and Poland.</dd>
+                </dl>
+            </div>
+            <div>
+                <h2>Johan Sverdrup &amp; Brent Benchmark Dynamics</h2>
+                <p><strong>Brent Dated</strong> (incorporating Brent, Forties, Oseberg, Ekofisk, Troll, and WTI Midland) anchors global maritime crude pricing. <strong>Johan Sverdrup</strong> (~28° API, ~0.8% sulfur) has emerged as one of the highest-volume crude export streams in the Atlantic Basin, trading on international markets at competitive spreads relative to light sweet Brent and Mediterranean grades.</p>
+                <h2>Data Sources &amp; Open License</h2>
+                <p>Spatial layers on this dashboard are dynamically extracted from the <strong>World Oil Map</strong> vector tileset, integrating verified public concession data from the <strong>Norwegian Offshore Directorate (NOD / Sokkeldirektoratet)</strong>, <strong>Gassco</strong>, and the <strong>OGIM Database</strong> licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 (CC BY 4.0)</a>.</p>
+                <p>Output volumes and macro series are synchronized with official NOD quarterly registries and live financial market tickers.</p>
+                <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_price_charts.html">View all global crude oil prices →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
+        <span>Data: Norwegian Offshore Directorate (NOD) · Gassco · OGIM (CC BY 4.0) · Live Price Feed</span>
+    </footer>
+
+    <script>
+        (function() {
+            var MAPBOX_TOKEN = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+            var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
+            var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+
+            var WELLS_LIVE_ZOOM_THRESHOLD = 8.2;
+
+            var $ = function(id) {
+                return document.getElementById(id);
+            };
+            var esc = function(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[c];
+                });
+            };
+            var num = function(v) {
+                var x = parseFloat(String(v == null ? '' : v).replace(/["$%+\s]/g, '').replace(',', '.'));
+                return isNaN(x) ? null : x;
+            };
+            var range = function(v) {
+                var m = String(v || '').match(/\d+(?:[.,]\d+)?/g);
+                if (!m || m.length < 2) return null;
+                var a = m.slice(0, 2).map(function(x) {
+                    return parseFloat(x.replace(',', '.'));
+                });
+                return [Math.min(a[0], a[1]), Math.max(a[0], a[1])];
+            };
+            var f2 = function(x) {
+                return Number(x || 0).toFixed(2);
+            };
+            var sg = function(x) {
+                return (x > 0 ? '+' : '') + f2(x);
+            };
+
+            var LAYER_DEFS = [{
+                id: 'PRODUCTION',
+                label: 'Production',
+                cat: 'Block',
+                sub: 'PRODUCTION FIELD',
+                active: true
+            }, {
+                id: 'EXPLORATION',
+                label: 'Exploration',
+                cat: 'Block',
+                sub: 'EXPLORATION AREAS',
+                active: true
+            }, {
+                id: 'BID-ROUNDS',
+                label: 'Bid Rounds',
+                cat: 'Block',
+                sub: 'Bid Round Block',
+                active: true,
+                extra: ['bid-6mpdnh', '2027-blocks']
+            }, {
+                id: 'REFINERIES',
+                label: 'Refineries',
+                cat: 'Refinery',
+                sub: 'Refinery',
+                active: true
+            }, {
+                id: 'OIL-PIPELINE',
+                label: 'Oil Pipelines',
+                cat: 'OilPipeline',
+                sub: 'Oil Pipeline',
+                active: true
+            }, {
+                id: 'GAS-PIPELINE',
+                label: 'Gas Pipelines',
+                cat: 'GasPipeline',
+                sub: 'Gas Pipeline',
+                active: true
+            }, {
+                id: 'DEPOSITS',
+                label: 'Deposits',
+                cat: 'Deposit',
+                sub: 'Oil & Gas Field',
+                active: true
+            }, {
+                id: 'offshore-platforms',
+                label: 'Platforms',
+                cat: 'Platform',
+                sub: 'Offshore Platform',
+                active: true
+            }, {
+                id: 'oil-and-gas-wells',
+                label: 'Wells',
+                cat: 'Well',
+                sub: 'Oil & Gas Well',
+                active: true
+            }];
+
+            var activeBlockLayerFilter = 'PRODUCTION';
+
+            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION|PRODUCCION|PRODUCTION LICENSE|PL|PROD)$/;
+
+            function normalizeType(raw) {
+                return String(raw == null ? '' : raw)
+                    .toUpperCase()
+                    .replace(/[_\-]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            function classifyBlockType(rawType) {
+                return PRODUCTION_TYPE_RE.test(normalizeType(rawType)) ? 'PRODUCTION' : 'EXPLORATION';
+            }
+
+            var OIL_PIPELINE_COMMODITIES_RAW = [
+                'N/A', 'OIL WELL EFFLUENT', 'OIL AND GAS', 'REFINED PRODUCT',
+                'CRUDE OIL', 'CRUDE OIL, TRANSMISSION', 'OIL', 'PETROLEO',
+                'JOHAN SVERDRUP CRUDE', 'EKOFISK CRUDE', 'BRENT CRUDE', 'TROLL CRUDE',
+                'HEAVY CRUDE', 'LIGHT CRUDE', 'CONDENSATE', 'DIESEL FUEL', 'GASOLINE',
+                'JET FUEL', 'MULTIUSE', 'LVP PRODUCTS'
+            ];
+
+            function normalizeCommodity(raw) {
+                return String(raw == null ? '' : raw)
+                    .toUpperCase()
+                    .replace(/[_\-]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            var OIL_PIPELINE_COMMODITIES = {};
+            OIL_PIPELINE_COMMODITIES_RAW.forEach(function(c) {
+                OIL_PIPELINE_COMMODITIES[normalizeCommodity(c)] = true;
+            });
+
+            function classifyPipelineCommodity(rawCommodity) {
+                return OIL_PIPELINE_COMMODITIES[normalizeCommodity(rawCommodity)] === true ? 'OIL' : 'GAS';
+            }
+
+            // High-precision geographic polygon enclosing the Norwegian Continental Shelf (NCS)
+            // from North Sea median lines to Norwegian Sea and Barents Sea / Svalbard sectors
+            var NOR_POLYGON = [
+                [1.50, 56.00],
+                [1.80, 58.50],
+                [1.40, 61.50],
+                [0.00, 64.00],
+                [2.00, 68.00],
+                [8.00, 72.50],
+                [16.00, 75.00],
+                [32.00, 75.00],
+                [35.00, 70.00],
+                [31.20, 70.30],
+                [28.50, 70.80],
+                [24.00, 69.80],
+                [18.00, 68.50],
+                [14.50, 67.50],
+                [12.00, 64.00],
+                [10.50, 61.00],
+                [11.50, 59.00],
+                [9.00, 57.50],
+                [4.50, 56.20],
+                [1.50, 56.00]
+            ];
+
+            function pointInNorPolygon(lng, lat) {
+                var inside = false;
+                for (var i = 0, j = NOR_POLYGON.length - 1; i < NOR_POLYGON.length; j = i++) {
+                    var xi = NOR_POLYGON[i][0], yi = NOR_POLYGON[i][1];
+                    var xj = NOR_POLYGON[j][0], yj = NOR_POLYGON[j][1];
+                    var intersect = ((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / ((yj - yi) || 1e-9) + xi);
+                    if (intersect) inside = !inside;
+                }
+                return inside;
+            }
+
+            function isNorwayFeature(props, coords) {
+                var cStr = String(props.Country || props.COUNTRY || props.country || '').trim();
+                if (cStr && cStr !== '---' && cStr !== '-9999') {
+                    if (/norway|\bnor\b|^no$/i.test(cStr)) return true;
+                    if (/united kingdom|\buk\b|great britain|denmark|germany|netherlands|russia/i.test(cStr)) return false;
+                }
+                var opStr = String(props.company || props.Company || props.COMPANY || props.OPERATOR || props.operator || props.Source || props.source || '').trim();
+                if (/equinor|statoil|vår energi|var energi|aker bp|harbour energy|dno|wintershall|petoro|gassco|conocophillips scandinavia|totalenergies ep norge/i.test(opStr)) return true;
+                if (!coords || isNaN(coords[0]) || isNaN(coords[1])) return false;
+                return pointInNorPolygon(coords[0], coords[1]);
+            }
+
+            function getProp(p, candidates) {
+                var keys = Object.keys(p || {});
+                for (var i = 0; i < candidates.length; i++) {
+                    var c = candidates[i].toLowerCase();
+                    for (var k = 0; k < keys.length; k++) {
+                        if (keys[k].toLowerCase() === c) {
+                            var v = p[keys[k]];
+                            if (v !== null && v !== undefined && String(v).trim() !== '') return v;
+                        }
+                    }
+                }
+                return '';
+            }
+
+            var NAME_KEYS = ['name', 'nombre', 'block_name', 'blockname', 'block', 'bloque', 'fac_name', 'field_name', 'title'];
+
+            function isValidEntityName(raw) {
+                if (raw === null || raw === undefined) return false;
+                var s = String(raw).trim();
+                if (!s || s === '---' || s === '-9999') return false;
+                if (/^unnamed/i.test(s)) return false;
+                if (/^(null|undefined|n\/a|na|none|blank|sin nombre|sin_nombre|-|\?)$/i.test(s)) return false;
+                return true;
+            }
+
+            function getEntityName(p) {
+                var keys = Object.keys(p || {});
+                for (var i = 0; i < NAME_KEYS.length; i++) {
+                    for (var k = 0; k < keys.length; k++) {
+                        if (keys[k].toLowerCase() === NAME_KEYS[i] && isValidEntityName(p[keys[k]])) {
+                            return String(p[keys[k]]).trim();
+                        }
+                    }
+                }
+                return '';
+            }
+
+            function ringCenter(ring) {
+                var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                for (var i = 0; i < ring.length; i++) {
+                    if (ring[i][0] < minX) minX = ring[i][0];
+                    if (ring[i][0] > maxX) maxX = ring[i][0];
+                    if (ring[i][1] < minY) minY = ring[i][1];
+                    if (ring[i][1] > maxY) maxY = ring[i][1];
+                }
+                return [(minX + maxX) / 2, (minY + maxY) / 2];
+            }
+
+            function extractRepresentativeCoords(geom) {
+                if (!geom) return null;
+                if (geom.type === 'Point') return geom.coordinates;
+                if (geom.type === 'MultiPoint' && geom.coordinates.length) return geom.coordinates[0];
+                if (geom.type === 'Polygon' && geom.coordinates[0]) return ringCenter(geom.coordinates[0]);
+                if (geom.type === 'MultiPolygon' && geom.coordinates[0] && geom.coordinates[0][0]) return ringCenter(geom.coordinates[0][0]);
+                if (geom.type === 'LineString' && geom.coordinates.length) return geom.coordinates[Math.floor(geom.coordinates.length / 2)];
+                if (geom.type === 'MultiLineString' && geom.coordinates[0] && geom.coordinates[0].length) {
+                    return geom.coordinates[0][Math.floor(geom.coordinates[0].length / 2)];
+                }
+                return null;
+            }
+
+            function extractAreaKm2(p, f) {
+                var s = String(getProp(p, ['area_km2', 'areakm2', 'area_km'])).trim();
+                if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, '');
+                var parsed = num(s);
+                if (parsed && parsed > 0) return parsed;
+                if (f && f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon') && typeof turf !== 'undefined') {
+                    try {
+                        return turf.area(f) / 1e6;
+                    } catch (e) {}
+                }
+                return 0;
+            }
+
+            function extractCompanyAttr(p) {
+                var raw = p.company !== undefined ? p.company :
+                    (p.Company !== undefined ? p.Company :
+                        (p.COMPANY !== undefined ? p.COMPANY : ''));
+                var clean = String(raw == null ? '' : raw).trim();
+                if (!clean || clean === '---' || clean === '-9999' || /^(null|undefined|n\/a|none|unknown|blank)$/i.test(clean)) {
+                    return '';
+                }
+                return clean;
+            }
+
+            var map = null, activePopup = null;
+            var extractedAssets = [];
+            var fastWellsCount = null;
+            var wellCountTimer = null;
+
+            function initLayerToggles() {
+                var container = $('layerToggles');
+                container.innerHTML = LAYER_DEFS.map(function(ld) {
+                    return '<button type="button" class="pill' + (ld.active ? ' active' : '') + '" data-lid="' + ld.id + '">' +
+                        '<span class="dot"></span>' + esc(ld.label) + '</button>';
+                }).join('');
+
+                container.addEventListener('click', function(e) {
+                    var btn = e.target.closest('button[data-lid]');
+                    if (!btn || !map) return;
+                    var lid = btn.dataset.lid;
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid;
+                    });
+                    if (!def) return;
+                    def.active = !def.active;
+                    btn.classList.toggle('active', def.active);
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) map.setLayoutProperty(def.id, 'visibility', vis);
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                    setTimeout(scanNorwayMapFeatures, 180);
+                });
+            }
+
+            function enableAllNorwayLayers() {
+                LAYER_DEFS.forEach(function(def) {
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) {
+                        map.setLayoutProperty(def.id, 'visibility', vis);
+                    }
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                });
+            }
+
+            function scheduleFastWellCount(platformsCount) {
+                clearTimeout(wellCountTimer);
+                var wellsDef = LAYER_DEFS.find(function(d) {
+                    return d.id === 'oil-and-gas-wells';
+                });
+
+                if (!wellsDef || !wellsDef.active || !map.getLayer('oil-and-gas-wells')) {
+                    fastWellsCount = 0;
+                    $('kpiWellsCount').innerHTML = platformsCount.toLocaleString() + '<small>platforms</small>';
+                    $('kpiWellsSub').textContent = 'Wells layer toggled off';
+                    $('kpiWellsHint').textContent = 'Enable Wells pill to inspect';
+                    return;
+                }
+
+                var z = map.getZoom();
+                if (z < WELLS_LIVE_ZOOM_THRESHOLD) {
+                    fastWellsCount = null;
+                    $('kpiWellsCount').innerHTML = '15K+<small>wells</small>';
+                    $('kpiWellsSub').textContent = 'NCS continental shelf · ' + platformsCount + ' platforms';
+                    $('kpiWellsHint').textContent = 'Zoom ≥ 8.2x for live local well count';
+                    renderInfraSvgChart();
+                    return;
+                }
+
+                $('kpiWellsHint').textContent = 'Scanning local offshore wells…';
+                var runLocalCount = function() {
+                    if (!map || map.getZoom() < WELLS_LIVE_ZOOM_THRESHOLD) return;
+                    var rawWells = [];
+                    try {
+                        rawWells = map.queryRenderedFeatures({
+                            layers: ['oil-and-gas-wells']
+                        });
+                    } catch (e) {}
+
+                    var count = 0;
+                    var len = rawWells.length;
+                    for (var i = 0; i < len; i++) {
+                        var geom = rawWells[i].geometry;
+                        if (geom && geom.coordinates) {
+                            var lng = geom.coordinates[0], lat = geom.coordinates[1];
+                            if (lng >= 0.0 && lng <= 35.0 && lat >= 56.0 && lat <= 75.0) {
+                                count++;
+                            }
+                        } else {
+                            count++;
+                        }
+                    }
+
+                    fastWellsCount = count;
+                    $('kpiWellsCount').innerHTML = count.toLocaleString() + '<small>wells</small>';
+                    $('kpiWellsSub').textContent = count.toLocaleString() + ' local wells · ' + platformsCount + ' platforms';
+                    $('kpiWellsHint').textContent = 'Live count in viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
+                    renderInfraSvgChart();
+                };
+
+                wellCountTimer = setTimeout(function() {
+                    if (typeof window.requestIdleCallback === 'function') {
+                        window.requestIdleCallback(runLocalCount, { timeout: 300 });
+                    } else {
+                        runLocalCount();
+                    }
+                }, 80);
+            }
+
+            function scanNorwayMapFeatures() {
+                if (!map) return;
+                $('statusBox').className = 'status busy';
+                $('statusText').textContent = 'Querying Norwegian vector layers…';
+
+                var fastLayerIds = [];
+                LAYER_DEFS.forEach(function(d) {
+                    if (d.id === 'oil-and-gas-wells') return;
+                    if (d.active && map.getLayer(d.id)) fastLayerIds.push(d.id);
+                    (d.extra || []).forEach(function(ex) {
+                        if (d.active && map.getLayer(ex)) fastLayerIds.push(ex);
+                    });
+                });
+
+                var rendered = [];
+                try {
+                    rendered = map.queryRenderedFeatures({
+                        layers: fastLayerIds
+                    });
+                } catch (err) {
+                    console.warn('[NOR-DIAG] queryRenderedFeatures error:', err);
+                }
+
+                var unique = new Map();
+
+                rendered.forEach(function(f, idx) {
+                    var p = f.properties || {};
+                    var lid = f.layer.id;
+                    var coords = extractRepresentativeCoords(f.geometry);
+                    if (!isNorwayFeature(p, coords)) return;
+
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid || (d.extra && d.extra.indexOf(lid) >= 0);
+                    }) || LAYER_DEFS[0];
+
+                    var validName = getEntityName(p);
+                    var hasValidName = !!validName;
+
+                    // OMIT unnamed, blank, or null blocks from block statistics
+                    if (def.cat === 'Block' && !hasValidName) return;
+
+                    var isUnnamed = !hasValidName;
+                    var name = hasValidName ? validName : ('Unnamed ' + def.sub);
+
+                    var typeRaw = String(getProp(p, ['type']) || '').trim();
+                    var blockType = typeRaw;
+                    if (!blockType || blockType === '---' || blockType === '-9999') blockType = def.sub;
+
+                    var blockClass = null;
+                    if (lid === 'PRODUCTION') {
+                        blockClass = classifyBlockType(typeRaw);
+                    }
+
+                    var commodityRaw = String(getProp(p, ['commodity']) || '').trim();
+                    var pipelineClass = null;
+                    if (lid === 'OIL-PIPELINE') {
+                        pipelineClass = classifyPipelineCommodity(commodityRaw);
+                    }
+
+                    var commodity = String(p.COMMODITY || p.commodity || p.RESINFO || (lid === 'OIL-PIPELINE' ? 'Oil' : lid === 'GAS-PIPELINE' ? 'Gas' : blockType || 'Oil & Gas')).trim();
+                    if (commodity === '-9999' || commodity === '---') commodity = 'Crude Oil';
+
+                    var companyAttr = extractCompanyAttr(p);
+                    var fallbackOp = String(companyAttr || p.OPERATOR || p.operator || p.Source || p.source || 'Equinor / NOD').trim();
+                    if (!fallbackOp || fallbackOp === '-9999' || fallbackOp === '---') fallbackOp = 'Equinor / Partner';
+
+                    var area = extractAreaKm2(p, f);
+
+                    var fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
+                    var key;
+                    if (def.cat === 'Block' && hasValidName) {
+                        key = lid + '_NAMED_' + name.toUpperCase();
+                    } else if ((def.cat === 'Block' || def.cat === 'OilPipeline' || def.cat === 'GasPipeline') && fid !== '') {
+                        key = lid + '_ID_' + String(fid);
+                    } else {
+                        var coordPrecision = (lid === 'offshore-platforms') ? 5 : 3;
+                        key = lid + '_' + name + '_' + (coords ? coords[0].toFixed(coordPrecision) + '_' + coords[1].toFixed(coordPrecision) : idx);
+                    }
+
+                    if (!unique.has(key)) {
+                        unique.set(key, {
+                            key: key,
+                            layerId: lid,
+                            name: name,
+                            isUnnamed: isUnnamed,
+                            category: def.cat,
+                            subType: def.sub,
+                            blockType: blockType,
+                            blockClass: blockClass,
+                            pipelineClass: pipelineClass,
+                            commodity: commodity,
+                            company: companyAttr,
+                            operator: fallbackOp,
+                            area: area,
+                            coords: coords
+                        });
+                    } else if (area > (unique.get(key).area || 0)) {
+                        unique.get(key).area = area;
+                    }
+                });
+
+                extractedAssets = Array.from(unique.values());
+
+                var platformsCount = extractedAssets.filter(function(a) {
+                    return a.layerId === 'offshore-platforms';
+                }).length;
+
+                updateDashboardMetrics();
+                renderTopBlocksChart();
+                renderInfraSvgChart();
+                renderOperatorsChart();
+                scheduleFastWellCount(platformsCount);
+
+                $('statusBox').className = 'status ok';
+                var now = new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                $('statusText').textContent = extractedAssets.length.toLocaleString() + ' primary spatial assets analyzed · Updated ' + now;
+                $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length.toLocaleString() + ' assets in current viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
+            }
+
+            function scanWhenReady() {
+                if (!map) return;
+                if (map.loaded()) scanNorwayMapFeatures();
+                else map.once('idle', scanNorwayMapFeatures);
+            }
+
+            function getProductionBlocks() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'PRODUCTION' && !a.isUnnamed && isValidEntityName(a.name);
+                });
+            }
+
+            function getExplorationBlocks() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'EXPLORATION' && !a.isUnnamed && isValidEntityName(a.name);
+                });
+            }
+
+            function getOilPipelines() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'OIL';
+                });
+            }
+
+            function getGasPipelines() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'GAS';
+                });
+            }
+
+            function updateDashboardMetrics() {
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+                var validBlocks = prodBlocks.concat(explBlocks);
+
+                var totalArea = validBlocks.reduce(function(s, b) {
+                    return s + (b.area || 0);
+                }, 0);
+
+                var oilPipes = getOilPipelines();
+                var gasPipes = getGasPipelines();
+                var refs = extractedAssets.filter(function(a) {
+                    return a.category === 'Refinery';
+                });
+                var deps = extractedAssets.filter(function(a) {
+                    return a.category === 'Deposit';
+                });
+
+                $('kpiBlocksCount').innerHTML = validBlocks.length.toLocaleString() + '<small>blocks</small>';
+                $('kpiBlocksArea').textContent = 'Mapped area: ' + Math.round(totalArea).toLocaleString() + ' km²';
+                $('kpiProdFieldsSub').textContent = prodBlocks.length + ' Production · ' + explBlocks.length + ' Exploration';
+
+                $('kpiPipesCount').innerHTML = (oilPipes.length + gasPipes.length).toLocaleString() + '<small>segments</small>';
+                $('kpiPipesSub').textContent = oilPipes.length + ' Oil · ' + gasPipes.length + ' Gas pipelines';
+
+                $('kpiRefCount').innerHTML = (refs.length + deps.length).toLocaleString() + '<small>facilities</small>';
+                $('kpiRefSub').textContent = refs.length + ' Terminals · ' + deps.length + ' Fields';
+
+                var validTotalCount = validBlocks.length + oilPipes.length + gasPipes.length + refs.length + deps.length;
+                $('totalAssetsBadge').textContent = validTotalCount.toLocaleString() + ' primary assets';
+            }
+
+            function renderTopBlocksChart() {
+                var legendBox = $('blocksTypeLegend');
+                var box = $('topBlocksChart');
+
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+
+                var legendItems = [{
+                    layerId: 'PRODUCTION',
+                    label: 'PRODUCTION LICENSES',
+                    count: prodBlocks.length,
+                    color: '#f0b823'
+                }, {
+                    layerId: 'EXPLORATION',
+                    label: 'EXPLORATION AREAS',
+                    count: explBlocks.length,
+                    color: '#3b82f6'
+                }];
+
+                legendBox.innerHTML = legendItems.map(function(item) {
+                    var isAct = activeBlockLayerFilter === item.layerId ? ' active' : '';
+                    return '<button type="button" class="type-legend-item' + isAct + '" data-layer-filter="' + item.layerId + '" title="Show ' + esc(item.label) + '">' +
+                        '<span class="type-swatch" style="background:' + item.color + '"></span>' +
+                        '<span>' + esc(item.label) + '</span>' +
+                        '<span class="type-count">(' + item.count + ')</span>' +
+                        '</button>';
+                }).join('');
+
+                var sourceBlocks = activeBlockLayerFilter === 'EXPLORATION' ? explBlocks : prodBlocks;
+                var activeColor = activeBlockLayerFilter === 'EXPLORATION' ? '#3b82f6' : '#f0b823';
+                var activeLabel = activeBlockLayerFilter === 'EXPLORATION' ? 'EXPLORATION AREAS' : 'PRODUCTION LICENSES';
+
+                var rankedBlocks = sourceBlocks
+                    .filter(function(b) {
+                        return b.area > 0 && !b.isUnnamed && isValidEntityName(b.name);
+                    })
+                    .sort(function(a, b) {
+                        return b.area - a.area;
+                    })
+                    .slice(0, 6);
+
+                if (!rankedBlocks.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem;padding:8px 0">No named <code>' + esc(activeLabel) + '</code> blocks with <code>Area_Km2</code> in this viewport.</div>';
+                    return;
+                }
+
+                var maxA = rankedBlocks[0].area || 1;
+
+                box.innerHTML = rankedBlocks.map(function(b) {
+                    var pct = Math.max(4, (b.area / maxA) * 100);
+                    return '<div class="stat-row" data-key="' + esc(b.key) + '">' +
+                        '<div class="stat-row-top">' +
+                        '<span>' +
+                        '<span class="type-swatch" style="display:inline-block;margin-right:6px;background:' + activeColor + '"></span>' +
+                        '<strong>' + esc(b.name) + '</strong> ' +
+                        '<small style="color:var(--mute)">(' + esc(b.blockType || activeLabel) + ')</small>' +
+                        '</span>' +
+                        '<span style="color:var(--gold);font-weight:600">' + Math.round(b.area).toLocaleString() + ' km²</span>' +
+                        '</div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%;background:' + activeColor + '"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderInfraSvgChart() {
+                var svg = $('infraSvgChart');
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+                var platformsCount = extractedAssets.filter(function(a) {
+                    return a.layerId === 'offshore-platforms';
+                }).length;
+
+                var groups = [{
+                    label: 'Production Licenses',
+                    count: prodBlocks.length,
+                    color: '#f0b823'
+                }, {
+                    label: 'Exploration Blocks',
+                    count: explBlocks.length,
+                    color: '#3b82f6'
+                }, {
+                    label: 'Oil Subsea Lines',
+                    count: getOilPipelines().length,
+                    color: '#10b981'
+                }, {
+                    label: 'Gas Subsea Lines',
+                    count: getGasPipelines().length,
+                    color: '#06b6d4'
+                }, {
+                    label: 'Terminals & Refineries',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Refinery' || a.category === 'Deposit';
+                    }).length,
+                    color: '#ef4444'
+                }, {
+                    label: fastWellsCount !== null ? 'Local Wells & Platforms' : 'Offshore Platforms',
+                    count: fastWellsCount !== null ? (fastWellsCount + platformsCount) : platformsCount,
+                    color: '#8b5cf6'
+                }];
+
+                var max = Math.max.apply(null, groups.map(function(g) {
+                    return g.count;
+                })) || 1;
+                var out = '';
+                groups.forEach(function(g, i) {
+                    var y = i * 27 + 8;
+                    var w = (g.count / max) * 200;
+                    out += '<text x="0" y="' + (y + 13) + '">' + esc(g.label) + '</text>' +
+                        '<rect x="148" y="' + y + '" width="' + Math.max(w, 3) + '" height="16" rx="3" fill="' + g.color + '"/>' +
+                        '<text class="lab" x="' + (156 + Math.max(w, 3)) + '" y="' + (y + 13) + '">' + g.count.toLocaleString() + '</text>';
+                });
+                svg.innerHTML = out;
+            }
+
+            function renderOperatorsChart() {
+                var counts = {};
+                extractedAssets.forEach(function(a) {
+                    if (a.category === 'Block' && a.isUnnamed) return;
+                    var comp = a.company;
+                    if (!comp) return;
+                    counts[comp] = (counts[comp] || 0) + 1;
+                });
+                var list = Object.keys(counts).map(function(k) {
+                        return {
+                            name: k,
+                            count: counts[k]
+                        };
+                    })
+                    .sort(function(a, b) {
+                        return b.count - a.count;
+                    })
+                    .slice(0, 6);
+
+                var box = $('operatorsChart');
+                if (!list.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem">No entities with an identified <code>company</code> attribute in current view.</div>';
+                    return;
+                }
+                var max = list[0].count || 1;
+                box.innerHTML = list.map(function(it) {
+                    var pct = Math.max(5, (it.count / max) * 100);
+                    return '<div class="stat-row" data-op="' + esc(it.name) + '">' +
+                        '<div class="stat-row-top"><span><strong>' + esc(it.name) + '</strong></span><strong>' + it.count + ' ' + (it.count === 1 ? 'asset' : 'assets') + '</strong></div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%;background:#10b981"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderEiaTrend() {
+                var data = [{
+                    yr: '2023',
+                    val: 1980
+                }, {
+                    yr: '2024',
+                    val: 2010
+                }, {
+                    yr: '2025',
+                    val: 2040
+                }, {
+                    yr: '2026',
+                    val: 2075
+                }];
+                var max = 2400;
+                var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
+                data.forEach(function(d, i) {
+                    var h = (d.val / max) * 95;
+                    var x = 52 + i * 74;
+                    var y = 130 - h;
+                    out += '<rect x="' + x + '" y="' + y + '" width="38" height="' + h + '" rx="4" fill="#f0b823" opacity="' + (0.65 + i * 0.1) + '"/>' +
+                        '<text class="lab" x="' + (x + 19) + '" y="' + (y - 6) + '" text-anchor="middle">' + d.val + '</text>' +
+                        '<text x="' + (x + 19) + '" y="148" text-anchor="middle">' + d.yr + '</text>';
+                });
+                $('eiaTrendSvg').innerHTML = out;
+            }
+
+            function focusOnAsset(key) {
+                var item = extractedAssets.find(function(a) {
+                    return a.key === key;
+                });
+                if (!item || !item.coords) return;
+                map.flyTo({
+                    center: item.coords,
+                    zoom: Math.max(map.getZoom(), 8.8),
+                    essential: true
+                });
+                if (activePopup) activePopup.remove();
+                activePopup = new mapboxgl.Popup({
+                        offset: 12
+                    })
+                    .setLngLat(item.coords)
+                    .setHTML(
+                        '<div class="popup-title">🇳🇴 ' + esc(item.name) + '</div>' +
+                        '<div><strong>Layer:</strong> ' + esc(item.layerId) + '</div>' +
+                        '<div><strong>Type:</strong> ' + esc(item.blockType || item.subType) + '</div>' +
+                        '<div><strong>Commodity:</strong> ' + esc(item.commodity) + '</div>' +
+                        '<div><strong>Company:</strong> ' + esc(item.company || item.operator) + '</div>' +
+                        (item.area > 0 ? '<div><strong>Area_Km2:</strong> ' + Math.round(item.area).toLocaleString() + ' km²</div>' : '')
+                    )
+                    .addTo(map);
+            }
+
+            function loadLivePrices() {
+                if (typeof Papa === 'undefined') {
+                    setTimeout(loadLivePrices, 120);
+                    return;
+                }
+                fetch(CSV_PRICES + '?t=' + Math.floor(Date.now() / 3e5), {
+                        cache: 'no-store'
+                    })
+                    .then(function(r) {
+                        return r.text();
+                    })
+                    .then(function(csv) {
+                        var blends = [];
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true
+                        }).data.forEach(function(raw) {
+                            var n = {};
+                            Object.keys(raw).forEach(function(k) {
+                                n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = raw[k];
+                            });
+                            var name = (n['blend'] || '').trim(),
+                                price = num(n['precio']);
+                            if (!name || price == null) return;
+                            blends.push({
+                                name: name,
+                                price: price,
+                                chg: num(n['cambio']) || 0,
+                                pct: num(n['cambio %']) || 0,
+                                wk: range(n['rango sem.'])
+                            });
+                        });
+
+                        var brent = blends.find(function(b) {
+                            return /brent/i.test(b.name);
+                        });
+                        var sverdrup = blends.find(function(b) {
+                            return /johan|sverdrup/i.test(b.name);
+                        });
+                        var ekofisk = blends.find(function(b) {
+                            return /ekofisk/i.test(b.name);
+                        });
+                        var wti = blends.find(function(b) {
+                            return /wti|west texas/i.test(b.name);
+                        });
+
+                        var heroNorthSea = sverdrup || brent;
+
+                        if (heroNorthSea) {
+                            $('kpiJohanPx').innerHTML = '$' + f2(heroNorthSea.price) + '<small>/bbl</small>';
+                            var cCls = heroNorthSea.chg > 0 ? 'up' : heroNorthSea.chg < 0 ? 'dn' : '';
+                            var arr = heroNorthSea.chg > 0 ? '▲ ' : heroNorthSea.chg < 0 ? '▼ ' : '';
+                            $('kpiJohanChg').className = 'd ' + cCls;
+                            $('kpiJohanChg').textContent = arr + sg(heroNorthSea.chg) + ' (' + sg(heroNorthSea.pct) + '%)';
+
+                            if (heroNorthSea.wk) {
+                                var pos = heroNorthSea.wk[1] === heroNorthSea.wk[0] ? 0.5 : Math.min(1, Math.max(0, (heroNorthSea.price - heroNorthSea.wk[0]) / (heroNorthSea.wk[1] - heroNorthSea.wk[0])));
+                                $('kpiJohanGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
+                            }
+                            if (wti) {
+                                var sp = heroNorthSea.price - wti.price;
+                                $('kpiJohanSpread').innerHTML = '<span>vs WTI: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (heroNorthSea.wk ? f2(heroNorthSea.wk[0]) + '–$' + f2(heroNorthSea.wk[1]) : '--') + '</span>';
+                            }
+                        }
+
+                        var peers = [brent, sverdrup, ekofisk, wti].filter(Boolean);
+                        var maxP = Math.max.apply(null, peers.map(function(p) {
+                            return p.price;
+                        })) || 100;
+                        $('norPricesBox').innerHTML = peers.map(function(p) {
+                            var isNor = /brent|sverdrup|ekofisk|troll/i.test(p.name);
+                            var w = (p.price / maxP) * 100;
+                            var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
+                            return '<div class="stat-row">' +
+                                '<div class="stat-row-top">' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (isNor ? '<span class="badge">NCS / North Sea</span>' : '') + '</span>' +
+                                '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
+                                '</div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (isNor ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '</div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+            }
+
+            function initMap() {
+                if (typeof mapboxgl === 'undefined') {
+                    setTimeout(initMap, 100);
+                    return;
+                }
+                mapboxgl.accessToken = MAPBOX_TOKEN;
+                map = new mapboxgl.Map({
+                    container: 'norMap',
+                    style: MAPBOX_STYLE,
+                    projection: 'mercator',
+                    // Centered on Norway's continental shelf maritime centroid
+                    center: [4.80, 64.20],
+                    zoom: 4.8,
+                    pitch: 0,
+                    antialias: true
+                });
+
+                map.addControl(new mapboxgl.NavigationControl({
+                    showCompass: true
+                }), 'bottom-right');
+                map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+
+                map.on('load', function() {
+                    enableAllNorwayLayers();
+                    map.once('idle', scanNorwayMapFeatures);
+                });
+
+                var debounceTimer = null;
+                map.on('moveend', function() {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(scanWhenReady, 180);
+                });
+
+                LAYER_DEFS.forEach(function(ld) {
+                    var layerTargets = [ld.id].concat(ld.extra || []);
+                    layerTargets.forEach(function(targetLayerId) {
+                        map.on('click', targetLayerId, function(e) {
+                            if (!e.features || !e.features.length) return;
+                            var f = e.features[0];
+                            var p = f.properties || {};
+                            var rawN = p.Name || p.NAME || p.FAC_NAME || p.Block_Name || p.BLOCK_NAME || p.title || '';
+                            var name = isValidEntityName(rawN) ? String(rawN).trim() : ld.sub;
+                            var typeVal = p.Type || p.TYPE || p.type || ld.sub;
+                            var comm = p.COMMODITY || p.commodity || (ld.id === 'OIL-PIPELINE' ? 'Oil' : ld.id === 'GAS-PIPELINE' ? 'Gas' : 'Oil & Gas');
+                            var op = extractCompanyAttr(p) || p.OPERATOR || p.source || 'Equinor / NOD';
+                            var areaVal = extractAreaKm2(p, f);
+                            var areaStr = areaVal > 0 ? areaVal.toLocaleString(undefined, {
+                                maximumFractionDigits: 1
+                            }) + ' km²' : null;
+                            if (activePopup) activePopup.remove();
+                            activePopup = new mapboxgl.Popup({
+                                    offset: 12
+                                })
+                                .setLngLat(e.lngLat)
+                                .setHTML(
+                                    '<div class="popup-title">🛢️ ' + esc(name) + '</div>' +
+                                    '<div><strong>Layer:</strong> ' + esc(targetLayerId) + '</div>' +
+                                    '<div><strong>Type:</strong> ' + esc(typeVal) + '</div>' +
+                                    '<div><strong>Commodity:</strong> ' + esc(comm) + '</div>' +
+                                    '<div><strong>Company:</strong> ' + esc(op) + '</div>' +
+                                    (areaStr ? '<div><strong>Area_Km2:</strong> ' + esc(areaStr) + '</div>' : '')
+                                )
+                                .addTo(map);
+                        });
+                        map.on('mouseenter', targetLayerId, function() {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+                        map.on('mouseleave', targetLayerId, function() {
+                            map.getCanvas().style.cursor = '';
+                        });
+                    });
+                });
+            }
+
+            $('basinPills').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-lng]');
+                if (!btn || !map) return;
+                document.querySelectorAll('#basinPills .pill').forEach(function(p) {
+                    p.classList.toggle('active', p === btn);
+                });
+                map.flyTo({
+                    center: [parseFloat(btn.dataset.lng), parseFloat(btn.dataset.lat)],
+                    zoom: parseFloat(btn.dataset.z),
+                    essential: true
+                });
+            });
+
+            $('btnResetNor').addEventListener('click', function() {
+                if (!map) return;
+                document.querySelectorAll('#basinPills .pill').forEach(function(p, idx) {
+                    p.classList.toggle('active', idx === 0);
+                });
+                map.flyTo({
+                    center: [4.80, 64.20],
+                    zoom: 4.8,
+                    essential: true
+                });
+            });
+
+            $('btnRescan').addEventListener('click', scanNorwayMapFeatures);
+
+            $('blocksTypeLegend').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-layer-filter]');
+                if (!btn) return;
+                activeBlockLayerFilter = btn.dataset.layerFilter;
+                renderTopBlocksChart();
+            });
+
+            $('topBlocksChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-key]');
+                if (row) focusOnAsset(row.dataset.key);
+            });
+
+            $('operatorsChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-op]');
+                if (!row) return;
+                var opName = row.dataset.op;
+                var match = extractedAssets
+                    .filter(function(a) {
+                        return (!a.isUnnamed || a.category !== 'Block') && a.company === opName && a.coords;
+                    })
+                    .sort(function(a, b) {
+                        return (b.area || 0) - (a.area || 0);
+                    })[0];
+                if (match) {
+                    $('norMap').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    focusOnAsset(match.key);
+                }
+            });
+
+            initLayerToggles();
+            renderEiaTrend();
+            loadLivePrices();
+            initMap();
+        })();
+    </script>
+    <script>
+        (() => {
+            const track = document.getElementById('navScrollTrack');
+            const leftBtn = document.getElementById('scrollLeftBtn');
+            const rightBtn = document.getElementById('scrollRightBtn');
+
+            const updateArrows = () => {
+                const max = track.scrollWidth - track.clientWidth;
+                const display = max <= 4 ? 'none' : 'flex';
+                leftBtn.style.display = display;
+                rightBtn.style.display = display;
+                leftBtn.style.opacity = track.scrollLeft > 8 ? '1' : '0.2';
+                leftBtn.style.pointerEvents = track.scrollLeft > 8 ? 'auto' : 'none';
+                rightBtn.style.opacity = max - track.scrollLeft > 8 ? '1' : '0.2';
+                rightBtn.style.pointerEvents = max - track.scrollLeft > 8 ? 'auto' : 'none';
+            };
+
+            track.addEventListener('wheel', e => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    track.scrollLeft += e.deltaY;
+                }
+            }, {
+                passive: false
+            });
+            track.addEventListener('scroll', updateArrows, {
+                passive: true
+            });
+            window.addEventListener('resize', updateArrows);
+            leftBtn.addEventListener('click', () => track.scrollBy({
+                left: -220,
+                behavior: 'smooth'
+            }));
+            rightBtn.addEventListener('click', () => track.scrollBy({
+                left: 220,
+                behavior: 'smooth'
+            }));
+
+            let isDown = false,
+                startX = 0,
+                startScroll = 0;
+            track.addEventListener('mousedown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                isDown = true;
+                track.classList.add('grabbing');
+                startX = e.pageX;
+                startScroll = track.scrollLeft;
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                track.classList.remove('grabbing');
+            });
+            window.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                track.scrollLeft = startScroll - (e.pageX - startX);
+            });
+
+
+            updateArrows();
+        })();
+    </script>
+</body>
+
+</html>

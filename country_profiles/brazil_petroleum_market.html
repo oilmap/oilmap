@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <title>Brazil Oil & Gas Map: Pre-Salt Santos, Campos, Pipelines, Refineries & Crude Prices | World Oil Map</title>
+    <meta name="description" content="Interactive Brazil oil and gas spatial intelligence dashboard: explore Pre-Salt Santos Basin, Campos, Margem Equatorial, pipelines, refineries, Petrobras concession blocks, and benchmark prices.">
+    <meta name="keywords" content="Brazil oil map, Pre-Salt map, Santos Basin, Campos Basin, Petrobras blocks, Búzios field, Tupi field, Brazil oil pipelines, Brazil refineries, ANP concessions">
+    <meta name="author" content="Roque Leal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#0b1120">
+    <link rel="canonical" href="https://oilmap.xyz/brazil_petroleum_market.html">
+    <link rel="icon" type="image/png" href="./img/oilmap.png">
+    <link rel="apple-touch-icon" href="./img/oilmap.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="World Oil Map">
+    <meta property="og:title" content="Brazil Oil & Gas Map: Pre-Salt Blocks, Pipelines, Refineries & Markets">
+    <meta property="og:description" content="Live spatial intelligence on Brazil's upstream blocks, deepwater Pre-Salt basins, midstream pipelines, refining hubs, and crude benchmark dynamics.">
+    <meta property="og:url" content="https://oilmap.xyz/brazil_petroleum_market.html">
+    <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@roqueleal08">
+    <meta name="twitter:title" content="Brazil Oil & Gas Intelligence Dashboard | World Oil Map">
+    <meta name="twitter:description" content="Explore Brazil's Pre-Salt blocks, pipelines, refineries, and offshore production hubs.">
+    <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
+
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js" defer></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                "@type": "WebPage",
+                "@id": "https://oilmap.xyz/brazil_petroleum_market.html#webpage",
+                "url": "https://oilmap.xyz/brazil_petroleum_market.html",
+                "name": "Brazil Oil & Gas Map: Pre-Salt, Basins, Pipelines & Refineries",
+                "description": "Interactive spatial dashboard of Brazil's petroleum sector featuring Pre-Salt blocks, Santos and Campos basins, offshore platforms, pipeline networks, and market data.",
+                "inLanguage": "en",
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "World Oil Map",
+                    "url": "https://oilmap.xyz/"
+                },
+                "about": {
+                    "@type": "Place",
+                    "name": "Brazil",
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": -14.235,
+                        "longitude": -51.925
+                    }
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "Dataset",
+                "name": "Brazil Upstream & Downstream Oil and Gas Infrastructure Dataset",
+                "description": "Geospatial dataset mapping Brazil's offshore pre-salt blocks, onshore fields, pipelines, refineries, FPSOs, and wells.",
+                "url": "https://oilmap.xyz/brazil_petroleum_market.html",
+                "license": "https://creativecommons.org/licenses/by/4.0/",
+                "isAccessibleForFree": true,
+                "spatialCoverage": {
+                    "@type": "Place",
+                    "name": "Brazil"
+                },
+                "creator": {
+                    "@type": "Person",
+                    "name": "Roque Leal",
+                    "url": "https://roqueleal.me/"
+                }
+            }, {
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "World Oil Map",
+                    "item": "https://oilmap.xyz/"
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Oil Market",
+                    "item": "https://oilmap.xyz/oil_price_charts.html"
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Brazil Oil & Gas Profile",
+                    "item": "https://oilmap.xyz/brazil_petroleum_market.html"
+                }]
+            }]
+        }
+    </script>
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0b1120;
+            --surface: rgba(20, 29, 49, 0.55);
+            --surface-strong: #131c31;
+            --ink: #e8edf6;
+            --mute: #8794ab;
+            --line: rgba(255, 255, 255, .09);
+            --gold: #f0b823;
+            --gold-soft: rgba(240, 184, 35, .12);
+            --up: #10b981;
+            --dn: #ef4444;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --dot: #4b5870;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-padding-top: 76px;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 15px/1.6 'Inter', system-ui, sans-serif;
+            font-variant-numeric: tabular-nums;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--gold);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        header.top-bar {
+            --accent: #f0b823;
+            --accent-soft: rgba(240, 184, 35, .14);
+            --surface: rgba(13, 18, 30, .86);
+            --border: rgba(255, 255, 255, .1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-pill: 999px;
+            --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6);
+            position: sticky;
+            top: calc(12px + env(safe-area-inset-top, 0px));
+            z-index: 40;
+            margin: 12px auto 0;
+            width: calc(100% - 24px);
+            max-width: 1420px;
+            padding: 6px 10px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        header.top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 2px 4px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: opacity .15s ease;
+        }
+
+        header.top-bar .brand:hover {
+            opacity: .9;
+        }
+
+        header.top-bar .brand img {
+            height: 26px;
+            width: 26px;
+            object-fit: contain;
+        }
+
+        header.top-bar .brand-title {
+            font-size: .86rem;
+            letter-spacing: .5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        header.top-bar .brand-title span {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        header.top-bar .nav-scroll-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        header.top-bar .nav-scroll-track {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            width: 100%;
+            cursor: grab;
+        }
+
+        header.top-bar .nav-scroll-track.grabbing {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+
+        header.top-bar .nav-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        header.top-bar .scroll-arrow-btn {
+            background: rgba(13, 18, 30, .9);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            position: absolute;
+            font-size: .85rem;
+            transition: all .15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+        }
+
+        header.top-bar .scroll-arrow-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        header.top-bar .scroll-arrow-btn.left {
+            left: -4px;
+        }
+
+        header.top-bar .scroll-arrow-btn.right {
+            right: -4px;
+        }
+
+        header.top-bar .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui,
+        header.top-bar .nav-link {
+            padding: 6px 11px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-weight: 500;
+            font-size: .75rem;
+            cursor: pointer;
+            transition: all .18s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            outline: none;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .btn-ui:hover,
+        header.top-bar .nav-link:hover,
+        header.top-bar .btn-ui:focus-visible {
+            background: var(--accent-soft);
+            border-color: rgba(240, 184, 35, .35);
+            color: var(--accent);
+        }
+
+        header.top-bar .search-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        header.top-bar .search-input {
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, .35);
+            color: var(--text-primary);
+            width: 175px;
+            font-size: .75rem;
+            font-family: inherit;
+            transition: width .25s ease, border-color .2s, background .2s;
+            outline: none;
+        }
+
+        header.top-bar .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, .7);
+            width: 215px;
+        }
+
+        @media (max-width: 820px) {
+            header.top-bar {
+                top: calc(8px + env(safe-area-inset-top, 0px));
+                width: calc(100% - 16px);
+                padding: 5px 8px;
+                gap: 8px;
+            }
+            header.top-bar .search-input {
+                width: 135px;
+            }
+            header.top-bar .search-input:focus {
+                width: 175px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header.top-bar .brand-title {
+                display: none;
+            }
+            header.top-bar .brand {
+                padding: 0 2px;
+            }
+            header.top-bar .scroll-arrow-btn {
+                display: none !important;
+            }
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            overflow-x: auto;
+        }
+
+        nav a {
+            color: var(--mute);
+            text-decoration: none;
+            font-size: .85rem;
+            white-space: nowrap;
+            transition: color .15s;
+        }
+
+        nav a:hover,
+        nav a[aria-current] {
+            color: var(--ink);
+        }
+
+        main {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 32px 24px 36px;
+        }
+
+        .breadcrumbs {
+            font-size: .76rem;
+            color: var(--mute);
+            margin-bottom: 14px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .breadcrumbs a {
+            color: var(--mute);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--gold);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .74rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--gold);
+            background: var(--gold-soft);
+            border: 1px solid rgba(240, 184, 35, .3);
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: clamp(1.95rem, 4.2vw, 2.85rem);
+            line-height: 1.1;
+            font-weight: 600;
+            letter-spacing: -.025em;
+            margin: 0 0 12px;
+        }
+
+        .lead {
+            font-size: 1.08rem;
+            color: var(--ink);
+            max-width: 75ch;
+            margin: 0 0 16px;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--mute);
+            font-size: .82rem;
+            margin: 0;
+        }
+
+        .status i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dot);
+            display: inline-block;
+        }
+
+        .status.ok i {
+            background: var(--up);
+            box-shadow: 0 0 8px var(--up);
+        }
+
+        .status.busy i {
+            background: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .link-btn {
+            color: var(--gold);
+            font-size: .82rem;
+            padding: 2px 0;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        section {
+            margin-top: 48px;
+        }
+
+        .sec-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.08rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+            letter-spacing: -.01em;
+        }
+
+        .sub {
+            color: var(--mute);
+            font-size: .84rem;
+            margin: 0;
+            max-width: 72ch;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .tile {
+            padding: 18px 16px 16px 18px;
+            border-left: 1px solid var(--line);
+            transition: background .15s;
+        }
+
+        .tile:first-child {
+            border-left: 0;
+            padding-left: 0;
+        }
+
+        .tile h3 {
+            margin: 0;
+            font-size: .76rem;
+            font-weight: 500;
+            color: var(--mute);
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .px {
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: -.02em;
+            margin: 4px 0 2px;
+            line-height: 1.15;
+        }
+
+        .px small {
+            font-size: .74rem;
+            color: var(--mute);
+            font-weight: 400;
+            margin-left: 4px;
+            letter-spacing: 0;
+        }
+
+        .d {
+            margin: 0 0 8px;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--mute);
+        }
+
+        .up {
+            color: var(--up);
+        }
+
+        .dn {
+            color: var(--dn);
+        }
+
+        .gold {
+            color: var(--gold);
+        }
+
+        .gauge {
+            position: relative;
+            height: 2px;
+            background: var(--line);
+            margin: 8px 0 6px;
+        }
+
+        .gauge i {
+            position: absolute;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: var(--gold);
+            transition: left .5s ease;
+        }
+
+        .lh {
+            display: flex;
+            justify-content: space-between;
+            color: var(--mute);
+            font-size: .7rem;
+            margin: 0;
+        }
+
+        .pill-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .pill {
+            padding: 5px 11px;
+            border-radius: 99px;
+            border: 1px solid var(--line);
+            font-size: .75rem;
+            color: var(--mute);
+            background: rgba(255, 255, 255, .02);
+            transition: all .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pill:hover,
+        .pill.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-soft);
+        }
+
+        .pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dot);
+        }
+
+        .pill.active .dot {
+            background: var(--gold);
+            box-shadow: 0 0 6px var(--gold);
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .map-shell {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #060911;
+        }
+
+        .map-toolbar {
+            padding: 10px 14px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .toolbar-label {
+            font-size: .72rem;
+            color: var(--mute);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        #brazilMap {
+            width: 100%;
+            height: 530px;
+            position: relative;
+        }
+
+        .map-footer {
+            padding: 8px 14px;
+            font-size: .75rem;
+            color: var(--mute);
+            border-top: 1px solid var(--line);
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .analytics-col {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+            padding: 16px 18px;
+        }
+
+        .card h3 {
+            margin: 0 0 4px;
+            font-size: .92rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card .sub {
+            font-size: .76rem;
+            margin-bottom: 12px;
+        }
+
+        .chart {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        .chart text {
+            fill: var(--mute);
+            font: 500 11px 'Inter', sans-serif;
+        }
+
+        .chart .lab {
+            fill: var(--ink);
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .stat-row {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background .12s;
+        }
+
+        .stat-row:hover {
+            background: rgba(255, 255, 255, .04);
+        }
+
+        .stat-row-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: .78rem;
+            margin-bottom: 3px;
+            gap: 8px;
+        }
+
+        .stat-track {
+            height: 5px;
+            background: var(--line);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 99px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: .68rem;
+            font-weight: 600;
+            background: var(--gold-soft);
+            color: var(--gold);
+        }
+
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .type-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: .72rem;
+            color: var(--ink);
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .type-legend-item:hover {
+            border-color: rgba(240, 184, 35, .45);
+        }
+
+        .type-legend-item.active {
+            border-color: var(--gold);
+            background: var(--gold-soft);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .type-swatch {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .type-count {
+            color: var(--mute);
+            font-size: .68rem;
+            font-weight: 400;
+        }
+
+        .mapboxgl-popup-content {
+            background: #141b2d !important;
+            border: 1px solid var(--line) !important;
+            border-radius: 8px !important;
+            color: var(--ink) !important;
+            padding: 12px 14px !important;
+            font: 400 13px/1.45 'Inter', sans-serif !important;
+            max-width: 280px;
+        }
+
+        .mapboxgl-popup-close-button {
+            color: var(--mute) !important;
+        }
+
+        .popup-title {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: .88rem;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            border-top: 1px solid var(--line);
+            padding-top: 36px;
+        }
+
+        .about p,
+        .about dd {
+            color: var(--mute);
+            margin: 0 0 12px;
+            font-size: .88rem;
+        }
+
+        .about dt {
+            font-weight: 600;
+            font-size: .9rem;
+            color: var(--ink);
+        }
+
+        .about dd {
+            margin-bottom: 14px;
+            margin-left: 0;
+        }
+
+        footer {
+            max-width: 1220px;
+            margin: 56px auto 0;
+            padding: 24px;
+            border-top: 1px solid var(--line);
+            color: var(--mute);
+            font-size: .82rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media (max-width: 960px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            #brazilMap {
+                height: 420px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding-top: 24px;
+            }
+            .tile {
+                border-left: 0;
+                padding-left: 0;
+                border-top: 1px solid var(--line);
+            }
+            .tile:first-child {
+                border-top: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="glass top-bar" role="banner">
+        <a class="brand" href="./index.html" aria-label="World Oil Map">
+            <img src="./img/oilmap.png" width="26" height="26" alt="" onerror="this.style.display='none'">
+            <span class="brand-title">WORLD OIL MAP <span>2026</span></span>
+        </a>
+
+        <div class="nav-scroll-wrapper" id="navScrollWrapper">
+            <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
+
+            <div class="nav-scroll-track" id="navScrollTrack">
+                <div class="search-wrap">
+                    <input type="search" class="search-input" placeholder="🔍 Search Block or Country..." autocomplete="off" aria-label="Search">
+                </div>
+
+                <nav class="toolbar" aria-label="Map Controls">
+                    <a href="./index.html" class="nav-link"><span>Home</span></a>
+                    <a href="./blog.html" class="nav-link"><span>Blog</span></a>
+                    <a href="./contact.html" class="nav-link"><span>Contact</span></a>
+                    <a class="btn-ui" href="./data_lineage.html"><span>Sources ▾</span></a>
+                </nav>
+
+            </div>
+
+            <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
+        </div>
+    </header>
+
+    <main>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="./index.html">World Oil Map</a> <span>/</span>
+            <a href="./oil_price_charts.html">Country Profiles</a> <span>/</span>
+            <span aria-current="page" style="color:var(--ink)">Brazil</span>
+        </nav>
+
+        <div class="eyebrow">🇧🇷 Country Spatial Intelligence · SmartView Engine</div>
+        <h1>Brazil Oil &amp; Gas Map &amp; Market Profile</h1>
+        <p class="lead">
+            Live geospatial intelligence covering Brazil's Pre-Salt polygon, deepwater Santos and Campos basins, offshore FPSO platforms, midstream subsea trunklines, and Lula/Búzios benchmark pricing.
+        </p>
+
+        <div class="status-bar">
+            <p class="status busy" id="statusBox" aria-live="polite">
+                <i></i>
+                <span id="statusText">Initializing Mapbox spatial engine and querying Brazil vector layers…</span>
+                <button id="btnRescan" class="link-btn" type="button">Rescan current view</button>
+            </p>
+            <div class="pill-group" id="basinPills" role="group" aria-label="Brazil Petroleum Basins">
+                <span class="toolbar-label" style="margin-right:4px">Basins:</span>
+                <button type="button" class="pill active" data-lng="-51.92" data-lat="-14.23" data-z="3.5">🇧🇷 National View (3.5x)</button>
+                <button type="button" class="pill" data-lng="-42.75" data-lat="-25.20" data-z="6.8">🛢️ Pre-Salt Santos Basin (Búzios/Tupi)</button>
+                <button type="button" class="pill" data-lng="-40.35" data-lat="-22.45" data-z="7.1">🌊 Campos Basin (Marlim/Roncador)</button>
+                <button type="button" class="pill" data-lng="-36.45" data-lat="-10.95" data-z="7.3">🔥 Sergipe-Alagoas Deepwater</button>
+                <button type="button" class="pill" data-lng="-47.50" data-lat="2.20" data-z="6.5">⚓ Margem Equatorial (Foz do Amazonas)</button>
+                <button type="button" class="pill" data-lng="-43.25" data-lat="-22.75" data-z="8.5">🏭 REDUC &amp; Comperj Complex</button>
+            </div>
+        </div>
+
+        <!-- 1. KPI Executive Board -->
+        <section aria-labelledby="h-kpis" style="margin-top:28px">
+            <h2 id="h-kpis" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Key Country Benchmarks</h2>
+            <div class="board">
+                <article class="tile">
+                    <h3>Proven Reserves (ANP / EIA)</h3>
+                    <p class="px">14.9<small>B bbl</small></p>
+                    <p class="d gold">Top Producer Latin America</p>
+                    <p class="lh"><span>Pre-Salt Light Sweet (28-30° API)</span><span>3,550 kbbl/d (2026)</span></p>
+                </article>
+
+                <article class="tile" id="brazilTile">
+                    <h3>Lula / Pre-Salt Crude (Live)</h3>
+                    <p class="px" id="kpiBrazilPx">--<small>/bbl</small></p>
+                    <p class="d" id="kpiBrazilChg">Loading price feed…</p>
+                    <div id="kpiBrazilGauge"></div>
+                    <p class="lh" id="kpiBrazilSpread"><span>Spread vs Brent: --</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Named Blocks</h3>
+                    <p class="px" id="kpiBlocksCount">0<small>blocks</small></p>
+                    <p class="d" id="kpiBlocksArea">Total area: 0 km²</p>
+                    <p class="lh"><span id="kpiProdFieldsSub">0 Production · 0 Exploration</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Named Wells &amp; Platforms</h3>
+                    <p class="px" id="kpiWellsCount">0<small>assets</small></p>
+                    <p class="d" id="kpiWellsSub">FPSOs &amp; Concession Wells</p>
+                    <p class="lh"><span id="kpiWellsHint">Filtered: unnamed/blank omitted</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Pipeline Network</h3>
+                    <p class="px" id="kpiPipesCount">0<small>segments</small></p>
+                    <p class="d" id="kpiPipesSub">0 Oil · 0 Gas pipelines</p>
+                    <p class="lh"><span>Subsea Rota 1, 2, 3 trunklines</span></p>
+                </article>
+
+                <article class="tile">
+                    <h3>Refineries &amp; Fields</h3>
+                    <p class="px" id="kpiRefCount">0<small>facilities</small></p>
+                    <p class="d" id="kpiRefSub">0 Refineries · 0 Deposits</p>
+                    <p class="lh"><span>Petrobras Downstream Hubs</span></p>
+                </article>
+            </div>
+        </section>
+
+        <!-- 2. Interactive Map + SmartView Live Extraction -->
+        <section aria-labelledby="h-spatial">
+            <div class="sec-head">
+                <div>
+                    <h2 id="h-spatial">Interactive Spatial Explorer &amp; Basin Analytics</h2>
+                    <p class="sub">Charts and counters dynamically aggregate Brazil vector features rendered inside the map viewport. Only valid, named entities are parsed (all Unnamed, blank, or null records are excluded).</p>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <!-- Mapbox Container -->
+                <div class="map-shell">
+                    <div class="map-toolbar">
+                        <div class="map-toolbar-row">
+                            <span class="toolbar-label">Active Map Layers (Click to toggle):</span>
+                            <div class="pill-group" id="layerToggles"></div>
+                        </div>
+                    </div>
+                    <div id="brazilMap" role="application" aria-label="Interactive Brazil Oil and Gas Map"></div>
+                    <div class="map-footer">
+                        <span id="mapViewSummary">Querying Brazilian vector geometries…</span>
+                        <button type="button" class="link-btn" id="btnResetBrazil">Reset national view (3.5x)</button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Dynamic SmartView Charts -->
+                <div class="analytics-col">
+                    <div class="card">
+                        <h3>
+                            <span>📐 Largest Named Blocks by Area</span>
+                            <small style="color:var(--gold);font-size:.74rem;font-weight:500">Area_Km2 (km²)</small>
+                        </h3>
+                        <p class="sub">Named blocks of the <code>PRODUCTION</code> layer in Brazil, categorized into Production Fields vs. Exploration Fields. Ranked by <code>Area_Km2</code>.</p>
+                        <div id="blocksTypeLegend" class="type-legend" aria-label="Block Class Legend"></div>
+                        <div id="topBlocksChart" class="stat-bars">
+                            <div style="color:var(--mute);font-size:.8rem;padding:12px 0">Loading map blocks…</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            <span>⚡ Infrastructure Breakdown</span>
+                            <small id="totalAssetsBadge" style="color:var(--mute);font-size:.74rem">0 valid assets</small>
+                        </h3>
+                        <p class="sub">Distribution of verified named facilities and lines in the active view.</p>
+                        <svg class="chart" id="infraSvgChart" viewBox="0 0 420 175" role="img" aria-label="Brazil oil and gas infrastructure distribution chart"></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Operators, EIA Production Trend & Crude Spreads -->
+        <section aria-labelledby="h-macro">
+            <div class="grid-3col">
+                <!-- Operators -->
+                <div class="card">
+                    <h3>🏢 Leading Operating Companies</h3>
+                    <p class="sub">Operators extracted from the <code>company</code> attribute across valid entities (Petrobras, Shell, TotalEnergies, Equinor, PRIO).</p>
+                    <div id="operatorsChart" class="stat-bars"></div>
+                </div>
+
+                <!-- Production Trend -->
+                <div class="card">
+                    <h3>📊 Crude Oil Production (EIA / ANP)</h3>
+                    <p class="sub">Annual output trend (kbbl/d) · Rapid expansion driven by Santos Pre-Salt FPSOs.</p>
+                    <svg class="chart" id="eiaTrendSvg" viewBox="0 0 360 165" role="img" aria-label="Brazil crude oil production trend 2023 to 2026"></svg>
+                </div>
+
+                <!-- Benchmark Comparison -->
+                <div class="card">
+                    <h3>🛢️ Lula / Pre-Salt vs. Global Benchmarks</h3>
+                    <p class="sub">Live spot quotes comparison (USD/bbl) reflecting light sweet offshore differentials.</p>
+                    <div id="brazilPricesBox" class="stat-bars"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Reference Guide -->
+        <section class="about" aria-labelledby="h-about">
+            <div>
+                <h2 id="h-about">Brazil's Strategic Hydrocarbon Basins</h2>
+                <dl>
+                    <dt>Santos Basin Pre-Salt Cluster (Búzios, Tupi, Mero, Atapu, Sépia)</dt>
+                    <dd>Located ~200-300 km offshore São Paulo and Rio de Janeiro beneath 2,000+ meters of water and 3,000+ meters of salt strata. The Santos Basin is the primary growth engine for Brazilian crude, tapped via ultra-deepwater FPSOs processing over 150-225 kbbl/d each.</dd>
+                    <dt>Campos Basin (Marlim, Roncador, Jubarte, Albacora)</dt>
+                    <dd>The historic cradle of Brazilian offshore deepwater exploration in Rio de Janeiro and Espírito Santo. Undergoing massive revitalization through subsea tiebacks, decommissioning of legacy units, and redevelopment by independent players like PRIO.</dd>
+                    <dt>Margem Equatorial (Foz do Amazonas, Pará-Maranhão, Potiguar)</dt>
+                    <dd>Brazil's northern frontier along the Guyana-Suriname conjugated margin. Represents significant exploration potential for light oil, subject to stringent environmental licensing.</dd>
+                    <dt>Subsea Gas Trunklines (Rota 1, Rota 2, Rota 3)</dt>
+                    <dd>Pipeline arteries transporting associated natural gas from deepwater Santos Basin to onshore gas processing facilities at Caraguatatuba, Cabiúnas, and the Gaslub Complex (Itaboraí).</dd>
+                </dl>
+            </div>
+            <div>
+                <h2>Pre-Salt Quality &amp; Market Dynamics</h2>
+                <p><strong>Lula (Tupi)</strong> and <strong>Búzios</strong> blends feature medium-to-light gravity (~28° to 30° API) and low sulfur content (&lt;0.4%), making them premium feedstocks for complex refineries in Asia and Europe, consistently trading close to or at parity with <strong>Dated Brent</strong>.</p>
+                <h2>Data Cleanliness &amp; Filtering Logic</h2>
+                <p>This dashboard strictly discards all vector records without verifiable identification. Every feature flagged as <code>Unnamed</code>, <code>null</code>, <code>undefined</code>, or blank in the upstream attributes is eliminated from the KPI calculations, top asset lists, and infrastructure distributions to ensure clean analytics.</p>
+                <p><a href="./index.html">Explore the full global interactive map →</a> · <a href="./oil_price_charts.html">View all global crude oil prices →</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 World Oil Map · Developed by <a href="https://roqueleal.me/" target="_blank" rel="noopener">Roque Leal</a></span>
+        <span>Data: OGIM (CC BY 4.0) · ANP · EIA · Live Price Feed</span>
+    </footer>
+
+    <script>
+        (function() {
+            var MAPBOX_TOKEN = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNqaHVzZTA4ODBkZjczdmt0cTNrbGo1ZWEifQ.m7xOPPWAFsY-A4cAr5nDAw';
+            var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
+            var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
+
+            var WELLS_LIVE_ZOOM_THRESHOLD = 7.0;
+
+            var $ = function(id) {
+                return document.getElementById(id);
+            };
+            var esc = function(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+                    return {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;'
+                    }[c];
+                });
+            };
+            var num = function(v) {
+                var x = parseFloat(String(v == null ? '' : v).replace(/["$%+\s]/g, '').replace(',', '.'));
+                return isNaN(x) ? null : x;
+            };
+            var range = function(v) {
+                var m = String(v || '').match(/\d+(?:[.,]\d+)?/g);
+                if (!m || m.length < 2) return null;
+                var a = m.slice(0, 2).map(function(x) {
+                    return parseFloat(x.replace(',', '.'));
+                });
+                return [Math.min(a[0], a[1]), Math.max(a[0], a[1])];
+            };
+            var f2 = function(x) {
+                return Number(x || 0).toFixed(2);
+            };
+            var sg = function(x) {
+                return (x > 0 ? '+' : '') + f2(x);
+            };
+
+            var LAYER_DEFS = [{
+                id: 'PRODUCTION',
+                label: 'Production',
+                cat: 'Block',
+                sub: 'PRODUCTION FIELD',
+                active: true
+            }, {
+                id: 'EXPLORATION',
+                label: 'Exploration',
+                cat: 'Block',
+                sub: 'EXPLORATION AREAS',
+                active: true
+            }, {
+                id: 'BID-ROUNDS',
+                label: 'Bid Rounds',
+                cat: 'Block',
+                sub: 'Bid Round Block',
+                active: true,
+                extra: ['bid-6mpdnh', '2027-blocks']
+            }, {
+                id: 'REFINERIES',
+                label: 'Refineries',
+                cat: 'Refinery',
+                sub: 'Refinery',
+                active: true
+            }, {
+                id: 'OIL-PIPELINE',
+                label: 'Oil Pipelines',
+                cat: 'OilPipeline',
+                sub: 'Oil Pipeline',
+                active: true
+            }, {
+                id: 'GAS-PIPELINE',
+                label: 'Gas Pipelines',
+                cat: 'GasPipeline',
+                sub: 'Gas Pipeline',
+                active: true
+            }, {
+                id: 'DEPOSITS',
+                label: 'Deposits',
+                cat: 'Deposit',
+                sub: 'Oil & Gas Field',
+                active: true
+            }, {
+                id: 'offshore-platforms',
+                label: 'Platforms',
+                cat: 'Platform',
+                sub: 'Offshore Platform',
+                active: true
+            }, {
+                id: 'oil-and-gas-wells',
+                label: 'Wells',
+                cat: 'Well',
+                sub: 'Oil & Gas Well',
+                active: true
+            }];
+
+            var activeBlockLayerFilter = 'PRODUCTION';
+            var PRODUCTION_TYPE_RE = /^(PRODUCTION FIELDS?|AREA (IN|EN|OF) PRODUCTION|CONCESSION|PRODUCAO|CAMPO)$/;
+
+            function normalizeType(raw) {
+                return String(raw == null ? '' : raw)
+                    .toUpperCase()
+                    .replace(/[_\-]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            function classifyBlockType(rawType) {
+                return PRODUCTION_TYPE_RE.test(normalizeType(rawType)) ? 'PRODUCTION' : 'EXPLORATION';
+            }
+
+            var OIL_PIPELINE_COMMODITIES_RAW = [
+                'N/A', 'OIL WELL EFFLUENT', 'OIL AND GAS', 'REFINED PRODUCT',
+                'CRUDE OIL, TRANSMISSION', 'OIL', 'DRY AND SWEET', 'OIL-WELL EFFLUENT',
+                'HYDROCARBON DILUENTS', 'CRUDE OIL', 'DIESEL FUEL', 'JET FUEL',
+                'LVP PRODUCTS', 'CONDENSATE', 'PETROLEO'
+            ];
+
+            function normalizeCommodity(raw) {
+                return String(raw == null ? '' : raw)
+                    .toUpperCase()
+                    .replace(/[_\-]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            var OIL_PIPELINE_COMMODITIES = {};
+            OIL_PIPELINE_COMMODITIES_RAW.forEach(function(c) {
+                OIL_PIPELINE_COMMODITIES[normalizeCommodity(c)] = true;
+            });
+
+            function classifyPipelineCommodity(rawCommodity) {
+                return OIL_PIPELINE_COMMODITIES[normalizeCommodity(rawCommodity)] === true ? 'OIL' : 'GAS';
+            }
+
+            // Polygon boundary covering Brazil mainland and deepwater EEZ basins
+            var BRAZIL_POLYGON = [
+                [-73.98, -7.00],
+                [-70.00, 2.50],
+                [-60.00, 5.25],
+                [-51.00, 4.50],
+                [-44.00, 5.50],
+                [-34.00, -2.00],
+                [-30.00, -8.00],
+                [-34.00, -22.00],
+                [-38.00, -28.00],
+                [-46.00, -32.00],
+                [-53.50, -34.00],
+                [-57.65, -30.20],
+                [-58.00, -22.00],
+                [-60.50, -16.00],
+                [-65.00, -10.00],
+                [-73.98, -7.00]
+            ];
+
+            function pointInBrazilPolygon(lng, lat) {
+                var inside = false;
+                for (var i = 0, j = BRAZIL_POLYGON.length - 1; i < BRAZIL_POLYGON.length; j = i++) {
+                    var xi = BRAZIL_POLYGON[i][0],
+                        yi = BRAZIL_POLYGON[i][1];
+                    var xj = BRAZIL_POLYGON[j][0],
+                        yj = BRAZIL_POLYGON[j][1];
+                    var intersect = ((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / ((yj - yi) || 1e-9) + xi);
+                    if (intersect) inside = !inside;
+                }
+                return inside;
+            }
+
+            function isBrazilFeature(props, coords) {
+                var cStr = String(props.Country || props.COUNTRY || props.country || '').trim();
+                if (cStr && cStr !== '---' && cStr !== '-9999') {
+                    if (/brazil|brasil|\bbra\b|^br$/i.test(cStr)) return true;
+                    if (/argentina|uruguay|paraguay|bolivia|peru|colombia|venezuela|guyana|suriname|french guiana/i.test(cStr)) return false;
+                }
+                var opStr = String(props.company || props.Company || props.COMPANY || props.OPERATOR || props.Source || props.source || '').trim();
+                if (/petrobras|anp|prio|petrorio|enauta|3r petroleum|brava energia/i.test(opStr)) return true;
+                if (!coords || isNaN(coords[0]) || isNaN(coords[1])) return false;
+                return pointInBrazilPolygon(coords[0], coords[1]);
+            }
+
+            function getProp(p, candidates) {
+                var keys = Object.keys(p || {});
+                for (var i = 0; i < candidates.length; i++) {
+                    var c = candidates[i].toLowerCase();
+                    for (var k = 0; k < keys.length; k++) {
+                        if (keys[k].toLowerCase() === c) {
+                            var v = p[keys[k]];
+                            if (v !== null && v !== undefined && String(v).trim() !== '') return v;
+                        }
+                    }
+                }
+                return '';
+            }
+
+            var NAME_KEYS = ['name', 'nombre', 'nome', 'block_name', 'blockname', 'block', 'bloque', 'campo', 'fac_name', 'field_name', 'title'];
+
+            // STRICT validation: completely rejects Unnamed, null, na, unknown, blank or -9999
+            function isValidEntityName(raw) {
+                if (raw === null || raw === undefined) return false;
+                var s = String(raw).trim();
+                if (!s || s === '---' || s === '-9999') return false;
+                if (/^unnamed/i.test(s)) return false;
+                if (/^(null|undefined|n\/a|na|none|blank|sin nombre|sem nome|-|\?|unknown|desconhecido)$/i.test(s)) return false;
+                return true;
+            }
+
+            function getEntityName(p) {
+                var keys = Object.keys(p || {});
+                for (var i = 0; i < NAME_KEYS.length; i++) {
+                    for (var k = 0; k < keys.length; k++) {
+                        if (keys[k].toLowerCase() === NAME_KEYS[i] && isValidEntityName(p[keys[k]])) {
+                            return String(p[keys[k]]).trim();
+                        }
+                    }
+                }
+                return '';
+            }
+
+            function ringCenter(ring) {
+                var minX = Infinity,
+                    minY = Infinity,
+                    maxX = -Infinity,
+                    maxY = -Infinity;
+                for (var i = 0; i < ring.length; i++) {
+                    if (ring[i][0] < minX) minX = ring[i][0];
+                    if (ring[i][0] > maxX) maxX = ring[i][0];
+                    if (ring[i][1] < minY) minY = ring[i][1];
+                    if (ring[i][1] > maxY) maxY = ring[i][1];
+                }
+                return [(minX + maxX) / 2, (minY + maxY) / 2];
+            }
+
+            function extractRepresentativeCoords(geom) {
+                if (!geom) return null;
+                if (geom.type === 'Point') return geom.coordinates;
+                if (geom.type === 'MultiPoint' && geom.coordinates.length) return geom.coordinates[0];
+                if (geom.type === 'Polygon' && geom.coordinates[0]) return ringCenter(geom.coordinates[0]);
+                if (geom.type === 'MultiPolygon' && geom.coordinates[0] && geom.coordinates[0][0]) return ringCenter(geom.coordinates[0][0]);
+                if (geom.type === 'LineString' && geom.coordinates.length) return geom.coordinates[Math.floor(geom.coordinates.length / 2)];
+                if (geom.type === 'MultiLineString' && geom.coordinates[0] && geom.coordinates[0].length) {
+                    return geom.coordinates[0][Math.floor(geom.coordinates[0].length / 2)];
+                }
+                return null;
+            }
+
+            function extractAreaKm2(p, f) {
+                var s = String(getProp(p, ['area_km2', 'areakm2', 'area_km', 'area'])).trim();
+                if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, '');
+                var parsed = num(s);
+                if (parsed && parsed > 0) return parsed;
+                if (f && f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon') && typeof turf !== 'undefined') {
+                    try {
+                        return turf.area(f) / 1e6;
+                    } catch (e) {}
+                }
+                return 0;
+            }
+
+            function extractCompanyAttr(p) {
+                var raw = p.company !== undefined ? p.company :
+                    (p.Company !== undefined ? p.Company :
+                        (p.COMPANY !== undefined ? p.COMPANY :
+                            (p.OPERATOR !== undefined ? p.OPERATOR :
+                                (p.operador !== undefined ? p.operador : ''))));
+                var clean = String(raw == null ? '' : raw).trim();
+                if (!clean || clean === '---' || clean === '-9999' || !isValidEntityName(clean)) {
+                    return '';
+                }
+                return clean;
+            }
+
+            var map = null,
+                activePopup = null;
+            var extractedAssets = [];
+            var fastNamedWellsCount = 0;
+            var wellCountTimer = null;
+
+            function initLayerToggles() {
+                var container = $('layerToggles');
+                container.innerHTML = LAYER_DEFS.map(function(ld) {
+                    return '<button type="button" class="pill' + (ld.active ? ' active' : '') + '" data-lid="' + ld.id + '">' +
+                        '<span class="dot"></span>' + esc(ld.label) + '</button>';
+                }).join('');
+
+                container.addEventListener('click', function(e) {
+                    var btn = e.target.closest('button[data-lid]');
+                    if (!btn || !map) return;
+                    var lid = btn.dataset.lid;
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid;
+                    });
+                    if (!def) return;
+                    def.active = !def.active;
+                    btn.classList.toggle('active', def.active);
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) map.setLayoutProperty(def.id, 'visibility', vis);
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                    setTimeout(scanBrazilMapFeatures, 180);
+                });
+            }
+
+            function enableAllBrazilLayers() {
+                LAYER_DEFS.forEach(function(def) {
+                    var vis = def.active ? 'visible' : 'none';
+                    if (map.getLayer(def.id)) {
+                        map.setLayoutProperty(def.id, 'visibility', vis);
+                    }
+                    (def.extra || []).forEach(function(ex) {
+                        if (map.getLayer(ex)) map.setLayoutProperty(ex, 'visibility', vis);
+                    });
+                });
+            }
+
+            // Scans wells layer and strictly counts ONLY NAMED wells (discarding Unnamed / blank)
+            function scheduleNamedWellsCount(platformsCount) {
+                clearTimeout(wellCountTimer);
+                var wellsDef = LAYER_DEFS.find(function(d) {
+                    return d.id === 'oil-and-gas-wells';
+                });
+
+                if (!wellsDef || !wellsDef.active || !map.getLayer('oil-and-gas-wells')) {
+                    fastNamedWellsCount = 0;
+                    $('kpiWellsCount').innerHTML = platformsCount.toLocaleString() + '<small>platforms</small>';
+                    $('kpiWellsSub').textContent = 'Wells layer toggled off';
+                    return;
+                }
+
+                var runLocalCount = function() {
+                    if (!map) return;
+                    var rawWells = [];
+                    try {
+                        rawWells = map.queryRenderedFeatures({
+                            layers: ['oil-and-gas-wells']
+                        });
+                    } catch (e) {}
+
+                    var namedCount = 0;
+                    var len = rawWells.length;
+                    for (var i = 0; i < len; i++) {
+                        var p = rawWells[i].properties || {};
+                        var name = getEntityName(p);
+                        // Strict filter: must have a real name and be within Brazil territory
+                        if (name && isValidEntityName(name)) {
+                            var coords = extractRepresentativeCoords(rawWells[i].geometry);
+                            if (coords && isBrazilFeature(p, coords)) {
+                                namedCount++;
+                            }
+                        }
+                    }
+
+                    fastNamedWellsCount = namedCount;
+                    var totalNamed = namedCount + platformsCount;
+                    $('kpiWellsCount').innerHTML = totalNamed.toLocaleString() + '<small>assets</small>';
+                    $('kpiWellsSub').textContent = namedCount.toLocaleString() + ' named wells · ' + platformsCount + ' platforms';
+                    $('kpiWellsHint').textContent = 'All Unnamed/blank wells omitted';
+                    renderInfraSvgChart();
+                };
+
+                wellCountTimer = setTimeout(function() {
+                    if (typeof window.requestIdleCallback === 'function') {
+                        window.requestIdleCallback(runLocalCount, {
+                            timeout: 300
+                        });
+                    } else {
+                        runLocalCount();
+                    }
+                }, 100);
+            }
+
+            function scanBrazilMapFeatures() {
+                if (!map) return;
+                $('statusBox').className = 'status busy';
+                $('statusText').textContent = 'Querying Brazil vector layers & filtering unnamed entities…';
+
+                var fastLayerIds = [];
+                LAYER_DEFS.forEach(function(d) {
+                    if (d.id === 'oil-and-gas-wells') return;
+                    if (d.active && map.getLayer(d.id)) fastLayerIds.push(d.id);
+                    (d.extra || []).forEach(function(ex) {
+                        if (d.active && map.getLayer(ex)) fastLayerIds.push(ex);
+                    });
+                });
+
+                var rendered = [];
+                try {
+                    rendered = map.queryRenderedFeatures({
+                        layers: fastLayerIds
+                    });
+                } catch (err) {
+                    console.warn('[BRA-DIAG] queryRenderedFeatures error:', err);
+                }
+
+                var unique = new Map();
+
+                rendered.forEach(function(f, idx) {
+                    var p = f.properties || {};
+                    var lid = f.layer.id;
+                    var coords = extractRepresentativeCoords(f.geometry);
+
+                    if (!isBrazilFeature(p, coords)) return;
+
+                    var def = LAYER_DEFS.find(function(d) {
+                        return d.id === lid || (d.extra && d.extra.indexOf(lid) >= 0);
+                    }) || LAYER_DEFS[0];
+
+                    var validName = getEntityName(p);
+
+                    // User Rule: If it's a Block, Refinery, Deposit, or Platform and does NOT have a valid name, IGNORE IT
+                    if (def.cat === 'Block' && !isValidEntityName(validName)) {
+                        return; // Omit Unnamed / blank blocks entirely
+                    }
+
+                    var name = validName || (def.cat === 'OilPipeline' || def.cat === 'GasPipeline' ? 'Trunkline Segment' : '');
+                    if (!name) return; // Strict exclusion of anything without an authentic label
+
+                    var typeRaw = String(getProp(p, ['type', 'tipo', 'fase']) || '').trim();
+                    var blockType = typeRaw || def.sub;
+
+                    var blockClass = null;
+                    if (lid === 'PRODUCTION') {
+                        blockClass = classifyBlockType(typeRaw);
+                    }
+
+                    var commodityRaw = String(getProp(p, ['commodity', 'produto']) || '').trim();
+                    var pipelineClass = null;
+                    if (lid === 'OIL-PIPELINE') {
+                        pipelineClass = classifyPipelineCommodity(commodityRaw);
+                    }
+
+                    var commodity = String(p.COMMODITY || p.commodity || p.RESINFO || (lid === 'OIL-PIPELINE' ? 'Oil' : lid === 'GAS-PIPELINE' ? 'Gas' : blockType || 'Oil & Gas')).trim();
+                    if (commodity === '-9999' || commodity === '---' || !isValidEntityName(commodity)) commodity = 'Oil & Gas';
+
+                    var companyAttr = extractCompanyAttr(p);
+                    var fallbackOp = companyAttr || 'Petrobras / Partner';
+
+                    var area = extractAreaKm2(p, f);
+
+                    var fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
+                    var key;
+                    if (def.cat === 'Block') {
+                        key = lid + '_NAMED_' + name.toUpperCase();
+                    } else if (fid !== '') {
+                        key = lid + '_ID_' + String(fid);
+                    } else {
+                        var coordPrecision = (lid === 'offshore-platforms') ? 5 : 3;
+                        key = lid + '_' + name + '_' + (coords ? coords[0].toFixed(coordPrecision) + '_' + coords[1].toFixed(coordPrecision) : idx);
+                    }
+
+                    if (!unique.has(key)) {
+                        unique.set(key, {
+                            key: key,
+                            layerId: lid,
+                            name: name,
+                            category: def.cat,
+                            subType: def.sub,
+                            blockType: blockType,
+                            blockClass: blockClass,
+                            pipelineClass: pipelineClass,
+                            commodity: commodity,
+                            company: companyAttr,
+                            operator: fallbackOp,
+                            area: area,
+                            coords: coords
+                        });
+                    } else if (area > (unique.get(key).area || 0)) {
+                        unique.get(key).area = area;
+                    }
+                });
+
+                extractedAssets = Array.from(unique.values());
+
+                var platformsCount = extractedAssets.filter(function(a) {
+                    return a.layerId === 'offshore-platforms';
+                }).length;
+
+                updateDashboardMetrics();
+                renderTopBlocksChart();
+                renderInfraSvgChart();
+                renderOperatorsChart();
+                scheduleNamedWellsCount(platformsCount);
+
+                $('statusBox').className = 'status ok';
+                var now = new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                $('statusText').textContent = extractedAssets.length.toLocaleString() + ' verified named assets parsed · Updated ' + now;
+                $('mapViewSummary').textContent = 'Displaying ' + extractedAssets.length.toLocaleString() + ' verified facilities in viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
+            }
+
+            function scanWhenReady() {
+                if (!map) return;
+                if (map.loaded()) scanBrazilMapFeatures();
+                else map.once('idle', scanBrazilMapFeatures);
+            }
+
+            function getProductionBlocks() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'PRODUCTION';
+                });
+            }
+
+            function getExplorationBlocks() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'PRODUCTION' && a.blockClass === 'EXPLORATION';
+                });
+            }
+
+            function getOilPipelines() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'OIL';
+                });
+            }
+
+            function getGasPipelines() {
+                return extractedAssets.filter(function(a) {
+                    return a.layerId === 'OIL-PIPELINE' && a.pipelineClass === 'GAS';
+                });
+            }
+
+            function updateDashboardMetrics() {
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+                var validBlocks = prodBlocks.concat(explBlocks);
+
+                var totalArea = validBlocks.reduce(function(s, b) {
+                    return s + (b.area || 0);
+                }, 0);
+
+                var oilPipes = getOilPipelines();
+                var gasPipes = getGasPipelines();
+                var refs = extractedAssets.filter(function(a) {
+                    return a.category === 'Refinery';
+                });
+                var deps = extractedAssets.filter(function(a) {
+                    return a.category === 'Deposit';
+                });
+
+                $('kpiBlocksCount').innerHTML = validBlocks.length.toLocaleString() + '<small>blocks</small>';
+                $('kpiBlocksArea').textContent = 'Mapped area: ' + Math.round(totalArea).toLocaleString() + ' km²';
+                $('kpiProdFieldsSub').textContent = prodBlocks.length + ' Production · ' + explBlocks.length + ' Exploration';
+
+                $('kpiPipesCount').innerHTML = (oilPipes.length + gasPipes.length).toLocaleString() + '<small>segments</small>';
+                $('kpiPipesSub').textContent = oilPipes.length + ' Oil · ' + gasPipes.length + ' Gas pipelines';
+
+                $('kpiRefCount').innerHTML = (refs.length + deps.length).toLocaleString() + '<small>assets</small>';
+                $('kpiRefSub').textContent = refs.length + ' Refineries · ' + deps.length + ' Fields';
+
+                var validTotalCount = validBlocks.length + oilPipes.length + gasPipes.length + refs.length + deps.length;
+                $('totalAssetsBadge').textContent = validTotalCount.toLocaleString() + ' valid assets';
+            }
+
+            function renderTopBlocksChart() {
+                var legendBox = $('blocksTypeLegend');
+                var box = $('topBlocksChart');
+
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+
+                var legendItems = [{
+                    layerId: 'PRODUCTION',
+                    label: 'PRODUCTION FIELDS',
+                    count: prodBlocks.length,
+                    color: '#f0b823'
+                }, {
+                    layerId: 'EXPLORATION',
+                    label: 'EXPLORATION FIELDS',
+                    count: explBlocks.length,
+                    color: '#3b82f6'
+                }];
+
+                legendBox.innerHTML = legendItems.map(function(item) {
+                    var isAct = activeBlockLayerFilter === item.layerId ? ' active' : '';
+                    return '<button type="button" class="type-legend-item' + isAct + '" data-layer-filter="' + item.layerId + '" title="Show ' + esc(item.label) + '">' +
+                        '<span class="type-swatch" style="background:' + item.color + '"></span>' +
+                        '<span>' + esc(item.label) + '</span>' +
+                        '<span class="type-count">(' + item.count + ')</span>' +
+                        '</button>';
+                }).join('');
+
+                var sourceBlocks = activeBlockLayerFilter === 'EXPLORATION' ? explBlocks : prodBlocks;
+                var activeColor = activeBlockLayerFilter === 'EXPLORATION' ? '#3b82f6' : '#f0b823';
+                var activeLabel = activeBlockLayerFilter === 'EXPLORATION' ? 'EXPLORATION FIELDS' : 'PRODUCTION FIELDS';
+
+                // Strict: only blocks with a valid name and area > 0
+                var rankedBlocks = sourceBlocks
+                    .filter(function(b) {
+                        return b.area > 0 && isValidEntityName(b.name);
+                    })
+                    .sort(function(a, b) {
+                        return b.area - a.area;
+                    })
+                    .slice(0, 6);
+
+                if (!rankedBlocks.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem;padding:8px 0">No named <code>' + esc(activeLabel) + '</code> blocks with area data in this viewport.</div>';
+                    return;
+                }
+
+                var maxA = rankedBlocks[0].area || 1;
+
+                box.innerHTML = rankedBlocks.map(function(b) {
+                    var pct = Math.max(4, (b.area / maxA) * 100);
+                    return '<div class="stat-row" data-key="' + esc(b.key) + '">' +
+                        '<div class="stat-row-top">' +
+                        '<span>' +
+                        '<span class="type-swatch" style="display:inline-block;margin-right:6px;background:' + activeColor + '"></span>' +
+                        '<strong>' + esc(b.name) + '</strong> ' +
+                        '<small style="color:var(--mute)">(' + esc(b.blockType || activeLabel) + ')</small>' +
+                        '</span>' +
+                        '<span style="color:var(--gold);font-weight:600">' + Math.round(b.area).toLocaleString() + ' km²</span>' +
+                        '</div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%;background:' + activeColor + '"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderInfraSvgChart() {
+                var svg = $('infraSvgChart');
+                var prodBlocks = getProductionBlocks();
+                var explBlocks = getExplorationBlocks();
+                var platformsCount = extractedAssets.filter(function(a) {
+                    return a.layerId === 'offshore-platforms';
+                }).length;
+
+                var groups = [{
+                    label: 'Production Fields',
+                    count: prodBlocks.length,
+                    color: '#f0b823'
+                }, {
+                    label: 'Exploration Fields',
+                    count: explBlocks.length,
+                    color: '#3b82f6'
+                }, {
+                    label: 'Oil Pipelines',
+                    count: getOilPipelines().length,
+                    color: '#10b981'
+                }, {
+                    label: 'Gas Pipelines',
+                    count: getGasPipelines().length,
+                    color: '#06b6d4'
+                }, {
+                    label: 'Refineries & Fields',
+                    count: extractedAssets.filter(function(a) {
+                        return a.category === 'Refinery' || a.category === 'Deposit';
+                    }).length,
+                    color: '#ef4444'
+                }, {
+                    label: 'Named Wells & Platforms',
+                    count: (fastNamedWellsCount + platformsCount),
+                    color: '#8b5cf6'
+                }];
+
+                var max = Math.max.apply(null, groups.map(function(g) {
+                    return g.count;
+                })) || 1;
+                var out = '';
+                groups.forEach(function(g, i) {
+                    var y = i * 27 + 8;
+                    var w = (g.count / max) * 200;
+                    out += '<text x="0" y="' + (y + 13) + '">' + esc(g.label) + '</text>' +
+                        '<rect x="155" y="' + y + '" width="' + Math.max(w, 3) + '" height="16" rx="3" fill="' + g.color + '"/>' +
+                        '<text class="lab" x="' + (163 + Math.max(w, 3)) + '" y="' + (y + 13) + '">' + g.count.toLocaleString() + '</text>';
+                });
+                svg.innerHTML = out;
+            }
+
+            function renderOperatorsChart() {
+                var counts = {};
+                extractedAssets.forEach(function(a) {
+                    var comp = a.company;
+                    // Exclude invalid or unnamed companies
+                    if (!comp || !isValidEntityName(comp)) return;
+                    counts[comp] = (counts[comp] || 0) + 1;
+                });
+                var list = Object.keys(counts).map(function(k) {
+                        return {
+                            name: k,
+                            count: counts[k]
+                        };
+                    })
+                    .sort(function(a, b) {
+                        return b.count - a.count;
+                    })
+                    .slice(0, 6);
+
+                var box = $('operatorsChart');
+                if (!list.length) {
+                    box.innerHTML = '<div style="color:var(--mute);font-size:.78rem">No named operating entities in current view.</div>';
+                    return;
+                }
+                var max = list[0].count || 1;
+                box.innerHTML = list.map(function(it) {
+                    var pct = Math.max(5, (it.count / max) * 100);
+                    return '<div class="stat-row" data-op="' + esc(it.name) + '">' +
+                        '<div class="stat-row-top"><span><strong>' + esc(it.name) + '</strong></span><strong>' + it.count + ' ' + (it.count === 1 ? 'asset' : 'assets') + '</strong></div>' +
+                        '<div class="stat-track"><div class="stat-fill" style="width:' + pct.toFixed(1) + '%;background:#10b981"></div></div>' +
+                        '</div>';
+                }).join('');
+            }
+
+            function renderEiaTrend() {
+                var data = [{
+                    yr: '2023',
+                    val: 3410
+                }, {
+                    yr: '2024',
+                    val: 3450
+                }, {
+                    yr: '2025',
+                    val: 3500
+                }, {
+                    yr: '2026',
+                    val: 3550
+                }];
+                var max = 4200;
+                var out = '<line x1="30" y1="130" x2="340" y2="130" stroke="rgba(255,255,255,.15)"/>';
+                data.forEach(function(d, i) {
+                    var h = (d.val / max) * 95;
+                    var x = 52 + i * 74;
+                    var y = 130 - h;
+                    out += '<rect x="' + x + '" y="' + y + '" width="' + 38 + '" height="' + h + '" rx="4" fill="#f0b823" opacity="' + (0.65 + i * 0.1) + '"/>' +
+                        '<text class="lab" x="' + (x + 19) + '" y="' + (y - 6) + '" text-anchor="middle">' + d.val + '</text>' +
+                        '<text x="' + (x + 19) + '" y="148" text-anchor="middle">' + d.yr + '</text>';
+                });
+                $('eiaTrendSvg').innerHTML = out;
+            }
+
+            function focusOnAsset(key) {
+                var item = extractedAssets.find(function(a) {
+                    return a.key === key;
+                });
+                if (!item || !item.coords) return;
+                map.flyTo({
+                    center: item.coords,
+                    zoom: Math.max(map.getZoom(), 7.8),
+                    essential: true
+                });
+                if (activePopup) activePopup.remove();
+                activePopup = new mapboxgl.Popup({
+                        offset: 12
+                    })
+                    .setLngLat(item.coords)
+                    .setHTML(
+                        '<div class="popup-title">🇧🇷 ' + esc(item.name) + '</div>' +
+                        '<div><strong>Layer:</strong> ' + esc(item.layerId) + '</div>' +
+                        '<div><strong>Type:</strong> ' + esc(item.blockType || item.subType) + '</div>' +
+                        '<div><strong>Commodity:</strong> ' + esc(item.commodity) + '</div>' +
+                        '<div><strong>Operator:</strong> ' + esc(item.company || item.operator) + '</div>' +
+                        (item.area > 0 ? '<div><strong>Area_Km2:</strong> ' + Math.round(item.area).toLocaleString() + ' km²</div>' : '')
+                    )
+                    .addTo(map);
+            }
+
+            function loadLivePrices() {
+                if (typeof Papa === 'undefined') {
+                    setTimeout(loadLivePrices, 120);
+                    return;
+                }
+                fetch(CSV_PRICES + '?t=' + Math.floor(Date.now() / 3e5), {
+                        cache: 'no-store'
+                    })
+                    .then(function(r) {
+                        return r.text();
+                    })
+                    .then(function(csv) {
+                        var blends = [];
+                        Papa.parse(csv, {
+                            header: true,
+                            skipEmptyLines: true
+                        }).data.forEach(function(raw) {
+                            var n = {};
+                            Object.keys(raw).forEach(function(k) {
+                                n[k.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')] = raw[k];
+                            });
+                            var name = (n['blend'] || '').trim(),
+                                price = num(n['precio']);
+                            if (!name || price == null) return;
+                            blends.push({
+                                name: name,
+                                price: price,
+                                chg: num(n['cambio']) || 0,
+                                pct: num(n['cambio %']) || 0,
+                                wk: range(n['rango sem.']),
+                                lat: num(n['lat']),
+                                lon: num(n['lon'])
+                            });
+                        });
+
+                        var brazilBlend = blends.find(function(b) {
+                            return /lula|tupi|buzios|brazil/i.test(b.name);
+                        });
+                        var brent = blends.find(function(b) {
+                            return /brent/i.test(b.name);
+                        });
+                        var wti = blends.find(function(b) {
+                            return /wti|west texas/i.test(b.name);
+                        });
+
+                        // Fallback proxy to Brent if specific Lula spot quote isn't distinct in dataset
+                        var displayBlend = brazilBlend || (brent ? {
+                            name: 'Lula / Santos Blend (Brent Parity)',
+                            price: brent.price - 0.75,
+                            chg: brent.chg,
+                            pct: brent.pct,
+                            wk: brent.wk
+                        } : null);
+
+                        if (displayBlend) {
+                            $('kpiBrazilPx').innerHTML = '$' + f2(displayBlend.price) + '<small>/bbl</small>';
+                            var cCls = displayBlend.chg > 0 ? 'up' : displayBlend.chg < 0 ? 'dn' : '';
+                            var arr = displayBlend.chg > 0 ? '▲ ' : displayBlend.chg < 0 ? '▼ ' : '';
+                            $('kpiBrazilChg').className = 'd ' + cCls;
+                            $('kpiBrazilChg').textContent = arr + sg(displayBlend.chg) + ' (' + sg(displayBlend.pct) + '%)';
+
+                            if (displayBlend.wk) {
+                                var pos = displayBlend.wk[1] === displayBlend.wk[0] ? 0.5 : Math.min(1, Math.max(0, (displayBlend.price - displayBlend.wk[0]) / (displayBlend.wk[1] - displayBlend.wk[0])));
+                                $('kpiBrazilGauge').innerHTML = '<div class="gauge"><i style="left:' + (pos * 100).toFixed(1) + '%"></i></div>';
+                            }
+                            if (brent) {
+                                var sp = displayBlend.price - brent.price;
+                                $('kpiBrazilSpread').innerHTML = '<span>vs Brent: <strong>' + sg(sp) + '/bbl</strong></span><span>Wk: $' + (displayBlend.wk ? f2(displayBlend.wk[0]) + '–$' + f2(displayBlend.wk[1]) : '--') + '</span>';
+                            }
+                        }
+
+                        var peers = [displayBlend, brent, wti].filter(Boolean);
+                        var maxP = Math.max.apply(null, peers.map(function(p) {
+                            return p.price;
+                        })) || 100;
+                        $('brazilPricesBox').innerHTML = peers.map(function(p) {
+                            var isBra = /lula|brazil|santos/i.test(p.name);
+                            var w = (p.price / maxP) * 100;
+                            var cls = p.chg > 0 ? 'up' : p.chg < 0 ? 'dn' : '';
+                            return '<div class="stat-row">' +
+                                '<div class="stat-row-top">' +
+                                '<span><strong>' + esc(p.name) + '</strong> ' + (isBra ? '<span class="badge">Brazil</span>' : '') + '</span>' +
+                                '<span><strong>$' + f2(p.price) + '</strong> <small class="' + cls + '">(' + sg(p.pct) + '%)</small></span>' +
+                                '</div>' +
+                                '<div class="stat-track"><div class="stat-fill" style="width:' + w.toFixed(1) + '%;background:' + (isBra ? '#f0b823' : '#4b5870') + '"></div></div>' +
+                                '</div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+            }
+
+            function initMap() {
+                if (typeof mapboxgl === 'undefined') {
+                    setTimeout(initMap, 100);
+                    return;
+                }
+                mapboxgl.accessToken = MAPBOX_TOKEN;
+                map = new mapboxgl.Map({
+                    container: 'brazilMap',
+                    style: MAPBOX_STYLE,
+                    projection: 'mercator',
+                    center: [-51.92, -14.23], // Centrado en Brasil
+                    zoom: 3.5,                // Zoom 3.5 solicitado
+                    pitch: 0,
+                    antialias: true
+                });
+
+                map.addControl(new mapboxgl.NavigationControl({
+                    showCompass: true
+                }), 'bottom-right');
+                map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+
+                map.on('load', function() {
+                    enableAllBrazilLayers();
+                    map.once('idle', scanBrazilMapFeatures);
+                });
+
+                var debounceTimer = null;
+                map.on('moveend', function() {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(scanWhenReady, 180);
+                });
+
+                LAYER_DEFS.forEach(function(ld) {
+                    var layerTargets = [ld.id].concat(ld.extra || []);
+                    layerTargets.forEach(function(targetLayerId) {
+                        map.on('click', targetLayerId, function(e) {
+                            if (!e.features || !e.features.length) return;
+                            var f = e.features[0];
+                            var p = f.properties || {};
+                            var rawN = getEntityName(p);
+
+                            // Skip popup if feature is Unnamed or invalid
+                            if (!isValidEntityName(rawN) && ld.cat === 'Block') return;
+
+                            var name = rawN || ld.sub;
+                            var typeVal = p.Type || p.TYPE || p.type || ld.sub;
+                            var comm = p.COMMODITY || p.commodity || (ld.id === 'OIL-PIPELINE' ? 'Oil' : ld.id === 'GAS-PIPELINE' ? 'Gas' : 'Oil & Gas');
+                            var op = extractCompanyAttr(p) || 'Petrobras / Partner';
+                            var areaVal = extractAreaKm2(p, f);
+                            var areaStr = areaVal > 0 ? areaVal.toLocaleString(undefined, {
+                                maximumFractionDigits: 1
+                            }) + ' km²' : null;
+
+                            if (activePopup) activePopup.remove();
+                            activePopup = new mapboxgl.Popup({
+                                    offset: 12
+                                })
+                                .setLngLat(e.lngLat)
+                                .setHTML(
+                                    '<div class="popup-title">🇧🇷 ' + esc(name) + '</div>' +
+                                    '<div><strong>Layer:</strong> ' + esc(targetLayerId) + '</div>' +
+                                    '<div><strong>Type:</strong> ' + esc(typeVal) + '</div>' +
+                                    '<div><strong>Commodity:</strong> ' + esc(comm) + '</div>' +
+                                    '<div><strong>Operator:</strong> ' + esc(op) + '</div>' +
+                                    (areaStr ? '<div><strong>Area_Km2:</strong> ' + esc(areaStr) + '</div>' : '')
+                                )
+                                .addTo(map);
+                        });
+                        map.on('mouseenter', targetLayerId, function() {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+                        map.on('mouseleave', targetLayerId, function() {
+                            map.getCanvas().style.cursor = '';
+                        });
+                    });
+                });
+            }
+
+            $('basinPills').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-lng]');
+                if (!btn || !map) return;
+                document.querySelectorAll('#basinPills .pill').forEach(function(p) {
+                    p.classList.toggle('active', p === btn);
+                });
+                map.flyTo({
+                    center: [parseFloat(btn.dataset.lng), parseFloat(btn.dataset.lat)],
+                    zoom: parseFloat(btn.dataset.z),
+                    essential: true
+                });
+            });
+
+            $('btnResetBrazil').addEventListener('click', function() {
+                if (!map) return;
+                map.flyTo({
+                    center: [-51.92, -14.23],
+                    zoom: 3.5,
+                    essential: true
+                });
+            });
+
+            $('btnRescan').addEventListener('click', scanBrazilMapFeatures);
+
+            $('blocksTypeLegend').addEventListener('click', function(e) {
+                var btn = e.target.closest('button[data-layer-filter]');
+                if (!btn) return;
+                activeBlockLayerFilter = btn.dataset.layerFilter;
+                renderTopBlocksChart();
+            });
+
+            $('topBlocksChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-key]');
+                if (row) focusOnAsset(row.dataset.key);
+            });
+
+            $('operatorsChart').addEventListener('click', function(e) {
+                var row = e.target.closest('.stat-row[data-op]');
+                if (!row) return;
+                var opName = row.dataset.op;
+                var match = extractedAssets
+                    .filter(function(a) {
+                        return isValidEntityName(a.name) && a.company === opName && a.coords;
+                    })
+                    .sort(function(a, b) {
+                        return (b.area || 0) - (a.area || 0);
+                    })[0];
+                if (match) {
+                    $('brazilMap').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    focusOnAsset(match.key);
+                }
+            });
+
+            initLayerToggles();
+            renderEiaTrend();
+            loadLivePrices();
+            initMap();
+        })();
+    </script>
+    <script>
+        (() => {
+            const track = document.getElementById('navScrollTrack');
+            const leftBtn = document.getElementById('scrollLeftBtn');
+            const rightBtn = document.getElementById('scrollRightBtn');
+
+            const updateArrows = () => {
+                const max = track.scrollWidth - track.clientWidth;
+                const display = max <= 4 ? 'none' : 'flex';
+                leftBtn.style.display = display;
+                rightBtn.style.display = display;
+                leftBtn.style.opacity = track.scrollLeft > 8 ? '1' : '0.2';
+                leftBtn.style.pointerEvents = track.scrollLeft > 8 ? 'auto' : 'none';
+                rightBtn.style.opacity = max - track.scrollLeft > 8 ? '1' : '0.2';
+                rightBtn.style.pointerEvents = max - track.scrollLeft > 8 ? 'auto' : 'none';
+            };
+
+            track.addEventListener('wheel', e => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    track.scrollLeft += e.deltaY;
+                }
+            }, {
+                passive: false
+            });
+            track.addEventListener('scroll', updateArrows, {
+                passive: true
+            });
+            window.addEventListener('resize', updateArrows);
+            leftBtn.addEventListener('click', () => track.scrollBy({
+                left: -220,
+                behavior: 'smooth'
+            }));
+            rightBtn.addEventListener('click', () => track.scrollBy({
+                left: 220,
+                behavior: 'smooth'
+            }));
+
+            let isDown = false,
+                startX = 0,
+                startScroll = 0;
+            track.addEventListener('mousedown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                isDown = true;
+                track.classList.add('grabbing');
+                startX = e.pageX;
+                startScroll = track.scrollLeft;
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                track.classList.remove('grabbing');
+            });
+            window.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                track.scrollLeft = startScroll - (e.pageX - startX);
+            });
+
+            updateArrows();
+        })();
+    </script>
+</body>
+
+</html>
