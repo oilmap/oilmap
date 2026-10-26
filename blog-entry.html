@@ -413,7 +413,7 @@
                     <button type="button" id="download">Descargar archivos para publicar</button>
                 </div>
                 <p class="hint">
-                    Se descargan <code>data/news.json</code> y una página <code>blog/&lt;slug&gt;.html</code> por cada noticia.
+                    Se descargan <code>data.json</code> y una página <code>blog/&lt;slug&gt;.html</code> por cada noticia.
                     Sube ambos al repositorio. El sitemap.xml y llms.txt se generan solos en cada despliegue.
                 </p>
                 <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
@@ -846,13 +846,13 @@
         });
 
         $('download').addEventListener('click', () => {
-            download('news.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
+            download('data.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
             articles.forEach((a, i) => {
                 setTimeout(() => download(`${a.slug}.html`, buildArticlePage(a), 'text/html'), 300 * (i + 1));
             });
         });
 
-        fetch('data/news.json', { cache: 'no-store' })
+        fetch('data.json', { cache: 'no-store' })
             .then(r => r.ok ? r.json() : [])
             .then(data => { articles = data; sortArticles(); })
             .catch(() => { articles = []; })
