@@ -388,6 +388,9 @@
                         <label for="imageFile">Subir imagen <small>Se genera WebP en 480, 800 y 1200 px</small></label>
                         <input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp">
 
+                        <label for="repoImage">O elegir de img/news del repositorio <small>Enlace raw de GitHub</small></label>
+                        <select id="repoImage" disabled><option value="">Cargando imágenes…</option></select>
+
                         <label for="imageAlt">Texto alternativo (alt) <small>Describe lo visible · 10 a 125 caracteres</small></label>
                         <input id="imageAlt" maxlength="125" placeholder="Mapa de oleoductos del Golfo de México">
 
@@ -566,6 +569,8 @@
         }
 
         const TOKEN_KEY = 'wom-editor-token';
+        const REPO_IMAGES_API = 'https://api.github.com/repos/oilmap/oilmap/contents/img/news?ref=master';
+        const REPO_IMAGES_RAW = 'https://raw.githubusercontent.com/oilmap/oilmap/refs/heads/master/img/news/';
         const IMAGE_WIDTHS = [480, 800, 1200];
         const IMAGE_MAX_BYTES = 150 * 1024;
 
@@ -622,6 +627,49 @@
             return body.url;
         }
 
+        function loadRemoteImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error('no se pudo cargar la imagen'));
+                img.src = src;
+            });
+        }
+
+        async function loadRepoImages() {
+            const select = $('repoImage');
+            try {
+                const res = await fetch(REPO_IMAGES_API, { headers: { Accept: 'application/vnd.github+json' } });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const files = await res.json();
+                const images = files.filter(f => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name));
+                select.innerHTML = '';
+                select.append(new Option(images.length ? 'Selecciona una imagen del repositorio' : 'No hay imágenes en img/news', ''));
+                images.forEach(f => select.append(new Option(f.name, f.name)));
+                select.disabled = images.length === 0;
+            } catch (err) {
+                select.innerHTML = '<option value="">No se pudo cargar img/news</option>';
+                select.disabled = true;
+            }
+        }
+
+        async function selectRepoImage(name) {
+            if (!name) return;
+            const url = REPO_IMAGES_RAW + encodeURIComponent(name);
+            setImageStatus('Cargando imagen del repositorio…');
+            try {
+                const img = await loadRemoteImage(url);
+                $('image').value = url;
+                $('imageSrcset').value = '';
+                $('imageWidth').value = img.naturalWidth;
+                $('imageHeight').value = img.naturalHeight;
+                setImageStatus(`Imagen seleccionada: ${name}`);
+                renderPreview();
+            } catch (err) {
+                setImageStatus(`Error al cargar la imagen: ${err.message}`, true);
+            }
+        }
+
         async function handleImageFile() {
             const file = $('imageFile').files[0];
             if (!file) return;
@@ -657,6 +705,8 @@
         $('editorToken').value = sessionStorage.getItem(TOKEN_KEY) || '';
         $('editorToken').addEventListener('input', () => sessionStorage.setItem(TOKEN_KEY, $('editorToken').value));
         $('imageFile').addEventListener('change', handleImageFile);
+        $('repoImage').addEventListener('change', e => selectRepoImage(e.target.value));
+        loadRepoImages();
         $('image').addEventListener('input', () => {
             $('imageSrcset').value = '';
             $('imageWidth').value = '';
