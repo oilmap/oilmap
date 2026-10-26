@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { buildArticlePage } = require('./article-page');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
@@ -69,5 +70,9 @@ const html = fs.readFileSync(blogPath, 'utf8');
 const pattern = new RegExp(`${START}[\\s\\S]*?${END}`);
 if (!pattern.test(html)) throw new Error('news markers not found in blog.html');
 fs.writeFileSync(blogPath, html.replace(pattern, () => `${START}\n            ${block}\n            ${END}`));
+
+const blogDir = path.join(root, 'blog');
+fs.mkdirSync(blogDir, { recursive: true });
+for (const a of articles) fs.writeFileSync(path.join(blogDir, `${a.slug}.html`), buildArticlePage(a));
 
 console.log(`blog.html written, ${articles.length} articles`);
