@@ -178,6 +178,11 @@
             background: var(--accent-hover);
         }
 
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         button.secondary {
             background: transparent;
             color: var(--text-main);
@@ -410,10 +415,10 @@
                 <h2 class="panel-title">Noticias publicadas (<span id="count">0</span>)</h2>
                 <div id="list"></div>
                 <div class="actions">
-                    <button type="button" id="download">Descargar archivos para publicar</button>
+                    <button type="button" id="download" disabled>Descargar news.json</button>
                 </div>
                 <p class="hint">
-                    Se descarga <code>data.json</code>. Súbelo a la raíz del repositorio: las páginas <code>blog/&lt;slug&gt;.html</code>, el blog, el sitemap.xml y llms.txt se generan solos en cada despliegue.
+                    Se descarga <code>news.json</code>. Reemplaza <code>data/news.json</code> en el repositorio: las páginas <code>blog/&lt;slug&gt;.html</code>, el blog, el sitemap.xml y llms.txt se generan solos en cada despliegue.
                 </p>
                 <p class="hint" id="viewsNote">Contador de vistas: <code>/api/views</code> (Vercel + Firestore). Cada noticia lo muestra solo si el endpoint responde; las vistas no aparecen en el editor.</p>
             </div>
@@ -490,6 +495,13 @@
             $('count').textContent = articles.length;
             const list = $('list');
             list.innerHTML = '';
+            if (loadError) {
+                const msg = document.createElement('p');
+                msg.className = 'empty';
+                msg.textContent = loadError;
+                list.append(msg);
+                return;
+            }
             if (articles.length === 0) {
                 list.innerHTML = '<p class="empty">Todavía no hay noticias.</p>';
             }
@@ -638,6 +650,7 @@
 
         $('form').addEventListener('submit', e => {
             e.preventDefault();
+            if (!loaded) return alert(loadError || 'Espera a que cargue data/news.json.');
             const d = readForm();
             if (d.image && !d.imageAlt) {
                 alert('Escribe el texto alternativo de la imagen.');
@@ -669,13 +682,27 @@
         });
 
         $('download').addEventListener('click', () => {
-            download('data.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
+            download('news.json', JSON.stringify(articles, null, 2) + '\n', 'application/json');
         });
 
-        fetch('data.json', { cache: 'no-store' })
-            .then(r => r.ok ? r.json() : [])
-            .then(data => { articles = data; sortArticles(); })
-            .catch(() => { articles = []; })
+        let loaded = false;
+        let loadError = '';
+
+        fetch('data/news.json', { cache: 'no-store' })
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
+            .then(data => {
+                if (!Array.isArray(data)) throw new Error('el archivo no contiene una lista');
+                articles = data;
+                sortArticles();
+                loaded = true;
+                $('download').disabled = false;
+            })
+            .catch(err => {
+                loadError = `No se pudo cargar data/news.json (${err.message}). No publiques hasta resolverlo, para no sobrescribir el histórico.`;
+            })
             .finally(() => {
                 renderList();
                 renderPreview();

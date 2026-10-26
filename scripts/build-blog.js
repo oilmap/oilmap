@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildArticlePage, LABELS } = require('./article-page');
+const { loadNews } = require('./news-store');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
@@ -9,8 +10,7 @@ const END = '<!-- news:end -->';
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const articles = JSON.parse(fs.readFileSync(path.join(root, 'data.json'), 'utf8'))
-    .sort((a, b) => b.date.localeCompare(a.date));
+const articles = loadNews();
 
 function formatDate(iso) {
     const d = new Date(iso + 'T00:00:00');
