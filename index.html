@@ -3280,7 +3280,7 @@
         }
 
         // Sube el KML sanitizado a tu Serverless Function en Vercel (/api/upload-kml)
-        async function uploadKmlToCloud(sanitizedXml, originalFileName) {
+async function uploadKmlToCloud(sanitizedXml, originalFileName) {
             const safeName = String(originalFileName || 'layer.kml')
                 .replace(/[^a-zA-Z0-9._-]/g, '_')
                 .slice(0, 90);
@@ -3293,9 +3293,19 @@
                     },
                     body: sanitizedXml
                 });
-                if (!res.ok) return null;
-                return await res.json();
+                
+                const responseText = await res.text();
+                if (!res.ok) {
+                    console.error('Error del servidor KML:', res.status, responseText);
+                    document.getElementById('kmlStatusMsg').textContent = `⚠️ Cloud Error (${res.status}): Check console`;
+                    document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
+                    return null;
+                }
+                return JSON.parse(responseText);
             } catch (e) {
+                console.error('Excepción de red al subir KML:', e);
+                document.getElementById('kmlStatusMsg').textContent = `⚠️ Network Error: Check console`;
+                document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
                 return null;
             }
         }
