@@ -302,6 +302,19 @@
             margin-top: 12px;
         }
 
+        .body-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .body-tools .hint {
+            margin: 0;
+            font-size: 0.75rem;
+        }
+
         textarea.snippet {
             min-height: 120px;
             font-family: monospace;
@@ -397,6 +410,10 @@
                     <textarea id="sources" class="short" placeholder="OPEC Monthly Oil Market Report | https://www.opec.org/"></textarea>
 
                     <label for="body">Contenido <small><span id="cWords">0</span> palabras (recomendado 300+)</small></label>
+                    <div class="body-tools">
+                        <button type="button" class="secondary" id="insertLink">Insertar enlace</button>
+                        <small class="hint">Escribe <code>[texto](/blog/otra-noticia.html)</code> o usa el botón con el texto seleccionado. Solo rutas internas o https://oilmap.xyz</small>
+                    </div>
                     <textarea id="body" required></textarea>
 
                     <div class="actions">
@@ -439,7 +456,7 @@
         const $ = id => document.getElementById(id);
         const BASE = 'https://oilmap.xyz';
         const FIELDS = ['title', 'seoTitle', 'slug', 'lang', 'topicFilter', 'author', 'date', 'updated', 'image', 'imageAlt', 'imageCaption', 'imageSrcset', 'imageWidth', 'imageHeight', 'summary', 'keywords', 'keyPoints', 'sources', 'body'];
-        const { LABELS, paragraphs, parseLines, parseSources, wordCount } = window.ArticlePage;
+        const { LABELS, paragraphs, parseLines, parseSources, wordCount, isSafeHref } = window.ArticlePage;
         let articles = [];
         let slugTouched = false;
 
@@ -676,6 +693,24 @@
             $('topicFilter').value = d.topicFilter;
             $('author').value = d.author;
             slugTouched = false;
+            renderPreview();
+        });
+
+        $('insertLink').addEventListener('click', () => {
+            const body = $('body');
+            const start = body.selectionStart;
+            const end = body.selectionEnd;
+            const selected = body.value.slice(start, end).trim();
+            const href = (prompt('Destino del enlace (ruta interna como /blog/otra-noticia.html, o https://oilmap.xyz/...)') || '').trim();
+            if (!href) return;
+            if (!isSafeHref(href)) {
+                alert('Destino no válido. Usa una ruta que empiece por "/" o una URL que empiece por https://oilmap.xyz');
+                return;
+            }
+            const text = selected || (prompt('Texto del enlace') || '').trim();
+            if (!text) return;
+            body.setRangeText(`[${text.replace(/[\[\]\n]/g, '')}](${href})`, start, end, 'end');
+            body.focus();
             renderPreview();
         });
 
