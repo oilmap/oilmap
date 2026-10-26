@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { buildArticlePage } = require('./article-page');
+const { buildArticlePage, LABELS } = require('./article-page');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
@@ -32,10 +32,14 @@ function cardImage(a) {
 function card(a) {
     const url = `/blog/${a.slug}.html`;
     const image = a.image ? cardImage(a) : '';
+    const label = (LABELS[a.lang] || LABELS.en).views;
     return `<article class="news-card" data-topic="${esc(a.topicFilter)}">
                 <div class="card-meta">
                     <span class="badge-source">World Oil Map · ${esc(a.lang.toUpperCase())}</span>
-                    <time class="badge-date" datetime="${esc(a.date)}">${esc(formatDate(a.date))}</time>
+                    <span class="card-stats">
+                        <span class="card-views" data-slug="${esc(a.slug)}" data-lang="${esc(a.lang)}" data-label="${esc(label)}" hidden></span>
+                        <time class="badge-date" datetime="${esc(a.date)}">${esc(formatDate(a.date))}</time>
+                    </span>
                 </div>
                 ${image}
                 <div class="gdelt-text-wrapper">
@@ -61,8 +65,23 @@ function itemList() {
     return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
 
+const viewsScript = `<script>
+(function () {
+    document.querySelectorAll('.card-views').forEach(function (el) {
+        fetch('/api/views?slug=' + encodeURIComponent(el.dataset.slug))
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (typeof d.views !== 'number') return;
+                el.textContent = Number(d.views).toLocaleString(el.dataset.lang) + ' ' + el.dataset.label;
+                el.hidden = false;
+            })
+            .catch(function () {});
+    });
+})();
+</script>`;
+
 const block = articles.length
-    ? `${articles.map(card).join('\n            ')}\n            ${itemList()}`
+    ? `${articles.map(card).join('\n            ')}\n            ${itemList()}\n            ${viewsScript}`
     : '<p class="news-empty">No articles have been published yet.</p>';
 
 const blogPath = path.join(root, 'blog.html');
