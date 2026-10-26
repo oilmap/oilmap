@@ -76,7 +76,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
-    <script src="data/geocoder.js" defer></script>
+    <!-- data/geocoder.js se ha movido al final del ciclo de vida del mapa (map.once('idle')) para optimizar la velocidad de carga inicial -->
     <style>
         :root {
             --accent: #f0b823;
@@ -455,7 +455,7 @@
             box-shadow: 0 0 8px var(--accent)
         }
 
-        /* ---------- SMARTVIEW LIVE DASHBOARD (ESTILO COUNTRY PROFILES) ---------- */
+        /* ---------- SMARTVIEW LIVE DASHBOARD ---------- */
         #smartViewSidebar {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -538,7 +538,8 @@
             background: rgba(255, 255, 255, .045);
         }
 
-        .sv-tile h4 {
+        /* Corregido: h3 en lugar de h4 para mantener orden jerárquico secuencial (h1 -> h2 -> h3) */
+        .sv-tile h3 {
             margin: 0;
             font-size: .66rem;
             font-weight: 600;
@@ -794,7 +795,8 @@
             padding: 10px 12px
         }
 
-        .metric-card h4 {
+        /* Corregido: h3 en lugar de h4 para mantener orden jerárquico secuencial (h1 -> h2 -> h3) */
+        .metric-card h3 {
             margin: 0 0 4px;
             font-size: .7rem;
             color: var(--text-secondary);
@@ -984,6 +986,54 @@
 
         .form-control:focus {
             border-color: var(--accent)
+        }
+
+        /* Estilos del bloque de Consentimiento Legal KML */
+        .kml-consent-box {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-size: .72rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .kml-consent-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .kml-consent-label input[type="checkbox"] {
+            margin-top: 2px;
+            accent-color: var(--accent);
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .kml-consent-box a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .kml-security-note {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            font-size: .68rem;
+            color: var(--text-secondary);
         }
 
         .stats-grid {
@@ -1260,7 +1310,8 @@
 </head>
 
 <body>
-    <div class="ad-container" aria-label="Advertisement">
+    <!-- Corregido: se añadió role="region" para que aria-label sea válido según ARIA -->
+    <div class="ad-container" role="region" aria-label="Advertisement">
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4035003913367801" data-ad-slot="TU_NUEVO_ID_ADAPTABLE" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
     </div>
 
@@ -1287,10 +1338,10 @@
                     <!-- 1. Layers -->
                     <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🗂️ Layers ▾</span></button>
 
-                    <!-- 2. Intelligence (fusiona Intelligence, Regions y Stats) -->
+                    <!-- 2. Intelligence -->
                     <button id="btn-intelligence" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>📊 Intelligence ▾</span></button>
 
-                    <!-- 3. Tools (fusiona Pin y Measure) -->
+                    <!-- 3. Tools -->
                     <button id="btn-tools" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span>🛠️ Tools ▾</span></button>
 
                     <!-- 4. SmartView -->
@@ -1319,12 +1370,12 @@
     </header>
 
     <!-- Caja de sugerencias fija -->
-    <div id="suggestions" class="glass" role="listbox"></div>
+    <div id="suggestions" class="glass" role="listbox" aria-label="Search suggestions"></div>
 
     <!-- Menú Desplegable: Layers -->
     <div id="menu" class="dropdown-panel glass" role="menu"></div>
 
-    <!-- Menú Desplegable: Intelligence (Price Charts, Market Stats & Regional Profiles) -->
+    <!-- Menú Desplegable: Intelligence -->
     <div id="intelligence-menu" class="dropdown-panel glass" role="menu">
         <div class="menu-group-header">Market Analysis</div>
         <a class="shortcut-item" role="menuitem" href="oil_price_charts.html">📈 Price Intelligence Charts</a>
@@ -1341,7 +1392,7 @@
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" type="button">🌎 Global View</button>
     </div>
 
-    <!-- Menú Desplegable: Tools (Custom Pins, Polygon Draw, KML Import & Measure) -->
+    <!-- Menú Desplegable: Tools -->
     <div id="tools-menu" class="dropdown-panel glass" role="menu">
         <div class="menu-group-header">Spatial Tools</div>
         <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
@@ -1358,14 +1409,13 @@
         <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
     </div>
 
-    <!-- SmartView Live Analytics Sidebar (Potenciado con los Indicadores y Gráficos de Country Profile) -->
+    <!-- SmartView Live Analytics Sidebar -->
     <aside id="smartViewSidebar" class="glass" aria-label="SmartView Dashboard">
         <div class="panel-header">
             <h2>⚡ SmartView Live Dashboard</h2>
             <button class="close-btn" id="closeSmartView" aria-label="Close">&times;</button>
         </div>
 
-        <!-- Barra de estado y rescan -->
         <div class="sv-status-row">
             <div>
                 <span class="sv-status-dot" id="svStatusDot"></span>
@@ -1374,48 +1424,48 @@
             <button type="button" class="sv-link-btn" id="btnSvRescan">Rescan view</button>
         </div>
 
-        <!-- 1. KPI Executive Board (4 tarjetas estilo Country Profile) -->
+        <!-- 1. KPI Executive Board (h3 secuencial debajo de h2) -->
         <div class="sv-kpi-grid">
             <div class="sv-tile">
-                <h4>Mapped Blocks</h4>
+                <h3>Mapped Blocks</h3>
                 <p class="sv-px" id="svKpiBlocksCount">0<small>blocks</small></p>
                 <p class="sv-sub" id="svKpiBlocksArea">Area: 0 km²</p>
                 <p class="sv-sub" id="svKpiBlocksSub" style="color:var(--accent)">0 Prod · 0 Expl</p>
             </div>
             <div class="sv-tile">
-                <h4>Wells &amp; Platforms</h4>
+                <h3>Wells &amp; Platforms</h3>
                 <p class="sv-px" id="svKpiWellsCount">Fast<small>index</small></p>
                 <p class="sv-sub" id="svKpiWellsSub">0 platforms in view</p>
                 <p class="sv-sub" id="svKpiWellsHint">Zoom ≥ 8.2x for local wells</p>
             </div>
             <div class="sv-tile">
-                <h4>Pipeline Network</h4>
+                <h3>Pipeline Network</h3>
                 <p class="sv-px" id="svKpiPipesCount">0<small>segments</small></p>
                 <p class="sv-sub" id="svKpiPipesSub">0 Oil · 0 Gas pipelines</p>
                 <p class="sv-sub">Midstream trunklines</p>
             </div>
             <div class="sv-tile">
-                <h4>Refineries &amp; Fields</h4>
+                <h3>Refineries &amp; Fields</h3>
                 <p class="sv-px" id="svKpiRefCount">0<small>assets</small></p>
                 <p class="sv-sub" id="svKpiRefSub">0 Refineries · 0 Deposits</p>
                 <p class="sv-sub">Downstream &amp; fields</p>
             </div>
         </div>
 
-        <!-- 2. Largest Blocks by Area (con Leyenda Interactiva Production vs Exploration) -->
+        <!-- 2. Largest Blocks by Area (Corregido: role="group" en #svBlocksTypeLegend para permitir aria-label) -->
         <div class="sv-card">
             <h3>
                 <span>📐 Largest Blocks by Area</span>
                 <small style="color:var(--accent);font-size:.68rem;font-weight:500">Area_Km2</small>
             </h3>
             <p class="sv-card-sub">Verified named blocks in viewport, split by <code>Type</code> (click legend to toggle or click bar to zoom).</p>
-            <div id="svBlocksTypeLegend" class="type-legend" aria-label="Block Class Legend"></div>
+            <div id="svBlocksTypeLegend" class="type-legend" role="group" aria-label="Block Class Legend"></div>
             <div id="svTopBlocksChart" class="stat-bars">
                 <div style="color:var(--text-secondary);font-size:.72rem;padding:6px 0">Pan or zoom map to analyze blocks…</div>
             </div>
         </div>
 
-        <!-- 3. Infrastructure Breakdown (Gráfico SVG Horizontal de Activos) -->
+        <!-- 3. Infrastructure Breakdown -->
         <div class="sv-card">
             <h3>
                 <span>⚡ Infrastructure Breakdown</span>
@@ -1425,7 +1475,7 @@
             <svg class="sv-svg-chart" id="svInfraSvgChart" viewBox="0 0 360 165" role="img" aria-label="Infrastructure distribution chart"></svg>
         </div>
 
-        <!-- 3.5 Key Wells in View (Solo al hacer Zoom) -->
+        <!-- 3.5 Key Wells in View -->
         <div class="sv-card" id="svWellsCard" style="display:none;">
             <h3>
                 <span>🎯 Key Wells in View</span>
@@ -1477,22 +1527,22 @@
         <button id="btnCancelPoly" class="btn-ui" aria-label="Cancel">❌</button>
     </div>
 
-    <!-- Country Profile Sidebar -->
+    <!-- Country Profile Sidebar (h3 secuencial debajo de h2) -->
     <aside id="regionSidebar" class="glass" aria-label="Country Intelligence">
         <div class="panel-header">
             <h2 id="sidebarTitle">Country Profile</h2>
             <button class="close-btn" id="closeSidebar" aria-label="Close">&times;</button>
         </div>
         <div class="metric-card">
-            <h4>Key Operators / Companies</h4>
+            <h3>Key Operators / Companies</h3>
             <div id="sidebarCompanies" class="metric-val" style="font-size:.88rem">--</div>
         </div>
         <div class="metric-card">
-            <h4>Proven Reserves</h4>
+            <h3>Proven Reserves</h3>
             <div id="sidebarReserves" class="metric-val">--</div>
         </div>
         <div class="metric-card">
-            <h4>Crude Quality / Benchmark</h4>
+            <h3>Crude Quality / Benchmark</h3>
             <div id="sidebarQuality" class="metric-val">--</div>
         </div>
         <div class="chart-box"><canvas id="productionChart"></canvas></div>
@@ -1509,11 +1559,11 @@
     <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
-    <!-- Modal de Spatial Tools (Pins, Polígonos, KML) -->
-    <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <!-- Modal de Spatial Tools (Pins, Polígonos, KML con Consentimiento Legal y Almacenamiento en Vercel Blob) -->
+    <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="spatialToolsModalTitle">
         <div class="modal-card compact">
             <div class="panel-header">
-                <h2>📍 Spatial Tools</h2>
+                <h2 id="spatialToolsModalTitle">📍 Spatial Tools</h2>
                 <button class="close-btn" id="closeAddPinModal" aria-label="Close">&times;</button>
             </div>
             <div class="tabs">
@@ -1553,11 +1603,24 @@
                 <button type="button" id="btnStartDrawPolygon" class="btn-ui active-tool" style="width:100%;justify-content:center">🖌️ Draw Polygon on Map</button>
             </div>
             <div id="kmlSection" style="display:none">
+                <!-- Consentimiento explícito, Términos, Política de Privacidad y Seguridad -->
+                <div class="kml-consent-box">
+                    <label class="kml-consent-label" for="kmlConsentCheckbox">
+                        <input type="checkbox" id="kmlConsentCheckbox">
+                        <span>
+                            I consent to the processing and cloud storage of my uploaded KML file(s) for spatial visualization and GIS indexing in accordance with the <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. I confirm this file contains no unauthorized confidential or personal data.
+                        </span>
+                    </label>
+                    <div class="kml-security-note">
+                        <span>🛡️ <strong>Security:</strong> XML/KML files are sanitized against XXE &amp; script injections (Max 4.5 MB).</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="kmlFileInput">Select KML File (.kml)</label>
-                    <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple>
+                    <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple disabled title="Please accept the terms and consent above first">
                 </div>
-                <p id="kmlStatusMsg" style="font-size:.75rem;color:var(--text-secondary);line-height:1.45">Upload your own KML files (Points, Lines, or Polygons) to display them on the map.</p>
+                <p id="kmlStatusMsg" style="font-size:.74rem;color:var(--text-secondary);line-height:1.45">Please check the consent box above to enable KML upload &amp; secure storage.</p>
                 <button type="button" id="btnClearKml" class="btn-ui" style="width:100%;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear Imported KML</button>
             </div>
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
@@ -1567,10 +1630,10 @@
     </div>
 
     <!-- Modal de Rankings y Fluctuaciones -->
-    <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="statsModalTitle">
         <div class="modal-card">
             <div class="panel-header">
-                <h2>📊 Market Rankings & Fluctuations</h2>
+                <h2 id="statsModalTitle">📊 Market Rankings & Fluctuations</h2>
                 <button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button>
             </div>
             <div class="stats-box" style="margin-top:12px">
@@ -1603,11 +1666,11 @@
     </div>
 
     <!-- Modal About -->
-    <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
         <div class="modal-card compact" style="text-align:center">
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
             <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
-            <h2 style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
+            <h2 id="aboutModalTitle" style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
             <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
             <p style="font-size:.82rem"><span>Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
             <div style="display:flex;justify-content:center;gap:16px;margin:16px 0">
@@ -1950,7 +2013,25 @@
             trackUserLocation: true
         }), 'bottom-right');
 
-        /* ---------- SMARTVIEW LIVE DASHBOARD (MOTOR COUNTRY PROFILE INTEGRADO) ---------- */
+        /* ---------- CARGA DIFERIDA DE GEOCODER.JS AL FINAL DE TODO ---------- */
+        let geocoderScriptLoaded = false;
+        function loadGeocoderScriptLast() {
+            if (geocoderScriptLoaded) return;
+            geocoderScriptLoaded = true;
+            const loadRunner = () => {
+                const s = document.createElement('script');
+                s.src = 'data/geocoder.js';
+                s.async = true;
+                document.body.appendChild(s);
+            };
+            if (typeof window.requestIdleCallback === 'function') {
+                window.requestIdleCallback(loadRunner, { timeout: 2000 });
+            } else {
+                setTimeout(loadRunner, 600);
+            }
+        }
+
+        /* ---------- SMARTVIEW LIVE DASHBOARD ---------- */
         let smartViewActive = false;
         let smartExtractedAssets = [];
         let currentDisplayedSmartItems = [];
@@ -2138,7 +2219,6 @@
                 $('svKpiWellsHint').textContent = 'Live in viewport (Zoom ' + map.getZoom().toFixed(1) + 'x)';
                 renderSvInfraSvgChart();
 
-                // 3.5 Top Verified Wells extraction
                 const uniqueWells = new Map();
                 for (let i = 0; i < rawWells.length; i++) {
                     const f = rawWells[i];
@@ -2235,7 +2315,6 @@
                     const verifiedType = getProp(p, ['type', 'fac_type', 'category']);
                     const verifiedCommodity = getProp(p, ['commodity', 'resinfo']);
 
-                    // Regla estricta: omitir cualquier Bloque o Entidad principal sin nombre válido (no null, blank, unknown ni Unnamed)
                     if (category === 'Block' && !verifiedName) {
                         return;
                     }
@@ -2271,7 +2350,7 @@
                         unique.set(key, {
                             key,
                             layerId: lid,
-                            name: verifiedName, // Vacío si no tiene nombre verificado
+                            name: verifiedName,
                             hasValidName,
                             category,
                             subType,
@@ -2279,7 +2358,7 @@
                             blockClass,
                             pipelineClass,
                             commodity: verifiedCommodity || (pipelineClass === 'OIL' ? 'Crude Oil' : pipelineClass === 'GAS' ? 'Natural Gas' : ''),
-                            company: verifiedCompany, // Vacío si es null/unknown/blank
+                            company: verifiedCompany,
                             area,
                             coords,
                             rawProps: p
@@ -2444,7 +2523,6 @@
         function renderSvOperatorsChart() {
             const counts = {};
             smartExtractedAssets.forEach(a => {
-                // Solo contabiliza compañías verificadas (no null, blank, unknown, N/A ni Unnamed)
                 if (!isValidValue(a.company)) return;
                 if (a.category === 'Block' && !a.hasValidName) return;
                 counts[a.company] = (counts[a.company] || 0) + 1;
@@ -2476,7 +2554,6 @@
 
         function filterAndRenderSmartList() {
             const q = $('smartSlicer').value.toLowerCase().trim();
-            // Solo muestra items con nombre real verificado (nunca Unnamed, null, blank o unknown)
             const namedAssets = smartExtractedAssets.filter(i => i.hasValidName && isValidValue(i.name));
 
             const filtered = q ? namedAssets.filter(i =>
@@ -2662,6 +2739,9 @@
         map.on('load', () => {
             syncLayerMenuWithMap();
 
+            // Ejecutar geocoder.js de último cuando el mapa ya haya terminado de renderizar todas sus capas base
+            map.once('idle', loadGeocoderScriptLast);
+
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 508" width="60" height="60"><circle cx="254" cy="254" r="254" fill="#FFD05B"/><rect x="154" y="100.5" width="200" height="306.9" rx="16" fill="#2B3B4E"/><g><path fill="#324A5E" d="M364,110.7H144c-5.6,0-10.2-4.5-10.2-10.2l0,0c0-5.6,4.5-10.2,10.2-10.2h220c5.6,0,10.2,4.5,10.2,10.2l0,0C374.2,106.1,369.6,110.7,364,110.7z"/><path fill="#324A5E" d="M372,213H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,211.9,373.4,213,372,213z"/><path fill="#324A5E" d="M372,315.3H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,314.2,373.4,315.3,372,315.3z"/><path fill="#324A5E" d="M372,417.6H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6V415C374.6,416.5,373.4,417.6,372,417.6z"/></g><path fill="#131b2a" d="M254,145c-35,0-63.5,49.2-63.5,109s28.5,109,63.5,109s63.5-49.2,63.5-109S289,145,254,145z"/><text x="254" y="292" fill="#FFFFFF" font-size="140" font-family="Inter, Arial, sans-serif" font-weight="bold" text-anchor="middle">$</text></svg>`;
             const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' })),
                 img = new Image();
@@ -2842,7 +2922,6 @@
         }
 
         /* ---------- INTERACTIVIDAD DE CAPAS GIS Y MOTOR DE TABLA UNIFICADA ---------- */
-        // Se ha eliminado 'oil-and-gas-wells' de este array para que ya no muestre popups
         const interactiveLayers = ['PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'REFINERIES', 'offshore-platforms', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS'];
 
         const fieldLabels = {
@@ -3170,7 +3249,53 @@
             if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
 
-        /* ---------- IMPORTAR KML ---------- */
+        /* ---------- IMPORTAR Y ALMACENAR KML CON CONSENTIMIENTO Y SANEAMIENTO ---------- */
+        const kmlConsentCheckbox = $('kmlConsentCheckbox');
+        const kmlFileInput = $('kmlFileInput');
+        const kmlStatusMsg = $('kmlStatusMsg');
+        const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB límite seguro para Vercel Serverless
+
+        // Bloquea o habilita el input de archivos según el checkbox de consentimiento
+        kmlConsentCheckbox.addEventListener('change', () => {
+            const consented = kmlConsentCheckbox.checked;
+            kmlFileInput.disabled = !consented;
+            if (consented) {
+                kmlStatusMsg.textContent = 'Upload your own KML files (Points, Lines, or Polygons) to display and archive them securely.';
+                kmlStatusMsg.style.color = 'var(--text-secondary)';
+            } else {
+                kmlStatusMsg.textContent = 'Please check the consent box above to enable KML upload & secure storage.';
+            }
+        });
+
+        // Saneamiento estricto contra ataques XML External Entity (XXE) y scripts embebidos
+        function sanitizeKmlString(rawXml) {
+            return String(rawXml || '')
+                .replace(/<!DOCTYPE[^>]*>/gi, '')
+                .replace(/<!ENTITY[^>]*>/gi, '')
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+        }
+
+        // Sube el KML sanitizado a tu Serverless Function en Vercel (/api/upload-kml)
+        async function uploadKmlToCloud(sanitizedXml, originalFileName) {
+            const safeName = String(originalFileName || 'layer.kml')
+                .replace(/[^a-zA-Z0-9._-]/g, '_')
+                .slice(0, 90);
+            try {
+                const res = await fetch(`/api/upload-kml?filename=${encodeURIComponent(safeName)}&consent=true`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/vnd.google-earth.kml+xml',
+                        'X-User-Consent': 'accepted-tos-and-privacy'
+                    },
+                    body: sanitizedXml
+                });
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                return null;
+            }
+        }
+
         function initKmlSources() {
             if (map.getSource('kml-custom-source')) return;
             map.addSource('kml-custom-source', {
@@ -3230,7 +3355,11 @@
         }
 
         function extractKmlFeatures(xmlStr, fileName) {
-            const xml = new DOMParser().parseFromString(xmlStr, 'text/xml');
+            const cleanXml = sanitizeKmlString(xmlStr);
+            const xml = new DOMParser().parseFromString(cleanXml, 'text/xml');
+            if (xml.getElementsByTagName('parsererror').length > 0) {
+                return [];
+            }
             const placemarks = xml.getElementsByTagName('Placemark');
             const out = [];
             for (let i = 0; i < placemarks.length; i++) {
@@ -3292,23 +3421,56 @@
             return out;
         }
 
-        $('kmlFileInput').addEventListener('change', e => {
+        kmlFileInput.addEventListener('change', e => {
+            if (!kmlConsentCheckbox.checked) {
+                kmlStatusMsg.textContent = '⚠️ You must accept the Terms of Service and Privacy Policy before uploading.';
+                kmlStatusMsg.style.color = 'var(--down)';
+                e.target.value = '';
+                return;
+            }
+
             const files = Array.from(e.target.files || []);
             if (!files.length) return;
+
+            for (const f of files) {
+                if (!/\.(kml|xml)$/i.test(f.name)) {
+                    kmlStatusMsg.textContent = `⚠️ Invalid file format (${f.name}). Only .kml or .xml files are allowed.`;
+                    kmlStatusMsg.style.color = 'var(--down)';
+                    e.target.value = '';
+                    return;
+                }
+                if (f.size > MAX_KML_FILE_BYTES) {
+                    kmlStatusMsg.textContent = `⚠️ File ${f.name} exceeds the 4.5 MB security limit.`;
+                    kmlStatusMsg.style.color = 'var(--down)';
+                    e.target.value = '';
+                    return;
+                }
+            }
+
             initKmlSources();
             let loaded = 0;
             const addedFeatures = [];
+            kmlStatusMsg.textContent = '⏳ Sanitizing, rendering and archiving KML…';
+            kmlStatusMsg.style.color = 'var(--accent)';
+
             files.forEach(file => {
                 const reader = new FileReader();
-                reader.onload = ev => {
-                    const feats = extractKmlFeatures(ev.target.result, file.name);
+                reader.onload = async ev => {
+                    const rawXml = ev.target.result;
+                    const sanitizedXml = sanitizeKmlString(rawXml);
+                    const feats = extractKmlFeatures(sanitizedXml, file.name);
                     customKmlFeatures.push(...feats);
                     addedFeatures.push(...feats);
+
+                    // Almacenar en Vercel Blob en segundo plano con consentimiento verificado
+                    await uploadKmlToCloud(sanitizedXml, file.name);
+
                     loaded++;
                     if (loaded === files.length) {
                         const src = map.getSource('kml-custom-source');
                         if (src) src.setData({ type: 'FeatureCollection', features: customKmlFeatures });
-                        $('kmlStatusMsg').textContent = `✅ ${customKmlFeatures.length} KML feature(s) loaded on map.`;
+                        kmlStatusMsg.textContent = `✅ ${customKmlFeatures.length} KML feature(s) rendered & archived.`;
+                        kmlStatusMsg.style.color = 'var(--up)';
                         $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
                         if (addedFeatures.length) {
                             const bounds = new mapboxgl.LngLatBounds();
@@ -3332,7 +3494,8 @@
             customKmlFeatures = [];
             const src = map.getSource('kml-custom-source');
             if (src) src.setData({ type: 'FeatureCollection', features: [] });
-            $('kmlStatusMsg').textContent = "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.";
+            kmlStatusMsg.textContent = "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.";
+            kmlStatusMsg.style.color = 'var(--text-secondary)';
             $('btnClearKml').style.display = 'none';
             if (smartViewActive) refreshSmartViewData();
         };
