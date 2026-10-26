@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const NAME = /^[a-z0-9-]{1,100}\.webp$/;
 const MAX_BYTES = 400 * 1024;
 const FOLDER = 'img/blog_img';
-const SITE = 'https://oilmap.xyz';
 
 function authorized(token) {
   const expected = process.env.EDITOR_TOKEN || '';
@@ -57,7 +56,7 @@ module.exports = async (req, res) => {
   if (buf.length > MAX_BYTES) return res.status(413).json({ error: 'TOO_LARGE' });
 
   try {
-    const branch = process.env.GITHUB_BRANCH || 'main';
+    const branch = process.env.GITHUB_BRANCH || 'master';
     let finalName = name;
     if (await exists(`${FOLDER}/${finalName}`, branch)) {
       finalName = name.replace(/\.webp$/, `-${crypto.randomBytes(3).toString('hex')}.webp`);
@@ -74,7 +73,7 @@ module.exports = async (req, res) => {
     });
     if (!put.ok) throw Object.assign(new Error('GITHUB_ERROR'), { tag: 'GITHUB_ERROR', code: put.status });
 
-    return res.status(200).json({ url: `${SITE}/${path}` });
+    return res.status(200).json({ url: `https://raw.githubusercontent.com/${process.env.GITHUB_REPO}/${branch}/${path}` });
   } catch (e) {
     console.error('upload error:', e.tag || e.code || 'UNKNOWN');
     return res.status(500).json({ error: e.tag || 'GITHUB_ERROR', code: e.code });

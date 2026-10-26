@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { buildArticlePage, LABELS } = require('./article-page');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
@@ -8,7 +9,7 @@ const END = '<!-- news:end -->';
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
+const articles = JSON.parse(fs.readFileSync(path.join(root, 'data.json'), 'utf8'))
     .sort((a, b) => b.date.localeCompare(a.date));
 
 function formatDate(iso) {
@@ -31,10 +32,14 @@ function cardImage(a) {
 function card(a) {
     const url = `/blog/${a.slug}.html`;
     const image = a.image ? cardImage(a) : '';
+    const label = (LABELS[a.lang] || LABELS.en).views;
     return `<article class="news-card" data-topic="${esc(a.topicFilter)}">
                 <div class="card-meta">
                     <span class="badge-source">World Oil Map · ${esc(a.lang.toUpperCase())}</span>
-                    <time class="badge-date" datetime="${esc(a.date)}">${esc(formatDate(a.date))}</time>
+                    <span class="card-stats">
+                        <span class="card-views" data-slug="${esc(a.slug)}" data-lang="${esc(a.lang)}" data-label="${esc(label)}" hidden></span>
+                        <time class="badge-date" datetime="${esc(a.date)}">${esc(formatDate(a.date))}</time>
+                    </span>
                 </div>
                 ${image}
                 <div class="gdelt-text-wrapper">
@@ -60,8 +65,23 @@ function itemList() {
     return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 }
 
+const viewsScript = `<script>
+(function () {
+    document.querySelectorAll('.card-views').forEach(function (el) {
+        fetch('/api/views?slug=' + encodeURIComponent(el.dataset.slug))
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (typeof d.views !== 'number') return;
+                el.textContent = Number(d.views).toLocaleString(el.dataset.lang) + ' ' + el.dataset.label;
+                el.hidden = false;
+            })
+            .catch(function () {});
+    });
+})();
+</script>`;
+
 const block = articles.length
-    ? `${articles.map(card).join('\n            ')}\n            ${itemList()}`
+    ? `${articles.map(card).join('\n            ')}\n            ${itemList()}\n            ${viewsScript}`
     : '<p class="news-empty">No articles have been published yet.</p>';
 
 const blogPath = path.join(root, 'blog.html');
@@ -69,5 +89,9 @@ const html = fs.readFileSync(blogPath, 'utf8');
 const pattern = new RegExp(`${START}[\\s\\S]*?${END}`);
 if (!pattern.test(html)) throw new Error('news markers not found in blog.html');
 fs.writeFileSync(blogPath, html.replace(pattern, () => `${START}\n            ${block}\n            ${END}`));
+
+const blogDir = path.join(root, 'blog');
+fs.mkdirSync(blogDir, { recursive: true });
+for (const a of articles) fs.writeFileSync(path.join(blogDir, `${a.slug}.html`), buildArticlePage(a));
 
 console.log(`blog.html written, ${articles.length} articles`);

@@ -257,6 +257,17 @@
             border-radius: 4px;
             font-weight: 600;
         }
+
+        .card-stats {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-views {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
         
         .card-image {
             width: 100%;
@@ -400,7 +411,35 @@
 
         <section id="ownNews" class="news-grid">
             <!-- news:start -->
-            <p class="news-empty">No articles have been published yet.</p>
+            <article class="news-card" data-topic="market">
+                <div class="card-meta">
+                    <span class="badge-source">World Oil Map · EN</span>
+                    <span class="card-stats">
+                        <span class="card-views" data-slug="world-oil-map-november-2026-release" data-lang="en" data-label="views" hidden></span>
+                        <time class="badge-date" datetime="2026-10-25">Oct 25, 2026</time>
+                    </span>
+                </div>
+                
+                <div class="gdelt-text-wrapper">
+                    <h3 class="own-title"><a href="/blog/world-oil-map-november-2026-release.html" lang="en">World Oil Map November 2026 release</a></h3>
+                    <p class="news-snippet">Discover the November 2026 World Oil Map release. Explore advanced global oil &amp; gas intelligence, new drilling layers, China coverage &amp; live crude prices.</p>
+                </div>
+            </article>
+            <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Global Petroleum News","numberOfItems":1,"itemListElement":[{"@type":"ListItem","position":1,"url":"https://oilmap.xyz/blog/world-oil-map-november-2026-release.html","name":"World Oil Map November 2026 release"}]}</script>
+            <script>
+(function () {
+    document.querySelectorAll('.card-views').forEach(function (el) {
+        fetch('/api/views?slug=' + encodeURIComponent(el.dataset.slug))
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (typeof d.views !== 'number') return;
+                el.textContent = Number(d.views).toLocaleString(el.dataset.lang) + ' ' + el.dataset.label;
+                el.hidden = false;
+            })
+            .catch(function () {});
+    });
+})();
+</script>
             <!-- news:end -->
         </section>
 

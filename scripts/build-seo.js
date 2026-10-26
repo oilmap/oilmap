@@ -31,7 +31,7 @@ const PAGES = [
     { path: '/privacy-policy.html', priority: '0.3' },
 ];
 
-const articles = JSON.parse(fs.readFileSync(path.join(root, 'data/news.json'), 'utf8'))
+const articles = JSON.parse(fs.readFileSync(path.join(root, 'data.json'), 'utf8'))
     .sort((a, b) => b.date.localeCompare(a.date));
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
