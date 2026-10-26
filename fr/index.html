@@ -187,6 +187,76 @@
             font-weight: 500
         }
         
+        .nav-scroll-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-scroll-track {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            width: 100%;
+            cursor: grab;
+        }
+
+        .nav-scroll-track.grabbing {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
+
+        .nav-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-arrow-btn {
+            background: rgba(13, 18, 30, .9);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            position: absolute;
+            font-size: .85rem;
+            transition: all .15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
+        }
+
+        .scroll-arrow-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .scroll-arrow-btn.left {
+            left: -4px;
+        }
+
+        .scroll-arrow-btn.right {
+            right: -4px;
+        }
+
+        @media (max-width:768px) {
+            .scroll-arrow-btn {
+                display: none !important;
+            }
+        }
+
         .toolbar {
             display: flex;
             align-items: center;
@@ -917,7 +987,9 @@
             <input type="search" id="countrySearch" class="search-input" data-i18n-ph="searchPlaceholder" placeholder="🔍 Rechercher Bloc ou Pays..." autocomplete="off" aria-label="Search">
             <div id="suggestions" class="glass" role="listbox"></div>
         </div>
-        <nav class="toolbar" aria-label="Map Controls">
+        <div class="nav-scroll-wrapper" id="navScrollWrapper">
+        <button class="scroll-arrow-btn left" id="scrollLeftBtn" aria-label="Scroll left" type="button">‹</button>
+        <nav class="toolbar nav-scroll-track" id="navScrollTrack" aria-label="Map Controls">
             <button id="btn-smartview" class="btn-ui" type="button"><span>⚡ SmartView</span></button>
             <button id="btn-regions" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="regionsBtn">📍 Régions ▾</span></button>
             <button id="btn-toggle-menu" class="btn-ui" type="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="layersBtn">🗂️ Couches ▾</span></button>
@@ -937,6 +1009,8 @@
                 <option value="zh">ZH</option>
             </select>
         </nav>
+        <button class="scroll-arrow-btn right" id="scrollRightBtn" aria-label="Scroll right" type="button">›</button>
+        </div>
     </header>
 
     <!-- SmartView Live Analytics Sidebar -->
@@ -1392,6 +1466,78 @@
                 manageCookies: "🍪 Cookie 隐私设置"
             }
         };
+        const navTrack = $('navScrollTrack');
+        const scrollLeftBtn = $('scrollLeftBtn');
+        const scrollRightBtn = $('scrollRightBtn');
+
+        function updateScrollArrows() {
+            if (!navTrack) return;
+            const maxScroll = navTrack.scrollWidth - navTrack.clientWidth;
+            if (maxScroll <= 4) {
+                if (scrollLeftBtn) scrollLeftBtn.style.display = 'none';
+                if (scrollRightBtn) scrollRightBtn.style.display = 'none';
+                return;
+            }
+            if (scrollLeftBtn) {
+                scrollLeftBtn.style.display = 'flex';
+                scrollLeftBtn.style.opacity = navTrack.scrollLeft > 8 ? '1' : '0.2';
+                scrollLeftBtn.style.pointerEvents = navTrack.scrollLeft > 8 ? 'auto' : 'none';
+            }
+            if (scrollRightBtn) {
+                scrollRightBtn.style.display = 'flex';
+                scrollRightBtn.style.opacity = (maxScroll - navTrack.scrollLeft) > 8 ? '1' : '0.2';
+                scrollRightBtn.style.pointerEvents = (maxScroll - navTrack.scrollLeft) > 8 ? 'auto' : 'none';
+            }
+        }
+
+        if (navTrack) {
+            navTrack.addEventListener('wheel', e => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    navTrack.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+
+            navTrack.addEventListener('scroll', () => {
+                closeAllDropdowns();
+                updateScrollArrows();
+            }, { passive: true });
+
+            if (scrollLeftBtn) {
+                scrollLeftBtn.addEventListener('click', () => {
+                    navTrack.scrollBy({ left: -220, behavior: 'smooth' });
+                });
+            }
+            if (scrollRightBtn) {
+                scrollRightBtn.addEventListener('click', () => {
+                    navTrack.scrollBy({ left: 220, behavior: 'smooth' });
+                });
+            }
+
+            let isDown = false, startX, scrollLeftVal;
+            navTrack.addEventListener('mousedown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                isDown = true;
+                navTrack.classList.add('grabbing');
+                startX = e.pageX - navTrack.offsetLeft;
+                scrollLeftVal = navTrack.scrollLeft;
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                navTrack.classList.remove('grabbing');
+            });
+            navTrack.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - navTrack.offsetLeft;
+                const walk = (x - startX) * 1.4;
+                navTrack.scrollLeft = scrollLeftVal - walk;
+            });
+
+            window.addEventListener('resize', updateScrollArrows);
+            setTimeout(updateScrollArrows, 300);
+        }
+
         let currentLang = 'fr';
 
         function setLanguage(lang) {
