@@ -20,6 +20,22 @@ function paragraphs(body) {
     return body.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
 }
 
+function isSafeHref(href) {
+    return /^\/(?!\/)[^\s()]*$/.test(href) || /^https:\/\/oilmap\.xyz(\/[^\s()]*)?$/.test(href);
+}
+
+function renderInline(text) {
+    const LINK = /\[([^\]\n]+)\]\(([^)\s]+)\)/g;
+    let html = '';
+    let last = 0;
+    for (const m of text.matchAll(LINK)) {
+        html += esc(text.slice(last, m.index));
+        html += isSafeHref(m[2]) ? `<a href="${esc(m[2])}">${esc(m[1])}</a>` : esc(m[0]);
+        last = m.index + m[0].length;
+    }
+    return html + esc(text.slice(last));
+}
+
 function renderBody(text) {
     const out = [];
     let items = [];
@@ -30,12 +46,12 @@ function renderBody(text) {
     for (const line of text.split('\n').map(l => l.trim()).filter(Boolean)) {
         const bullet = line.match(/^(?:•|- )\s*(.*)$/);
         if (bullet) {
-            items.push(`<li>${esc(bullet[1])}</li>`);
+            items.push(`<li>${renderInline(bullet[1])}</li>`);
             continue;
         }
         flush();
         const isHeading = line.length <= 80 && !/[.!?:]$/.test(line);
-        out.push(isHeading ? `<h2>${esc(line)}</h2>` : `<p>${esc(line)}</p>`);
+        out.push(isHeading ? `<h2>${renderInline(line)}</h2>` : `<p>${renderInline(line)}</p>`);
     }
     flush();
     return out.join('\n        ');
@@ -204,7 +220,7 @@ ${sources.length ? `<section class="sources"><h2>${L.sources}</h2><ul>${sourcesH
 </html>
 `;
 }
-    const api = { LABELS, paragraphs, parseLines, parseSources, wordCount, buildArticlePage };
+    const api = { LABELS, paragraphs, parseLines, parseSources, wordCount, isSafeHref, buildArticlePage };
     if (typeof module !== 'undefined') module.exports = api;
     else window.ArticlePage = api;
 })();
