@@ -1,16 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const { buildArticlePage, LABELS } = require('./article-page');
-const { loadNews } = require('./news-store');
+const { loadNews, loadTopics } = require('./news-store');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://oilmap.xyz';
 const START = '<!-- news:start -->';
 const END = '<!-- news:end -->';
+const TOPICS_START = '<!-- topics:start -->';
+const TOPICS_END = '<!-- topics:end -->';
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const articles = loadNews();
+const topics = loadTopics();
 
 function formatDate(iso) {
     const d = new Date(iso + 'T00:00:00');
@@ -85,10 +88,14 @@ const block = articles.length
     : '<p class="news-empty">No articles have been published yet.</p>';
 
 const blogPath = path.join(root, 'blog.html');
-const html = fs.readFileSync(blogPath, 'utf8');
-const pattern = new RegExp(`${START}[\\s\\S]*?${END}`);
-if (!pattern.test(html)) throw new Error('news markers not found in blog.html');
-fs.writeFileSync(blogPath, html.replace(pattern, () => `${START}\n            ${block}\n            ${END}`));
+const topicOptions = topics.map(t => `<option value="${esc(t.value)}">${esc(t.label)}</option>`).join('\n                ');
+let html = fs.readFileSync(blogPath, 'utf8');
+for (const [start, end, content] of [[START, END, block], [TOPICS_START, TOPICS_END, topicOptions]]) {
+    const pattern = new RegExp(`${start}[\\s\\S]*?${end}`);
+    if (!pattern.test(html)) throw new Error(`${start} not found in blog.html`);
+    html = html.replace(pattern, () => `${start}\n                ${content}\n                ${end}`);
+}
+fs.writeFileSync(blogPath, html);
 
 const blogDir = path.join(root, 'blog');
 fs.mkdirSync(blogDir, { recursive: true });
