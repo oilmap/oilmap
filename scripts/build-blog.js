@@ -34,7 +34,7 @@ function cardImage(a) {
 
 function card(a) {
     const url = `/blog/${a.slug}.html`;
-    const image = a.image ? cardImage(a) : '';
+    const image = a.image ? `<a class="card-image-link" href="${url}" tabindex="-1" aria-hidden="true">${cardImage(a)}</a>` : '';
     const label = (LABELS[a.lang] || LABELS.en).views;
     return `<article class="news-card" data-topic="${esc(a.topicFilter)}">
                 <div class="card-meta">
