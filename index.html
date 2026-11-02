@@ -1637,8 +1637,8 @@
         <div class="menu-group-header">Spatial Tools</div>
         <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
         <button class="shortcut-item" id="menu-tool-poly" role="menuitem" type="button">📐 Polygon Block Drawer</button>
-        <button class="shortcut-item" id="menu-tool-kml" role="menuitem" type="button">📂 Import KML / GIS</button>
-        <button class="shortcut-item" id="menu-tool-kml-legend" role="menuitem" type="button" style="display:none">🗂️ Imported KML Legend</button>
+        <button class="shortcut-item" id="menu-tool-kml" role="menuitem" type="button">📂 Import KML / GIS / SHP</button>
+        <button class="shortcut-item" id="menu-tool-kml-legend" role="menuitem" type="button" style="display:none">🗂️ Imported GIS Legend</button>
         <div class="menu-divider"></div>
         <div class="menu-group-header">Measurement</div>
         <button class="shortcut-item" id="menu-tool-measure" role="menuitem" type="button">📏 Measure Distance & Area</button>
@@ -1650,12 +1650,12 @@
         <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
     </div>
 
-    <!-- Floating Imported KML Layers Legend Window -->
-    <aside id="kmlLegendPanel" class="glass" aria-label="Imported KML Layers Legend">
+    <!-- Floating Imported GIS Layers Legend Window -->
+    <aside id="kmlLegendPanel" class="glass" aria-label="Imported GIS Layers Legend">
         <div class="kml-legend-header">
-            <h3>🗂️ Imported KML Legend</h3>
+            <h3>🗂️ Imported GIS Legend</h3>
             <div style="display:flex;align-items:center;gap:6px">
-                <button type="button" class="kml-icon-btn" id="btnAddMoreKmlLegend" title="Import another KML">➕</button>
+                <button type="button" class="kml-icon-btn" id="btnAddMoreKmlLegend" title="Import another GIS file">➕</button>
                 <button type="button" class="close-btn" id="closeKmlLegendBtn" style="width:22px;height:22px;font-size:14px" aria-label="Close Legend">&times;</button>
             </div>
         </div>
@@ -1824,7 +1824,7 @@
     <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
-    <!-- Spatial Tools Modal (Pins, Polygons, KML with Custom Styling, Legal Consent & Vercel Blob Storage) -->
+    <!-- Spatial Tools Modal (Pins, Polygons, KML/GPX/GeoJSON/Shapefile with Custom Styling, Legal Consent & Vercel Blob Storage) -->
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="spatialToolsModalTitle">
         <div class="modal-card compact">
             <div class="panel-header">
@@ -1834,7 +1834,7 @@
             <div class="tabs">
                 <button type="button" class="tab-btn active" id="tabPinBtn">📍 Custom Pin</button>
                 <button type="button" class="tab-btn" id="tabPolyBtn">📐 Polygon Block</button>
-                <button type="button" class="tab-btn" id="tabKmlBtn">📂 Import KML</button>
+                <button type="button" class="tab-btn" id="tabKmlBtn">📂 Import KML / GIS</button>
             </div>
             <form id="addPinForm">
                 <div class="form-group">
@@ -1872,19 +1872,19 @@
                     <label class="kml-consent-label" for="kmlConsentCheckbox">
                         <input type="checkbox" id="kmlConsentCheckbox">
                         <span>
-                            I consent to the processing and cloud storage of my uploaded KML file(s) for spatial visualization and GIS indexing in accordance with the <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. I confirm this file contains no unauthorized confidential or personal data.
+                            I consent to the processing and cloud storage of my uploaded GIS file(s) (.kml, .gpx, .geojson, .zip/.shp) for spatial visualization and GIS indexing in accordance with the <a href="terms-of-service.html" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. I confirm this file contains no unauthorized confidential or personal data.
                         </span>
                     </label>
                     <div class="kml-security-note">
-                        <span>🛡️ <strong>Security:</strong> XML/KML files are sanitized against XXE &amp; script injections (Max 4.5 MB).</span>
+                        <span>🛡️ <strong>Security:</strong> KML, GPX, GeoJSON &amp; Shapefile archives are validated and sanitized (Max 4.5 MB).</span>
                     </div>
                 </div>
 
-                <!-- KML Symbology Customization (Polygon Color & Oil/Gas Point Icon) -->
+                <!-- GIS Symbology Customization (Polygon Color & Oil/Gas Point Icon) -->
                 <div class="kml-style-grid">
                     <div>
                         <label for="kmlLayerNameInput" style="display:block;font-size:.72rem;color:var(--text-secondary);margin-bottom:4px;font-weight:600">Layer Name (Optional for Legend &amp; Layers Menu)</label>
-                        <input type="text" id="kmlLayerNameInput" class="form-control" placeholder="Defaults to KML file name..." style="padding:6px 10px;font-size:.76rem">
+                        <input type="text" id="kmlLayerNameInput" class="form-control" placeholder="Defaults to uploaded file name..." style="padding:6px 10px;font-size:.76rem">
                     </div>
 
                     <div>
@@ -1909,13 +1909,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="kmlFileInput">Select KML File (.kml)</label>
-                    <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple disabled title="Please accept the terms and consent above first">
+                    <label for="kmlFileInput">Choose GIS File (.kml, .gpx, .geojson, or zipped Shapefile /.shp)</label>
+                    <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml,.gpx,.geojson,.json,.zip,.shp" multiple disabled title="Please accept the terms and consent above first">
                 </div>
-                <p id="kmlStatusMsg" style="font-size:.74rem;color:var(--text-secondary);line-height:1.45">Please check the consent box above to enable KML upload &amp; secure storage.</p>
+                <p id="kmlStatusMsg" style="font-size:.74rem;color:var(--text-secondary);line-height:1.45">Please check the consent box above to enable KML, GPX, GeoJSON &amp; Shapefile upload.</p>
                 <div style="display:flex;gap:6px">
                     <button type="button" id="btnToggleKmlLegendModal" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--accent);border-color:rgba(240,184,35,.35)">🗂️ View Legend</button>
-                    <button type="button" id="btnClearKml" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear All KML</button>
+                    <button type="button" id="btnClearKml" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear All GIS</button>
                 </div>
             </div>
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
@@ -1993,7 +1993,7 @@
             return isNaN(x) ? null : x;
         };
 
-        /* ---------- OIL & GAS SECTOR SVG ICONS FOR KML POINTS ---------- */
+        /* ---------- OIL & GAS SECTOR SVG ICONS FOR IMPORTED GIS POINTS ---------- */
         const KML_OIL_GAS_ICONS = [{
             id: 'kml-icon-derrick',
             label: 'Drilling Rig',
@@ -2022,7 +2022,7 @@
 
         let selectedKmlIconId = KML_OIL_GAS_ICONS[0].id;
         let selectedKmlPolyColor = '#3b82f6';
-        let importedKmlLayersRegistry = []; // Stores metadata for each imported KML layer
+        let importedKmlLayersRegistry = []; // Stores metadata for each imported GIS layer
 
         function initKmlStyleSelectorsDOM() {
             const iconGrid = $('kmlPointIconGrid');
@@ -2282,7 +2282,7 @@
                 frag.appendChild(b);
             });
 
-            // Container for dynamically imported KML layers inside the Layers dropdown
+            // Container for dynamically imported GIS layers inside the Layers dropdown
             const kmlMenuSection = document.createElement('div');
             kmlMenuSection.id = 'kmlLayersMenuContainer';
             frag.appendChild(kmlMenuSection);
@@ -2809,8 +2809,8 @@
                         category = 'Platform';
                         subType = 'Offshore Platform';
                     } else if (lid.indexOf('kml-custom') === 0) {
-                        category = 'CustomKML';
-                        subType = 'Custom KML';
+                        category = 'CustomGIS';
+                        subType = p._kmlLayerName || 'Custom GIS';
                     }
 
                     const verifiedName = getVerifiedName(p);
@@ -3819,20 +3819,32 @@
             if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
 
-        /* ---------- KML IMPORT, CUSTOM SYMBOLOGY, LAYER CONTROL & LEGEND WINDOW ---------- */
+        /* ---------- KML, GPX, GEOJSON & SHAPEFILE IMPORT, SYMBOLOGY, LAYER CONTROL & VERCEL BLOB ---------- */
         const kmlConsentCheckbox = $('kmlConsentCheckbox');
         const kmlFileInput = $('kmlFileInput');
         const kmlStatusMsg = $('kmlStatusMsg');
         const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB safe limit for Vercel Serverless
 
+        let shpJsPromise = null;
+        function loadShpJs() {
+            return shpJsPromise || (shpJsPromise = new Promise((resolve, reject) => {
+                if (window.shp) return resolve(window.shp);
+                const s = document.createElement('script');
+                s.src = 'https://unpkg.com/shpjs@4.0.4/dist/shp.js';
+                s.onload = () => resolve(window.shp);
+                s.onerror = () => reject(new Error('Failed to load Shapefile parser (shpjs)'));
+                document.head.appendChild(s);
+            }));
+        }
+
         kmlConsentCheckbox.addEventListener('change', () => {
             const consented = kmlConsentCheckbox.checked;
             kmlFileInput.disabled = !consented;
             if (consented) {
-                kmlStatusMsg.textContent = 'Select polygon color & oil/gas point icon above, then upload your KML file(s).';
+                kmlStatusMsg.textContent = 'Select polygon color & oil/gas point icon above, then upload your .kml, .gpx, .geojson, or Shapefile (.zip / .shp).';
                 kmlStatusMsg.style.color = 'var(--text-secondary)';
             } else {
-                kmlStatusMsg.textContent = 'Please check the consent box above to enable KML upload & secure storage.';
+                kmlStatusMsg.textContent = 'Please check the consent box above to enable KML, GPX, GeoJSON & Shapefile upload.';
             }
         });
 
@@ -3844,7 +3856,7 @@
                 .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
         }
 
-        async function uploadKmlToCloud(sanitizedXml, originalFileName) {
+        async function uploadGisToCloud(payload, originalFileName, contentType) {
             const safeName = String(originalFileName || 'layer.kml')
                 .replace(/[^a-zA-Z0-9._-]/g, '_')
                 .slice(0, 90);
@@ -3852,20 +3864,20 @@
                 const res = await fetch(`/api/upload-kml?filename=${encodeURIComponent(safeName)}&consent=true`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/vnd.google-earth.kml+xml',
+                        'Content-Type': contentType || 'application/octet-stream',
                         'X-User-Consent': 'accepted-tos-and-privacy'
                     },
-                    body: sanitizedXml
+                    body: payload
                 });
 
                 const responseText = await res.text();
                 if (!res.ok) {
-                    console.error('KML Server Error:', res.status, responseText);
+                    console.error('GIS Cloud Upload Error:', res.status, responseText);
                     return null;
                 }
                 return JSON.parse(responseText);
             } catch (e) {
-                console.error('Network exception uploading KML:', e);
+                console.error('Network exception uploading GIS file:', e);
                 return null;
             }
         }
@@ -3913,7 +3925,7 @@
                 map.on('click', lid, e => {
                     if (isDrawingPolygon || measureEnabled || !e.features || !e.features.length) return;
                     const p = e.features[0].properties || {};
-                    const facName = getVerifiedName(p) || p._kmlLayerName || 'Custom KML';
+                    const facName = getVerifiedName(p) || p._kmlLayerName || 'Custom GIS';
                     const html = buildUnifiedPopupHtml(facName, p);
                     showPopup(e.lngLat, html);
                 });
@@ -3942,7 +3954,7 @@
                 if (!importedKmlLayersRegistry.length) {
                     menuContainer.innerHTML = '';
                 } else {
-                    let html = `<div class="menu-divider"></div><div class="menu-group-header">Imported KML Layers</div>`;
+                    let html = `<div class="menu-divider"></div><div class="menu-group-header">Imported GIS Layers</div>`;
                     importedKmlLayersRegistry.forEach(layer => {
                         const iconObj = KML_OIL_GAS_ICONS.find(i => i.id === layer.iconId) || KML_OIL_GAS_ICONS[0];
                         const badgeHtml = layer.hasPolygons || layer.hasLines
@@ -3969,7 +3981,7 @@
                 }
             }
 
-            // 2. Update Floating KML Legend Window (#kmlLegendPanel)
+            // 2. Update Floating GIS Legend Window (#kmlLegendPanel)
             const legendPanel = $('kmlLegendPanel');
             const legendList = $('kmlLegendList');
             const toolsMenuLegendBtn = $('menu-tool-kml-legend');
@@ -4031,9 +4043,9 @@
             if (!feats.length) return;
             const bounds = new mapboxgl.LngLatBounds();
             feats.forEach(f => {
-                if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates);
-                else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c));
-                else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c));
+                if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates.slice(0, 2));
+                else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c.slice(0, 2)));
+                else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c.slice(0, 2)));
             });
             if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 55, maxZoom: 12 });
         };
@@ -4139,7 +4151,177 @@
             return out;
         }
 
-        kmlFileInput.addEventListener('change', e => {
+        function extractGpxFeatures(xmlStr, fileName, styleOpts) {
+            const cleanXml = sanitizeKmlString(xmlStr);
+            const xml = new DOMParser().parseFromString(cleanXml, 'text/xml');
+            if (xml.getElementsByTagName('parsererror').length > 0) return [];
+
+            const out = [];
+            const baseProps = (name, desc, extra = {}) => Object.assign({
+                Name: name,
+                FAC_NAME: name,
+                COMMODITY: styleOpts.layerName || 'Custom GPX',
+                description: desc || '',
+                _kmlLayerId: styleOpts.layerId,
+                _kmlLayerName: styleOpts.layerName,
+                _kmlColor: styleOpts.color,
+                _kmlIcon: styleOpts.iconId
+            }, extra);
+
+            // 1. Waypoints (<wpt>)
+            const wpts = xml.getElementsByTagName('wpt');
+            for (let i = 0; i < wpts.length; i++) {
+                const pt = wpts[i];
+                const lat = parseFloat(pt.getAttribute('lat'));
+                const lon = parseFloat(pt.getAttribute('lon'));
+                if (isNaN(lat) || isNaN(lon)) continue;
+                const nameEl = pt.getElementsByTagName('name')[0];
+                const descEl = pt.getElementsByTagName('desc')[0] || pt.getElementsByTagName('cmt')[0];
+                const eleEl = pt.getElementsByTagName('ele')[0];
+                const name = nameEl ? nameEl.textContent.trim() : `${fileName} WPT #${i + 1}`;
+                const desc = descEl ? descEl.textContent.trim() : '';
+                const ele = eleEl ? eleEl.textContent.trim() : '';
+                out.push({
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [lon, lat] },
+                    properties: baseProps(name, desc, ele ? { Elevation_m: ele } : {})
+                });
+            }
+
+            // 2. Tracks (<trk>)
+            const trks = xml.getElementsByTagName('trk');
+            for (let i = 0; i < trks.length; i++) {
+                const trk = trks[i];
+                const nameEl = trk.getElementsByTagName('name')[0];
+                const descEl = trk.getElementsByTagName('desc')[0];
+                const name = nameEl ? nameEl.textContent.trim() : `${fileName} Track #${i + 1}`;
+                const desc = descEl ? descEl.textContent.trim() : '';
+                const segs = trk.getElementsByTagName('trkseg');
+                for (let s = 0; s < segs.length; s++) {
+                    const pts = segs[s].getElementsByTagName('trkpt');
+                    const coords = [];
+                    for (let p = 0; p < pts.length; p++) {
+                        const lat = parseFloat(pts[p].getAttribute('lat'));
+                        const lon = parseFloat(pts[p].getAttribute('lon'));
+                        if (!isNaN(lat) && !isNaN(lon)) coords.push([lon, lat]);
+                    }
+                    if (coords.length >= 2) {
+                        out.push({
+                            type: 'Feature',
+                            geometry: { type: 'LineString', coordinates: coords },
+                            properties: baseProps(name, desc)
+                        });
+                    }
+                }
+            }
+
+            // 3. Routes (<rte>)
+            const rtes = xml.getElementsByTagName('rte');
+            for (let i = 0; i < rtes.length; i++) {
+                const rte = rtes[i];
+                const nameEl = rte.getElementsByTagName('name')[0];
+                const descEl = rte.getElementsByTagName('desc')[0];
+                const name = nameEl ? nameEl.textContent.trim() : `${fileName} Route #${i + 1}`;
+                const desc = descEl ? descEl.textContent.trim() : '';
+                const pts = rte.getElementsByTagName('rtept');
+                const coords = [];
+                for (let p = 0; p < pts.length; p++) {
+                    const lat = parseFloat(pts[p].getAttribute('lat'));
+                    const lon = parseFloat(pts[p].getAttribute('lon'));
+                    if (!isNaN(lat) && !isNaN(lon)) coords.push([lon, lat]);
+                }
+                if (coords.length >= 2) {
+                    out.push({
+                        type: 'Feature',
+                        geometry: { type: 'LineString', coordinates: coords },
+                        properties: baseProps(name, desc)
+                    });
+                }
+            }
+            return out;
+        }
+
+        function normalizeGeoJsonFeatures(rawGeojson, fileName, styleOpts) {
+            if (!rawGeojson) return [];
+            const collections = Array.isArray(rawGeojson) ? rawGeojson : [rawGeojson];
+            const out = [];
+            let counter = 1;
+            const cleanBase = fileName.replace(/\.[^.]+$/, '');
+
+            collections.forEach(fc => {
+                if (!fc) return;
+                const features = fc.features || (fc.type === 'Feature' ? [fc] : (fc.type ? [{ type: 'Feature', geometry: fc, properties: {} }] : []));
+                features.forEach(f => {
+                    if (!f || !f.geometry) return;
+                    const rawProps = f.properties || {};
+                    const verifiedName = getVerifiedName(rawProps) || `${cleanBase} #${counter++}`;
+
+                    const enrichedProps = Object.assign({}, rawProps, {
+                        Name: verifiedName,
+                        FAC_NAME: verifiedName,
+                        COMMODITY: rawProps.COMMODITY || rawProps.commodity || styleOpts.layerName || 'Custom GIS',
+                        _kmlLayerId: styleOpts.layerId,
+                        _kmlLayerName: styleOpts.layerName,
+                        _kmlColor: styleOpts.color,
+                        _kmlIcon: styleOpts.iconId
+                    });
+
+                    const g = f.geometry;
+                    if (g.type === 'Point' && Array.isArray(g.coordinates) && g.coordinates.length >= 2) {
+                        out.push({
+                            type: 'Feature',
+                            geometry: { type: 'Point', coordinates: [g.coordinates[0], g.coordinates[1]] },
+                            properties: enrichedProps
+                        });
+                    } else if (g.type === 'LineString' && Array.isArray(g.coordinates) && g.coordinates.length >= 2) {
+                        out.push({
+                            type: 'Feature',
+                            geometry: { type: 'LineString', coordinates: g.coordinates.map(c => [c[0], c[1]]) },
+                            properties: enrichedProps
+                        });
+                    } else if (g.type === 'Polygon' && Array.isArray(g.coordinates) && g.coordinates[0] && g.coordinates[0].length >= 3) {
+                        out.push({
+                            type: 'Feature',
+                            geometry: { type: 'Polygon', coordinates: g.coordinates.map(ring => ring.map(c => [c[0], c[1]])) },
+                            properties: enrichedProps
+                        });
+                    } else if (g.type === 'MultiPoint' && Array.isArray(g.coordinates)) {
+                        g.coordinates.forEach(c => {
+                            if (Array.isArray(c) && c.length >= 2) {
+                                out.push({
+                                    type: 'Feature',
+                                    geometry: { type: 'Point', coordinates: [c[0], c[1]] },
+                                    properties: Object.assign({}, enrichedProps)
+                                });
+                            }
+                        });
+                    } else if (g.type === 'MultiLineString' && Array.isArray(g.coordinates)) {
+                        g.coordinates.forEach(lineCoords => {
+                            if (Array.isArray(lineCoords) && lineCoords.length >= 2) {
+                                out.push({
+                                    type: 'Feature',
+                                    geometry: { type: 'LineString', coordinates: lineCoords.map(c => [c[0], c[1]]) },
+                                    properties: Object.assign({}, enrichedProps)
+                                });
+                            }
+                        });
+                    } else if (g.type === 'MultiPolygon' && Array.isArray(g.coordinates)) {
+                        g.coordinates.forEach(polyCoords => {
+                            if (Array.isArray(polyCoords) && polyCoords[0] && polyCoords[0].length >= 3) {
+                                out.push({
+                                    type: 'Feature',
+                                    geometry: { type: 'Polygon', coordinates: polyCoords.map(ring => ring.map(c => [c[0], c[1]])) },
+                                    properties: Object.assign({}, enrichedProps)
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            return out;
+        }
+
+        kmlFileInput.addEventListener('change', async e => {
             if (!kmlConsentCheckbox.checked) {
                 kmlStatusMsg.textContent = '⚠️ You must accept the Terms of Service and Privacy Policy before uploading.';
                 kmlStatusMsg.style.color = 'var(--down)';
@@ -4151,8 +4333,8 @@
             if (!files.length) return;
 
             for (const f of files) {
-                if (!/\.(kml|xml)$/i.test(f.name)) {
-                    kmlStatusMsg.textContent = `⚠️ Invalid file format (${f.name}). Only .kml or .xml files are allowed.`;
+                if (!/\.(kml|xml|gpx|geojson|json|zip|shp)$/i.test(f.name)) {
+                    kmlStatusMsg.textContent = `⚠️ Invalid file format (${f.name}). Allowed: .kml, .gpx, .geojson, .zip, or .shp.`;
                     kmlStatusMsg.style.color = 'var(--down)';
                     e.target.value = '';
                     return;
@@ -4166,32 +4348,71 @@
             }
 
             initKmlSources();
-            let loaded = 0;
             const addedFeatures = [];
             const customLabelInput = ($('kmlLayerNameInput') ? $('kmlLayerNameInput').value.trim() : '');
             const chosenColor = selectedKmlPolyColor || '#3b82f6';
             const chosenIconId = selectedKmlIconId || KML_OIL_GAS_ICONS[0].id;
 
-            kmlStatusMsg.textContent = '⏳ Sanitizing, applying Oil & Gas symbology, and archiving KML…';
+            kmlStatusMsg.textContent = '⏳ Processing GIS file(s), applying Oil & Gas symbology, and archiving to Vercel…';
             kmlStatusMsg.style.color = 'var(--accent)';
 
-            files.forEach((file, fileIdx) => {
-                const reader = new FileReader();
-                reader.onload = async ev => {
-                    const rawXml = ev.target.result;
-                    const sanitizedXml = sanitizeKmlString(rawXml);
-                    const layerId = 'kml_layer_' + Date.now() + '_' + fileIdx;
-                    const cleanFileName = file.name.replace(/\.(kml|xml)$/i, '');
-                    const layerName = customLabelInput
-                        ? (files.length > 1 ? `${customLabelInput} (${fileIdx + 1})` : customLabelInput)
-                        : cleanFileName;
+            for (let fileIdx = 0; fileIdx < files.length; fileIdx++) {
+                const file = files[fileIdx];
+                const ext = file.name.split('.').pop().toLowerCase();
+                const layerId = 'kml_layer_' + Date.now() + '_' + fileIdx;
+                const cleanFileName = file.name.replace(/\.[^.]+$/, '');
+                const layerName = customLabelInput
+                    ? (files.length > 1 ? `${customLabelInput} (${fileIdx + 1})` : customLabelInput)
+                    : cleanFileName;
 
-                    const feats = extractKmlFeatures(sanitizedXml, file.name, {
-                        layerId,
-                        layerName,
-                        color: chosenColor,
-                        iconId: chosenIconId
-                    });
+                const styleOpts = {
+                    layerId,
+                    layerName,
+                    color: chosenColor,
+                    iconId: chosenIconId
+                };
+
+                let feats = [];
+
+                try {
+                    if (ext === 'kml' || ext === 'xml') {
+                        const rawXml = await file.text();
+                        const sanitizedXml = sanitizeKmlString(rawXml);
+                        feats = extractKmlFeatures(sanitizedXml, file.name, styleOpts);
+                        await uploadGisToCloud(sanitizedXml, file.name, 'application/vnd.google-earth.kml+xml');
+
+                    } else if (ext === 'gpx') {
+                        const rawGpx = await file.text();
+                        const sanitizedGpx = sanitizeKmlString(rawGpx);
+                        feats = extractGpxFeatures(sanitizedGpx, file.name, styleOpts);
+                        await uploadGisToCloud(sanitizedGpx, file.name, 'application/gpx+xml');
+
+                    } else if (ext === 'geojson' || ext === 'json') {
+                        const rawJsonText = await file.text();
+                        const parsedGeo = JSON.parse(rawJsonText);
+                        feats = normalizeGeoJsonFeatures(parsedGeo, file.name, styleOpts);
+                        await uploadGisToCloud(rawJsonText, file.name, 'application/geo+json');
+
+                    } else if (ext === 'zip' || ext === 'shp') {
+                        const shp = await loadShpJs();
+                        const buffer = await file.arrayBuffer();
+                        let parsedGeo;
+                        if (ext === 'zip') {
+                            parsedGeo = await shp(buffer);
+                        } else {
+                            const geometries = shp.parseShp(buffer);
+                            parsedGeo = {
+                                type: 'FeatureCollection',
+                                features: geometries.map((geom, idx) => ({
+                                    type: 'Feature',
+                                    geometry: geom,
+                                    properties: { Name: `${cleanFileName} #${idx + 1}` }
+                                }))
+                            };
+                        }
+                        feats = normalizeGeoJsonFeatures(parsedGeo, file.name, styleOpts);
+                        await uploadGisToCloud(buffer, file.name, ext === 'zip' ? 'application/zip' : 'application/octet-stream');
+                    }
 
                     if (feats.length > 0) {
                         const polyCount = feats.filter(f => f.geometry.type === 'Polygon').length;
@@ -4216,37 +4437,36 @@
                         customKmlFeatures.push(...feats);
                         addedFeatures.push(...feats);
                     }
+                } catch (err) {
+                    console.error(`Error processing GIS file ${file.name}:`, err);
+                    kmlStatusMsg.textContent = `⚠️ Could not parse ${file.name}. Verify the file structure or upload a valid .zip Shapefile.`;
+                    kmlStatusMsg.style.color = 'var(--down)';
+                }
+            }
 
-                    // Archive in Vercel Blob in the background with verified consent
-                    await uploadKmlToCloud(sanitizedXml, file.name);
+            if (addedFeatures.length > 0) {
+                refreshKmlMapData();
+                updateKmlLayerControlAndLegend();
+                $('kmlLegendPanel').classList.add('show');
 
-                    loaded++;
-                    if (loaded === files.length) {
-                        refreshKmlMapData();
-                        updateKmlLayerControlAndLegend();
-                        $('kmlLegendPanel').classList.add('show');
+                kmlStatusMsg.textContent = `✅ ${customKmlFeatures.length} feature(s) rendered & added to Layers / Legend.`;
+                kmlStatusMsg.style.color = 'var(--up)';
+                $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
+                if ($('kmlLayerNameInput')) $('kmlLayerNameInput').value = '';
 
-                        kmlStatusMsg.textContent = `✅ ${customKmlFeatures.length} feature(s) rendered & added to Layers / Legend.`;
-                        kmlStatusMsg.style.color = 'var(--up)';
-                        $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
-                        if ($('kmlLayerNameInput')) $('kmlLayerNameInput').value = '';
+                const bounds = new mapboxgl.LngLatBounds();
+                addedFeatures.forEach(f => {
+                    if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates.slice(0, 2));
+                    else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c.slice(0, 2)));
+                    else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c.slice(0, 2)));
+                });
+                if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 50, maxZoom: 12 });
 
-                        if (addedFeatures.length) {
-                            const bounds = new mapboxgl.LngLatBounds();
-                            addedFeatures.forEach(f => {
-                                if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates);
-                                else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c));
-                                else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c));
-                            });
-                            if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 50, maxZoom: 12 });
-                        }
-                        addPinModal.style.display = 'none';
-                        e.target.value = '';
-                        if (smartViewActive) setTimeout(refreshSmartViewData, 300);
-                    }
-                };
-                reader.readAsText(file);
-            });
+                addPinModal.style.display = 'none';
+                if (smartViewActive) setTimeout(refreshSmartViewData, 300);
+            }
+
+            e.target.value = '';
         });
 
         $('btnClearKml').onclick = () => {
@@ -4255,7 +4475,7 @@
             const src = map.getSource('kml-custom-source');
             if (src) src.setData({ type: 'FeatureCollection', features: [] });
             updateKmlLayerControlAndLegend();
-            kmlStatusMsg.textContent = "Select polygon color & oil/gas point icon above, then upload your KML file(s).";
+            kmlStatusMsg.textContent = 'Select polygon color & oil/gas point icon above, then upload your .kml, .gpx, .geojson, or Shapefile (.zip / .shp).';
             kmlStatusMsg.style.color = 'var(--text-secondary)';
             $('btnClearKml').style.display = 'none';
             if (smartViewActive) refreshSmartViewData();
@@ -4324,14 +4544,14 @@
         }[c]));
         $('btnExportKmlModal').onclick = () => {
             if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
-                alert('No custom pins, polygons, or KML features added to export yet.');
+                alert('No custom pins, polygons, or GIS features added to export yet.');
                 return;
             }
             let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
             customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
             customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
             customKmlFeatures.forEach(f => {
-                const nm = escapeXml(f.properties.FAC_NAME || f.properties.Name || 'KML Item');
+                const nm = escapeXml(f.properties.FAC_NAME || f.properties.Name || 'GIS Item');
                 if (f.geometry.type === 'Point') k += `  <Placemark>\n    <name>${nm}</name>\n    <Point><coordinates>${f.geometry.coordinates[0]},${f.geometry.coordinates[1]},0</coordinates></Point>\n  </Placemark>\n`;
                 else if (f.geometry.type === 'LineString') k += `  <Placemark>\n    <name>${nm}</name>\n    <LineString><coordinates>${f.geometry.coordinates.map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LineString>\n  </Placemark>\n`;
                 else if (f.geometry.type === 'Polygon') k += `  <Placemark>\n    <name>${nm}</name>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${f.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`;
