@@ -78,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
     <!-- data/geocoder.js is deferred to the end of the map lifecycle (map.once('idle')) to optimize initial load speed -->
     <style>
-        :root {
+         :root {
             --accent: #f0b823;
             --accent-soft: rgba(240, 184, 35, .14);
             --surface: rgba(13, 18, 30, .86);
@@ -95,17 +95,17 @@
             --radius-pill: 999px;
             --shadow: 0 12px 32px -4px rgba(0, 0, 0, .6)
         }
-
+        
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent
         }
-
+        
         html,
         body {
             height: 100%
         }
-
+        
         body {
             margin: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -115,7 +115,7 @@
             -webkit-font-smoothing: antialiased;
             font-variant-numeric: tabular-nums;
         }
-
+        
         .sr-only {
             position: absolute;
             width: 1px;
@@ -124,7 +124,7 @@
             clip: rect(0 0 0 0);
             white-space: nowrap
         }
-
+        
         #map {
             position: absolute;
             inset: 0;
@@ -132,7 +132,7 @@
             height: 100%;
             z-index: 1
         }
-
+        
         .glass {
             background: var(--surface);
             backdrop-filter: blur(16px);
@@ -140,8 +140,8 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow)
         }
-
         /* ---------- COMPACT HEADER & SCROLL TRACK ---------- */
+        
         header.top-bar {
             position: absolute;
             top: calc(12px + env(safe-area-inset-top, 0px));
@@ -157,7 +157,7 @@
             gap: 10px;
             user-select: none;
         }
-
+        
         .brand {
             display: flex;
             align-items: center;
@@ -168,17 +168,17 @@
             border-radius: 8px;
             transition: opacity .15s ease;
         }
-
+        
         .brand:hover {
             opacity: .9;
         }
-
+        
         .brand img {
             height: 26px;
             width: 26px;
             object-fit: contain
         }
-
+        
         .brand h1 {
             font-size: .86rem;
             margin: 0;
@@ -186,12 +186,12 @@
             font-weight: 700;
             white-space: nowrap
         }
-
+        
         .brand h1 span {
             color: var(--accent);
             font-weight: 500
         }
-
+        
         .nav-scroll-wrapper {
             position: relative;
             flex: 1;
@@ -199,7 +199,7 @@
             display: flex;
             align-items: center;
         }
-
+        
         .nav-scroll-track {
             display: flex;
             align-items: center;
@@ -214,16 +214,16 @@
             width: 100%;
             cursor: grab;
         }
-
+        
         .nav-scroll-track.grabbing {
             cursor: grabbing;
             scroll-behavior: auto;
         }
-
+        
         .nav-scroll-track::-webkit-scrollbar {
             display: none;
         }
-
+        
         .scroll-arrow-btn {
             background: rgba(13, 18, 30, .9);
             border: 1px solid var(--border);
@@ -241,28 +241,28 @@
             transition: all .15s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, .4);
         }
-
+        
         .scroll-arrow-btn:hover {
             background: var(--accent);
             color: #000;
             border-color: var(--accent);
         }
-
+        
         .scroll-arrow-btn.left {
             left: -4px;
         }
-
+        
         .scroll-arrow-btn.right {
             right: -4px;
         }
-
+        
         .toolbar {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-shrink: 0;
         }
-
+        
         .btn-ui,
         .nav-link {
             padding: 6px 11px;
@@ -283,7 +283,7 @@
             outline: none;
             flex-shrink: 0;
         }
-
+        
         .btn-ui:hover,
         .nav-link:hover,
         .btn-ui:focus-visible {
@@ -291,13 +291,13 @@
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-
+        
         .btn-ui.active-tool {
             background: var(--accent) !important;
             color: #000 !important;
             font-weight: 600
         }
-
+        
         .lang-select {
             padding: 6px 10px;
             border-radius: var(--radius-pill);
@@ -310,24 +310,24 @@
             outline: none;
             flex-shrink: 0;
         }
-
+        
         .lang-select:hover,
         .lang-select:focus-visible {
             background: var(--accent-soft);
             border-color: rgba(240, 184, 35, .35);
             color: var(--accent)
         }
-
+        
         .lang-select option {
             background: #0d121e;
             color: var(--text-primary)
         }
-
+        
         .search-wrap {
             position: relative;
             flex-shrink: 0;
         }
-
+        
         .search-input {
             padding: 6px 12px;
             border-radius: var(--radius-pill);
@@ -340,13 +340,13 @@
             transition: width .25s ease, border-color .2s, background .2s;
             outline: none
         }
-
+        
         .search-input:focus {
             border-color: var(--accent);
             background: rgba(0, 0, 0, .7);
             width: 215px
         }
-
+        
         #suggestions {
             position: fixed;
             z-index: 50;
@@ -357,7 +357,7 @@
             border-radius: var(--radius-md);
             box-shadow: var(--shadow);
         }
-
+        
         .suggestion-item {
             padding: 8px 10px;
             cursor: pointer;
@@ -365,14 +365,14 @@
             font-size: .75rem;
             transition: background .15s
         }
-
+        
         .suggestion-item:hover {
             background: var(--accent);
             color: #000;
             font-weight: 600
         }
-
         /* ---------- DROPDOWN PANELS ---------- */
+        
         .dropdown-panel {
             position: fixed;
             top: 0;
@@ -387,11 +387,11 @@
             max-height: 72dvh;
             overflow-y: auto;
         }
-
+        
         .dropdown-panel.show {
             display: flex
         }
-
+        
         .menu-group-header {
             font-size: .65rem;
             text-transform: uppercase;
@@ -400,13 +400,13 @@
             padding: 6px 10px 2px;
             font-weight: 700;
         }
-
+        
         .menu-divider {
             height: 1px;
             background: var(--border);
             margin: 4px 6px;
         }
-
+        
         .layer-item,
         .shortcut-item {
             display: flex;
@@ -425,22 +425,22 @@
             text-align: left;
             font-family: inherit
         }
-
+        
         a.shortcut-item {
             text-decoration: none
         }
-
+        
         .layer-item:hover,
         .shortcut-item:hover {
             background: rgba(255, 255, 255, .08);
             color: #fff
         }
-
+        
         .layer-item.active {
             color: var(--text-primary);
             font-weight: 600
         }
-
+        
         .layer-dot {
             width: 8px;
             height: 8px;
@@ -449,13 +449,248 @@
             transition: .2s;
             flex-shrink: 0
         }
-
+        
         .layer-item.active .layer-dot {
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent)
         }
-
+        /* ---------- KML STYLING & FLOATING LEGEND WINDOW ---------- */
+        
+        .kml-style-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, .28);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        
+        .color-picker-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .kml-color-input {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 34px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        
+        .kml-color-input::-webkit-color-swatch-wrapper {
+            padding: 2px;
+        }
+        
+        .kml-color-input::-webkit-color-swatch {
+            border-radius: 4px;
+            border: none;
+        }
+        
+        .color-presets {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .color-preset-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, .2);
+            cursor: pointer;
+            padding: 0;
+            transition: transform .15s, border-color .15s;
+        }
+        
+        .color-preset-btn:hover,
+        .color-preset-btn.active {
+            transform: scale(1.15);
+            border-color: #fff;
+        }
+        
+        .oil-icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        
+        .oil-icon-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 7px 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .03);
+            color: var(--text-secondary);
+            font-size: .66rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .15s ease;
+            text-align: center;
+        }
+        
+        .oil-icon-option svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+        
+        .oil-icon-option:hover {
+            background: rgba(255, 255, 255, .08);
+            color: var(--text-primary);
+        }
+        
+        .oil-icon-option.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        /* Floating KML Legend Window */
+        
+        #kmlLegendPanel {
+            position: absolute;
+            bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+            left: 14px;
+            z-index: 24;
+            width: 285px;
+            max-height: 270px;
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        #kmlLegendPanel.show {
+            display: flex;
+        }
+        
+        .kml-legend-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+        }
+        
+        .kml-legend-header h3 {
+            margin: 0;
+            font-size: .76rem;
+            color: var(--accent);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .kml-legend-list {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 195px;
+            padding-right: 2px;
+        }
+        
+        .kml-legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            font-size: .72rem;
+        }
+        
+        .kml-legend-left {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 0;
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .kml-legend-swatch-poly {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1.5px solid #fff;
+            flex-shrink: 0;
+        }
+        
+        .kml-legend-swatch-icon {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .kml-legend-swatch-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .kml-legend-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .kml-legend-meta {
+            font-size: .63rem;
+            color: var(--text-secondary);
+        }
+        
+        .kml-legend-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        
+        .kml-icon-btn {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            font-size: .7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: .15s;
+        }
+        
+        .kml-icon-btn:hover {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: rgba(240, 184, 35, .35);
+        }
         /* ---------- SMARTVIEW LIVE DASHBOARD ---------- */
+        
         #smartViewSidebar {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -475,13 +710,13 @@
             flex-direction: column;
             gap: 12px;
         }
-
+        
         #smartViewSidebar.open {
             transform: none;
             opacity: 1;
             pointer-events: auto
         }
-
+        
         .sv-status-row {
             display: flex;
             align-items: center;
@@ -492,7 +727,7 @@
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
         }
-
+        
         .sv-status-dot {
             width: 7px;
             height: 7px;
@@ -502,12 +737,12 @@
             display: inline-block;
             margin-right: 5px;
         }
-
+        
         .sv-status-dot.busy {
             background: var(--accent);
             box-shadow: 0 0 7px var(--accent);
         }
-
+        
         .sv-link-btn {
             background: none;
             border: 0;
@@ -519,13 +754,13 @@
             padding: 0;
             font-family: inherit;
         }
-
+        
         .sv-kpi-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
-
+        
         .sv-tile {
             background: rgba(255, 255, 255, .025);
             border: 1px solid var(--border);
@@ -533,11 +768,11 @@
             padding: 10px 12px;
             transition: background .15s;
         }
-
+        
         .sv-tile:hover {
             background: rgba(255, 255, 255, .045);
         }
-
+        
         .sv-tile h3 {
             margin: 0;
             font-size: .66rem;
@@ -546,7 +781,7 @@
             text-transform: uppercase;
             letter-spacing: .04em;
         }
-
+        
         .sv-tile .sv-px {
             font-size: 1.28rem;
             font-weight: 700;
@@ -554,14 +789,14 @@
             margin: 2px 0 1px;
             line-height: 1.15;
         }
-
+        
         .sv-tile .sv-px small {
             font-size: .68rem;
             color: var(--text-secondary);
             font-weight: 400;
             margin-left: 3px;
         }
-
+        
         .sv-tile .sv-sub {
             font-size: .68rem;
             color: var(--text-secondary);
@@ -570,14 +805,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
         .sv-card {
             background: rgba(0, 0, 0, .28);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 12px;
         }
-
+        
         .sv-card h3 {
             margin: 0 0 3px;
             font-size: .8rem;
@@ -587,14 +822,14 @@
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .sv-card .sv-card-sub {
             font-size: .68rem;
             color: var(--text-secondary);
             margin: 0 0 8px;
             line-height: 1.35;
         }
-
+        
         .type-legend {
             display: flex;
             flex-wrap: wrap;
@@ -603,7 +838,7 @@
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
         }
-
+        
         .type-legend-item {
             display: inline-flex;
             align-items: center;
@@ -618,48 +853,48 @@
             transition: all .15s ease;
             font-family: inherit;
         }
-
+        
         .type-legend-item:hover {
             border-color: rgba(240, 184, 35, .45);
         }
-
+        
         .type-legend-item.active {
             border-color: var(--accent);
             background: var(--accent-soft);
             color: var(--accent);
             font-weight: 600;
         }
-
+        
         .type-swatch {
             width: 7px;
             height: 7px;
             border-radius: 2px;
             flex-shrink: 0;
         }
-
+        
         .type-count {
             color: var(--text-secondary);
             font-size: .64rem;
             font-weight: 400;
         }
-
+        
         .stat-bars {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
-
+        
         .stat-row {
             cursor: pointer;
             padding: 4px 6px;
             border-radius: 6px;
             transition: background .12s;
         }
-
+        
         .stat-row:hover {
             background: rgba(255, 255, 255, .05);
         }
-
+        
         .stat-row-top {
             display: flex;
             justify-content: space-between;
@@ -668,37 +903,37 @@
             gap: 6px;
             align-items: center;
         }
-
+        
         .stat-track {
             height: 4px;
             background: rgba(255, 255, 255, .08);
             border-radius: 99px;
             overflow: hidden;
         }
-
+        
         .stat-fill {
             height: 100%;
             background: var(--accent);
             border-radius: 99px;
         }
-
+        
         .sv-svg-chart {
             width: 100%;
             height: auto;
             display: block;
             overflow: visible;
         }
-
+        
         .sv-svg-chart text {
             fill: var(--text-secondary);
             font: 500 10.5px 'Inter', sans-serif;
         }
-
+        
         .sv-svg-chart .lab {
             fill: var(--text-primary);
             font-weight: 600;
         }
-
+        
         .smart-slicer-input {
             width: 100%;
             padding: 7px 12px;
@@ -710,11 +945,11 @@
             font-family: inherit;
             outline: none;
         }
-
+        
         .smart-slicer-input:focus {
             border-color: var(--accent)
         }
-
+        
         .smart-list {
             max-height: 155px;
             overflow-y: auto;
@@ -727,7 +962,7 @@
             padding: 6px;
             margin-top: 6px;
         }
-
+        
         .smart-list-item {
             padding: 6px 8px;
             border-radius: 6px;
@@ -739,13 +974,13 @@
             background: rgba(255, 255, 255, .02);
             transition: background .15s
         }
-
+        
         .smart-list-item:hover {
             background: var(--accent-soft);
             color: var(--accent)
         }
-
         /* ---------- REGIONAL SIDEBAR & TOOLS ---------- */
+        
         #regionSidebar {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -765,13 +1000,13 @@
             flex-direction: column;
             gap: 12px
         }
-
+        
         #regionSidebar.open {
             transform: none;
             opacity: 1;
             pointer-events: auto
         }
-
+        
         .panel-header {
             display: flex;
             justify-content: space-between;
@@ -779,21 +1014,21 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px
         }
-
+        
         .panel-header h2 {
             color: var(--accent);
             margin: 0;
             font-size: .95rem;
             font-weight: 700
         }
-
+        
         .metric-card {
             background: rgba(255, 255, 255, .03);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 10px 12px
         }
-
+        
         .metric-card h3 {
             margin: 0 0 4px;
             font-size: .7rem;
@@ -801,12 +1036,12 @@
             text-transform: uppercase;
             letter-spacing: .4px
         }
-
+        
         .metric-val {
             font-size: .98rem;
             font-weight: 600
         }
-
+        
         .chart-box {
             background: rgba(0, 0, 0, .25);
             border: 1px solid var(--border);
@@ -814,7 +1049,7 @@
             padding: 10px;
             height: 175px
         }
-
+        
         .meta-footer {
             font-size: .68rem;
             color: var(--text-secondary);
@@ -824,7 +1059,7 @@
             gap: 4px;
             padding-top: 4px
         }
-
+        
         .floating-tool {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -837,22 +1072,22 @@
             border-radius: var(--radius-md);
             width: 275px
         }
-
+        
         .floating-tool.active {
             display: flex
         }
-
+        
         .measure-modes {
             display: flex;
             gap: 6px
         }
-
+        
         .measure-modes .btn-ui {
             flex: 1;
             justify-content: center;
             font-size: .72rem
         }
-
+        
         .measure-readout {
             background: rgba(0, 0, 0, .4);
             border-radius: 8px;
@@ -861,7 +1096,7 @@
             color: var(--accent);
             line-height: 1.45
         }
-
+        
         #polyDrawHud {
             position: absolute;
             top: calc(68px + env(safe-area-inset-top, 0px));
@@ -874,11 +1109,11 @@
             padding: 8px 14px;
             border-radius: var(--radius-pill)
         }
-
+        
         #polyDrawHud.active {
             display: flex
         }
-
+        
         .modal-backdrop {
             position: fixed;
             inset: 0;
@@ -890,7 +1125,7 @@
             justify-content: center;
             padding: 16px
         }
-
+        
         .modal-card {
             background: var(--surface-elevated);
             border: 1px solid var(--border);
@@ -904,11 +1139,11 @@
             padding: 22px;
             position: relative
         }
-
+        
         .modal-card.compact {
-            max-width: 440px
+            max-width: 460px
         }
-
+        
         .close-btn {
             background: rgba(255, 255, 255, .06);
             border: none;
@@ -924,12 +1159,12 @@
             justify-content: center;
             transition: .15s
         }
-
+        
         .close-btn:hover {
             background: rgba(255, 255, 255, .15);
             color: #fff
         }
-
+        
         .tabs {
             display: flex;
             gap: 6px;
@@ -938,7 +1173,7 @@
             padding: 4px;
             border-radius: var(--radius-pill)
         }
-
+        
         .tab-btn {
             flex: 1;
             background: transparent;
@@ -952,16 +1187,16 @@
             cursor: pointer;
             transition: .18s
         }
-
+        
         .tab-btn.active {
             background: var(--accent);
             color: #000
         }
-
+        
         .form-group {
             margin-bottom: 12px
         }
-
+        
         .form-group label {
             display: block;
             font-size: .75rem;
@@ -969,7 +1204,7 @@
             margin-bottom: 4px;
             font-weight: 500
         }
-
+        
         .form-control {
             width: 100%;
             padding: 8px 12px;
@@ -981,12 +1216,12 @@
             font-size: .82rem;
             outline: none
         }
-
+        
         .form-control:focus {
             border-color: var(--accent)
         }
-
         /* KML Legal Consent Box Styles */
+        
         .kml-consent-box {
             background: rgba(255, 255, 255, .03);
             border: 1px solid var(--border);
@@ -997,7 +1232,7 @@
             color: var(--text-secondary);
             line-height: 1.45;
         }
-
+        
         .kml-consent-label {
             display: flex;
             align-items: flex-start;
@@ -1007,7 +1242,7 @@
             color: var(--text-primary);
             font-weight: 500;
         }
-
+        
         .kml-consent-label input[type="checkbox"] {
             margin-top: 2px;
             accent-color: var(--accent);
@@ -1016,13 +1251,13 @@
             flex-shrink: 0;
             cursor: pointer;
         }
-
+        
         .kml-consent-box a {
             color: var(--accent);
             text-decoration: underline;
             text-underline-offset: 2px;
         }
-
+        
         .kml-security-note {
             display: flex;
             align-items: center;
@@ -1033,21 +1268,21 @@
             font-size: .68rem;
             color: var(--text-secondary);
         }
-
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 12px;
             margin-top: 12px
         }
-
+        
         .stats-box {
             background: rgba(0, 0, 0, .3);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 12px
         }
-
+        
         .stats-box h3 {
             font-size: .78rem;
             color: var(--accent);
@@ -1055,7 +1290,7 @@
             text-transform: uppercase;
             letter-spacing: .3px
         }
-
+        
         .stats-item {
             display: flex;
             justify-content: space-between;
@@ -1068,11 +1303,11 @@
             background: rgba(255, 255, 255, .02);
             transition: background .15s
         }
-
+        
         .stats-item:hover {
             background: var(--accent-soft)
         }
-
+        
         .mapboxgl-popup-content {
             background: var(--surface-elevated) !important;
             border: 1px solid var(--border) !important;
@@ -1086,7 +1321,7 @@
             max-height: 330px;
             overflow-y: auto
         }
-
+        
         .popup-blend {
             color: var(--accent);
             font-weight: 700;
@@ -1096,7 +1331,7 @@
             padding-bottom: 5px;
             padding-right: 16px
         }
-
+        
         .popup-price-row {
             display: flex;
             justify-content: space-between;
@@ -1104,29 +1339,29 @@
             margin: 6px 0;
             gap: 8px
         }
-
+        
         .popup-price {
             font-size: 1.05rem;
             font-weight: 700
         }
-
+        
         .popup-change {
             font-weight: 600;
             font-size: .75rem;
             padding: 2px 6px;
             border-radius: 4px
         }
-
+        
         .positive {
             color: var(--up);
             background: rgba(16, 185, 129, .14)
         }
-
+        
         .negative {
             color: var(--down);
             background: rgba(239, 68, 68, .14)
         }
-
+        
         .popup-ranges {
             margin-top: 6px;
             padding-top: 6px;
@@ -1137,30 +1372,30 @@
             flex-direction: column;
             gap: 2px
         }
-
+        
         .popup-update {
             margin-top: 6px;
             font-size: .68rem;
             color: var(--text-secondary);
             text-align: right
         }
-
+        
         .cluster-popup-item {
             padding: 8px 0;
             border-bottom: 1px solid var(--border)
         }
-
+        
         .cluster-popup-item:last-child {
             border-bottom: none
         }
-
+        
         .mapboxgl-popup-close-button {
             color: var(--text-secondary) !important;
             font-size: 16px !important;
             padding: 4px 8px !important
         }
-
         /* ---------- MODERN UNIFIED TABLE FOR GIS / REFINERY POPUPS ---------- */
+        
         .popup-modern-table {
             width: 100%;
             border-collapse: separate;
@@ -1172,15 +1407,15 @@
             overflow: hidden;
             font-size: .74rem;
         }
-
+        
         .popup-modern-table tr:not(:last-child) td {
             border-bottom: 1px solid rgba(255, 255, 255, .07);
         }
-
+        
         .popup-modern-table tr:nth-child(even) td:not(.popup-table-banner) {
             background: rgba(255, 255, 255, .015);
         }
-
+        
         .popup-modern-table td {
             padding: 7px 10px;
             color: var(--text-primary);
@@ -1188,7 +1423,7 @@
             vertical-align: middle;
             word-break: break-word;
         }
-
+        
         .popup-modern-table td.prop-key {
             color: var(--text-secondary);
             font-weight: 600;
@@ -1198,13 +1433,13 @@
             letter-spacing: .3px;
             border-right: 1px solid rgba(255, 255, 255, .06);
         }
-
+        
         .popup-modern-table td.prop-val {
             color: var(--text-primary);
             font-weight: 500;
             width: 60%;
         }
-
+        
         .popup-modern-table td.popup-table-banner {
             background: rgba(240, 184, 35, .12);
             color: var(--accent);
@@ -1212,7 +1447,7 @@
             font-size: .78rem;
             text-align: left;
         }
-
+        
         .popup-modern-table a {
             color: var(--text-primary);
             text-decoration: none;
@@ -1228,14 +1463,14 @@
             font-size: .7rem;
             transition: all .15s ease;
         }
-
+        
         .popup-modern-table a:hover {
             background: var(--accent);
             color: #000;
             border-color: var(--accent);
             font-weight: 600;
         }
-
+        
         .custom-map-pin {
             background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="%23ef4444" stroke="%23ffffff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3" fill="%23ffffff"></circle></svg>');
             width: 30px;
@@ -1243,7 +1478,7 @@
             cursor: pointer;
             filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .5))
         }
-
+        
         .ad-container {
             position: absolute;
             bottom: calc(16px + env(safe-area-inset-bottom, 0px));
@@ -1257,7 +1492,7 @@
             align-items: center;
             justify-content: center
         }
-
+        
         @media (max-width: 820px) {
             header.top-bar {
                 top: calc(8px + env(safe-area-inset-top, 0px));
@@ -1272,7 +1507,7 @@
                 width: 175px;
             }
         }
-
+        
         @media (max-width: 520px) {
             .brand h1 {
                 display: none;
@@ -1299,6 +1534,11 @@
             #smartViewSidebar.open,
             #regionSidebar.open {
                 transform: none
+            }
+            #kmlLegendPanel {
+                bottom: 14px;
+                left: 10px;
+                width: calc(100% - 70px);
             }
             .ad-container {
                 display: none
@@ -1398,6 +1638,7 @@
         <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
         <button class="shortcut-item" id="menu-tool-poly" role="menuitem" type="button">📐 Polygon Block Drawer</button>
         <button class="shortcut-item" id="menu-tool-kml" role="menuitem" type="button">📂 Import KML / GIS</button>
+        <button class="shortcut-item" id="menu-tool-kml-legend" role="menuitem" type="button" style="display:none">🗂️ Imported KML Legend</button>
         <div class="menu-divider"></div>
         <div class="menu-group-header">Measurement</div>
         <button class="shortcut-item" id="menu-tool-measure" role="menuitem" type="button">📏 Measure Distance & Area</button>
@@ -1408,6 +1649,18 @@
         <a class="shortcut-item" role="menuitem" href="cited-by.html">Cited by</a>
         <a class="shortcut-item" role="menuitem" href="data_lineage.html">Data Lineage</a>
     </div>
+
+    <!-- Floating Imported KML Layers Legend Window -->
+    <aside id="kmlLegendPanel" class="glass" aria-label="Imported KML Layers Legend">
+        <div class="kml-legend-header">
+            <h3>🗂️ Imported KML Legend</h3>
+            <div style="display:flex;align-items:center;gap:6px">
+                <button type="button" class="kml-icon-btn" id="btnAddMoreKmlLegend" title="Import another KML">➕</button>
+                <button type="button" class="close-btn" id="closeKmlLegendBtn" style="width:22px;height:22px;font-size:14px" aria-label="Close Legend">&times;</button>
+            </div>
+        </div>
+        <div id="kmlLegendList" class="kml-legend-list"></div>
+    </aside>
 
     <!-- SmartView Live Analytics Sidebar -->
     <aside id="smartViewSidebar" class="glass" aria-label="SmartView Dashboard">
@@ -1571,7 +1824,7 @@
     <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
-    <!-- Spatial Tools Modal (Pins, Polygons, KML with Legal Consent & Vercel Blob Storage) -->
+    <!-- Spatial Tools Modal (Pins, Polygons, KML with Custom Styling, Legal Consent & Vercel Blob Storage) -->
     <div id="addPinModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="spatialToolsModalTitle">
         <div class="modal-card compact">
             <div class="panel-header">
@@ -1627,12 +1880,43 @@
                     </div>
                 </div>
 
+                <!-- KML Symbology Customization (Polygon Color & Oil/Gas Point Icon) -->
+                <div class="kml-style-grid">
+                    <div>
+                        <label for="kmlLayerNameInput" style="display:block;font-size:.72rem;color:var(--text-secondary);margin-bottom:4px;font-weight:600">Layer Name (Optional for Legend &amp; Layers Menu)</label>
+                        <input type="text" id="kmlLayerNameInput" class="form-control" placeholder="Defaults to KML file name..." style="padding:6px 10px;font-size:.76rem">
+                    </div>
+
+                    <div>
+                        <label for="kmlPolyColorInput" style="display:block;font-size:.72rem;color:var(--text-secondary);margin-bottom:5px;font-weight:600">🎨 Polygon &amp; Line Color</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="kmlPolyColorInput" class="kml-color-input" value="#3b82f6" title="Choose custom polygon color">
+                            <div class="color-presets" id="kmlColorPresets">
+                                <button type="button" class="color-preset-btn active" data-color="#3b82f6" style="background:#3b82f6" title="Exploration Blue"></button>
+                                <button type="button" class="color-preset-btn" data-color="#f0b823" style="background:#f0b823" title="Crude Gold"></button>
+                                <button type="button" class="color-preset-btn" data-color="#10b981" style="background:#10b981" title="Production Emerald"></button>
+                                <button type="button" class="color-preset-btn" data-color="#ef4444" style="background:#ef4444" title="Gas / Alert Red"></button>
+                                <button type="button" class="color-preset-btn" data-color="#8b5cf6" style="background:#8b5cf6" title="Concession Violet"></button>
+                                <button type="button" class="color-preset-btn" data-color="#06b6d4" style="background:#06b6d4" title="Offshore Cyan"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block;font-size:.72rem;color:var(--text-secondary);margin-bottom:5px;font-weight:600">🛢️ Point Icon (Oil &amp; Gas Sector)</label>
+                        <div class="oil-icon-grid" id="kmlPointIconGrid" role="radiogroup" aria-label="Select Oil and Gas Point Icon"></div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="kmlFileInput">Select KML File (.kml)</label>
                     <input type="file" id="kmlFileInput" class="form-control" accept=".kml,.xml" multiple disabled title="Please accept the terms and consent above first">
                 </div>
                 <p id="kmlStatusMsg" style="font-size:.74rem;color:var(--text-secondary);line-height:1.45">Please check the consent box above to enable KML upload &amp; secure storage.</p>
-                <button type="button" id="btnClearKml" class="btn-ui" style="width:100%;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear Imported KML</button>
+                <div style="display:flex;gap:6px">
+                    <button type="button" id="btnToggleKmlLegendModal" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--accent);border-color:rgba(240,184,35,.35)">🗂️ View Legend</button>
+                    <button type="button" id="btnClearKml" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear All KML</button>
+                </div>
             </div>
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
                 <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)">📥 Export to KML</button>
@@ -1709,6 +1993,95 @@
             return isNaN(x) ? null : x;
         };
 
+        /* ---------- OIL & GAS SECTOR SVG ICONS FOR KML POINTS ---------- */
+        const KML_OIL_GAS_ICONS = [{
+            id: 'kml-icon-derrick',
+            label: 'Drilling Rig',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#f0b823" stroke-width="4"/><path d="M22 50L29 14h6l7 36M18 50h28M25 38h14M27 26h10M26 38l11-12M38 38L27 26" stroke="#f0b823" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="29" y="10" width="6" height="4" rx="1" fill="#ef4444"/></svg>`
+        }, {
+            id: 'kml-icon-pumpjack',
+            label: 'Pumpjack',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#10b981" stroke-width="4"/><path d="M14 48h36M24 48l8-20 8 20" stroke="#10b981" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M18 22l26 8" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/><path d="M16 18c-3 4-3 9 2 11l4-9z" fill="#f0b823"/><line x1="44" y1="30" x2="44" y2="48" stroke="#94a3b8" stroke-width="2.5"/></svg>`
+        }, {
+            id: 'kml-icon-barrel',
+            label: 'Crude Barrel',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#f59e0b" stroke-width="4"/><rect x="20" y="15" width="24" height="34" rx="4" fill="#f59e0b" stroke="#fff" stroke-width="2"/><line x1="18" y1="26" x2="46" y2="26" stroke="#0d121e" stroke-width="3"/><line x1="18" y1="38" x2="46" y2="38" stroke="#0d121e" stroke-width="3"/><path d="M32 28c-3 4-4 6-4 8a4 4 0 0 0 8 0c0-2-1-4-4-8z" fill="#0d121e"/></svg>`
+        }, {
+            id: 'kml-icon-refinery',
+            label: 'Refinery',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#ef4444" stroke-width="4"/><rect x="16" y="32" width="18" height="16" fill="#ef4444"/><rect x="36" y="22" width="6" height="26" fill="#94a3b8"/><rect x="44" y="26" width="6" height="22" fill="#94a3b8"/><path d="M39 16c2-3 6-3 8 0" stroke="#f0b823" stroke-width="3" stroke-linecap="round" fill="none"/><line x1="14" y1="48" x2="52" y2="48" stroke="#fff" stroke-width="2.5"/></svg>`
+        }, {
+            id: 'kml-icon-gas',
+            label: 'Gas Flare',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#06b6d4" stroke-width="4"/><path d="M32 13c6 9 13 14 13 24a13 13 0 0 1-26 0c0-10 7-15 13-24z" fill="#06b6d4"/><path d="M32 25c3 5 6 8 6 13a6 6 0 0 1-12 0c0-5 3-8 6-13z" fill="#f0b823"/></svg>`
+        }, {
+            id: 'kml-icon-tanker',
+            label: 'Oil Tanker',
+            svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="44" height="44"><circle cx="32" cy="32" r="29" fill="#0d121e" stroke="#3b82f6" stroke-width="4"/><path d="M12 36h40l-5 10H17z" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><rect x="38" y="25" width="9" height="11" fill="#f8fafc"/><rect x="20" y="31" width="15" height="5" fill="#f0b823"/><path d="M14 50c4-2 8 2 12 0s8 2 12 0 8 2 12 0" stroke="#3b82f6" stroke-width="2.5" fill="none"/></svg>`
+        }];
+
+        let selectedKmlIconId = KML_OIL_GAS_ICONS[0].id;
+        let selectedKmlPolyColor = '#3b82f6';
+        let importedKmlLayersRegistry = []; // Stores metadata for each imported KML layer
+
+        function initKmlStyleSelectorsDOM() {
+            const iconGrid = $('kmlPointIconGrid');
+            if (iconGrid) {
+                iconGrid.innerHTML = KML_OIL_GAS_ICONS.map((ic, idx) => `
+                    <button type="button" class="oil-icon-option${idx === 0 ? ' active' : ''}" data-icon-id="${ic.id}" role="radio" aria-checked="${idx === 0}">
+                        ${ic.svg}
+                        <span>${esc(ic.label)}</span>
+                    </button>
+                `).join('');
+
+                iconGrid.addEventListener('click', e => {
+                    const btn = e.target.closest('.oil-icon-option');
+                    if (!btn) return;
+                    selectedKmlIconId = btn.dataset.iconId;
+                    iconGrid.querySelectorAll('.oil-icon-option').forEach(b => {
+                        const act = b === btn;
+                        b.classList.toggle('active', act);
+                        b.setAttribute('aria-checked', String(act));
+                    });
+                });
+            }
+
+            const colorInput = $('kmlPolyColorInput');
+            const presetsBox = $('kmlColorPresets');
+            if (colorInput && presetsBox) {
+                colorInput.addEventListener('input', e => {
+                    selectedKmlPolyColor = e.target.value;
+                    presetsBox.querySelectorAll('.color-preset-btn').forEach(b => {
+                        b.classList.toggle('active', b.dataset.color.toLowerCase() === selectedKmlPolyColor.toLowerCase());
+                    });
+                });
+
+                presetsBox.addEventListener('click', e => {
+                    const btn = e.target.closest('.color-preset-btn');
+                    if (!btn) return;
+                    selectedKmlPolyColor = btn.dataset.color;
+                    colorInput.value = selectedKmlPolyColor;
+                    presetsBox.querySelectorAll('.color-preset-btn').forEach(b => b.classList.toggle('active', b === btn));
+                });
+            }
+        }
+        initKmlStyleSelectorsDOM();
+
+        function registerOilGasIconsOnMap() {
+            KML_OIL_GAS_ICONS.forEach(ic => {
+                if (map.hasImage(ic.id)) return;
+                const url = URL.createObjectURL(new Blob([ic.svg], {
+                    type: 'image/svg+xml;charset=utf-8'
+                }));
+                const img = new Image();
+                img.onload = () => {
+                    if (!map.hasImage(ic.id)) map.addImage(ic.id, img);
+                    URL.revokeObjectURL(url);
+                };
+                img.src = url;
+            });
+        }
+
         /* ---------- STRICT VALIDATION (OMITS NULL, BLANK, UNKNOWN, UNNAMED) ---------- */
         function isValidValue(raw) {
             if (raw === null || raw === undefined) return false;
@@ -1774,25 +2147,36 @@
                     e.preventDefault();
                     navTrack.scrollLeft += e.deltaY;
                 }
-            }, { passive: false });
+            }, {
+                passive: false
+            });
 
             navTrack.addEventListener('scroll', () => {
                 closeAllDropdowns();
                 updateScrollArrows();
-            }, { passive: true });
+            }, {
+                passive: true
+            });
 
             if (scrollLeftBtn) {
                 scrollLeftBtn.addEventListener('click', () => {
-                    navTrack.scrollBy({ left: -220, behavior: 'smooth' });
+                    navTrack.scrollBy({
+                        left: -220,
+                        behavior: 'smooth'
+                    });
                 });
             }
             if (scrollRightBtn) {
                 scrollRightBtn.addEventListener('click', () => {
-                    navTrack.scrollBy({ left: 220, behavior: 'smooth' });
+                    navTrack.scrollBy({
+                        left: 220,
+                        behavior: 'smooth'
+                    });
                 });
             }
 
-            let isDown = false, startX, scrollLeftVal;
+            let isDown = false,
+                startX, scrollLeftVal;
             navTrack.addEventListener('mousedown', e => {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
                 isDown = true;
@@ -1897,6 +2281,12 @@
                 };
                 frag.appendChild(b);
             });
+
+            // Container for dynamically imported KML layers inside the Layers dropdown
+            const kmlMenuSection = document.createElement('div');
+            kmlMenuSection.id = 'kmlLayersMenuContainer';
+            frag.appendChild(kmlMenuSection);
+
             menuNav.appendChild(frag);
         }
         initLayerMenuDOM();
@@ -1999,6 +2389,11 @@
             addPinModal.style.display = 'flex';
         });
 
+        $('menu-tool-kml-legend').addEventListener('click', () => {
+            closeAllDropdowns();
+            $('kmlLegendPanel').classList.add('show');
+        });
+
         $('menu-tool-measure').addEventListener('click', () => {
             closeAllDropdowns();
             toggleMeasureTool();
@@ -2017,15 +2412,20 @@
             antialias: true
         });
 
-        map.addControl(new mapboxgl.NavigationControl({ showCompass: true }), 'bottom-right');
+        map.addControl(new mapboxgl.NavigationControl({
+            showCompass: true
+        }), 'bottom-right');
         map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
         map.addControl(new mapboxgl.GeolocateControl({
-            positionOptions: { enableHighAccuracy: true },
+            positionOptions: {
+                enableHighAccuracy: true
+            },
             trackUserLocation: true
         }), 'bottom-right');
 
         /* ---------- DEFERRED LOADING OF GEOCODER.JS ---------- */
         let geocoderScriptLoaded = false;
+
         function loadGeocoderScriptLast() {
             if (geocoderScriptLoaded) return;
             geocoderScriptLoaded = true;
@@ -2036,7 +2436,9 @@
                 document.body.appendChild(s);
             };
             if (typeof window.requestIdleCallback === 'function') {
-                window.requestIdleCallback(loadRunner, { timeout: 2000 });
+                window.requestIdleCallback(loadRunner, {
+                    timeout: 2000
+                });
             } else {
                 setTimeout(loadRunner, 600);
             }
@@ -2091,7 +2493,10 @@
         }
 
         function ringCenter(ring) {
-            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            let minX = Infinity,
+                minY = Infinity,
+                maxX = -Infinity,
+                maxY = -Infinity;
             for (let i = 0; i < ring.length; i++) {
                 if (ring[i][0] < minX) minX = ring[i][0];
                 if (ring[i][0] > maxX) maxX = ring[i][0];
@@ -2129,18 +2534,25 @@
 
         /* ---------- EXTRACT REFINERY CAPACITY FROM DESCRIPTIO COLSPAN ---------- */
         function extractRefineryCapacity(p) {
-            if (!p) return { value: 0, unit: '' };
-            // 1. Check direct capacity properties first
+            if (!p) return {
+                value: 0,
+                unit: ''
+            };
             const direct = getProp(p, ['capacity', 'cap_bpd', 'capacity_bpd', 'storage', 'storage_capacity', 'capacidad']);
             if (direct) {
                 const cleaned = direct.replace(/,/g, '');
                 const m = cleaned.match(/(\d+(?:\.\d+)?)/);
-                if (m) return { value: parseFloat(m[1]), unit: direct.replace(/[\d.,\s]+/g, '').trim() || 'bbl/d' };
+                if (m) return {
+                    value: parseFloat(m[1]),
+                    unit: direct.replace(/[\d.,\s]+/g, '').trim() || 'bbl/d'
+                };
             }
 
-            // 2. Parse HTML table inside Descriptio (specifically the first colspan cell used as popup banner)
             const rawDesc = p.Descriptio || p.description || p.Description || p.DESCRIPTIO || p.DESC || p.desc;
-            if (!isValidValue(rawDesc)) return { value: 0, unit: '' };
+            if (!isValidValue(rawDesc)) return {
+                value: 0,
+                unit: ''
+            };
 
             let str = String(rawDesc).trim();
             let bannerText = '';
@@ -2151,12 +2563,10 @@
                 for (let i = 0; i < trs.length; i++) {
                     const cells = Array.from(trs[i].querySelectorAll('td, th'));
                     if (!trs[i].textContent.trim()) continue;
-                    // First 1-cell row (colspan="2") without links is the capacity banner
                     if (cells.length === 1 && !cells[0].querySelector('a')) {
                         bannerText = cells[0].textContent.trim();
                         break;
                     }
-                    // Fallback if structured as 2 cells (Key | Value)
                     if (cells.length >= 2 && /cap|stor|almac|bpd|bbl|barrel/i.test(cells[0].textContent)) {
                         bannerText = cells.slice(1).map(c => c.textContent.trim()).join(' ');
                         break;
@@ -2167,27 +2577,36 @@
                 bannerText = str;
             }
 
-            if (!bannerText) return { value: 0, unit: '' };
+            if (!bannerText) return {
+                value: 0,
+                unit: ''
+            };
 
-            // Normalize thousand separators (e.g., "540,000" or "540.000" -> "540000")
             const normalized = bannerText
                 .replace(/(\d)[,\.](\d{3})(?=(?:[,\.]\d{3})*(?!\d))/g, '$1$2');
 
-            // Match number accompanied by capacity/storage unit
             const unitMatch = normalized.match(/(\d+(?:\.\d+)?)\s*(kbpd|mbpd|bpd|bbl\/d|bbl|barrels?(?:\/d(?:ay)?)?|m3|m³|mt(?:\/y)?|t\/d)/i);
             if (unitMatch) {
-                return { value: parseFloat(unitMatch[1]), unit: unitMatch[2] };
+                return {
+                    value: parseFloat(unitMatch[1]),
+                    unit: unitMatch[2]
+                };
             }
 
-            // Fallback: extract main numeric value if present (excluding 4-digit years like 1998, 2024)
             const numMatch = normalized.match(/(\d+(?:\.\d+)?)/);
             if (numMatch) {
                 const val = parseFloat(numMatch[1]);
                 if (val > 0 && !(val >= 1900 && val <= 2035 && normalized.length > 6)) {
-                    return { value: val, unit: 'bbl/d' };
+                    return {
+                        value: val,
+                        unit: 'bbl/d'
+                    };
                 }
             }
-            return { value: 0, unit: '' };
+            return {
+                value: 0,
+                unit: ''
+            };
         }
 
         const fastSmartLayers = [
@@ -2249,7 +2668,11 @@
         }
 
         window.flyToLocalWell = function(lng, lat) {
-            map.flyTo({ center: [lng, lat], zoom: 13, essential: true });
+            map.flyTo({
+                center: [lng, lat],
+                zoom: 13,
+                essential: true
+            });
         };
 
         function scheduleFastWellCount(platformsCount) {
@@ -2283,7 +2706,9 @@
                 if (!map || map.getZoom() < WELLS_LIVE_ZOOM_THRESHOLD) return;
                 let rawWells = [];
                 try {
-                    rawWells = map.queryRenderedFeatures({ layers: ['oil-and-gas-wells'] });
+                    rawWells = map.queryRenderedFeatures({
+                        layers: ['oil-and-gas-wells']
+                    });
                 } catch (e) {}
 
                 const count = rawWells.length;
@@ -2336,7 +2761,9 @@
 
             wellCountTimer = setTimeout(() => {
                 if (typeof window.requestIdleCallback === 'function') {
-                    window.requestIdleCallback(runLocalCount, { timeout: 300 });
+                    window.requestIdleCallback(runLocalCount, {
+                        timeout: 300
+                    });
                 } else {
                     runLocalCount();
                 }
@@ -2350,7 +2777,9 @@
 
             try {
                 const activeLayers = fastSmartLayers.filter(l => map.getLayer(l));
-                const rendered = map.queryRenderedFeatures({ layers: activeLayers });
+                const rendered = map.queryRenderedFeatures({
+                    layers: activeLayers
+                });
                 const unique = new Map();
 
                 rendered.forEach((f, idx) => {
@@ -2406,7 +2835,10 @@
                     }
 
                     const area = extractAreaKm2(p, f);
-                    const refCapObj = category === 'Refinery' ? extractRefineryCapacity(p) : { value: 0, unit: '' };
+                    const refCapObj = category === 'Refinery' ? extractRefineryCapacity(p) : {
+                        value: 0,
+                        unit: ''
+                    };
                     const fid = getProp(p, ['id', 'objectid', 'fid', 'gid', 'block_id', 'pipeline_id']);
 
                     let key;
@@ -2463,7 +2895,11 @@
                 filterAndRenderSmartList();
 
                 $('svStatusDot').classList.remove('busy');
-                const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const now = new Date().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
                 $('smartStatus').textContent = `${smartExtractedAssets.length.toLocaleString()} assets analyzed · ${now}`;
             } catch (err) {
                 console.error('SmartView query error:', err);
@@ -2497,9 +2933,9 @@
             $('svKpiRefSub').textContent = `${refs.length} Refineries · ${deps.length} Deposits`;
 
             if ($('svKpiRefCap')) {
-                $('svKpiRefCap').textContent = totalRefCap > 0
-                    ? `Capacity: ${Math.round(totalRefCap).toLocaleString()} ${sampleUnit}`
-                    : 'Capacity: 0 bbl/d';
+                $('svKpiRefCap').textContent = totalRefCap > 0 ?
+                    `Capacity: ${Math.round(totalRefCap).toLocaleString()} ${sampleUnit}` :
+                    'Capacity: 0 bbl/d';
             }
 
             const primaryTotal = validBlocks.length + oilPipes.length + gasPipes.length + refs.length + deps.length;
@@ -2550,9 +2986,9 @@
 
             const maxA = rankedBlocks[0].area || 1;
             box.innerHTML = rankedBlocks.map(b => {
-                const pct = Math.max(4, (b.area / maxA) * 100);
-                const subTag = isValidValue(b.company) ? b.company : b.blockType;
-                return `<div class="stat-row" data-sv-key="${esc(b.key)}">
+                        const pct = Math.max(4, (b.area / maxA) * 100);
+                        const subTag = isValidValue(b.company) ? b.company : b.blockType;
+                        return `<div class="stat-row" data-sv-key="${esc(b.key)}">
                     <div class="stat-row-top">
                         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
                             <span class="type-swatch" style="display:inline-block;margin-right:5px;background:${activeColor}"></span>
@@ -2871,6 +3307,7 @@
 
         map.on('load', () => {
             syncLayerMenuWithMap();
+            registerOilGasIconsOnMap();
 
             // Load geocoder.js last once the map has finished rendering base layers
             map.once('idle', loadGeocoderScriptLast);
@@ -3087,7 +3524,7 @@
             LOCSOURCE: 'Location Source'
         };
         const orderedDisplayFields = ['FAC_NAME', 'COMMODITY', 'Type', 'Company', 'OPERATOR', 'RESINFO', 'FAC_TYPE', 'DRILL_TYPE', 'FAC_STATUS', 'OGIM_STATUS', 'CATEGORY', 'ON_OFFSHORE', 'Country', 'COUNTRY', 'REGION', 'STATE_PROV', 'Area_km2', 'INSTALL_DATE', 'SPUD_DATE', 'DISC', 'PROD', 'source', 'Source', 'SOURCEINFO', 'LOCSOURCE', 'OTHERINFO'];
-        const ignoredInternalKeys = new Set(['Name', 'NAME', 'title', 'TITLE', 'field_name', 'description', 'Description', 'Descriptio', 'DESCRIPTIO', 'DESC', 'desc', 'popupContent', 'fid', 'OGIM_ID', 'FAC_ID', 'SRC_REF_ID', 'LATITUDE', 'LONGITUDE', 'LAT', 'LONG', 'bbox', 'PRIMKEY', 'FIPSCODE', 'COWCODE', 'CONTCODE', 'SITENUM', 'VERSION', 'RES', 'DISCPRES', 'PRODPRES', 'FIELDINFO']);
+        const ignoredInternalKeys = new Set(['Name', 'NAME', 'title', 'TITLE', 'field_name', 'description', 'Description', 'Descriptio', 'DESCRIPTIO', 'DESC', 'desc', 'popupContent', 'fid', 'OGIM_ID', 'FAC_ID', 'SRC_REF_ID', 'LATITUDE', 'LONGITUDE', 'LAT', 'LONG', 'bbox', 'PRIMKEY', 'FIPSCODE', 'COWCODE', 'CONTCODE', 'SITENUM', 'VERSION', 'RES', 'DISCPRES', 'PRODPRES', 'FIELDINFO', '_kmlLayerId', '_kmlColor', '_kmlIcon', '_kmlLayerName']);
 
         function sanitizeHtmlFragment(rawStr) {
             if (!rawStr) return '';
@@ -3382,7 +3819,7 @@
             if (addPinForm.reportValidity()) handlePinSubmission(true, e);
         });
 
-        /* ---------- KML IMPORT & CLOUD STORAGE WITH CONSENT & SANITIZATION ---------- */
+        /* ---------- KML IMPORT, CUSTOM SYMBOLOGY, LAYER CONTROL & LEGEND WINDOW ---------- */
         const kmlConsentCheckbox = $('kmlConsentCheckbox');
         const kmlFileInput = $('kmlFileInput');
         const kmlStatusMsg = $('kmlStatusMsg');
@@ -3392,7 +3829,7 @@
             const consented = kmlConsentCheckbox.checked;
             kmlFileInput.disabled = !consented;
             if (consented) {
-                kmlStatusMsg.textContent = 'Upload your own KML files (Points, Lines, or Polygons) to display and archive them securely.';
+                kmlStatusMsg.textContent = 'Select polygon color & oil/gas point icon above, then upload your KML file(s).';
                 kmlStatusMsg.style.color = 'var(--text-secondary)';
             } else {
                 kmlStatusMsg.textContent = 'Please check the consent box above to enable KML upload & secure storage.';
@@ -3424,20 +3861,17 @@
                 const responseText = await res.text();
                 if (!res.ok) {
                     console.error('KML Server Error:', res.status, responseText);
-                    document.getElementById('kmlStatusMsg').textContent = `⚠️ Cloud Error (${res.status}): Check console`;
-                    document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
                     return null;
                 }
                 return JSON.parse(responseText);
             } catch (e) {
                 console.error('Network exception uploading KML:', e);
-                document.getElementById('kmlStatusMsg').textContent = `⚠️ Network Error: Check console`;
-                document.getElementById('kmlStatusMsg').style.color = 'var(--down)';
                 return null;
             }
         }
 
         function initKmlSources() {
+            registerOilGasIconsOnMap();
             if (map.getSource('kml-custom-source')) return;
             map.addSource('kml-custom-source', {
                 type: 'geojson',
@@ -3447,7 +3881,10 @@
                 id: 'kml-custom-fill',
                 type: 'fill',
                 source: 'kml-custom-source',
-                paint: { 'fill-color': '#3b82f6', 'fill-opacity': 0.25 },
+                paint: {
+                    'fill-color': ['coalesce', ['get', '_kmlColor'], '#3b82f6'],
+                    'fill-opacity': 0.30
+                },
                 filter: ['==', '$type', 'Polygon']
             });
             map.addLayer({
@@ -3455,18 +3892,20 @@
                 type: 'line',
                 source: 'kml-custom-source',
                 layout: { 'line-cap': 'round', 'line-join': 'round' },
-                paint: { 'line-color': '#10b981', 'line-width': 2.5 },
+                paint: {
+                    'line-color': ['coalesce', ['get', '_kmlColor'], '#10b981'],
+                    'line-width': 2.5
+                },
                 filter: ['in', '$type', 'LineString', 'Polygon']
             });
             map.addLayer({
                 id: 'kml-custom-point',
-                type: 'circle',
+                type: 'symbol',
                 source: 'kml-custom-source',
-                paint: {
-                    'circle-radius': 5.5,
-                    'circle-color': '#f0b823',
-                    'circle-stroke-width': 2,
-                    'circle-stroke-color': '#fff'
+                layout: {
+                    'icon-image': ['coalesce', ['get', '_kmlIcon'], 'kml-icon-derrick'],
+                    'icon-size': 0.72,
+                    'icon-allow-overlap': true
                 },
                 filter: ['==', '$type', 'Point']
             });
@@ -3474,7 +3913,7 @@
                 map.on('click', lid, e => {
                     if (isDrawingPolygon || measureEnabled || !e.features || !e.features.length) return;
                     const p = e.features[0].properties || {};
-                    const facName = getVerifiedName(p) || 'Custom KML';
+                    const facName = getVerifiedName(p) || p._kmlLayerName || 'Custom KML';
                     const html = buildUnifiedPopupHtml(facName, p);
                     showPopup(e.lngLat, html);
                 });
@@ -3487,6 +3926,140 @@
             });
         }
 
+        function refreshKmlMapData() {
+            const src = map.getSource('kml-custom-source');
+            if (!src) return;
+            const visibleIds = new Set(importedKmlLayersRegistry.filter(l => l.visible).map(l => l.id));
+            const visibleFeatures = customKmlFeatures.filter(f => visibleIds.has(f.properties._kmlLayerId));
+            src.setData({ type: 'FeatureCollection', features: visibleFeatures });
+            if (smartViewActive) setTimeout(refreshSmartViewData, 200);
+        }
+
+        function updateKmlLayerControlAndLegend() {
+            // 1. Update Layers Dropdown Menu (#kmlLayersMenuContainer)
+            const menuContainer = $('kmlLayersMenuContainer');
+            if (menuContainer) {
+                if (!importedKmlLayersRegistry.length) {
+                    menuContainer.innerHTML = '';
+                } else {
+                    let html = `<div class="menu-divider"></div><div class="menu-group-header">Imported KML Layers</div>`;
+                    importedKmlLayersRegistry.forEach(layer => {
+                        const iconObj = KML_OIL_GAS_ICONS.find(i => i.id === layer.iconId) || KML_OIL_GAS_ICONS[0];
+                        const badgeHtml = layer.hasPolygons || layer.hasLines
+                            ? `<span class="layer-dot" style="background:${esc(layer.color)};box-shadow:0 0 6px ${esc(layer.color)}"></span>`
+                            : `<span class="kml-legend-swatch-icon">${iconObj.svg}</span>`;
+
+                        html += `
+                            <button type="button" class="layer-item${layer.visible ? ' active' : ''}" data-kml-layer-id="${esc(layer.id)}" role="menuitemcheckbox" aria-checked="${layer.visible}">
+                                ${badgeHtml}
+                                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${esc(layer.name)}</span>
+                                <small style="color:var(--text-secondary);font-size:.64rem">(${layer.count})</small>
+                            </button>
+                        `;
+                    });
+                    menuContainer.innerHTML = html;
+
+                    menuContainer.querySelectorAll('button[data-kml-layer-id]').forEach(btn => {
+                        btn.onclick = e => {
+                            e.preventDefault();
+                            const id = btn.dataset.kmlLayerId;
+                            toggleImportedKmlLayer(id);
+                        };
+                    });
+                }
+            }
+
+            // 2. Update Floating KML Legend Window (#kmlLegendPanel)
+            const legendPanel = $('kmlLegendPanel');
+            const legendList = $('kmlLegendList');
+            const toolsMenuLegendBtn = $('menu-tool-kml-legend');
+            const modalLegendBtn = $('btnToggleKmlLegendModal');
+
+            if (!importedKmlLayersRegistry.length) {
+                if (legendPanel) legendPanel.classList.remove('show');
+                if (toolsMenuLegendBtn) toolsMenuLegendBtn.style.display = 'none';
+                if (modalLegendBtn) modalLegendBtn.style.display = 'none';
+                return;
+            }
+
+            if (toolsMenuLegendBtn) toolsMenuLegendBtn.style.display = 'flex';
+            if (modalLegendBtn) modalLegendBtn.style.display = 'inline-flex';
+
+            if (legendList) {
+                legendList.innerHTML = importedKmlLayersRegistry.map(layer => {
+                    const iconObj = KML_OIL_GAS_ICONS.find(i => i.id === layer.iconId) || KML_OIL_GAS_ICONS[0];
+                    const geomParts = [];
+                    if (layer.polyCount > 0) geomParts.push(`${layer.polyCount} Poly`);
+                    if (layer.lineCount > 0) geomParts.push(`${layer.lineCount} Line`);
+                    if (layer.pointCount > 0) geomParts.push(`${layer.pointCount} Pt (${iconObj.label})`);
+
+                    const symbolsHtml = `
+                        ${(layer.polyCount > 0 || layer.lineCount > 0) ? `<span class="kml-legend-swatch-poly" style="background:${esc(layer.color)}"></span>` : ''}
+                        ${layer.pointCount > 0 ? `<span class="kml-legend-swatch-icon" title="${esc(iconObj.label)}">${iconObj.svg}</span>` : ''}
+                    `;
+
+                    return `
+                        <div class="kml-legend-item" style="opacity:${layer.visible ? '1' : '0.48'}">
+                            <div class="kml-legend-left" onclick="zoomToImportedKmlLayer('${esc(layer.id)}')" title="Click to zoom to layer">
+                                ${symbolsHtml}
+                                <div style="min-width:0">
+                                    <div class="kml-legend-title">${esc(layer.name)}</div>
+                                    <div class="kml-legend-meta">${esc(geomParts.join(' · ') || `${layer.count} items`)}</div>
+                                </div>
+                            </div>
+                            <div class="kml-legend-actions">
+                                <button type="button" class="kml-icon-btn" onclick="zoomToImportedKmlLayer('${esc(layer.id)}')" title="Zoom to layer">🔍</button>
+                                <button type="button" class="kml-icon-btn" onclick="toggleImportedKmlLayer('${esc(layer.id)}')" title="Toggle visibility">${layer.visible ? '👁️' : '🚫'}</button>
+                                <button type="button" class="kml-icon-btn" onclick="removeImportedKmlLayer('${esc(layer.id)}')" title="Remove layer" style="color:var(--down)">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        window.toggleImportedKmlLayer = function(layerId) {
+            const target = importedKmlLayersRegistry.find(l => l.id === layerId);
+            if (!target) return;
+            target.visible = !target.visible;
+            refreshKmlMapData();
+            updateKmlLayerControlAndLegend();
+        };
+
+        window.zoomToImportedKmlLayer = function(layerId) {
+            const feats = customKmlFeatures.filter(f => f.properties._kmlLayerId === layerId);
+            if (!feats.length) return;
+            const bounds = new mapboxgl.LngLatBounds();
+            feats.forEach(f => {
+                if (f.geometry.type === 'Point') bounds.extend(f.geometry.coordinates);
+                else if (f.geometry.type === 'LineString') f.geometry.coordinates.forEach(c => bounds.extend(c));
+                else if (f.geometry.type === 'Polygon') f.geometry.coordinates[0].forEach(c => bounds.extend(c));
+            });
+            if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 55, maxZoom: 12 });
+        };
+
+        window.removeImportedKmlLayer = function(layerId) {
+            importedKmlLayersRegistry = importedKmlLayersRegistry.filter(l => l.id !== layerId);
+            customKmlFeatures = customKmlFeatures.filter(f => f.properties._kmlLayerId !== layerId);
+            refreshKmlMapData();
+            updateKmlLayerControlAndLegend();
+            $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
+        };
+
+        $('closeKmlLegendBtn').addEventListener('click', () => {
+            $('kmlLegendPanel').classList.remove('show');
+        });
+
+        $('btnAddMoreKmlLegend').addEventListener('click', () => {
+            showTab('kml');
+            addPinModal.style.display = 'flex';
+        });
+
+        $('btnToggleKmlLegendModal').addEventListener('click', () => {
+            addPinModal.style.display = 'none';
+            $('kmlLegendPanel').classList.add('show');
+        });
+
         function parseKmlCoordinates(text) {
             return String(text || '').trim().split(/\s+/).map(s => {
                 const p = s.split(',');
@@ -3495,7 +4068,7 @@
             }).filter(Boolean);
         }
 
-        function extractKmlFeatures(xmlStr, fileName) {
+        function extractKmlFeatures(xmlStr, fileName, styleOpts) {
             const cleanXml = sanitizeKmlString(xmlStr);
             const xml = new DOMParser().parseFromString(cleanXml, 'text/xml');
             if (xml.getElementsByTagName('parsererror').length > 0) {
@@ -3512,8 +4085,12 @@
                 const props = {
                     Name: name,
                     FAC_NAME: name,
-                    COMMODITY: 'Custom KML',
-                    description: desc
+                    COMMODITY: styleOpts.layerName || 'Custom KML',
+                    description: desc,
+                    _kmlLayerId: styleOpts.layerId,
+                    _kmlLayerName: styleOpts.layerName,
+                    _kmlColor: styleOpts.color,
+                    _kmlIcon: styleOpts.iconId
                 };
 
                 const simpleData = pm.getElementsByTagName('SimpleData');
@@ -3591,28 +4168,69 @@
             initKmlSources();
             let loaded = 0;
             const addedFeatures = [];
-            kmlStatusMsg.textContent = '⏳ Sanitizing, rendering and archiving KML…';
+            const customLabelInput = ($('kmlLayerNameInput') ? $('kmlLayerNameInput').value.trim() : '');
+            const chosenColor = selectedKmlPolyColor || '#3b82f6';
+            const chosenIconId = selectedKmlIconId || KML_OIL_GAS_ICONS[0].id;
+
+            kmlStatusMsg.textContent = '⏳ Sanitizing, applying Oil & Gas symbology, and archiving KML…';
             kmlStatusMsg.style.color = 'var(--accent)';
 
-            files.forEach(file => {
+            files.forEach((file, fileIdx) => {
                 const reader = new FileReader();
                 reader.onload = async ev => {
                     const rawXml = ev.target.result;
                     const sanitizedXml = sanitizeKmlString(rawXml);
-                    const feats = extractKmlFeatures(sanitizedXml, file.name);
-                    customKmlFeatures.push(...feats);
-                    addedFeatures.push(...feats);
+                    const layerId = 'kml_layer_' + Date.now() + '_' + fileIdx;
+                    const cleanFileName = file.name.replace(/\.(kml|xml)$/i, '');
+                    const layerName = customLabelInput
+                        ? (files.length > 1 ? `${customLabelInput} (${fileIdx + 1})` : customLabelInput)
+                        : cleanFileName;
+
+                    const feats = extractKmlFeatures(sanitizedXml, file.name, {
+                        layerId,
+                        layerName,
+                        color: chosenColor,
+                        iconId: chosenIconId
+                    });
+
+                    if (feats.length > 0) {
+                        const polyCount = feats.filter(f => f.geometry.type === 'Polygon').length;
+                        const lineCount = feats.filter(f => f.geometry.type === 'LineString').length;
+                        const pointCount = feats.filter(f => f.geometry.type === 'Point').length;
+
+                        importedKmlLayersRegistry.push({
+                            id: layerId,
+                            name: layerName,
+                            color: chosenColor,
+                            iconId: chosenIconId,
+                            count: feats.length,
+                            polyCount,
+                            lineCount,
+                            pointCount,
+                            hasPolygons: polyCount > 0,
+                            hasLines: lineCount > 0,
+                            hasPoints: pointCount > 0,
+                            visible: true
+                        });
+
+                        customKmlFeatures.push(...feats);
+                        addedFeatures.push(...feats);
+                    }
 
                     // Archive in Vercel Blob in the background with verified consent
                     await uploadKmlToCloud(sanitizedXml, file.name);
 
                     loaded++;
                     if (loaded === files.length) {
-                        const src = map.getSource('kml-custom-source');
-                        if (src) src.setData({ type: 'FeatureCollection', features: customKmlFeatures });
-                        kmlStatusMsg.textContent = `✅ ${customKmlFeatures.length} KML feature(s) rendered & archived.`;
+                        refreshKmlMapData();
+                        updateKmlLayerControlAndLegend();
+                        $('kmlLegendPanel').classList.add('show');
+
+                        kmlStatusMsg.textContent = `✅ ${customKmlFeatures.length} feature(s) rendered & added to Layers / Legend.`;
                         kmlStatusMsg.style.color = 'var(--up)';
                         $('btnClearKml').style.display = customKmlFeatures.length ? 'inline-flex' : 'none';
+                        if ($('kmlLayerNameInput')) $('kmlLayerNameInput').value = '';
+
                         if (addedFeatures.length) {
                             const bounds = new mapboxgl.LngLatBounds();
                             addedFeatures.forEach(f => {
@@ -3633,9 +4251,11 @@
 
         $('btnClearKml').onclick = () => {
             customKmlFeatures = [];
+            importedKmlLayersRegistry = [];
             const src = map.getSource('kml-custom-source');
             if (src) src.setData({ type: 'FeatureCollection', features: [] });
-            kmlStatusMsg.textContent = "Upload your own KML files (Points, Lines, or Polygons) to display them on the map.";
+            updateKmlLayerControlAndLegend();
+            kmlStatusMsg.textContent = "Select polygon color & oil/gas point icon above, then upload your KML file(s).";
             kmlStatusMsg.style.color = 'var(--text-secondary)';
             $('btnClearKml').style.display = 'none';
             if (smartViewActive) refreshSmartViewData();
