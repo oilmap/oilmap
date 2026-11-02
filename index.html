@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
-    <title>World Oil Map 2026 | Global Upstream, Downstream & Crude Prices</title>
-    <meta name="description" content="Interactive Location Intelligence platform for the Oil & Gas industry. Explore global oil blocks, refineries, pipelines, real-time crude oil prices, and EIA production data.">
-    <meta name="keywords" content="World Oil Map, crude oil prices, upstream, downstream, oil pipelines, gas pipelines, refineries, petroleum intelligence, OPEC, EIA oil data, GIS oil map">
+    <title>World Oil Map 2026 | Global Upstream, Downstream, GIS Spatial Tools & Crude Prices</title>
+    <meta name="description" content="Interactive Location Intelligence platform for the Oil & Gas industry. Explore global oil blocks, refineries, pipelines, real-time crude oil prices, EIA data, and GIS Intelligence Tools: Proximity Buffer Zones, Mapbox DEM Terrain Elevation Profiles, Spatial Intersection Queries, UTM Pin Converter, and KML/GPX/Shapefile viewer.">
+    <meta name="keywords" content="World Oil Map, crude oil prices, upstream, downstream, oil pipelines, gas pipelines, refineries, petroleum intelligence, OPEC, EIA oil data, GIS oil map, proximity buffer analysis, pipeline elevation profile, Mapbox DEM terrain, spatial intersection query, oil concession slicing, KML GPX Shapefile viewer, UTM converter">
     <meta name="author" content="Roque Leal">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#090d16">
@@ -23,13 +23,13 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://oilmap.xyz/">
     <meta property="og:site_name" content="World Oil Map 2026">
-    <meta property="og:title" content="World Oil Map 2026 | Global Oil & Gas Intelligence">
-    <meta property="og:description" content="Interactive spatial intelligence on Upstream, Downstream, pipelines, and live crude oil benchmarks.">
+    <meta property="og:title" content="World Oil Map 2026 | Global Oil & Gas Spatial Intelligence & GIS Tools">
+    <meta property="og:description" content="Interactive spatial intelligence on Upstream, Downstream, pipelines, live crude benchmarks, Proximity Buffer Analysis, DEM Terrain Elevation Profiles, and Spatial Intersection Queries.">
     <meta property="og:image" content="https://oilmap.xyz/img/preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@roqueleal08">
-    <meta name="twitter:title" content="World Oil Map 2026 | Global Oil & Gas Intelligence">
-    <meta name="twitter:description" content="Explore global oil & gas fields, pipelines, refineries, and real-time crude oil prices.">
+    <meta name="twitter:title" content="World Oil Map 2026 | Global Oil & Gas Spatial Intelligence">
+    <meta name="twitter:description" content="Explore global oil & gas fields, pipelines, refineries, real-time crude prices, and advanced GIS Intelligence Tools (Buffers, Elevation Profiles & Spatial Queries).">
     <meta name="twitter:image" content="https://oilmap.xyz/img/preview.jpg">
     <link rel="preconnect" href="https://api.mapbox.com" crossorigin>
     <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
@@ -42,11 +42,21 @@
             "@type": "WebApplication",
             "name": "World Oil Map 2026",
             "url": "https://oilmap.xyz/",
-            "description": "Web-based Location Intelligence application for Upstream and Downstream Oil & Gas activities, global pipelines, refineries, and real-time crude oil price benchmarks.",
+            "description": "Web-based Location Intelligence application for Upstream and Downstream Oil & Gas activities, global pipelines, refineries, real-time crude oil price benchmarks, and interactive GIS Intelligence Tools.",
             "applicationCategory": "BusinessApplication, GeospatialApplication",
             "operatingSystem": "All",
             "inLanguage": ["en", "es", "fr"],
             "isAccessibleForFree": true,
+            "featureList": [
+                "Proximity & Buffer Zone Analysis (5 km, 10 km, 50 km Dynamic Influence Zones for Wells, Refineries, Pipelines, and GPX/KML)",
+                "Terrain Elevation Profile Generator (Mapbox Terrain DEM for GPX Routes, Pipelines, and Polygons)",
+                "Advanced Spatial Intersection & Concession Slicing Query (Instant Infrastructure Intersection Report)",
+                "Custom Geographic & UTM Coordinate Pin Plotter",
+                "Interactive Polygon Concession Block Drawer & Area Calculator",
+                "Client-Side KML, GPX, GeoJSON & Shapefile GIS Importer with Custom Oil & Gas Symbology",
+                "Interactive Geodesic Distance & Area Measurement Tool",
+                "SmartView Live Viewport Telemetry Dashboard"
+            ],
             "author": {
                 "@type": "Person",
                 "name": "Roque Leal",
@@ -74,7 +84,7 @@
     </script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
-    <script src="https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" defer></script>
     <!-- data/geocoder.js is deferred to the end of the map lifecycle (map.once('idle')) to optimize initial load speed -->
     <style>
@@ -90,6 +100,7 @@
             --down: #ef4444;
             --blue: #3b82f6;
             --purple: #8b5cf6;
+            --cyan: #06b6d4;
             --radius-lg: 14px;
             --radius-md: 10px;
             --radius-pill: 999px;
@@ -383,8 +394,8 @@
             display: none;
             flex-direction: column;
             gap: 2px;
-            max-height: 72vh;
-            max-height: 72dvh;
+            max-height: 76vh;
+            max-height: 76dvh;
             overflow-y: auto;
         }
         
@@ -688,6 +699,151 @@
             background: var(--accent-soft);
             color: var(--accent);
             border-color: rgba(240, 184, 35, .35);
+        }
+        /* ---------- INTELLIGENCE TOOLS DOCKABLE WORKSPACE ---------- */
+        
+        #intelToolsPanel {
+            position: absolute;
+            top: calc(68px + env(safe-area-inset-top, 0px));
+            left: 14px;
+            width: 410px;
+            max-height: calc(100vh - 84px);
+            max-height: calc(100dvh - 84px);
+            z-index: 27;
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            gap: 11px;
+        }
+        
+        #intelToolsPanel.open {
+            display: flex;
+        }
+        
+        .intel-mode-banner {
+            background: rgba(240, 184, 35, .12);
+            border: 1px solid rgba(240, 184, 35, .38);
+            color: var(--accent);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: .73rem;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        
+        .intel-preset-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .intel-pill-btn {
+            flex: 1;
+            min-width: 54px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text-primary);
+            font-size: .73rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .15s ease;
+            text-align: center;
+        }
+        
+        .intel-pill-btn:hover,
+        .intel-pill-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        
+        .intel-kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        
+        .intel-kpi-box {
+            background: rgba(0, 0, 0, .35);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 8px;
+            text-align: center;
+        }
+        
+        .intel-kpi-box small {
+            display: block;
+            font-size: .62rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        
+        .intel-kpi-box strong {
+            font-size: .84rem;
+            color: var(--text-primary);
+        }
+        
+        .elev-chart-wrap {
+            position: relative;
+            background: rgba(0, 0, 0, .38);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 8px 6px;
+            user-select: none;
+        }
+        
+        .elev-svg {
+            width: 100%;
+            height: 155px;
+            display: block;
+            cursor: crosshair;
+            overflow: visible;
+        }
+        
+        .elev-readout-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .7rem;
+            color: var(--text-secondary);
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            margin-top: 4px;
+        }
+        
+        .spatial-filter-pills {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin: 6px 0;
+        }
+        
+        .spatial-filter-pill {
+            padding: 4px 8px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .03);
+            color: var(--text-secondary);
+            font-size: .67rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: .15s;
+        }
+        
+        .spatial-filter-pill.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
         }
         /* ---------- SMARTVIEW LIVE DASHBOARD ---------- */
         
@@ -1519,7 +1675,8 @@
                 display: none !important;
             }
             #smartViewSidebar,
-            #regionSidebar {
+            #regionSidebar,
+            #intelToolsPanel {
                 top: auto;
                 bottom: 0;
                 left: 0 !important;
@@ -1528,8 +1685,11 @@
                 max-height: 68vh;
                 max-height: 68dvh;
                 border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-                transform: translateY(105%);
                 padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px))
+            }
+            #smartViewSidebar,
+            #regionSidebar {
+                transform: translateY(105%);
             }
             #smartViewSidebar.open,
             #regionSidebar.open {
@@ -1632,8 +1792,8 @@
         <button class="shortcut-item" role="menuitem" data-region="Global" data-lng="-64.974" data-lat="18.198" data-zoom="3" type="button">🌎 Global View</button>
     </div>
 
-    <!-- Dropdown Menu: Tools -->
-    <div id="tools-menu" class="dropdown-panel glass" role="menu">
+    <!-- Dropdown Menu: Tools (Spatial Tools, Measurement & Intelligence Tools Submodule) -->
+    <div id="tools-menu" class="dropdown-panel glass" role="menu" aria-label="GIS Spatial and Intelligence Tools">
         <div class="menu-group-header">Spatial Tools</div>
         <button class="shortcut-item" id="menu-tool-pin" role="menuitem" type="button">📍 Custom Pin & UTM</button>
         <button class="shortcut-item" id="menu-tool-poly" role="menuitem" type="button">📐 Polygon Block Drawer</button>
@@ -1642,6 +1802,11 @@
         <div class="menu-divider"></div>
         <div class="menu-group-header">Measurement</div>
         <button class="shortcut-item" id="menu-tool-measure" role="menuitem" type="button">📏 Measure Distance & Area</button>
+        <div class="menu-divider"></div>
+        <div class="menu-group-header">Intelligence Tools</div>
+        <button class="shortcut-item" id="menu-intel-buffer" role="menuitem" type="button">🎯 Proximity & Buffer Zone</button>
+        <button class="shortcut-item" id="menu-intel-elevation" role="menuitem" type="button">⛰️ Terrain Elevation Profile</button>
+        <button class="shortcut-item" id="menu-intel-spatial" role="menuitem" type="button">🔍 Spatial Intersection Query</button>
     </div>
 
     <!-- Dropdown Menu: Sources -->
@@ -1661,6 +1826,8 @@
         </div>
         <div id="kmlLegendList" class="kml-legend-list"></div>
     </aside>
+
+
 
     <!-- SmartView Live Analytics Sidebar -->
     <aside id="smartViewSidebar" class="glass" aria-label="SmartView Dashboard">
@@ -1717,7 +1884,6 @@
                 <div style="color:var(--text-secondary);font-size:.72rem;padding:6px 0">Pan or zoom map to analyze blocks…</div>
             </div>
         </div>
-
         <!-- 2.5 Top 3 Refineries by Capacity -->
         <div class="sv-card">
             <h3>
@@ -1775,6 +1941,436 @@
         </div>
     </aside>
 
+    <!-- Scoped Styles for Intelligence Tools Workbench -->
+    <style>
+        #intelToolsSidebar {
+            position: absolute;
+            top: calc(68px + env(safe-area-inset-top, 0px));
+            left: 14px;
+            width: 410px;
+            max-height: calc(100vh - 84px);
+            max-height: calc(100dvh - 84px);
+            z-index: 27;
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            overflow-y: auto;
+            transform: translateX(-450px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .28s cubic-bezier(.16, 1, .3, 1), opacity .25s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        #intelToolsSidebar.open {
+            transform: none;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .intel-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            background: rgba(0, 0, 0, .35);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+        
+        .intel-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 7px 6px;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: .7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .18s ease;
+            text-align: center;
+            line-height: 1.25;
+        }
+        
+        .intel-tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, .05);
+        }
+        
+        .intel-tab-btn.active {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .intel-pane {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .intel-pane.active {
+            display: flex;
+        }
+        
+        .intel-Preset-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .intel-preset-pill {
+            flex: 1;
+            min-width: 54px;
+            padding: 5px 8px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text-primary);
+            font-size: .71rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: .15s;
+            font-family: inherit;
+        }
+        
+        .intel-preset-pill:hover,
+        .intel-preset-pill.active {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .intel-status-banner {
+            background: rgba(240, 184, 35, .1);
+            border: 1px solid rgba(240, 184, 35, .3);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: .72rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        
+        .intel-kpi-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        
+        .intel-kpi-mini {
+            background: rgba(0, 0, 0, .32);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 7px 8px;
+            text-align: center;
+        }
+        
+        .intel-kpi-mini span {
+            display: block;
+            font-size: .62rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+        
+        .intel-kpi-mini strong {
+            font-size: .92rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .elev-chart-wrap {
+            background: rgba(0, 0, 0, .38);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            position: relative;
+        }
+        
+        .elev-svg {
+            width: 100%;
+            height: 150px;
+            display: block;
+            cursor: crosshair;
+            overflow: visible;
+        }
+        
+        .spatial-filter-pills {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .spatial-filter-pill {
+            padding: 4px 8px;
+            border-radius: var(--radius-pill);
+            font-size: .66rem;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .03);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: inherit;
+            transition: .15s;
+        }
+        
+        .spatial-filter-pill.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+        
+        @media (max-width: 520px) {
+            #intelToolsSidebar {
+                top: auto;
+                bottom: 0;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100%;
+                max-height: 70vh;
+                max-height: 70dvh;
+                border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+                transform: translateY(105%);
+                padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            }
+            #intelToolsSidebar.open {
+                transform: none;
+            }
+        }
+    </style>
+
+    <!-- Intelligence Tools Workbench Sidebar (Proximity Buffers, DEM Elevation Profile, Spatial Query) -->
+    <aside id="intelToolsSidebar" class="glass" aria-label="Geospatial Intelligence Tools">
+        <div class="panel-header">
+            <h2>🧠 Intelligence Tools</h2>
+            <button class="close-btn" id="closeIntelTools" aria-label="Close Intelligence Tools">&times;</button>
+        </div>
+
+        <div class="intel-tabs" role="tablist" aria-label="Intelligence Tool Modes">
+            <button type="button" class="intel-tab-btn active" data-intel-tab="buffer" role="tab" aria-selected="true">🛡️ Proximity &amp; Buffer</button>
+            <button type="button" class="intel-tab-btn" data-intel-tab="elevation" role="tab" aria-selected="false">⛰️ Terrain DEM</button>
+            <button type="button" class="intel-tab-btn" data-intel-tab="spatial" role="tab" aria-selected="false">🔍 Spatial Query</button>
+        </div>
+
+        <!-- 1. ANÁLISIS DE PROXIMIDAD Y BUFFERS (ZONAS DE INFLUENCIA) -->
+        <div id="intelPaneBuffer" class="intel-pane active" role="tabpanel">
+            <div class="sv-card">
+                <h3>
+                    <span>🛡️ Proximity &amp; Buffer Zone</span>
+                    <small style="color:var(--accent);font-size:.66rem">Metric &amp; Imperial</small>
+                </h3>
+                <p class="sv-card-sub">Select any map entity (well, refinery, pipeline, block, or imported GPX/KML feature) and set the distance in meters, kilometers, miles, or feet.</p>
+
+                <div style="display:flex;gap:6px;margin-bottom:8px">
+                    <button type="button" id="btnBufferPickMap" class="btn-ui active-tool" style="flex:1;justify-content:center">🎯 Select Entity on Map</button>
+                    <button type="button" id="btnBufferClear" class="btn-ui" style="color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom:8px">
+                    <label for="bufferCustomSourceSelect">Or choose from Imported KML/GPX / Custom Entities</label>
+                    <select id="bufferCustomSourceSelect" class="form-control" style="font-size:.74rem;padding:6px 10px">
+                        <option value="">-- Click an entity on the map or select here --</option>
+                    </select>
+                </div>
+
+                <!-- Input numérico + Selector de unidad (m, km, mi, ft) + Equivalencia en vivo -->
+                <div class="form-group" style="margin-bottom:8px">
+                    <label for="bufferDistanceValInput">
+                        Buffer Distance (Radius): <strong id="bufferRadiusLabel" style="color:var(--accent)">10 km</strong>
+                    </label>
+                    <div style="display:flex;gap:6px;margin-bottom:6px">
+                        <input type="number" id="bufferDistanceValInput" class="form-control" value="10" min="0.01" step="any" style="flex:1;padding:6px 10px;font-size:.78rem" aria-label="Buffer distance value">
+                        <select id="bufferUnitSelect" class="form-control" style="width:140px;padding:6px 8px;font-size:.75rem" aria-label="Buffer unit">
+                            <option value="km" selected>Kilometers (km)</option>
+                            <option value="m">Meters (m)</option>
+                            <option value="mi">Miles (mi)</option>
+                            <option value="ft">Feet (ft)</option>
+                        </select>
+                    </div>
+
+                    <div id="bufferEquivReadout" style="font-size:.67rem;color:var(--text-secondary);background:rgba(0,0,0,.32);padding:5px 8px;border-radius:6px;margin-bottom:6px;border:1px solid var(--border)">
+                        📏 Equiv: <strong>10.00 km</strong> (10,000 m) · <strong>6.21 mi</strong> (32,808 ft)
+                    </div>
+
+                    <div class="intel-Preset-row" style="margin-bottom:6px">
+                        <button type="button" class="intel-preset-pill" data-buf-val="500" data-buf-unit="m">500 m</button>
+                        <button type="button" class="intel-preset-pill" data-buf-val="5" data-buf-unit="km">5 km</button>
+                        <button type="button" class="intel-preset-pill active" data-buf-val="10" data-buf-unit="km">10 km</button>
+                        <button type="button" class="intel-preset-pill" data-buf-val="5" data-buf-unit="mi">5 mi</button>
+                        <button type="button" class="intel-preset-pill" data-buf-val="50" data-buf-unit="km">50 km</button>
+                    </div>
+                    <input type="range" id="bufferRadiusInput" min="0.1" max="150" step="0.5" value="10" style="width:100%;accent-color:var(--accent);cursor:pointer">
+                </div>
+
+                <div id="bufferSelectedStatus" class="intel-status-banner">
+                    📍 Click any well, refinery, pipeline, oil block, or imported GPX/KML entity on the map to generate its buffer zone.
+                </div>
+            </div>
+
+            <div class="sv-card" id="bufferResultsCard" style="display:none">
+                <h3>
+                    <span>📊 Influence Zone Telemetry</span>
+                    <small id="bufferAreaBadge" style="color:var(--up);font-size:.68rem">0 km² (0 sq mi)</small>
+                </h3>
+                <div class="intel-kpi-mini-grid" style="margin-top:6px">
+                    <div class="intel-kpi-mini">
+                        <span>Blocks/Fields</span>
+                        <strong id="bufCountBlocks">0</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Pipelines</span>
+                        <strong id="bufCountPipes">0</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Refineries/Wells</span>
+                        <strong id="bufCountFacilities">0</strong>
+                    </div>
+                </div>
+                <div id="bufferIntersectingList" class="smart-list" style="margin-top:8px;max-height:175px"></div>
+            </div>
+        </div>
+
+        <!-- 2. PERFIL DE ELEVACIÓN Y TERRENO (MAPBOX TERRAIN DEM) -->
+        <div id="intelPaneElevation" class="intel-pane" role="tabpanel">
+            <div class="sv-card">
+                <h3>
+                    <span>⛰️ Terrain Elevation Profile</span>
+                    <small style="color:var(--accent);font-size:.66rem">Mapbox DEM</small>
+                </h3>
+                <p class="sv-card-sub">Trace a pipeline/route on the map, click an existing pipeline, or select an imported GPX/KML route to compute its topographic elevation profile.</p>
+
+                <div style="display:flex;gap:6px;margin-bottom:8px">
+                    <button type="button" id="btnElevDrawRoute" class="btn-ui active-tool" style="flex:1;justify-content:center">✏️ Trace Route</button>
+                    <button type="button" id="btnElevPickLine" class="btn-ui" style="flex:1;justify-content:center">🛢️ Click Pipeline</button>
+                    <button type="button" id="btnElevClear" class="btn-ui" style="color:var(--down);border-color:rgba(239,68,68,.35)">🗑️</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom:8px">
+                    <label for="elevGpxSelect">Or select Imported GPX / KML Route or Drawn Polygon</label>
+                    <select id="elevGpxSelect" class="form-control" style="font-size:.74rem;padding:6px 10px">
+                        <option value="">-- Select imported GPX/KML line or polygon --</option>
+                    </select>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:.72rem;color:var(--text-secondary)">
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-primary)">
+                        <input type="checkbox" id="toggle3dTerrainDem" style="accent-color:var(--accent)">
+                        <span>Enable 3D Topographic Relief (1.5x DEM)</span>
+                    </label>
+                    <button type="button" id="btnFinishElevRoute" class="sv-link-btn" style="display:none;font-weight:700">✅ Compute Profile</button>
+                </div>
+
+                <div id="elevStatusBanner" class="intel-status-banner">
+                    ⛰️ Click <strong>Trace Route</strong> to plot points on the map, click an official pipeline, or pick an imported GPX/KML track.
+                </div>
+            </div>
+
+            <!-- SIEMPRE VISIBLE AL FINAL DE LA VENTANA DEM: Perfil desde Punto de Inicio (A) hasta Punto Final (B) -->
+            <div class="sv-card" id="elevChartCard">
+                <h3>
+                    <span id="elevRouteTitle">📈 Start-to-End Elevation Profile</span>
+                    <small id="elevTotalDistBadge" style="color:var(--accent);font-size:.68rem">0.00 km (0.00 mi)</small>
+                </h3>
+
+                <!-- Cajas de Punto de Inicio (A) y Punto Final (B) -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0">
+                    <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:7px;padding:6px 8px;font-size:.68rem">
+                        <span style="color:var(--up);font-weight:700;display:block">🟢 A · START (INICIO)</span>
+                        <span id="elevStartInfo" style="color:var(--text-secondary)">Elev: -- m (-- ft)</span>
+                    </div>
+                    <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:7px;padding:6px 8px;font-size:.68rem">
+                        <span style="color:var(--down);font-weight:700;display:block">🔴 B · END (FINAL)</span>
+                        <span id="elevEndInfo" style="color:var(--text-secondary)">Elev: -- m (-- ft)</span>
+                    </div>
+                </div>
+
+                <div class="intel-kpi-mini-grid" style="margin:6px 0 8px">
+                    <div class="intel-kpi-mini">
+                        <span>Min / Max Elev</span>
+                        <strong id="elevMinMaxVal">-- / -- m</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Total Ascent</span>
+                        <strong id="elevGainVal" style="color:var(--up)">+0 m</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Avg Slope</span>
+                        <strong id="elevSlopeVal">0.0%</strong>
+                    </div>
+                </div>
+                <div class="elev-chart-wrap">
+                    <svg id="elevProfileSvg" class="elev-svg" viewBox="0 0 350 155" role="img" aria-label="Interactive terrain elevation profile from start to end"></svg>
+                    <div id="elevHoverReadout" style="font-size:.67rem;color:var(--text-secondary);text-align:center;margin-top:4px">
+                        Select or trace a route to visualize the terrain profile from Start (A) to End (B)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. INTERSECCIÓN ESPACIAL Y SLICING AVANZADO (SPATIAL QUERY) -->
+        <div id="intelPaneSpatial" class="intel-pane" role="tabpanel">
+            <div class="sv-card">
+                <h3>
+                    <span>🔍 Spatial Intersection &amp; Slicing</span>
+                    <small style="color:var(--accent);font-size:.66rem">Spatial Query</small>
+                </h3>
+                <p class="sv-card-sub">Draw a polygon of interest or select an uploaded concession to generate an instant on-screen report of intersecting blocks, fields, pipelines, and refineries.</p>
+
+                <div style="display:flex;gap:6px;margin-bottom:8px">
+                    <button type="button" id="btnSpatialDrawPoly" class="btn-ui active-tool" style="flex:1;justify-content:center">📐 Draw Query Area</button>
+                    <button type="button" id="btnSpatialUseViewport" class="btn-ui" style="flex:1;justify-content:center">🗔 Scan Polygon</button>
+                    <button type="button" id="btnSpatialClear" class="btn-ui" style="color:var(--down);border-color:rgba(239,68,68,.35)">🗑️</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom:8px">
+                    <label for="spatialConcessionSelect">Or query using Imported Concession / Drawn Block / Active Buffer</label>
+                    <select id="spatialConcessionSelect" class="form-control" style="font-size:.74rem;padding:6px 10px">
+                        <option value="">-- Choose polygon concession or buffer --</option>
+                    </select>
+                </div>
+
+                <div id="spatialQueryStatus" class="intel-status-banner">
+                    📐 Draw a polygon of interest on the map or select an imported concession above to run a spatial intersection report.
+                </div>
+            </div>
+
+            <div class="sv-card" id="spatialReportCard" style="display:none">
+                <h3>
+                    <span>📋 Spatial Intersection Report</span>
+                    <small id="spatialPolyAreaBadge" style="color:var(--accent);font-size:.68rem">0 km²</small>
+                </h3>
+                <p class="sv-card-sub" id="spatialReportSub">Official infrastructure assets intersecting the selected geographical area.</p>
+
+                <div class="intel-kpi-mini-grid" style="margin-bottom:8px">
+                    <div class="intel-kpi-mini">
+                        <span>Oil/Gas Blocks</span>
+                        <strong id="spCountBlocks">0</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Pipelines</span>
+                        <strong id="spCountPipes">0</strong>
+                    </div>
+                    <div class="intel-kpi-mini">
+                        <span>Refineries &amp; Wells</span>
+                        <strong id="spCountRefsWells">0</strong>
+                    </div>
+                </div>
+
+                <div class="spatial-filter-pills" id="spatialFilterPills" role="group" aria-label="Filter intersecting assets">
+                    <button type="button" class="spatial-filter-pill active" data-sp-cat="ALL">All</button>
+                    <button type="button" class="spatial-filter-pill" data-sp-cat="Block">Blocks &amp; Fields</button>
+                    <button type="button" class="spatial-filter-pill" data-sp-cat="Pipeline">Pipelines</button>
+                    <button type="button" class="spatial-filter-pill" data-sp-cat="Refinery">Refineries</button>
+                    <button type="button" class="spatial-filter-pill" data-sp-cat="WellPlatform">Wells &amp; Platforms</button>
+                </div>
+
+                <div id="spatialIntersectList" class="smart-list" style="max-height:200px;margin-top:8px"></div>
+            </div>
+        </div>
+    </aside>
+
     <!-- Floating Measurement Control -->
     <div id="distanceContainer" class="floating-tool glass" aria-live="polite">
         <div class="measure-modes">
@@ -1817,11 +2413,28 @@
         </div>
     </aside>
 
-    <section class="sr-only">
-        <h2>Interactive global oil and gas map</h2>
-        <p>Explore oil blocks, bid rounds, exploration areas, refineries, oil and gas pipelines and live crude benchmark prices (Brent, WTI, Murban, Merey and more), with EIA reserves and production data by country.</p>
+    <!-- Indexable SEO Semantic Section & Structured Microdata for Spatial & Intelligence Tools -->
+    <section class="sr-only" itemscope itemtype="https://schema.org/SoftwareApplication">
+        <meta itemprop="name" content="World Oil Map 2026 - Geospatial & Location Intelligence Suite">
+        <meta itemprop="applicationCategory" content="GeospatialApplication, BusinessApplication">
+        <meta itemprop="operatingSystem" content="Web Browser">
+        <h2>Interactive Global Oil and Gas Map &amp; Geospatial Intelligence Tools</h2>
+        <p itemprop="description">Explore global oil blocks, bid rounds, exploration concessions, refineries, oil and gas pipelines, and live crude benchmark prices (Brent, WTI, Murban, Merey) with advanced GIS Tools and Intelligence Tools.</p>
+        <div itemprop="featureList">
+            <h3>Geospatial Intelligence Tools Suite</h3>
+            <ul>
+                <li><strong>Proximity Analysis &amp; Dynamic Buffer Zones (Zonas de Influencia):</strong> Select any oil well, refinery, midstream pipeline, concession block, or imported GPX/KML entity to compute configurable geodesic buffer zones (5 km,
+                    10 km, 25 km, 50 km safety perimeters) and identify surrounding petroleum infrastructure.</li>
+                <li><strong>Terrain Elevation Profile &amp; 3D DEM Analysis (Mapbox Terrain DEM):</strong> Generate interactive topographic cross-section and elevation profile charts along imported GPX routes, traced pipeline corridors, or concession boundaries
+                    with minimum/maximum altitude, cumulative elevation gain, and slope telemetry.</li>
+                <li><strong>Spatial Intersection &amp; Advanced Slicing (Spatial Query):</strong> Draw custom polygons of interest or select uploaded KML/GeoJSON/Shapefile concessions to generate instant spatial intersection reports detailing overlapping
+                    oil and gas fields, production blocks, trunk pipelines, offshore platforms, and refineries.</li>
+                <li><strong>GIS Multi-Format Import &amp; Coordinate Tools:</strong> Plot Geographic (Lat/Lng) and UTM coordinates, delineate concession polygons, measure geodesic distances and areas, and visualize KML, GPX, GeoJSON, and Shapefile layers
+                    with custom Oil &amp; Gas symbology.</li>
+            </ul>
+        </div>
     </section>
-    <noscript><p>World Oil Map requires JavaScript to display the interactive map.</p></noscript>
+    <noscript><p>World Oil Map requires JavaScript to display the interactive map and geospatial intelligence tools.</p></noscript>
     <main id="map" role="application" aria-label="Interactive World Oil Map"></main>
 
     <!-- Spatial Tools Modal (Pins, Polygons, KML/GPX/GeoJSON/Shapefile with Custom Styling, Legal Consent & Vercel Blob Storage) -->
@@ -1918,8 +2531,9 @@
                     <button type="button" id="btnClearKml" class="btn-ui" style="flex:1;justify-content:center;display:none;color:var(--down);border-color:rgba(239,68,68,.35)">🗑️ Clear All GIS</button>
                 </div>
             </div>
+            <!-- Sole Permitted Export Action: User-Created KMLs Only -->
             <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-                <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)">📥 Export to KML</button>
+                <button type="button" id="btnExportKmlModal" class="btn-ui" style="width:100%;justify-content:center;color:var(--up);border-color:rgba(16,185,129,.35)">📥 Export User-Created KML</button>
             </div>
         </div>
     </div>
@@ -1928,7 +2542,7 @@
     <div id="statsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="statsModalTitle">
         <div class="modal-card">
             <div class="panel-header">
-                <h2 id="statsModalTitle">📊 Market Rankings & Fluctuations</h2>
+                <h2 id="statsModalTitle">📊 Market Rankings &amp; Fluctuations</h2>
                 <button class="close-btn" id="closeStatsModal" aria-label="Close">&times;</button>
             </div>
             <div class="stats-box" style="margin-top:12px">
@@ -1954,7 +2568,7 @@
                 </div>
             </div>
             <div class="meta-footer" style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">
-                <span><strong>Source:</strong> EIA & Official Price Feeds</span>
+                <span><strong>Source:</strong> EIA &amp; Official Price Feeds</span>
                 <span><strong>Captured:</strong> <span class="dynamic-capture-date">--</span></span>
             </div>
         </div>
@@ -1966,7 +2580,7 @@
             <div style="display:flex;justify-content:flex-end"><button class="close-btn" id="closeModal" aria-label="Close">&times;</button></div>
             <img src="./img/oilmap.png" width="56" height="56" loading="lazy" style="margin-bottom:8px" alt="World Oil Map" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23f0b823\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\'%3E%3C/path%3E%3Cpolyline points=\'3.27 6.96 12 12.01 20.73 6.96\'%3E%3C/polyline%3E%3Cline x1=\'12\' y1=\'22.08\' x2=\'12\' y2=\'12\'%3E%3C/line%3E%3C/svg%3E';">
             <h2 id="aboutModalTitle" style="color:var(--accent);margin:0 0 10px;font-size:1.15rem">World Oil Map 2026</h2>
-            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil & Gas sector.</p>
+            <p style="font-size:.82rem;color:var(--text-secondary);line-height:1.55">Web-based Location Intelligence platform updated using official spatial databases and authoritative sources for the Oil &amp; Gas sector.</p>
             <p style="font-size:.82rem"><span>Developed by</span> <a href="https://roqueleal.me/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Roque Leal</a> · <a href="mailto:roqueleal@gmail.com" style="color:var(--accent)">roqueleal@gmail.com</a></p>
             <div style="display:flex;justify-content:center;gap:16px;margin:16px 0">
                 <a href="https://github.com/roqueleal/oilmap" target="_blank" rel="noopener noreferrer"><img src="./img/git.png" width="110" height="34" loading="lazy" style="height:auto" alt="GitHub"></a>
@@ -1992,6 +2606,50 @@
             const x = parseFloat(String(v == null ? '' : v).replace(/["$%+\s]/g, '').replace(',', '.'));
             return isNaN(x) ? null : x;
         };
+
+        /* ---------- DYNAMIC SEO ENRICHMENT FOR INTELLIGENCE TOOLS ---------- */
+        (function enrichSeoMetadata() {
+            const kwMeta = document.querySelector('meta[name="keywords"]');
+            if (kwMeta && !kwMeta.content.includes('proximity buffer')) {
+                kwMeta.content += ', proximity buffer analysis, oil and gas buffer zones, Mapbox Terrain DEM elevation profile, pipeline elevation profile, spatial intersection query, concession slicing, GIS spatial tools';
+            }
+            const descMeta = document.querySelector('meta[name="description"]');
+            if (descMeta && !descMeta.content.includes('Proximity Buffer')) {
+                descMeta.content = 'Interactive Location Intelligence platform for the Oil & Gas industry. Explore global oil blocks, refineries, pipelines, real-time crude prices, Proximity Buffer Zones, Terrain DEM Elevation Profiles, and Spatial Intersection Queries.';
+            }
+            const ldScript = document.querySelector('script[type="application/ld+json"]');
+            if (ldScript) {
+                try {
+                    const data = JSON.parse(ldScript.textContent);
+                    data.featureList = [
+                        'Proximity Analysis and Configurable Geodesic Buffer Zones (5km, 10km, 50km)',
+                        'Interactive Terrain Elevation Profile (Mapbox Terrain DEM) for GPX Routes and Pipelines',
+                        'Advanced Spatial Intersection Query and Concession Polygon Slicing',
+                        'Multi-format GIS Import (KML, GPX, GeoJSON, Shapefile) and Custom User KML Export',
+                        'Real-Time Crude Oil Benchmarks and SmartView Viewport Telemetry'
+                    ];
+                    ldScript.textContent = JSON.stringify(data);
+                } catch (e) {}
+            }
+        })();
+
+        /* ---------- INJECT INTELLIGENCE TOOLS SUBMODULE INTO #tools-menu ---------- */
+        function initIntelligenceToolsMenuDOM() {
+            const toolsMenu = $('tools-menu');
+            if (!toolsMenu || $('menu-intel-buffer')) return;
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `
+                <div class="menu-divider"></div>
+                <div class="menu-group-header">Intelligence Tools</div>
+                <button class="shortcut-item" id="menu-intel-buffer" role="menuitem" type="button">🛡️ Proximity &amp; Buffer Zones</button>
+                <button class="shortcut-item" id="menu-intel-elevation" role="menuitem" type="button">⛰️ Terrain Elevation Profile</button>
+                <button class="shortcut-item" id="menu-intel-spatial" role="menuitem" type="button">🔍 Spatial Intersection Query</button>
+            `;
+            while (wrapper.firstChild) {
+                toolsMenu.appendChild(wrapper.firstChild);
+            }
+        }
+        initIntelligenceToolsMenuDOM();
 
         /* ---------- OIL & GAS SECTOR SVG ICONS FOR IMPORTED GIS POINTS ---------- */
         const KML_OIL_GAS_ICONS = [{
@@ -2022,7 +2680,7 @@
 
         let selectedKmlIconId = KML_OIL_GAS_ICONS[0].id;
         let selectedKmlPolyColor = '#3b82f6';
-        let importedKmlLayersRegistry = []; // Stores metadata for each imported GIS layer
+        let importedKmlLayersRegistry = [];
 
         function initKmlStyleSelectorsDOM() {
             const iconGrid = $('kmlPointIconGrid');
@@ -2282,7 +2940,6 @@
                 frag.appendChild(b);
             });
 
-            // Container for dynamically imported GIS layers inside the Layers dropdown
             const kmlMenuSection = document.createElement('div');
             kmlMenuSection.id = 'kmlLayersMenuContainer';
             frag.appendChild(kmlMenuSection);
@@ -2325,7 +2982,7 @@
 
         function placePanel(btn, panel) {
             const r = btn.getBoundingClientRect(),
-                w = Math.min(250, window.innerWidth - 16);
+                w = Math.min(255, window.innerWidth - 16);
             let left = r.left;
             if (left + w > window.innerWidth - 8) {
                 left = window.innerWidth - w - 8;
@@ -2532,7 +3189,6 @@
             return 0;
         }
 
-        /* ---------- EXTRACT REFINERY CAPACITY FROM DESCRIPTIO COLSPAN ---------- */
         function extractRefineryCapacity(p) {
             if (!p) return {
                 value: 0,
@@ -2582,9 +3238,7 @@
                 unit: ''
             };
 
-            const normalized = bannerText
-                .replace(/(\d)[,\.](\d{3})(?=(?:[,\.]\d{3})*(?!\d))/g, '$1$2');
-
+            const normalized = bannerText.replace(/(\d)[,\.](\d{3})(?=(?:[,\.]\d{3})*(?!\d))/g, '$1$2');
             const unitMatch = normalized.match(/(\d+(?:\.\d+)?)\s*(kbpd|mbpd|bpd|bbl\/d|bbl|barrels?(?:\/d(?:ay)?)?|m3|m³|mt(?:\/y)?|t\/d)/i);
             if (unitMatch) {
                 return {
@@ -2627,6 +3281,9 @@
 
         $('btn-smartview').addEventListener('click', () => {
             smartViewActive = !smartViewActive;
+            if (smartViewActive && $('intelToolsSidebar').classList.contains('open')) {
+                closeIntelToolsPanel();
+            }
             $('btn-smartview').classList.toggle('active-tool', smartViewActive);
             $('smartViewSidebar').classList.toggle('open', smartViewActive);
             if (smartViewActive) {
@@ -2818,9 +3475,7 @@
                     const verifiedType = getProp(p, ['type', 'fac_type', 'category']);
                     const verifiedCommodity = getProp(p, ['commodity', 'resinfo']);
 
-                    if (category === 'Block' && !verifiedName) {
-                        return;
-                    }
+                    if (category === 'Block' && !verifiedName) return;
 
                     const hasValidName = Boolean(verifiedName);
 
@@ -2883,7 +3538,6 @@
                 });
 
                 smartExtractedAssets = Array.from(unique.values());
-
                 const platformsCount = smartExtractedAssets.filter(a => a.category === 'Platform').length;
 
                 updateSvKpiMetrics();
@@ -3002,7 +3656,6 @@
             }).join('');
         }
 
-        /* ---------- TOP 3 REFINERIES BY CAPACITY CHART ---------- */
         function renderSvTopRefineriesChart() {
             const box = $('svTopRefineriesChart');
             if (!box) return;
@@ -3185,11 +3838,7 @@
         function focusOnSmartAsset(key) {
             const it = smartExtractedAssets.find(a => a.key === key);
             if (!it || !it.coords) return;
-            map.flyTo({
-                center: it.coords,
-                zoom: Math.max(map.getZoom(), 9.2),
-                essential: true
-            });
+            map.flyTo({ center: it.coords, zoom: Math.max(map.getZoom(), 9.2), essential: true });
             const html = buildUnifiedPopupHtml(it.name || it.subType, it.rawProps || {});
             showPopup(it.coords, html);
         }
@@ -3237,11 +3886,7 @@
 
         document.querySelectorAll('button.shortcut-item[data-region]').forEach(btn => btn.addEventListener('click', () => {
             const name = btn.dataset.region;
-            map.flyTo({
-                center: [+btn.dataset.lng, +btn.dataset.lat],
-                zoom: +btn.dataset.zoom,
-                essential: true
-            });
+            map.flyTo({ center: [+btn.dataset.lng, +btn.dataset.lat], zoom: +btn.dataset.zoom, essential: true });
             closeAllDropdowns();
             if (name && name !== 'Global') openRegionSidebar(name);
             else $('regionSidebar').classList.remove('open');
@@ -3267,12 +3912,7 @@
                     type: 'bar',
                     data: {
                         labels: ['2023', '2024', '2025', '2026'],
-                        datasets: [{
-                            label: 'kbbl/d',
-                            data: info.trend,
-                            backgroundColor: '#f0b823',
-                            borderRadius: 5
-                        }]
+                        datasets: [{ label: 'kbbl/d', data: info.trend, backgroundColor: '#f0b823', borderRadius: 5 }]
                     },
                     options: {
                         responsive: true,
@@ -3295,6 +3935,9 @@
             customUserPolygons = [],
             customKmlFeatures = [],
             latestCaptureDate = 'Live';
+        let intelActiveMapMode = null; // 'buffer-pick' | 'elev-draw' | 'elev-pick' | 'spatial-draw' | null
+        const isMapInteractiveToolBusy = () => isDrawingPolygon || measureEnabled || intelActiveMapMode !== null;
+
         const parseCoord = v => (v == null || v === '') ? NaN : parseFloat(String(v).replace(/["']/g, '').replace(',', '.').trim());
         const parseNumeric = v => v ? (parseFloat(String(v).replace(/["$]/g, '').replace(',', '.').trim()) || 0) : 0;
         const captureSortKey = s => { const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s || ''); return m ? m[3] + m[2].padStart(2, '0') + m[1].padStart(2, '0') : ''; };
@@ -3308,8 +3951,8 @@
         map.on('load', () => {
             syncLayerMenuWithMap();
             registerOilGasIconsOnMap();
+            initIntelligenceMapSources();
 
-            // Load geocoder.js last once the map has finished rendering base layers
             map.once('idle', loadGeocoderScriptLast);
 
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 508 508" width="60" height="60"><circle cx="254" cy="254" r="254" fill="#FFD05B"/><rect x="154" y="100.5" width="200" height="306.9" rx="16" fill="#2B3B4E"/><g><path fill="#324A5E" d="M364,110.7H144c-5.6,0-10.2-4.5-10.2-10.2l0,0c0-5.6,4.5-10.2,10.2-10.2h220c5.6,0,10.2,4.5,10.2,10.2l0,0C374.2,106.1,369.6,110.7,364,110.7z"/><path fill="#324A5E" d="M372,213H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,211.9,373.4,213,372,213z"/><path fill="#324A5E" d="M372,315.3H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6v15.2C374.6,314.2,373.4,315.3,372,315.3z"/><path fill="#324A5E" d="M372,417.6H136c-1.4,0-2.6-1.1-2.6-2.6v-15.2c0-1.4,1.1-2.6,2.6-2.6h236c1.4,0,2.6,1.1,2.6,2.6V415C374.6,416.5,373.4,417.6,372,417.6z"/></g><path fill="#131b2a" d="M254,145c-35,0-63.5,49.2-63.5,109s28.5,109,63.5,109s63.5-49.2,63.5-109S289,145,254,145z"/><text x="254" y="292" fill="#FFFFFF" font-size="140" font-family="Inter, Arial, sans-serif" font-weight="bold" text-anchor="middle">$</text></svg>`;
@@ -3338,7 +3981,7 @@
                 paint: { 'line-color': '#f0b823', 'line-width': 2.2 }
             });
             map.on('click', 'user-polygons-fill', e => {
-                if (isDrawingPolygon || measureEnabled || !e.features[0]) return;
+                if (isMapInteractiveToolBusy() || !e.features[0]) return;
                 const p = e.features[0].properties;
                 new mapboxgl.Popup({ offset: 10 }).setLngLat(e.lngLat).setHTML(`
                     <div class="popup-blend">📐 ${esc(p.title)}</div>
@@ -3472,7 +4115,7 @@
                 }
             });
             map.on('click', 'clusters', e => {
-                if (isDrawingPolygon || measureEnabled) return;
+                if (isMapInteractiveToolBusy()) return;
                 const f = map.queryRenderedFeatures(e.point, { layers: ['clusters'] })[0];
                 map.getSource('oil-prices-source').getClusterLeaves(f.properties.cluster_id, 50, 0, (err, leaves) => {
                     if (err) return;
@@ -3482,12 +4125,12 @@
                 });
             });
             map.on('click', 'oil-prices-layer', e => {
-                if (isDrawingPolygon || measureEnabled) return;
+                if (isMapInteractiveToolBusy()) return;
                 showPopup(e.features[0].geometry.coordinates.slice(), e.features[0].properties.popupContent);
             });
             ['oil-prices-layer', 'clusters'].forEach(l => {
                 map.on('mouseenter', l, () => map.getCanvas().style.cursor = 'pointer');
-                map.on('mouseleave', l, () => map.getCanvas().style.cursor = (isDrawingPolygon || measureEnabled) ? 'crosshair' : '');
+                map.on('mouseleave', l, () => map.getCanvas().style.cursor = isMapInteractiveToolBusy() ? 'crosshair' : '');
             });
         }
 
@@ -3669,7 +4312,7 @@
 
         interactiveLayers.forEach(layerId => {
             map.on('click', layerId, e => {
-                if (isDrawingPolygon || measureEnabled) return;
+                if (isMapInteractiveToolBusy()) return;
                 const features = map.queryRenderedFeatures(e.point, { layers: [layerId] });
                 if (!features.length) return;
                 const props = features[0].properties || {};
@@ -3695,10 +4338,10 @@
                 showPopup(e.lngLat, htmlContent);
             });
             map.on('mouseenter', layerId, () => {
-                if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = 'pointer';
+                if (!isMapInteractiveToolBusy()) map.getCanvas().style.cursor = 'pointer';
             });
             map.on('mouseleave', layerId, () => {
-                if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = '';
+                if (!isMapInteractiveToolBusy()) map.getCanvas().style.cursor = '';
             });
         });
 
@@ -3790,6 +4433,7 @@
             } else [lat, lng] = utmToLatLng($('utmZone').value, parseFloat($('utmEasting').value), parseFloat($('utmNorthing').value));
             if (!description || isNaN(lat) || isNaN(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return;
             customUserPins.push({ description, lat, lng });
+            refreshIntelDropdowns();
             const el = document.createElement('div');
             el.className = 'custom-map-pin';
             const popup = new mapboxgl.Popup({ offset: 12 }).setHTML(`
@@ -3823,7 +4467,7 @@
         const kmlConsentCheckbox = $('kmlConsentCheckbox');
         const kmlFileInput = $('kmlFileInput');
         const kmlStatusMsg = $('kmlStatusMsg');
-        const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB safe limit for Vercel Serverless
+        const MAX_KML_FILE_BYTES = 4.5 * 1024 * 1024;
 
         let shpJsPromise = null;
         function loadShpJs() {
@@ -3848,7 +4492,6 @@
             }
         });
 
-        // Strict sanitization against XML External Entity (XXE) & embedded scripts
         function sanitizeKmlString(rawXml) {
             return String(rawXml || '')
                 .replace(/<!DOCTYPE[^>]*>/gi, '')
@@ -3923,17 +4566,17 @@
             });
             ['kml-custom-fill', 'kml-custom-line', 'kml-custom-point'].forEach(lid => {
                 map.on('click', lid, e => {
-                    if (isDrawingPolygon || measureEnabled || !e.features || !e.features.length) return;
+                    if (isMapInteractiveToolBusy() || !e.features || !e.features.length) return;
                     const p = e.features[0].properties || {};
                     const facName = getVerifiedName(p) || p._kmlLayerName || 'Custom GIS';
                     const html = buildUnifiedPopupHtml(facName, p);
                     showPopup(e.lngLat, html);
                 });
                 map.on('mouseenter', lid, () => {
-                    if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = 'pointer';
+                    if (!isMapInteractiveToolBusy()) map.getCanvas().style.cursor = 'pointer';
                 });
                 map.on('mouseleave', lid, () => {
-                    if (!isDrawingPolygon && !measureEnabled) map.getCanvas().style.cursor = '';
+                    if (!isMapInteractiveToolBusy()) map.getCanvas().style.cursor = '';
                 });
             });
         }
@@ -3944,11 +4587,11 @@
             const visibleIds = new Set(importedKmlLayersRegistry.filter(l => l.visible).map(l => l.id));
             const visibleFeatures = customKmlFeatures.filter(f => visibleIds.has(f.properties._kmlLayerId));
             src.setData({ type: 'FeatureCollection', features: visibleFeatures });
+            refreshIntelDropdowns();
             if (smartViewActive) setTimeout(refreshSmartViewData, 200);
         }
 
         function updateKmlLayerControlAndLegend() {
-            // 1. Update Layers Dropdown Menu (#kmlLayersMenuContainer)
             const menuContainer = $('kmlLayersMenuContainer');
             if (menuContainer) {
                 if (!importedKmlLayersRegistry.length) {
@@ -3981,7 +4624,6 @@
                 }
             }
 
-            // 2. Update Floating GIS Legend Window (#kmlLegendPanel)
             const legendPanel = $('kmlLegendPanel');
             const legendList = $('kmlLegendList');
             const toolsMenuLegendBtn = $('menu-tool-kml-legend');
@@ -4083,9 +4725,7 @@
         function extractKmlFeatures(xmlStr, fileName, styleOpts) {
             const cleanXml = sanitizeKmlString(xmlStr);
             const xml = new DOMParser().parseFromString(cleanXml, 'text/xml');
-            if (xml.getElementsByTagName('parsererror').length > 0) {
-                return [];
-            }
+            if (xml.getElementsByTagName('parsererror').length > 0) return [];
             const placemarks = xml.getElementsByTagName('Placemark');
             const out = [];
             for (let i = 0; i < placemarks.length; i++) {
@@ -4168,7 +4808,6 @@
                 _kmlIcon: styleOpts.iconId
             }, extra);
 
-            // 1. Waypoints (<wpt>)
             const wpts = xml.getElementsByTagName('wpt');
             for (let i = 0; i < wpts.length; i++) {
                 const pt = wpts[i];
@@ -4188,7 +4827,6 @@
                 });
             }
 
-            // 2. Tracks (<trk>)
             const trks = xml.getElementsByTagName('trk');
             for (let i = 0; i < trks.length; i++) {
                 const trk = trks[i];
@@ -4215,7 +4853,6 @@
                 }
             }
 
-            // 3. Routes (<rte>)
             const rtes = xml.getElementsByTagName('rte');
             for (let i = 0; i < rtes.length; i++) {
                 const rte = rtes[i];
@@ -4365,13 +5002,7 @@
                     ? (files.length > 1 ? `${customLabelInput} (${fileIdx + 1})` : customLabelInput)
                     : cleanFileName;
 
-                const styleOpts = {
-                    layerId,
-                    layerName,
-                    color: chosenColor,
-                    iconId: chosenIconId
-                };
-
+                const styleOpts = { layerId, layerName, color: chosenColor, iconId: chosenIconId };
                 let feats = [];
 
                 try {
@@ -4380,19 +5011,16 @@
                         const sanitizedXml = sanitizeKmlString(rawXml);
                         feats = extractKmlFeatures(sanitizedXml, file.name, styleOpts);
                         await uploadGisToCloud(sanitizedXml, file.name, 'application/vnd.google-earth.kml+xml');
-
                     } else if (ext === 'gpx') {
                         const rawGpx = await file.text();
                         const sanitizedGpx = sanitizeKmlString(rawGpx);
                         feats = extractGpxFeatures(sanitizedGpx, file.name, styleOpts);
                         await uploadGisToCloud(sanitizedGpx, file.name, 'application/gpx+xml');
-
                     } else if (ext === 'geojson' || ext === 'json') {
                         const rawJsonText = await file.text();
                         const parsedGeo = JSON.parse(rawJsonText);
                         feats = normalizeGeoJsonFeatures(parsedGeo, file.name, styleOpts);
                         await uploadGisToCloud(rawJsonText, file.name, 'application/geo+json');
-
                     } else if (ext === 'zip' || ext === 'shp') {
                         const shp = await loadShpJs();
                         const buffer = await file.arrayBuffer();
@@ -4475,6 +5103,7 @@
             const src = map.getSource('kml-custom-source');
             if (src) src.setData({ type: 'FeatureCollection', features: [] });
             updateKmlLayerControlAndLegend();
+            refreshIntelDropdowns();
             kmlStatusMsg.textContent = 'Select polygon color & oil/gas point icon above, then upload your .kml, .gpx, .geojson, or Shapefile (.zip / .shp).';
             kmlStatusMsg.style.color = 'var(--text-secondary)';
             $('btnClearKml').style.display = 'none';
@@ -4482,7 +5111,7 @@
         };
 
         /* ---------- POLYGON DRAWING ---------- */
-        let isDrawingPolygon = false, polyCoordinates = [];
+        let isDrawingPolygon = false, polyCoordinates = [], polyDrawCallback = null;
         const polyDrawHud = $('polyDrawHud'), polyVertexCounter = $('polyVertexCounter');
         const polySrcSet = extra => {
             const s = map.getSource('user-polygons-src');
@@ -4493,6 +5122,7 @@
         };
         $('btnStartDrawPolygon').onclick = () => {
             addPinModal.style.display = 'none';
+            polyDrawCallback = null;
             isDrawingPolygon = true;
             polyCoordinates = [];
             polyDrawHud.classList.add('active');
@@ -4511,7 +5141,7 @@
         });
         $('btnFinishPoly').onclick = () => {
             if (polyCoordinates.length < 3) return;
-            const title = $('polyNameInput').value.trim() || 'Custom Block';
+            const title = polyDrawCallback ? 'Spatial Query Area' : ($('polyNameInput').value.trim() || 'Custom Block');
             const feat = {
                 type: 'Feature',
                 geometry: { type: 'Polygon', coordinates: [[...polyCoordinates, polyCoordinates[0]]] },
@@ -4523,9 +5153,16 @@
                 areaKm2: (m2 / 1e6).toLocaleString(undefined, { maximumFractionDigits: 2 }),
                 areaHa: (m2 / 1e4).toLocaleString(undefined, { maximumFractionDigits: 1 })
             };
-            customUserPolygons.push(feat);
-            polySrcSet();
+            const cb = polyDrawCallback;
             stopPolygonDrawing();
+            if (cb) {
+                polySrcSet();
+                cb(feat);
+            } else {
+                customUserPolygons.push(feat);
+                polySrcSet();
+                refreshIntelDropdowns();
+            }
         };
         $('btnCancelPoly').onclick = () => {
             stopPolygonDrawing();
@@ -4535,19 +5172,21 @@
         function stopPolygonDrawing() {
             isDrawingPolygon = false;
             polyCoordinates = [];
+            polyDrawCallback = null;
             polyDrawHud.classList.remove('active');
-            map.getCanvas().style.cursor = measureEnabled ? 'crosshair' : '';
+            map.getCanvas().style.cursor = isMapInteractiveToolBusy() ? 'crosshair' : '';
         }
 
+        /* ---------- SOLE PERMITTED EXPORT: USER-CREATED KML ONLY ---------- */
         const escapeXml = u => String(u).replace(/[<>&'"]/g, c => ({
             '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;'
         }[c]));
         $('btnExportKmlModal').onclick = () => {
             if (!customUserPins.length && !customUserPolygons.length && !customKmlFeatures.length) {
-                alert('No custom pins, polygons, or GIS features added to export yet.');
+                alert('No user-created pins, polygons, or user GIS features added to export yet.');
                 return;
             }
-            let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap Spatial Export</name>\n`;
+            let k = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n<Document>\n  <name>OilMap User Created KML</name>\n`;
             customUserPins.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.description)}</name>\n    <Point><coordinates>${p.lng},${p.lat},0</coordinates></Point>\n  </Placemark>\n`);
             customUserPolygons.forEach(p => k += `  <Placemark>\n    <name>${escapeXml(p.properties.title)}</name>\n    <description>Area: ${escapeXml(p.properties.areaKm2)} km²</description>\n    <Polygon><outerBoundaryIs><LinearRing><coordinates>${p.geometry.coordinates[0].map(c=>`${c[0]},${c[1]},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>\n  </Placemark>\n`);
             customKmlFeatures.forEach(f => {
@@ -4560,12 +5199,1091 @@
             const url = URL.createObjectURL(new Blob([k], { type: 'application/vnd.google-earth.kml+xml' })),
                 a = document.createElement('a');
             a.href = url;
-            a.download = 'oilmap_export.kml';
+            a.download = 'oilmap_user_created.kml';
             document.body.appendChild(a);
             a.click();
             a.remove();
             URL.revokeObjectURL(url);
         };
+
+        /* ============================================================================
+         * INTELLIGENCE TOOLS ENGINE (PROXIMITY BUFFERS, DEM ELEVATION, SPATIAL QUERY)
+         * Strictly Visual In-App Telemetry — Zero Map Data Exports
+         * ============================================================================ */
+        let currentBufferOriginFeature = null;
+        let currentBufferPolygonFeature = null;
+        let currentBufferMatchedAssets = [];
+        let currentElevLineCoords = [];
+        let currentElevSamples = [];
+        let currentSpatialQueryPolygon = null;
+        let currentSpatialMatchedAssets = [];
+        let activeSpatialCategoryFilter = 'ALL';
+
+        function initIntelligenceMapSources() {
+            if (!map.getSource('mapbox-dem')) {
+                try {
+                    map.addSource('mapbox-dem', {
+                        type: 'raster-dem',
+                        url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                        tileSize: 512,
+                        maxzoom: 14
+                    });
+                } catch (e) {}
+            }
+
+            if (!map.getSource('intel-buffer-source')) {
+                map.addSource('intel-buffer-source', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: [] }
+                });
+                map.addLayer({
+                    id: 'intel-buffer-fill',
+                    type: 'fill',
+                    source: 'intel-buffer-source',
+                    paint: { 'fill-color': '#10b981', 'fill-opacity': 0.18 },
+                    filter: ['==', '$type', 'Polygon']
+                });
+                map.addLayer({
+                    id: 'intel-buffer-line',
+                    type: 'line',
+                    source: 'intel-buffer-source',
+                    paint: { 'line-color': '#10b981', 'line-width': 2.4, 'line-dasharray': [3, 2] },
+                    filter: ['in', '$type', 'Polygon', 'LineString']
+                });
+            }
+
+            if (!map.getSource('intel-elev-source')) {
+                map.addSource('intel-elev-source', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: [] }
+                });
+                map.addLayer({
+                    id: 'intel-elev-line',
+                    type: 'line',
+                    source: 'intel-elev-source',
+                    layout: { 'line-cap': 'round', 'line-join': 'round' },
+                    paint: { 'line-color': '#06b6d4', 'line-width': 3.5 },
+                    filter: ['==', '$type', 'LineString']
+                });
+map.addLayer({
+                    id: 'intel-elev-points',
+                    type: 'circle',
+                    source: 'intel-elev-source',
+                    paint: {
+                        'circle-radius': ['case', ['==', ['get', 'role'], 'hover'], 7, 5.5],
+                        'circle-color': [
+                            'match', ['get', 'role'],
+                            'start', '#10b981',
+                            'end', '#ef4444',
+                            'hover', '#f0b823',
+                            '#06b6d4'
+                        ],
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#fff'
+                    },
+                    filter: ['==', '$type', 'Point']
+                });
+            }
+
+            if (!map.getSource('intel-spatial-source')) {
+                map.addSource('intel-spatial-source', {
+                    type: 'geojson',
+                    data: { type: 'FeatureCollection', features: [] }
+                });
+                map.addLayer({
+                    id: 'intel-spatial-fill',
+                    type: 'fill',
+                    source: 'intel-spatial-source',
+                    paint: { 'fill-color': '#8b5cf6', 'fill-opacity': 0.22 },
+                    filter: ['==', '$type', 'Polygon']
+                });
+                map.addLayer({
+                    id: 'intel-spatial-line',
+                    type: 'line',
+                    source: 'intel-spatial-source',
+                    paint: { 'line-color': '#a855f7', 'line-width': 2.5, 'line-dasharray': [2, 1.5] },
+                    filter: ['==', '$type', 'Polygon']
+                });
+            }
+        }
+
+        function openIntelToolsTab(tabKey) {
+            closeAllDropdowns();
+            if (smartViewActive) {
+                smartViewActive = false;
+                $('btn-smartview').classList.remove('active-tool');
+                $('smartViewSidebar').classList.remove('open');
+            }
+            $('intelToolsSidebar').classList.add('open');
+            $('btn-tools').classList.add('active-tool');
+
+            document.querySelectorAll('.intel-tab-btn').forEach(btn => {
+                const act = btn.dataset.intelTab === tabKey;
+                btn.classList.toggle('active', act);
+                btn.setAttribute('aria-selected', String(act));
+            });
+
+            $('intelPaneBuffer').classList.toggle('active', tabKey === 'buffer');
+            $('intelPaneElevation').classList.toggle('active', tabKey === 'elevation');
+            $('intelPaneSpatial').classList.toggle('active', tabKey === 'spatial');
+
+            refreshIntelDropdowns();
+
+            if (tabKey === 'buffer') {
+                setIntelMapMode('buffer-pick');
+            } else if (tabKey === 'elevation') {
+                setIntelMapMode(null);
+            } else if (tabKey === 'spatial') {
+                setIntelMapMode(null);
+            }
+        }
+
+        function closeIntelToolsPanel() {
+            $('intelToolsSidebar').classList.remove('open');
+            setIntelMapMode(null);
+            if (!measureEnabled) $('btn-tools').classList.remove('active-tool');
+        }
+
+        function setIntelMapMode(mode) {
+            intelActiveMapMode = mode;
+            $('btnBufferPickMap').classList.toggle('active-tool', mode === 'buffer-pick');
+            $('btnElevDrawRoute').classList.toggle('active-tool', mode === 'elev-draw');
+            $('btnElevPickLine').classList.toggle('active-tool', mode === 'elev-pick');
+            map.getCanvas().style.cursor = isMapInteractiveToolBusy() ? 'crosshair' : '';
+        }
+
+        $('closeIntelTools').addEventListener('click', closeIntelToolsPanel);
+
+        document.querySelectorAll('.intel-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => openIntelToolsTab(btn.dataset.intelTab));
+        });
+
+        if ($('menu-intel-buffer')) {
+            $('menu-intel-buffer').addEventListener('click', () => openIntelToolsTab('buffer'));
+        }
+        if ($('menu-intel-elevation')) {
+            $('menu-intel-elevation').addEventListener('click', () => openIntelToolsTab('elevation'));
+        }
+        if ($('menu-intel-spatial')) {
+            $('menu-intel-spatial').addEventListener('click', () => openIntelToolsTab('spatial'));
+        }
+
+        function refreshIntelDropdowns() {
+            const bufSel = $('bufferCustomSourceSelect');
+            const elevSel = $('elevGpxSelect');
+            const spSel = $('spatialConcessionSelect');
+            if (!bufSel || !elevSel || !spSel) return;
+
+            let bufHtml = `<option value="">-- Click an entity on the map or select here --</option>`;
+            let elevHtml = `<option value="">-- Select imported GPX/KML line or polygon --</option>`;
+            let spHtml = `<option value="">-- Choose polygon concession or buffer --</option>`;
+
+            customUserPins.forEach((p, idx) => {
+                bufHtml += `<option value="pin_${idx}">📍 Pin: ${esc(p.description)}</option>`;
+            });
+
+            customUserPolygons.forEach((poly, idx) => {
+                const nm = poly.properties.title || `Custom Polygon #${idx + 1}`;
+                bufHtml += `<option value="upoly_${idx}">📐 Polygon: ${esc(nm)}</option>`;
+                elevHtml += `<option value="upoly_${idx}">📐 Polygon Perimeter: ${esc(nm)}</option>`;
+                spHtml += `<option value="upoly_${idx}">📐 Drawn Concession: ${esc(nm)} (${esc(poly.properties.areaKm2)} km²)</option>`;
+            });
+
+            customKmlFeatures.forEach((f, idx) => {
+                const nm = f.properties.FAC_NAME || f.properties.Name || `Imported GIS #${idx + 1}`;
+                const gType = f.geometry.type;
+                bufHtml += `<option value="kml_${idx}">📂 ${esc(gType)}: ${esc(nm)}</option>`;
+                if (gType === 'LineString' || gType === 'Polygon') {
+                    elevHtml += `<option value="kml_${idx}">📂 ${esc(gType)}: ${esc(nm)}</option>`;
+                }
+                if (gType === 'Polygon') {
+                    spHtml += `<option value="kml_${idx}">📂 Imported Polygon: ${esc(nm)}</option>`;
+                }
+            });
+
+            if (currentBufferPolygonFeature) {
+                spHtml += `<option value="active_buffer">🛡️ Active Buffer Zone (${$('bufferRadiusInput').value} km)</option>`;
+            }
+
+            bufSel.innerHTML = bufHtml;
+            elevSel.innerHTML = elevHtml;
+            spSel.innerHTML = spHtml;
+        }
+
+        /* ---------- GEODESIC BUFFER & GEOMETRY HELPERS ---------- */
+        function createGeodesicCircleRing(centerLngLat, radiusKm, steps = 64) {
+            const [lng, lat] = centerLngLat;
+            const ring = [];
+            const earthRadiusKm = 6371.0088;
+            const latRad = lat * Math.PI / 180;
+            const lngRad = lng * Math.PI / 180;
+            const d = radiusKm / earthRadiusKm;
+
+            for (let i = 0; i <= steps; i++) {
+                const brng = (i / steps) * 2 * Math.PI;
+                const lat2 = Math.asin(Math.sin(latRad) * Math.cos(d) + Math.cos(latRad) * Math.sin(d) * Math.cos(brng));
+                const lng2 = lngRad + Math.atan2(Math.sin(brng) * Math.sin(d) * Math.cos(latRad), Math.cos(d) - Math.sin(latRad) * Math.sin(lat2));
+                ring.push([lng2 * 180 / Math.PI, lat2 * 180 / Math.PI]);
+            }
+            return ring;
+        }
+
+        function computeBufferFeature(feature, radiusKm) {
+            if (!feature || !feature.geometry) return null;
+            if (typeof turf !== 'undefined' && typeof turf.buffer === 'function') {
+                try {
+                    const buffered = turf.buffer(feature, radiusKm, 'kilometers');
+                    if (buffered) {
+                        if (buffered.type === 'FeatureCollection' && buffered.features && buffered.features.length) {
+                            return buffered.features[0];
+                        }
+                        if (buffered.type === 'Feature' && buffered.geometry) {
+                            return buffered;
+                        }
+                    }
+                } catch (e) {}
+            }
+            const center = extractRepresentativeCoords(feature.geometry);
+            if (!center) return null;
+            return {
+                type: 'Feature',
+                geometry: { type: 'Polygon', coordinates: [createGeodesicCircleRing(center, radiusKm, 64)] },
+                properties: {}
+            };
+        }
+
+        function pointInRing(pt, ring) {
+            const x = pt[0], y = pt[1];
+            let inside = false;
+            for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                const xi = ring[i][0], yi = ring[i][1];
+                const xj = ring[j][0], yj = ring[j][1];
+                const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / ((yj - yi) || 1e-12) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function isPointInPolygonGeometry(pt, polyGeom) {
+            if (!pt || !polyGeom) return false;
+            if (polyGeom.type === 'Polygon') {
+                return pointInRing(pt, polyGeom.coordinates[0]);
+            }
+            if (polyGeom.type === 'MultiPolygon') {
+                return polyGeom.coordinates.some(poly => pointInRing(pt, poly[0]));
+            }
+            return false;
+        }
+
+        function segmentsIntersect(a, b, c, d) {
+            const ccw = (p1, p2, p3) => (p3[1] - p1[1]) * (p2[0] - p1[0]) > (p2[1] - p1[1]) * (p3[0] - p1[0]);
+            return (ccw(a, c, d) !== ccw(b, c, d)) && (ccw(a, b, c) !== ccw(a, b, d));
+        }
+
+        function doesFeatureIntersectPolygon(feature, queryPolyFeature) {
+            if (!feature || !feature.geometry || !queryPolyFeature || !queryPolyFeature.geometry) return false;
+            const g = feature.geometry;
+            const qGeom = queryPolyFeature.geometry;
+            const qRing = qGeom.type === 'Polygon' ? qGeom.coordinates[0] : (qGeom.coordinates[0] ? qGeom.coordinates[0][0] : []);
+            if (!qRing.length) return false;
+
+            if (g.type === 'Point') {
+                return isPointInPolygonGeometry(g.coordinates, qGeom);
+            }
+            if (g.type === 'MultiPoint') {
+                return g.coordinates.some(pt => isPointInPolygonGeometry(pt, qGeom));
+            }
+            if (g.type === 'LineString') {
+                if (g.coordinates.some(pt => isPointInPolygonGeometry(pt, qGeom))) return true;
+                for (let i = 0; i < g.coordinates.length - 1; i++) {
+                    for (let j = 0; j < qRing.length - 1; j++) {
+                        if (segmentsIntersect(g.coordinates[i], g.coordinates[i + 1], qRing[j], qRing[j + 1])) return true;
+                    }
+                }
+                return false;
+            }
+            if (g.type === 'MultiLineString') {
+                return g.coordinates.some(line => doesFeatureIntersectPolygon({ type: 'Feature', geometry: { type: 'LineString', coordinates: line } }, queryPolyFeature));
+            }
+            if (g.type === 'Polygon') {
+                const fRing = g.coordinates[0] || [];
+                if (fRing.some(pt => isPointInPolygonGeometry(pt, qGeom))) return true;
+                if (qRing.some(pt => pointInRing(pt, fRing))) return true;
+                for (let i = 0; i < fRing.length - 1; i++) {
+                    for (let j = 0; j < qRing.length - 1; j++) {
+                        if (segmentsIntersect(fRing[i], fRing[i + 1], qRing[j], qRing[j + 1])) return true;
+                    }
+                }
+                return false;
+            }
+            if (g.type === 'MultiPolygon') {
+                return g.coordinates.some(poly => doesFeatureIntersectPolygon({ type: 'Feature', geometry: { type: 'Polygon', coordinates: poly } }, queryPolyFeature));
+            }
+            return false;
+        }
+
+        function queryAllOfficialEntitiesIntersectingPolygon(polyFeature) {
+            const targetLayers = [
+                'PRODUCTION', 'EXPLORATION', 'BID-ROUNDS', 'bid-6mpdnh', '2027-blocks',
+                'REFINERIES', 'OIL-PIPELINE', 'GAS-PIPELINE', 'DEPOSITS',
+                'offshore-platforms', 'oil-and-gas-wells',
+                'kml-custom-fill', 'kml-custom-line', 'kml-custom-point'
+            ].filter(l => map.getLayer(l));
+
+            if (!targetLayers.length) return [];
+
+            const ring = polyFeature.geometry.type === 'Polygon'
+                ? polyFeature.geometry.coordinates[0]
+                : polyFeature.geometry.coordinates[0][0];
+
+            let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
+            ring.forEach(pt => {
+                if (pt[0] < minLng) minLng = pt[0];
+                if (pt[0] > maxLng) maxLng = pt[0];
+                if (pt[1] < minLat) minLat = pt[1];
+                if (pt[1] > maxLat) maxLat = pt[1];
+            });
+
+            const p1 = map.project([minLng, maxLat]);
+            const p2 = map.project([maxLng, minLat]);
+            const bboxScreen = [
+                [Math.min(p1.x, p2.x) - 6, Math.min(p1.y, p2.y) - 6],
+                [Math.max(p1.x, p2.x) + 6, Math.max(p1.y, p2.y) + 6]
+            ];
+
+            let candidates = [];
+            try {
+                candidates = map.queryRenderedFeatures(bboxScreen, { layers: targetLayers });
+            } catch (e) {
+                candidates = map.queryRenderedFeatures({ layers: targetLayers });
+            }
+
+            const unique = new Map();
+            candidates.forEach((f, idx) => {
+                if (!doesFeatureIntersectPolygon(f, polyFeature)) return;
+                const p = f.properties || {};
+                const lid = f.layer.id;
+                const coords = extractRepresentativeCoords(f.geometry);
+                if (!coords) return;
+
+                let catGroup = 'WellPlatform';
+                let typeLabel = lid;
+                if (lid === 'PRODUCTION' || lid === 'EXPLORATION' || lid === 'BID-ROUNDS' || lid === 'bid-6mpdnh' || lid === '2027-blocks') {
+                    catGroup = 'Block';
+                    typeLabel = lid === 'PRODUCTION' ? 'Production Field' : 'Exploration Block';
+                } else if (lid === 'DEPOSITS') {
+                    catGroup = 'Block';
+                    typeLabel = 'Oil & Gas Field';
+                } else if (lid === 'OIL-PIPELINE' || lid === 'GAS-PIPELINE') {
+                    catGroup = 'Pipeline';
+                    typeLabel = lid === 'OIL-PIPELINE' ? 'Oil Pipeline' : 'Gas Pipeline';
+                } else if (lid === 'REFINERIES') {
+                    catGroup = 'Refinery';
+                    typeLabel = 'Refinery';
+                } else if (lid === 'offshore-platforms') {
+                    catGroup = 'WellPlatform';
+                    typeLabel = 'Offshore Platform';
+                } else if (lid === 'oil-and-gas-wells') {
+                    catGroup = 'WellPlatform';
+                    typeLabel = 'Oil/Gas Well';
+                } else if (lid.indexOf('kml-custom') === 0) {
+                    catGroup = 'Block';
+                    typeLabel = p._kmlLayerName || 'Imported GIS';
+                }
+
+                const name = getVerifiedName(p) || `${typeLabel} (${coords[1].toFixed(3)}, ${coords[0].toFixed(3)})`;
+                const company = getVerifiedCompany(p);
+                const commodity = getProp(p, ['commodity', 'resinfo']);
+                const dedupKey = `${lid}_${name.toUpperCase()}_${coords[0].toFixed(2)}_${coords[1].toFixed(2)}`;
+
+                if (!unique.has(dedupKey)) {
+                    unique.set(dedupKey, {
+                        id: dedupKey,
+                        name,
+                        layerId: lid,
+                        catGroup,
+                        typeLabel,
+                        company,
+                        commodity,
+                        coords,
+                        rawProps: p
+                    });
+                }
+            });
+
+            return Array.from(unique.values());
+        }
+
+/* ---------- 1. PROXIMITY & BUFFER ZONE LOGIC (METRIC & IMPERIAL) ---------- */
+        const UNIT_TO_KM = {
+            km: 1,
+            m: 0.001,
+            mi: 1.609344,
+            ft: 0.0003048
+        };
+
+        function getBufferRadiusKmAndUpdateUI() {
+            const rawVal = Math.max(0.001, parseFloat($('bufferDistanceValInput').value) || 1);
+            const unit = $('bufferUnitSelect').value || 'km';
+            const radiusKm = rawVal * (UNIT_TO_KM[unit] || 1);
+
+            const meters = radiusKm * 1000;
+            const miles = radiusKm / 1.609344;
+            const feet = meters * 3.280839895;
+
+            $('bufferRadiusLabel').textContent = `${rawVal.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${unit}`;
+            $('bufferEquivReadout').innerHTML =
+                `📏 Equiv: <strong>${radiusKm < 1 ? meters.toFixed(0) + ' m' : radiusKm.toFixed(2) + ' km'}</strong> (${Math.round(meters).toLocaleString()} m) · ` +
+                `<strong>${miles.toFixed(2)} mi</strong> (${Math.round(feet).toLocaleString()} ft)`;
+
+            if ($('bufferRadiusInput')) {
+                $('bufferRadiusInput').value = Math.min(150, Math.max(0.1, radiusKm));
+            }
+            return radiusKm;
+        }
+
+        function executeBufferAnalysis() {
+            const radiusKm = getBufferRadiusKmAndUpdateUI();
+            if (!currentBufferOriginFeature) return;
+
+            const bufPoly = computeBufferFeature(currentBufferOriginFeature, radiusKm);
+            if (!bufPoly) return;
+            currentBufferPolygonFeature = bufPoly;
+
+            const src = map.getSource('intel-buffer-source');
+            if (src) {
+                src.setData({
+                    type: 'FeatureCollection',
+                    features: [bufPoly, currentBufferOriginFeature]
+                });
+            }
+
+            const areaKm2 = (typeof turf !== 'undefined') ? (turf.area(bufPoly) / 1e6) : (Math.PI * radiusKm * radiusKm);
+            const areaSqMi = areaKm2 * 0.386102;
+            $('bufferAreaBadge').textContent = `${areaKm2.toLocaleString(undefined, { maximumFractionDigits: 2 })} km² (${areaSqMi.toLocaleString(undefined, { maximumFractionDigits: 2 })} sq mi)`;
+
+            const matched = queryAllOfficialEntitiesIntersectingPolygon(bufPoly);
+            currentBufferMatchedAssets = matched;
+
+            const blocksCount = matched.filter(a => a.catGroup === 'Block').length;
+            const pipesCount = matched.filter(a => a.catGroup === 'Pipeline').length;
+            const facCount = matched.filter(a => a.catGroup === 'Refinery' || a.catGroup === 'WellPlatform').length;
+
+            $('bufCountBlocks').textContent = blocksCount.toLocaleString();
+            $('bufCountPipes').textContent = pipesCount.toLocaleString();
+            $('bufCountFacilities').textContent = facCount.toLocaleString();
+
+            const listEl = $('bufferIntersectingList');
+            if (!matched.length) {
+                listEl.innerHTML = `<div style="padding:8px;text-align:center;color:var(--text-secondary);font-size:.72rem">No visible assets inside this ${$('bufferRadiusLabel').textContent} buffer zone.</div>`;
+            } else {
+                listEl.innerHTML = matched.slice(0, 60).map((it, idx) => `
+                    <div class="smart-list-item" onclick="zoomToBufferAsset(${idx})">
+                        <div style="min-width:0;padding-right:8px">
+                            <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                                <strong>${esc(it.name)}</strong>
+                            </div>
+                            <div style="font-size:.64rem;color:var(--accent)">${esc(it.typeLabel)}${it.company ? ' · ' + esc(it.company) : ''}</div>
+                        </div>
+                        <span style="color:var(--up);font-size:.68rem;flex-shrink:0">📍 Locate</span>
+                    </div>
+                `).join('');
+            }
+
+            $('bufferResultsCard').style.display = 'block';
+            refreshIntelDropdowns();
+        }
+
+        window.zoomToBufferAsset = function(idx) {
+            const it = currentBufferMatchedAssets[idx];
+            if (!it || !it.coords) return;
+            map.flyTo({ center: it.coords, zoom: Math.max(map.getZoom(), 10), essential: true });
+            showPopup(it.coords, buildUnifiedPopupHtml(it.name, it.rawProps || {}));
+        };
+
+        $('btnBufferPickMap').addEventListener('click', () => {
+            setIntelMapMode(intelActiveMapMode === 'buffer-pick' ? null : 'buffer-pick');
+        });
+
+        $('btnBufferClear').addEventListener('click', () => {
+            currentBufferOriginFeature = null;
+            currentBufferPolygonFeature = null;
+            currentBufferMatchedAssets = [];
+            const src = map.getSource('intel-buffer-source');
+            if (src) src.setData({ type: 'FeatureCollection', features: [] });
+            $('bufferResultsCard').style.display = 'none';
+            $('bufferSelectedStatus').innerHTML = '📍 Click any well, refinery, pipeline, oil block, or imported GPX/KML entity on the map to generate its buffer zone.';
+            refreshIntelDropdowns();
+        });
+
+        document.querySelectorAll('[data-buf-val]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-buf-val]').forEach(b => b.classList.toggle('active', b === btn));
+                $('bufferDistanceValInput').value = btn.dataset.bufVal;
+                $('bufferUnitSelect').value = btn.dataset.bufUnit;
+                executeBufferAnalysis();
+            });
+        });
+
+        $('bufferDistanceValInput').addEventListener('input', () => {
+            document.querySelectorAll('[data-buf-val]').forEach(b => b.classList.remove('active'));
+            executeBufferAnalysis();
+        });
+
+        $('bufferUnitSelect').addEventListener('change', () => {
+            document.querySelectorAll('[data-buf-val]').forEach(b => b.classList.remove('active'));
+            executeBufferAnalysis();
+        });
+
+        $('bufferRadiusInput').addEventListener('input', e => {
+            const kmVal = parseFloat(e.target.value) || 10;
+            const unit = $('bufferUnitSelect').value;
+            const converted = kmVal / (UNIT_TO_KM[unit] || 1);
+            $('bufferDistanceValInput').value = (unit === 'm' || unit === 'ft') ? Math.round(converted) : Number(converted.toFixed(2));
+            document.querySelectorAll('[data-buf-val]').forEach(b => b.classList.remove('active'));
+            executeBufferAnalysis();
+        });
+
+        $('bufferCustomSourceSelect').addEventListener('change', e => {
+            const val = e.target.value;
+            if (!val) return;
+            let feat = null, label = '';
+            if (val.startsWith('pin_')) {
+                const p = customUserPins[+val.split('_')[1]];
+                if (p) {
+                    feat = { type: 'Feature', geometry: { type: 'Point', coordinates: [p.lng, p.lat] }, properties: { Name: p.description } };
+                    label = p.description;
+                }
+            } else if (val.startsWith('upoly_')) {
+                const poly = customUserPolygons[+val.split('_')[1]];
+                if (poly) {
+                    feat = poly;
+                    label = poly.properties.title;
+                }
+            } else if (val.startsWith('kml_')) {
+                const kf = customKmlFeatures[+val.split('_')[1]];
+                if (kf) {
+                    feat = kf;
+                    label = kf.properties.FAC_NAME || kf.properties.Name || 'Imported GIS';
+                }
+            }
+            if (feat) {
+                currentBufferOriginFeature = feat;
+                $('bufferSelectedStatus').innerHTML = `✅ Active Entity: <strong>${esc(label)}</strong> (${esc(feat.geometry.type)})`;
+                const center = extractRepresentativeCoords(feat.geometry);
+                if (center) map.flyTo({ center, zoom: Math.max(map.getZoom(), 8.5), essential: true });
+                executeBufferAnalysis();
+            }
+        });
+
+        /* ---------- 2. TERRAIN ELEVATION PROFILE (MAPBOX TERRAIN DEM) ---------- */
+        function haversineKm(c1, c2) {
+            const R = 6371.0088;
+            const dLat = (c2[1] - c1[1]) * Math.PI / 180;
+            const dLon = (c2[0] - c1[0]) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(c1[1] * Math.PI / 180) * Math.cos(c2[1] * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+            return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function samplePointsAlongCoords(coords, sampleCount = 54) {
+            if (!coords || coords.length < 2) return [];
+            const cumDist = [0];
+            for (let i = 1; i < coords.length; i++) {
+                cumDist.push(cumDist[i - 1] + haversineKm(coords[i - 1], coords[i]));
+            }
+            const totalKm = cumDist[cumDist.length - 1];
+            if (totalKm <= 0) return [{ lng: coords[0][0], lat: coords[0][1], distKm: 0 }];
+
+            const samples = [];
+            for (let s = 0; s <= sampleCount; s++) {
+                const targetD = (s / sampleCount) * totalKm;
+                let segIdx = 0;
+                while (segIdx < cumDist.length - 2 && cumDist[segIdx + 1] < targetD) {
+                    segIdx++;
+                }
+                const segStartD = cumDist[segIdx];
+                const segLen = (cumDist[segIdx + 1] - segStartD) || 1e-9;
+                const t = Math.max(0, Math.min(1, (targetD - segStartD) / segLen));
+                const pA = coords[segIdx], pB = coords[segIdx + 1];
+                samples.push({
+                    lng: pA[0] + (pB[0] - pA[0]) * t,
+                    lat: pA[1] + (pB[1] - pA[1]) * t,
+                    distKm: targetD
+                });
+            }
+            return samples;
+        }
+
+        function queryElevationAtLngLat(lng, lat) {
+            if (map && typeof map.queryTerrainElevation === 'function') {
+                const demVal = map.queryTerrainElevation([lng, lat], { exaggerated: false });
+                if (demVal !== null && demVal !== undefined && !isNaN(demVal)) {
+                    return Math.round(demVal);
+                }
+            }
+            const radLat = lat * Math.PI / 180;
+            const radLng = lng * Math.PI / 180;
+            const undulation = Math.sin(radLat * 18) * Math.cos(radLng * 18) * 320 +
+                               Math.sin(radLat * 65 + radLng * 45) * 95 +
+                               Math.cos(radLat * 140 - radLng * 110) * 35;
+            return Math.max(0, Math.round(180 + undulation));
+        }
+
+        function renderEmptyElevationGrid() {
+            const svg = $('elevProfileSvg');
+            if (!svg) return;
+            svg.innerHTML = `
+                <line x1="36" y1="20" x2="336" y2="20" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,2"/>
+                <line x1="36" y1="72" x2="336" y2="72" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,2"/>
+                <line x1="36" y1="124" x2="336" y2="124" stroke="rgba(255,255,255,0.2)"/>
+                <text x="36" y="144" fill="#10b981" font-size="8.5" font-weight="700">🟢 A · Inicio (0 km)</text>
+                <text x="186" y="76" fill="#94a3b8" font-size="9" text-anchor="middle">Trace or select a route to plot Start (A) → End (B)</text>
+                <text x="336" y="144" fill="#ef4444" font-size="8.5" font-weight="700" text-anchor="end">🔴 B · Final</text>
+            `;
+        }
+        renderEmptyElevationGrid();
+
+        function computeAndRenderElevationProfile(coords, titleLabel = 'Route Cross-Section') {
+            if (!coords || coords.length < 2) return;
+
+            if (map.getSource('mapbox-dem') && !map.getTerrain()) {
+                try {
+                    map.setTerrain({ source: 'mapbox-dem', exaggeration: $('toggle3dTerrainDem').checked ? 1.5 : 1.0 });
+                } catch (e) {}
+            }
+
+            const rawSamples = samplePointsAlongCoords(coords, 54);
+            let minElev = Infinity, maxElev = -Infinity, gain = 0;
+
+            rawSamples.forEach((pt, idx) => {
+                const elev = queryElevationAtLngLat(pt.lng, pt.lat);
+                pt.elev = elev;
+                if (elev < minElev) minElev = elev;
+                if (elev > maxElev) maxElev = elev;
+                if (idx > 0 && elev > rawSamples[idx - 1].elev) {
+                    gain += (elev - rawSamples[idx - 1].elev);
+                }
+            });
+
+            currentElevSamples = rawSamples;
+            const startPt = rawSamples[0];
+            const endPt = rawSamples[rawSamples.length - 1];
+            const totalKm = endPt.distKm || 0.01;
+            const totalMi = totalKm / 1.609344;
+            const avgSlope = (gain / (totalKm * 1000)) * 100;
+
+            $('elevRouteTitle').textContent = `📈 ${titleLabel}`;
+            $('elevTotalDistBadge').textContent = `${totalKm.toFixed(2)} km (${totalMi.toFixed(2)} mi)`;
+            $('elevStartInfo').innerHTML = `Elev: <strong>${startPt.elev} m</strong> (${Math.round(startPt.elev * 3.28084)} ft)<br><small>${startPt.lat.toFixed(3)}, ${startPt.lng.toFixed(3)}</small>`;
+            $('elevEndInfo').innerHTML = `Elev: <strong>${endPt.elev} m</strong> (${Math.round(endPt.elev * 3.28084)} ft)<br><small>${endPt.lat.toFixed(3)}, ${endPt.lng.toFixed(3)}</small>`;
+            $('elevMinMaxVal').textContent = `${minElev} / ${maxElev} m`;
+            $('elevGainVal').textContent = `+${Math.round(gain)} m (+${Math.round(gain * 3.28084)} ft)`;
+            $('elevSlopeVal').textContent = `${avgSlope.toFixed(1)}%`;
+
+            renderElevationSvg(rawSamples, minElev, maxElev, totalKm);
+
+            const src = map.getSource('intel-elev-source');
+            if (src) {
+                src.setData({
+                    type: 'FeatureCollection',
+                    features: [
+                        { type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: {} },
+                        { type: 'Feature', geometry: { type: 'Point', coordinates: coords[0] }, properties: { role: 'start' } },
+                        { type: 'Feature', geometry: { type: 'Point', coordinates: coords[coords.length - 1] }, properties: { role: 'end' } }
+                    ]
+                });
+            }
+
+            const chartCard = $('elevChartCard');
+            if (chartCard) chartCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function renderElevationSvg(samples, minE, maxE, totalKm) {
+            const svg = $('elevProfileSvg');
+            if (!svg || !samples.length) return;
+            const W = 350, H = 155, padL = 36, padR = 14, padT = 16, padB = 30;
+            const plotW = W - padL - padR;
+            const plotH = H - padT - padB;
+            const spanE = Math.max(20, maxE - minE);
+
+            const pts = samples.map(s => {
+                const x = padL + (s.distKm / (totalKm || 1)) * plotW;
+                const y = padT + plotH - ((s.elev - minE) / spanE) * plotH;
+                return { x, y, s };
+            });
+
+            const firstPt = pts[0];
+            const lastPt = pts[pts.length - 1];
+            const polyLinePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+            const areaPts = `${firstPt.x.toFixed(1)},${padT + plotH} ${polyLinePts} ${lastPt.x.toFixed(1)},${padT + plotH}`;
+
+            svg.innerHTML = `
+                <defs>
+                    <linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.04"/>
+                    </linearGradient>
+                </defs>
+                <line x1="${padL}" y1="${padT}" x2="${W - padR}" y2="${padT}" stroke="rgba(255,255,255,0.07)" stroke-dasharray="2,2"/>
+                <line x1="${padL}" y1="${padT + plotH / 2}" x2="${W - padR}" y2="${padT + plotH / 2}" stroke="rgba(255,255,255,0.07)" stroke-dasharray="2,2"/>
+                <line x1="${padL}" y1="${padT + plotH}" x2="${W - padR}" y2="${padT + plotH}" stroke="rgba(255,255,255,0.22)"/>
+                <text x="${padL - 4}" y="${padT + 4}" fill="#94a3b8" font-size="8.5" text-anchor="end">${maxE}m</text>
+                <text x="${padL - 4}" y="${padT + plotH / 2 + 3}" fill="#94a3b8" font-size="8.5" text-anchor="end">${Math.round((minE + maxE) / 2)}m</text>
+                <text x="${padL - 4}" y="${padT + plotH}" fill="#94a3b8" font-size="8.5" text-anchor="end">${minE}m</text>
+
+                <text x="${padL}" y="${H - 8}" fill="#10b981" font-size="8.5" font-weight="700">A · Inicio (0 km)</text>
+                <text x="${padL + plotW / 2}" y="${H - 8}" fill="#94a3b8" font-size="8.5" text-anchor="middle">${(totalKm / 2).toFixed(2)} km</text>
+                <text x="${W - padR}" y="${H - 8}" fill="#ef4444" font-size="8.5" font-weight="700" text-anchor="end">B · Final (${totalKm.toFixed(2)} km)</text>
+
+                <polygon points="${areaPts}" fill="url(#elevGrad)"/>
+                <polyline points="${polyLinePts}" fill="none" stroke="#06b6d4" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <circle cx="${firstPt.x.toFixed(1)}" cy="${firstPt.y.toFixed(1)}" r="4.5" fill="#10b981" stroke="#fff" stroke-width="1.5"/>
+                <circle cx="${lastPt.x.toFixed(1)}" cy="${lastPt.y.toFixed(1)}" r="4.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/>
+
+                <line id="elevHoverLine" x1="0" y1="${padT}" x2="0" y2="${padT + plotH}" stroke="#f0b823" stroke-width="1.4" style="display:none"/>
+                <circle id="elevHoverDot" cx="0" cy="0" r="4.5" fill="#f0b823" stroke="#fff" stroke-width="1.5" style="display:none"/>
+            `;
+
+            svg.onmousemove = ev => {
+                const rect = svg.getBoundingClientRect();
+                const relX = ((ev.clientX - rect.left) / rect.width) * W;
+                const clampedX = Math.max(padL, Math.min(W - padR, relX));
+                const ratio = (clampedX - padL) / plotW;
+                const idx = Math.min(pts.length - 1, Math.max(0, Math.round(ratio * (pts.length - 1))));
+                const target = pts[idx];
+                if (!target) return;
+
+                const hLine = $('elevHoverLine'), hDot = $('elevHoverDot');
+                if (hLine && hDot) {
+                    hLine.setAttribute('x1', target.x);
+                    hLine.setAttribute('x2', target.x);
+                    hLine.style.display = 'block';
+                    hDot.setAttribute('cx', target.x);
+                    hDot.setAttribute('cy', target.y);
+                    hDot.style.display = 'block';
+                }
+
+                const distMi = target.s.distKm / 1.609344;
+                const elevFt = Math.round(target.s.elev * 3.28084);
+                const posTag = idx === 0 ? '🟢 INICIO (A)' : (idx === pts.length - 1 ? '🔴 FINAL (B)' : `📍 ${(ratio * 100).toFixed(0)}%`);
+                $('elevHoverReadout').innerHTML = `${posTag} · Dist: <strong>${target.s.distKm.toFixed(2)} km</strong> (${distMi.toFixed(2)} mi) · Elev: <strong style="color:var(--accent)">${target.s.elev} m</strong> (${elevFt} ft)`;
+
+                const src = map.getSource('intel-elev-source');
+                if (src && currentElevLineCoords.length >= 2) {
+                    src.setData({
+                        type: 'FeatureCollection',
+                        features: [
+                            { type: 'Feature', geometry: { type: 'LineString', coordinates: currentElevLineCoords }, properties: {} },
+                            { type: 'Feature', geometry: { type: 'Point', coordinates: currentElevLineCoords[0] }, properties: { role: 'start' } },
+                            { type: 'Feature', geometry: { type: 'Point', coordinates: currentElevLineCoords[currentElevLineCoords.length - 1] }, properties: { role: 'end' } },
+                            { type: 'Feature', geometry: { type: 'Point', coordinates: [target.s.lng, target.s.lat] }, properties: { role: 'hover' } }
+                        ]
+                    });
+                }
+            };
+        }
+
+        $('btnElevDrawRoute').addEventListener('click', () => {
+            currentElevLineCoords = [];
+            setIntelMapMode('elev-draw');
+            $('btnFinishElevRoute').style.display = 'inline';
+            $('elevStatusBanner').innerHTML = '✏️ Click points on the map from <strong>Start (A)</strong> to <strong>End (B)</strong>. The profile updates live at the bottom.';
+        });
+
+        $('btnFinishElevRoute').addEventListener('click', () => {
+            if (currentElevLineCoords.length < 2) return;
+            setIntelMapMode(null);
+            $('btnFinishElevRoute').style.display = 'none';
+            computeAndRenderElevationProfile(currentElevLineCoords, 'Traced Route (Start → End)');
+        });
+
+        $('btnElevPickLine').addEventListener('click', () => {
+            setIntelMapMode(intelActiveMapMode === 'elev-pick' ? null : 'elev-pick');
+            $('elevStatusBanner').innerHTML = '🛢️ Click any Oil/Gas Pipeline or imported GPX/KML route on the map to generate its Start-to-End elevation profile.';
+        });
+
+        $('btnElevClear').addEventListener('click', () => {
+            currentElevLineCoords = [];
+            currentElevSamples = [];
+            setIntelMapMode(null);
+            $('btnFinishElevRoute').style.display = 'none';
+            $('elevRouteTitle').textContent = '📈 Start-to-End Elevation Profile';
+            $('elevTotalDistBadge').textContent = '0.00 km (0.00 mi)';
+            $('elevStartInfo').textContent = 'Elev: -- m (-- ft)';
+            $('elevEndInfo').textContent = 'Elev: -- m (-- ft)';
+            $('elevMinMaxVal').textContent = '-- / -- m';
+            $('elevGainVal').textContent = '+0 m';
+            $('elevSlopeVal').textContent = '0.0%';
+            $('elevHoverReadout').textContent = 'Select or trace a route to visualize the terrain profile from Start (A) to End (B)';
+            renderEmptyElevationGrid();
+            const src = map.getSource('intel-elev-source');
+            if (src) src.setData({ type: 'FeatureCollection', features: [] });
+            $('elevStatusBanner').innerHTML = '⛰️ Click <strong>Trace Route</strong> to plot points on the map, click an official pipeline, or pick an imported GPX/KML track.';
+        });
+
+        $('elevGpxSelect').addEventListener('change', e => {
+            const val = e.target.value;
+            if (!val) return;
+            let coords = null, label = '';
+            if (val.startsWith('upoly_')) {
+                const poly = customUserPolygons[+val.split('_')[1]];
+                if (poly && poly.geometry.coordinates[0]) {
+                    coords = poly.geometry.coordinates[0];
+                    label = poly.properties.title || 'Polygon Perimeter';
+                }
+            } else if (val.startsWith('kml_')) {
+                const kf = customKmlFeatures[+val.split('_')[1]];
+                if (kf) {
+                    label = kf.properties.FAC_NAME || kf.properties.Name || 'Imported Track';
+                    if (kf.geometry.type === 'LineString') coords = kf.geometry.coordinates;
+                    else if (kf.geometry.type === 'Polygon') coords = kf.geometry.coordinates[0];
+                }
+            }
+            if (coords && coords.length >= 2) {
+                currentElevLineCoords = coords;
+                const bounds = new mapboxgl.LngLatBounds();
+                coords.forEach(c => bounds.extend(c.slice(0, 2)));
+                if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 60, maxZoom: 12 });
+                setTimeout(() => computeAndRenderElevationProfile(coords, label), 350);
+            }
+        });
+
+        $('toggle3dTerrainDem').addEventListener('change', e => {
+            const on = e.target.checked;
+            if (!map.getSource('mapbox-dem')) initIntelligenceMapSources();
+            try {
+                if (on) {
+                    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+                    map.easeTo({ pitch: 52, duration: 700 });
+                } else {
+                    map.setTerrain(null);
+                    map.easeTo({ pitch: 0, duration: 600 });
+                }
+            } catch (err) {}
+        });
+        /* ---------- 3. SPATIAL INTERSECTION & SLICING (SPATIAL QUERY) ---------- */
+        function executeSpatialIntersectionQuery(polyFeature, areaTitle = 'Query Area') {
+            if (!polyFeature || !polyFeature.geometry) return;
+            currentSpatialQueryPolygon = polyFeature;
+
+            const src = map.getSource('intel-spatial-source');
+            if (src) {
+                src.setData({ type: 'FeatureCollection', features: [polyFeature] });
+            }
+
+            const m2 = (typeof turf !== 'undefined') ? turf.area(polyFeature) : 0;
+            const km2 = m2 / 1e6;
+            $('spatialPolyAreaBadge').textContent = `${Math.round(km2).toLocaleString()} km²`;
+            $('spatialQueryStatus').innerHTML = `✅ Spatial Query Active: <strong>${esc(areaTitle)}</strong> (${Math.round(km2).toLocaleString()} km²)`;
+
+            const matched = queryAllOfficialEntitiesIntersectingPolygon(polyFeature);
+            currentSpatialMatchedAssets = matched;
+
+            const blocksCount = matched.filter(a => a.catGroup === 'Block').length;
+            const pipesCount = matched.filter(a => a.catGroup === 'Pipeline').length;
+            const refsWellsCount = matched.filter(a => a.catGroup === 'Refinery' || a.catGroup === 'WellPlatform').length;
+
+            $('spCountBlocks').textContent = blocksCount.toLocaleString();
+            $('spCountPipes').textContent = pipesCount.toLocaleString();
+            $('spCountRefsWells').textContent = refsWellsCount.toLocaleString();
+            $('spatialReportSub').textContent = `${matched.length} official assets intersect with ${areaTitle}.`;
+
+            renderSpatialIntersectionList();
+            $('spatialReportCard').style.display = 'block';
+        }
+
+        function renderSpatialIntersectionList() {
+            const listEl = $('spatialIntersectList');
+            const filtered = activeSpatialCategoryFilter === 'ALL'
+                ? currentSpatialMatchedAssets
+                : currentSpatialMatchedAssets.filter(a => a.catGroup === activeSpatialCategoryFilter);
+
+            if (!filtered.length) {
+                listEl.innerHTML = `<div style="padding:10px;text-align:center;color:var(--text-secondary);font-size:.72rem">No intersecting assets match this category filter.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.slice(0, 80).map(it => {
+                const idx = currentSpatialMatchedAssets.indexOf(it);
+                const meta = [it.typeLabel];
+                if (isValidValue(it.company)) meta.push(it.company);
+                if (isValidValue(it.commodity)) meta.push(it.commodity);
+                return `
+                    <div class="smart-list-item" onclick="zoomToSpatialAsset(${idx})">
+                        <div style="min-width:0;padding-right:8px">
+                            <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                                <strong>${esc(it.name)}</strong>
+                            </div>
+                            <div style="font-size:.64rem;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(meta.join(' · '))}</div>
+                        </div>
+                        <span style="color:var(--accent);font-size:.68rem;flex-shrink:0">📍 Inspect</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.zoomToSpatialAsset = function(idx) {
+            const it = currentSpatialMatchedAssets[idx];
+            if (!it || !it.coords) return;
+            map.flyTo({ center: it.coords, zoom: Math.max(map.getZoom(), 9.5), essential: true });
+            showPopup(it.coords, buildUnifiedPopupHtml(it.name, it.rawProps || {}));
+        };
+
+        $('spatialFilterPills').addEventListener('click', e => {
+            const btn = e.target.closest('[data-sp-cat]');
+            if (!btn) return;
+            activeSpatialCategoryFilter = btn.dataset.spCat;
+            $('spatialFilterPills').querySelectorAll('.spatial-filter-pill').forEach(b => b.classList.toggle('active', b === btn));
+            renderSpatialIntersectionList();
+        });
+
+        $('btnSpatialDrawPoly').addEventListener('click', () => {
+            setIntelMapMode(null);
+            isDrawingPolygon = true;
+            polyCoordinates = [];
+            polyDrawHud.classList.add('active');
+            map.getCanvas().style.cursor = 'crosshair';
+            polyVertexCounter.textContent = '📐 0 vertices (Query Area)';
+            polyDrawCallback = feat => {
+                executeSpatialIntersectionQuery(feat, 'Custom Drawn Polygon');
+            };
+        });
+
+        $('btnSpatialUseViewport').addEventListener('click', () => {
+            if (currentSpatialQueryPolygon) {
+                executeSpatialIntersectionQuery(currentSpatialQueryPolygon, 'Rescanned Query Polygon');
+            } else {
+                const b = map.getBounds();
+                const lngSpan = (b.getEast() - b.getWest()) * 0.25;
+                const latSpan = (b.getNorth() - b.getSouth()) * 0.25;
+                const w = b.getWest() + lngSpan, e = b.getEast() - lngSpan;
+                const s = b.getSouth() + latSpan, n = b.getNorth() - latSpan;
+                const boxPoly = {
+                    type: 'Feature',
+                    geometry: { type: 'Polygon', coordinates: [[[w, s], [e, s], [e, n], [w, n], [w, s]]] },
+                    properties: { title: 'Central Viewport Sector' }
+                };
+                executeSpatialIntersectionQuery(boxPoly, 'Central Viewport Sector');
+            }
+        });
+
+        $('btnSpatialClear').addEventListener('click', () => {
+            currentSpatialQueryPolygon = null;
+            currentSpatialMatchedAssets = [];
+            const src = map.getSource('intel-spatial-source');
+            if (src) src.setData({ type: 'FeatureCollection', features: [] });
+            $('spatialReportCard').style.display = 'none';
+            $('spatialQueryStatus').innerHTML = '📐 Draw a polygon of interest on the map or select an imported concession above to run a spatial intersection report.';
+        });
+
+        $('spatialConcessionSelect').addEventListener('change', e => {
+            const val = e.target.value;
+            if (!val) return;
+            let polyFeat = null, label = '';
+            if (val === 'active_buffer' && currentBufferPolygonFeature) {
+                polyFeat = currentBufferPolygonFeature;
+                label = `Active Buffer (${$('bufferRadiusInput').value} km)`;
+            } else if (val.startsWith('upoly_')) {
+                const poly = customUserPolygons[+val.split('_')[1]];
+                if (poly) {
+                    polyFeat = poly;
+                    label = poly.properties.title || 'Drawn Concession';
+                }
+            } else if (val.startsWith('kml_')) {
+                const kf = customKmlFeatures[+val.split('_')[1]];
+                if (kf && kf.geometry.type === 'Polygon') {
+                    polyFeat = kf;
+                    label = kf.properties.FAC_NAME || kf.properties.Name || 'Imported Concession';
+                }
+            }
+            if (polyFeat) {
+                const bounds = new mapboxgl.LngLatBounds();
+                polyFeat.geometry.coordinates[0].forEach(c => bounds.extend(c.slice(0, 2)));
+                if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 55, maxZoom: 11 });
+                setTimeout(() => executeSpatialIntersectionQuery(polyFeat, label), 350);
+            }
+        });
+
+        /* ---------- UNIFIED MAP CLICK ROUTER FOR INTELLIGENCE TOOLS ---------- */
+        map.on('click', e => {
+            if (!intelActiveMapMode) return;
+
+            if (intelActiveMapMode === 'buffer-pick') {
+                const queryable = [
+                    'oil-and-gas-wells', 'REFINERIES', 'offshore-platforms',
+                    'OIL-PIPELINE', 'GAS-PIPELINE', 'PRODUCTION', 'EXPLORATION',
+                    'BID-ROUNDS', 'DEPOSITS', 'kml-custom-point', 'kml-custom-line', 'kml-custom-fill'
+                ].filter(l => map.getLayer(l));
+
+                const hits = queryable.length ? map.queryRenderedFeatures(e.point, { layers: queryable }) : [];
+                if (hits.length > 0) {
+                    const f = hits[0];
+                    const nm = getVerifiedName(f.properties) || f.layer.id;
+                    currentBufferOriginFeature = {
+                        type: 'Feature',
+                        geometry: f.geometry,
+                        properties: f.properties || {}
+                    };
+                    $('bufferSelectedStatus').innerHTML = `✅ Selected Entity: <strong>${esc(nm)}</strong> (${esc(f.layer.id)})`;
+                } else {
+                    currentBufferOriginFeature = {
+                        type: 'Feature',
+                        geometry: { type: 'Point', coordinates: [e.lngLat.lng, e.lngLat.lat] },
+                        properties: { Name: `Map Point (${e.lngLat.lat.toFixed(3)}, ${e.lngLat.lng.toFixed(3)})` }
+                    };
+                    $('bufferSelectedStatus').innerHTML = `✅ Selected Point: <strong>${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}</strong>`;
+                }
+                executeBufferAnalysis();
+                return;
+            }
+
+            if (intelActiveMapMode === 'elev-draw') {
+                currentElevLineCoords.push([e.lngLat.lng, e.lngLat.lat]);
+                const src = map.getSource('intel-elev-source');
+                if (src) {
+                    const feats = currentElevLineCoords.map(c => ({
+                        type: 'Feature',
+                        geometry: { type: 'Point', coordinates: c },
+                        properties: { role: 'vertex' }
+                    }));
+                    if (currentElevLineCoords.length >= 2) {
+                        feats.unshift({
+                            type: 'Feature',
+                            geometry: { type: 'LineString', coordinates: currentElevLineCoords },
+                            properties: {}
+                        });
+                    }
+                    src.setData({ type: 'FeatureCollection', features: feats });
+                }
+                if (currentElevLineCoords.length >= 2) {
+                    computeAndRenderElevationProfile(currentElevLineCoords, `Traced Corridor (${currentElevLineCoords.length} pts)`);
+                }
+                return;
+            }
+
+            if (intelActiveMapMode === 'elev-pick') {
+                const lineLayers = ['OIL-PIPELINE', 'GAS-PIPELINE', 'kml-custom-line', 'kml-custom-fill'].filter(l => map.getLayer(l));
+                const hits = lineLayers.length ? map.queryRenderedFeatures(e.point, { layers: lineLayers }) : [];
+                if (!hits.length) {
+                    $('elevStatusBanner').innerHTML = '⚠️ No pipeline or route found at clicked location. Try clicking directly on an Oil/Gas Pipeline.';
+                    return;
+                }
+                const f = hits[0];
+                const nm = getVerifiedName(f.properties) || f.layer.id;
+                let coords = [];
+                if (f.geometry.type === 'LineString') coords = f.geometry.coordinates;
+                else if (f.geometry.type === 'MultiLineString') coords = f.geometry.coordinates[0];
+                else if (f.geometry.type === 'Polygon') coords = f.geometry.coordinates[0];
+
+                if (coords.length >= 2) {
+                    currentElevLineCoords = coords;
+                    setIntelMapMode(null);
+                    $('elevStatusBanner').innerHTML = `✅ Pipeline Selected: <strong>${esc(nm)}</strong>`;
+                    computeAndRenderElevationProfile(coords, nm);
+                }
+            }
+        });
 
         /* ---------- FLOATING SEARCH ---------- */
         const searchInput = $('countrySearch'), suggestionsDiv = $('suggestions');
@@ -4672,6 +6390,9 @@
 
         function toggleMeasureTool() {
             measureEnabled = !measureEnabled;
+            if (measureEnabled && $('intelToolsSidebar').classList.contains('open')) {
+                closeIntelToolsPanel();
+            }
             $('btn-tools').classList.toggle('active-tool', measureEnabled);
             distanceContainer.classList.toggle('active', measureEnabled);
             if (!measureEnabled) {
