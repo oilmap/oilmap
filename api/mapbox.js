@@ -19,7 +19,6 @@ function isAllowedRequest(req) {
   if (referer) {
     return ALLOWED_ORIGINS.some((o) => referer.startsWith(o));
   }
-  // Permite peticiones directas de navegación/tiles sin Origin ni Referer explícito
   return true;
 }
 
@@ -42,11 +41,6 @@ export default async function handler(req) {
     return new Response('Forbidden', { status: 403, headers: corsHeaders });
   }
 
-  const secretToken = process.env.MAPBOX_SECRET_TOKEN;
-  if (!secretToken) {
-    return new Response('Missing MAPBOX_SECRET_TOKEN', { status: 500, headers: corsHeaders });
-  }
-
   const incomingUrl = new URL(req.url);
   const targetPath = incomingUrl.searchParams.get('path') || '';
 
@@ -54,9 +48,17 @@ export default async function handler(req) {
     return new Response('Invalid path', { status: 400, headers: corsHeaders });
   }
 
-  const isEvents = targetPath.startsWith('/events');
-  const baseHost = isEvents ? 'https://events.mapbox.com' : 'https://api.mapbox.com';
-  const mapboxUrl = new URL(`${baseHost}${targetPath}`);
+  // Corta la telemetría de Mapbox sin generar 401/403
+  if (targetPath.startsWith('/events')) {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  const secretToken = process.env.MAPBOX_SECRET_TOKEN;
+  if (!secretToken) {
+    return new Response('Missing MAPBOX_SECRET_TOKEN', { status: 500, headers: corsHeaders });
+  }
+
+  const mapboxUrl = new URL(`https://api.mapbox.com${targetPath}`);
 
   for (const [key, value] of incomingUrl.searchParams.entries()) {
     if (key !== 'path' && key !== 'access_token') {
@@ -65,11 +67,15 @@ export default async function handler(req) {
   }
   mapboxUrl.searchParams.set('access_token', secretToken);
 
+  const forwardHeaders = {};
+  const incomingContentType = req.headers.get('content-type');
+  if (incomingContentType) {
+    forwardHeaders['Content-Type'] = incomingContentType;
+  }
+
   const fetchOptions = {
     method: req.method,
-    headers: {
-      'Content-Type': req.headers.get('content-type') || 'application/json',
-    },
+    headers: forwardHeaders,
   };
 
   if (req.method !== 'GET' && req.method !== 'HEAD') {
