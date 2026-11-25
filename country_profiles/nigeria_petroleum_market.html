@@ -1166,7 +1166,7 @@
 
     <script>
         (function() {
-           var MAPBOX_TOKEN = 'pk.proxy-placeholder';
+            var MAPBOX_TOKEN = 'pk.eyJ1Ijoicm9xdWVsZWFsIiwiYSI6ImNtd3Z6OGFxazAxeTkyenMyOGdvOTY1YTMifQ.Qf5i3x2ojLtWyR_JvqnpHg';
             var MAPBOX_STYLE = 'mapbox://styles/roqueleal/cmvf4dk1r007801s86qs0af2g';
             var CSV_PRICES = 'https://raw.githubusercontent.com/roqueleal/oilprices/refs/heads/master/prices/data/precios.csv';
             var NG_CENTER = [8.4, 8.0];
@@ -2123,30 +2123,14 @@
                     return;
                 }
                 mapboxgl.accessToken = MAPBOX_TOKEN;
-map = new mapboxgl.Map({
+                map = new mapboxgl.Map({
                     container: 'ngMap',
                     style: MAPBOX_STYLE,
                     projection: 'mercator',
                     center: NG_CENTER,
                     zoom: NG_ZOOM,
                     pitch: 0,
-                    antialias: true,
-                    transformRequest: function(url) {
-                        if (url.startsWith('https://api.mapbox.com')) {
-                            var parsed = new URL(url);
-                            parsed.searchParams.delete('access_token');
-
-                            var proxyUrl = new URL('/api/mapbox', window.location.origin);
-                            proxyUrl.searchParams.set('path', parsed.pathname);
-
-                            parsed.searchParams.forEach(function(value, key) {
-                                proxyUrl.searchParams.set(key, value);
-                            });
-
-                            return { url: proxyUrl.toString() };
-                        }
-                        return { url: url };
-                    }
+                    antialias: true
                 });
 
                 map.addControl(new mapboxgl.NavigationControl({
